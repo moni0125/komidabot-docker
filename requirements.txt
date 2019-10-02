@@ -1,0 +1,11 @@
+Flask==1.0.2
+Flask-SQLAlchemy==2.3.2
+psycopg2-binary==2.7.6.1
+requests==2.19.1
+python-dateutil==2.8.0
+lxml==4.4.1
+pdf2image==1.9.0
+pdfquery==0.4.3
+Pillow==2.1.0
+googletrans==2.4.0
+cachetools==3.1.1

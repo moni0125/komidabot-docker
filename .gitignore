@@ -1,0 +1,6 @@
+*.env
+dump*.txt
+
+.idea/
+__pycache__/
+venv/
