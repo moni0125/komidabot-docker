@@ -17,8 +17,8 @@ class FoodType(enum.Enum):
 
 food_type_icons = {
     FoodType.SOUP: '🍵',
-    FoodType.MEAT: '🍅',
-    FoodType.VEGAN: '🍗',
+    FoodType.MEAT: '🍗',
+    FoodType.VEGAN: '🍅',
     FoodType.GRILL: '🍖',
     FoodType.PASTA_MEAT: '🍝',
     FoodType.PASTA_VEGAN: '🍝',
