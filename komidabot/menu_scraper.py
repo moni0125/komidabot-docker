@@ -61,8 +61,8 @@ BOX_MEAT_ALT = [
     FrameItem(FrameFoodType.MEAT, True, Box(0.720, 0.660, 0.220, 0.325))
 ]
 BOX_GRILL = [
-    FrameItem(FrameFoodType.GRILL, False, Box(0.190, 0.335, 0.540, 0.325)),
-    FrameItem(FrameFoodType.GRILL, True, Box(0.720, 0.335, 0.220, 0.325))
+    FrameItem(FrameFoodType.GRILL, False, Box(0.190, 0.200, 0.540, 0.460)),
+    FrameItem(FrameFoodType.GRILL, True, Box(0.720, 0.200, 0.220, 0.460))
 ]
 BOX_PASTA = [
     FrameItem(FrameFoodType.PASTA, False, Box(0.190, 0.660, 0.540, 0.340)),
