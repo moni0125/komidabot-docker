@@ -3,15 +3,13 @@ import json, requests
 from komidabot.util import check_exceptions
 
 BASE_ENDPOINT = 'https://graph.facebook.com/'
-API_VERSION = 'v2.11'
+API_VERSION = 'v4.0'
 SEND_API = '/me/messages'
 
 
 class ApiInterface:
     def __init__(self, page_access_token: str):
         self.session = requests.Session()
-        self.base_endpoint = ""
-        self.messages_endpoint = self.base_endpoint + "v2.11/me/messages"
 
         self.base_parameters = dict()
         self.base_parameters['access_token'] = page_access_token

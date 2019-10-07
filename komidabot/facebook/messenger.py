@@ -13,10 +13,11 @@ TYPE_REPLY = 'RESPONSE'
 TYPE_SUBSCRIPTION = 'NON_PROMOTIONAL_SUBSCRIPTION'
 
 
+# TODO: Deprecated
 class Messenger:
     def __init__(self, page_access_token: str, admin_ids: List[str]):
         self.session = requests.Session()
-        self.base_endpoint = "https://graph.facebook.com/"
+        self.base_endpoint = "https://graph.facebook.com/v4.0/"
         self.locale_parameters = {
             'access_token': page_access_token,
             'fields': 'locale'
