@@ -70,7 +70,7 @@ def handle_message():
                 sender_obj = MessageSender(sender)
                 sender_obj.mark_seen()
 
-                if app.config.get('TESTING') and sender in app.config.get('ADMIN_IDS'):
+                if app.config.get('TESTING') and sender.is_admin():
                     try:
                         user_manager = app.user_manager  # type: UnifiedUserManager
                         user = user_manager.get_user(UserId(sender, 'facebook'), event=event)

@@ -45,10 +45,10 @@ def create_app(script_info: ScriptInfo = None):
 
     app.logger.setLevel(logging.DEBUG)
 
-    app.bot_interfaces = dict()
+    app.bot_interfaces = dict()  # TODO: Deprecate?
     app.bot_interfaces['facebook'] = {
         'api_interface': ApiInterface(app.config.get('PAGE_ACCESS_TOKEN')),
-        'messenger': Messenger(app.config.get('PAGE_ACCESS_TOKEN'), app.config.get('ADMIN_IDS')),
+        'messenger': Messenger(app.config.get('PAGE_ACCESS_TOKEN'), app.config.get('ADMIN_IDS_LEGACY')),
         'users': FacebookUserManager()
     }
 
@@ -56,7 +56,7 @@ def create_app(script_info: ScriptInfo = None):
     app.user_manager.register_manager('facebook', app.bot_interfaces['facebook']['users'])
 
     app.messenger = app.bot_interfaces['facebook']['messenger']
-    app.komidabot = Komidabot()
+    app.komidabot = app.bot = Komidabot()  # TODO: Deprecate app.komidabot?
     app.conversations = ConversationManager()
     app.task_executor = _task_executor
 
