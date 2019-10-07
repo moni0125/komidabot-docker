@@ -4,7 +4,7 @@ services:
 
   komidabot-db:
     image: postgres:alpine
-    restart: always
+    restart: on-failure
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: komidabot
@@ -15,7 +15,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    restart: always
+    restart: on-failure
     stop_signal: SIGINT
     environment:
       POSTGRES_HOST: komidabot-db
