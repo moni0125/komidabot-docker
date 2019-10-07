@@ -1,8 +1,6 @@
 import datetime, enum
 from typing import Callable, Dict, List, Optional, Tuple
 
-from flask import current_app as app
-
 from extensions import db
 
 
@@ -46,6 +44,8 @@ class Campus(db.Model):
     keywords = db.Column(db.Text(), default='', nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)
     page_url = db.Column(db.Text(), default='', nullable=False)
+
+    menus = db.relationship('Menu', backref='campus', passive_deletes=True)
 
     def __init__(self, name: str, short_name: str):
         self.name = name
@@ -104,6 +104,9 @@ class Translatable(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     original_language = db.Column(db.String(5), nullable=False)
     original_text = db.Column(db.String(256), nullable=False)
+
+    translations = db.relationship('Translation', backref='translatable', passive_deletes=True)
+    menu_items = db.relationship('MenuItem', backref='translatable')
 
     def __init__(self, text: str, language: str):
         self.original_language = language
@@ -166,8 +169,6 @@ class Translation(db.Model):
     language = db.Column(db.String(5), primary_key=True)
     translation = db.Column(db.String(256), nullable=False)
 
-    translatable = db.relationship('Translatable', backref='translations')
-
     def __init__(self, translatable: Translatable, language: str, translation: str):
         self.translatable = translatable
         self.language = language
@@ -181,7 +182,7 @@ class Menu(db.Model):
     campus_id = db.Column(db.Integer(), db.ForeignKey('Campus.id'), nullable=False)
     menu_day = db.Column(db.Date(), nullable=False)
 
-    campus = db.relationship('Campus')
+    menu_items = db.relationship('MenuItem', backref='menu', passive_deletes=True)
 
     def __init__(self, campus: Campus, day: datetime.date):
         self.campus = campus
@@ -229,9 +230,6 @@ class MenuItem(db.Model):
     food_type = db.Column(db.Enum(FoodType), nullable=False)
     price_students = db.Column(db.String(8), nullable=False)
     price_staff = db.Column(db.String(8), nullable=False)
-
-    menu = db.relationship('Menu', backref='menu_items')
-    translatable = db.relationship('Translatable')
 
     def __init__(self, menu: Menu, translatable: Translatable, food_type: FoodType, price_students: str,
                  price_staff: str):
