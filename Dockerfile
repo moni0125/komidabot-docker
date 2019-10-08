@@ -1,9 +1,12 @@
 # base image
 FROM python:3.7-alpine3.9
 
+ENV TZ=Europe/Brussels
+
 # install dependencies
 RUN apk update \
     apk add netcat-openbsd bash && \
+    apk add --update tzdata && \
     apk add --virtual build-deps gcc python-dev musl-dev && \
     apk add postgresql-dev && \
     apk add libxml2 libxml2-dev libxslt libxslt-dev jpeg jpeg-dev zlib poppler-utils
