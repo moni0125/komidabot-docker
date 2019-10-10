@@ -9,3 +9,4 @@ pdfquery==0.4.3
 Pillow==2.1.0
 googletrans==2.4.0
 cachetools==3.1.1
+schedule==0.6.0
