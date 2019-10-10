@@ -71,7 +71,7 @@ def handle_message():
                 sender_obj = LegacyMessageSender(sender)
                 sender_obj.mark_seen()
 
-                if app.config.get('TESTING') and sender.is_admin():
+                if app.config.get('TESTING') and sender_obj.is_admin():
                     try:
                         user_manager = app.user_manager  # type: UnifiedUserManager
                         user = user_manager.get_user(UserId(sender, 'facebook'), event=event)
