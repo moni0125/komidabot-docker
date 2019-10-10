@@ -38,12 +38,3 @@ class ReceivedTextMessage(ReceivedMessage):
     def __repr__(self):
         return 'ReceivedTextMessage({}, {}, nlp_attributes={})'.format(repr(self.sender), repr(self.text),
                                                                        repr(self.nlp_attributes))
-
-
-class ReceivedPostbackMessage(ReceivedMessage):
-    def __init__(self, sender: MessageSender, nlp_attributes=None):
-        super().__init__(sender, nlp_attributes=nlp_attributes)
-        # TODO: Postback messages have some sort of text too!
-
-    def __repr__(self):
-        return 'ReceivedPostbackMessage({}, nlp_attributes={})'.format(repr(self.sender), repr(self.nlp_attributes))

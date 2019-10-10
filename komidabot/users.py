@@ -25,6 +25,9 @@ class User:  # TODO: This probably needs more methods
     def get_locale(self):  # TODO: Properly look into this
         raise NotImplementedError()
 
+    def is_admin(self):
+        raise NotImplementedError()
+
     @property
     def manager(self) -> UserManager:
         raise NotImplementedError()

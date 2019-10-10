@@ -31,6 +31,12 @@ class User(users.User):
         self._manager = manager
         self._id = id_str
 
+    def get_locale(self):
+        raise NotImplementedError()
+
+    def is_admin(self):
+        raise NotImplementedError()
+
     @property
     def id(self) -> users.UserId:
         return users.UserId(self._id, UserManager.MANAGER_ID)

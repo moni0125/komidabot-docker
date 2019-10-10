@@ -3,13 +3,13 @@ from typing import List, Optional
 
 from flask import current_app as app
 
-# from komidabot.conversations.menu_confirmation import MenuConfirmationConversation
-from komidabot.facebook.bot import Bot, ReceivedPostbackMessage, ReceivedTextMessage
+from komidabot.bot import Bot, ReceivedTextMessage
 from komidabot.facebook.messenger import MessageSender
 import komidabot.facebook.nlp_dates as nlp_dates
-from komidabot.conversation_manager import ConversationManager
+from komidabot.conversation_manager import ConversationManager as LegacyConversationManager
 import komidabot.menu
 from komidabot.menu_scraper import FrameFoodType, MenuScraper, ParseResult, parse_price
+import komidabot.triggers as triggers
 
 from komidabot.models import Campus, Day, FoodType, Menu, Subscription, Translatable
 from komidabot.models import create_standard_values, import_dump, recreate_db
@@ -20,13 +20,14 @@ from extensions import db
 # TODO: Bot should not be part of the facebook package
 class Komidabot(Bot):
     def __init__(self):
-        self._lock = threading.Lock()
+        self.lock = threading.Lock()
+        # TODO: Deprecated
+        self.legacy_conversation_manager = LegacyConversationManager()
 
+    # TODO: Deprecated
     def message_received_legacy(self, message: ReceivedTextMessage):
-        with self._lock:
-            print('Komidabot received a message', flush=True)
-
-            conversations = app.conversations  # type: ConversationManager
+        with self.lock:
+            print('Komidabot received a legacy message', flush=True)
 
             # TODO: It may be an idea to keep track of active conversations
             # Simple requests to get the menu would then be conversations that end immediately
@@ -35,7 +36,7 @@ class Komidabot(Bot):
             # - ADMIN: Updating configuration values
 
             # TODO: This REALLY shouldn't be part of the facebook package
-            if conversations.handle_message_conversation(message):
+            if self.legacy_conversation_manager.handle_message_conversation(message):
                 return
 
             if message.sender.is_admin():
@@ -99,9 +100,15 @@ class Komidabot(Bot):
                 else:
                     message.sender.send_text_message(menu)
 
-    def postback_received_legacy(self, message: ReceivedPostbackMessage):
-        with self._lock:
-            pass
+    def trigger_received(self, trigger: triggers.Trigger):
+        with self.lock:  # TODO: Maybe only lock on critical sections?
+            print('Komidabot received a trigger: {}'.format(type(trigger.__name__)), flush=True)
+
+            if isinstance(trigger, triggers.UserTrigger):
+                pass  # Handle trigger
+
+            if isinstance(trigger, triggers.SubscriptionTrigger):
+                pass  # TODO: Gather all subscribed users and send messages
 
     # noinspection PyMethodMayBeStatic
     def update_menus(self, initiator: 'Optional[MessageSender]'):

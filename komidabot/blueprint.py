@@ -3,10 +3,11 @@ import hashlib, hmac, pprint, sys, time, traceback
 
 from flask import Blueprint, abort, current_app, request
 
-from komidabot.facebook.received_message import MessageSender, NLPAttribute, ReceivedTextMessage
-from komidabot.komidabot import Komidabot
+from komidabot.facebook.received_message import MessageSender as LegacyMessageSender, \
+    NLPAttribute as LegacyNLPAttribute, ReceivedTextMessage as LegacyReceivedTextMessage
+from komidabot.komidabot import Komidabot, Bot
 from komidabot.messages import TextMessage
-from komidabot.triggers import MessageTrigger, TextMessageTrigger
+from komidabot.triggers import UserTrigger, AnnotatedUserTextTrigger, NLPAttribute
 from komidabot.users import UnifiedUserManager, UserId, User
 
 import komidabot.localisation as localisation
@@ -67,7 +68,7 @@ def handle_message():
                 sender = event["sender"]["id"]
                 # recipient = event["recipient"]["id"]
 
-                sender_obj = MessageSender(sender)
+                sender_obj = LegacyMessageSender(sender)
                 sender_obj.mark_seen()
 
                 if app.config.get('TESTING') and sender.is_admin():
@@ -93,7 +94,9 @@ def _do_handle_message(event, user: User, app):
     time.sleep(0.1)  # Yield
 
     with app.app_context():
-        trigger = MessageTrigger(user)
+        trigger = UserTrigger(user)
+
+        bot: Bot = app.bot
 
         try:
             print('Handling message in new path for {}'.format(user.id), flush=True)
@@ -109,14 +112,35 @@ def _do_handle_message(event, user: User, app):
                     user.send_message(TextMessage(trigger, localisation.ERROR_TEXT_ONLY(user.get_locale())))
                     return
 
-                trigger = TextMessageTrigger(message['text'], trigger.sender)
+                trigger = AnnotatedUserTextTrigger(message['text'], trigger.sender)
 
                 message_text = message['text']
 
                 if 'admin' in message_text:
                     return
 
-                user.get_message_handler().send_message(user, TextMessage(trigger, 'Received your message'))
+                if 'nlp' in message:
+                    if 'detected_locales' in message['nlp']:
+                        for locale_entry in message['nlp']['detected_locales']:
+                            trigger.add_attribute(NLPAttribute('locale', locale_entry['locale'],
+                                                               locale_entry['confidence']))
+                    if 'entities' in message['nlp']:
+                        for attribute, nlp_entries in message['nlp']['entities'].items():
+                            for nlp_entry in nlp_entries:
+                                attribute_obj = NLPAttribute(attribute, nlp_entry['confidence'], nlp_entry)
+                                trigger.add_attribute(attribute_obj)
+
+                if app.config.get('DISABLED'):
+                    if not user.is_admin():
+                        user.send_message(TextMessage(trigger, localisation.DOWN_FOR_MAINTENANCE1(user.get_locale())))
+                        user.send_message(TextMessage(trigger, localisation.DOWN_FOR_MAINTENANCE2(user.get_locale())))
+                        return
+
+                    # sender_obj.send_text_message('Note: The bot is currently disabled')
+
+                user.send_message(TextMessage(trigger, 'Received your message'))
+
+                bot.trigger_received(trigger)
             elif 'postback' in event:
                 pass
                 # postback = event['postback']
@@ -132,7 +156,21 @@ def _do_handle_message(event, user: User, app):
             # print(e, flush=True, file=sys.stderr)
 
 
-def _do_handle_message_legacy(event, sender_obj: MessageSender, app):
+# komidabot_1     | { 'message': { 'attachments': [ { 'payload': { 'sticker_id': 369239263222822,
+# komidabot_1     |                                                'url': 'https://scontent.xx.fbcdn.net/v/t39.1997-6/39
+# 178562_1505197616293642_5411344281094848512_n.png?_nc_cat=1&_nc_oc=AQm57VHu6KQauDTkvWGzNJE91vLieGwdA9u0sTl2KhZy8gUqm3z
+# VoJvQ5knybEoLjpw5VVichzB1EhmnJn1E4Zk9&_nc_ad=z-m&_nc_cid=0&_nc_zor=9&_nc_ht=scontent.xx&oh=61f57a8ed4a3af09213c822d72f
+# 31b1b&oe=5DF3C875'},
+# komidabot_1     |                                   'type': 'image'}],
+# komidabot_1     |                'mid': 'OirMBeRGhQyTecBQ8BlIBbe3mqAMHtRIwdiwiPtxsjmrNKAH5-s8dwxob_2KszvHRbSdApenwZfud
+# 6VGt9IKwA',
+# komidabot_1     |                'sticker_id': 369239263222822},
+# komidabot_1     |   'recipient': {'id': '1502601723123151'},
+# komidabot_1     |   'sender': {'id': '1468689523250850'},
+# komidabot_1     |   'timestamp': 1570008603230}
+
+
+def _do_handle_message_legacy(event, sender_obj: LegacyMessageSender, app):
     time.sleep(0.1)  # Yield
 
     with app.app_context():
@@ -156,17 +194,17 @@ def _do_handle_message_legacy(event, sender_obj: MessageSender, app):
             if 'admin' in message_text:
                 return
 
-            message_obj = ReceivedTextMessage(sender_obj, message_text)
+            message_obj = LegacyReceivedTextMessage(sender_obj, message_text)
 
             if 'nlp' in message:
                 if 'detected_locales' in message['nlp']:
                     for locale_entry in message['nlp']['detected_locales']:
-                        message_obj.add_attribute(NLPAttribute('locale', locale_entry['locale'],
-                                                               locale_entry['confidence']))
+                        message_obj.add_attribute(LegacyNLPAttribute('locale', locale_entry['locale'],
+                                                                     locale_entry['confidence']))
                 if 'entities' in message['nlp']:
                     for attribute, nlp_entries in message['nlp']['entities'].items():
                         for nlp_entry in nlp_entries:
-                            attribute_obj = NLPAttribute(attribute, nlp_entry['confidence'], nlp_entry)
+                            attribute_obj = LegacyNLPAttribute(attribute, nlp_entry['confidence'], nlp_entry)
                             message_obj.add_attribute(attribute_obj)
 
             if app.config.get('DISABLED'):
@@ -192,16 +230,3 @@ def _do_handle_message_legacy(event, sender_obj: MessageSender, app):
             # postback = event['postback']
 
             sender_obj.send_text_message(localisation.ERROR_NOT_IMPLEMENTED(sender_obj.get_locale()))
-
-# komidabot_1     | { 'message': { 'attachments': [ { 'payload': { 'sticker_id': 369239263222822,
-# komidabot_1     |                                                'url': 'https://scontent.xx.fbcdn.net/v/t39.1997-6/39
-# 178562_1505197616293642_5411344281094848512_n.png?_nc_cat=1&_nc_oc=AQm57VHu6KQauDTkvWGzNJE91vLieGwdA9u0sTl2KhZy8gUqm3z
-# VoJvQ5knybEoLjpw5VVichzB1EhmnJn1E4Zk9&_nc_ad=z-m&_nc_cid=0&_nc_zor=9&_nc_ht=scontent.xx&oh=61f57a8ed4a3af09213c822d72f
-# 31b1b&oe=5DF3C875'},
-# komidabot_1     |                                   'type': 'image'}],
-# komidabot_1     |                'mid': 'OirMBeRGhQyTecBQ8BlIBbe3mqAMHtRIwdiwiPtxsjmrNKAH5-s8dwxob_2KszvHRbSdApenwZfud
-# 6VGt9IKwA',
-# komidabot_1     |                'sticker_id': 369239263222822},
-# komidabot_1     |   'recipient': {'id': '1502601723123151'},
-# komidabot_1     |   'sender': {'id': '1468689523250850'},
-# komidabot_1     |   'timestamp': 1570008603230}
