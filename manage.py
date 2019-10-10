@@ -5,7 +5,7 @@ from flask.cli import FlaskGroup
 from komidabot_app import create_app
 import komidabot.models as models
 
-app = create_app()
+# app = create_app()
 cli = FlaskGroup(create_app=create_app)
 
 

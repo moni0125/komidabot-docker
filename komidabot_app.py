@@ -45,19 +45,26 @@ def create_app(script_info: ScriptInfo = None):
 
     app.logger.setLevel(logging.DEBUG)
 
-    app.bot_interfaces = dict()  # TODO: Deprecate?
-    app.bot_interfaces['facebook'] = {
-        'api_interface': ApiInterface(app.config.get('PAGE_ACCESS_TOKEN')),
-        'messenger': Messenger(app.config.get('PAGE_ACCESS_TOKEN'), app.config.get('ADMIN_IDS_LEGACY')),
-        'users': FacebookUserManager()
-    }
+    if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+        if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+            print(" * Starting worker processes with PID {}".format(os.getpid()), flush=True)
 
-    app.user_manager = UnifiedUserManager()
-    app.user_manager.register_manager('facebook', app.bot_interfaces['facebook']['users'])
+        # TODO: Check if we need to initialise the database and blueprints only once as well
 
-    app.messenger = app.bot_interfaces['facebook']['messenger']
-    app.komidabot = app.bot = Komidabot()  # TODO: Deprecate app.komidabot?
-    app.conversations = ConversationManager()
-    app.task_executor = _task_executor
+        # The app is not in debug mode or we are in the reloaded process
+        app.bot_interfaces = dict()  # TODO: Deprecate?
+        app.bot_interfaces['facebook'] = {
+            'api_interface': ApiInterface(app.config.get('PAGE_ACCESS_TOKEN')),
+            'messenger': Messenger(app.config.get('PAGE_ACCESS_TOKEN'), app.config.get('ADMIN_IDS_LEGACY')),
+            'users': FacebookUserManager()
+        }
+
+        app.user_manager = UnifiedUserManager()
+        app.user_manager.register_manager('facebook', app.bot_interfaces['facebook']['users'])
+
+        app.messenger = app.bot_interfaces['facebook']['messenger']
+        app.komidabot = app.bot = Komidabot()  # TODO: Deprecate app.komidabot?
+        app.conversations = ConversationManager()
+        app.task_executor = _task_executor
 
     return app
