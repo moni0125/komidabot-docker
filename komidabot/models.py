@@ -250,8 +250,14 @@ class Subscription(db.Model):
     # TODO: Subscriptions should probably reference to an internal user id
     # TODO: (could potentially allow for linking users to multiple origins, but that brings a whole lot of issues)
     # TODO: OR the facebook ID data is generified (though collisions could then happen?)
+    # provider = db.Column(db.String(32), nullable=False, unique=True)  # String ID of the provider
+    # provider_id = db.Column(db.String(32), nullable=False, unique=True)  # ID that is specific to the provider
     facebook_id = db.Column(db.String(32), nullable=False, unique=True)
     active = db.Column(db.Boolean(), default=True, nullable=False)
+
+    # __table_args__ = (
+    #     db.UniqueConstraint('provider', 'provider_id')
+    # )
 
     language = db.Column(db.String(5), nullable=False)
     campus_mon_id = db.Column(db.Integer(), db.ForeignKey('Campus.id'), nullable=False)
