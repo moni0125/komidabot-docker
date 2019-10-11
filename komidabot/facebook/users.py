@@ -21,7 +21,7 @@ class UserManager(users.UserManager):
         return User(self, user_id.id)
 
     def get_subscribed_users(self):
-        raise NotImplementedError()  # TODO: Get users that are subscribed
+        return Subscription.find_active(provider=UserManager.MANAGER_ID)
 
     def get_message_handler(self, user: users.User):
         if not isinstance(user, User):

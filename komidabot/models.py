@@ -328,6 +328,11 @@ class Subscription(db.Model):
     def set_active(self, active: bool):
         self.active = active
 
+    # FIXME: Use provider
+    @staticmethod
+    def find_active(provider=None) -> 'List[Subscription]':
+        return Subscription.query.filter_by(active=True).all()
+
     # FIXME
     @staticmethod
     def find_by_facebook_id(facebook_id: str) -> 'Optional[Subscription]':
