@@ -71,19 +71,16 @@ def create_app(script_info: ScriptInfo = None):
             # TODO: This is not the right place for this
             app.scheduler = schedule.Scheduler()
 
-            def trigger_sender(the_app, bot: Komidabot):
-                with the_app.app_context():
+            def trigger_sender(context, bot: Komidabot):
+                with context():
                     bot.trigger_received(SubscriptionTrigger())
 
-            # app.scheduler.every().day.at('10:00').do(partial(Komidabot.trigger_received, app.bot,
-            #                                                  SubscriptionTrigger.INSTANCE))
-            # FIXME: Temporary
-            app.scheduler.every().hour.at(':26').do(trigger_sender, app, app.bot)
+            app.scheduler.every().day.at('10:00').do(trigger_sender, app.app_context, app.bot)
 
             def schedule_executor(task_executor, scheduler):
                 while not task_executor._shutdown:
                     scheduler.run_pending()
-                    time.sleep(5)
+                    time.sleep(1 if app.debug else 10)
 
             app.task_executor.submit(schedule_executor, app.task_executor, app.scheduler)
 
