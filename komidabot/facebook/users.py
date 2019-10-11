@@ -34,9 +34,6 @@ class User(users.User):
     def get_locale(self):
         raise NotImplementedError()
 
-    def is_admin(self):
-        raise NotImplementedError()
-
     @property
     def id(self) -> users.UserId:
         return users.UserId(self._id, UserManager.MANAGER_ID)
