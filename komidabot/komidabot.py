@@ -129,6 +129,7 @@ class Komidabot(Bot):
                 pass  # TODO: Handle trigger
 
             if isinstance(trigger, triggers.SubscriptionTrigger):
+                print('Received subscription trigger', flush=True)
                 user_manager = app.user_manager  # type: users.UserManager
                 subscribed_users = user_manager.get_subscribed_users()
                 subscriptions = dict()  # type: Dict[Campus, Dict[str, List[users.User]]]
@@ -146,6 +147,8 @@ class Komidabot(Bot):
                         subscriptions[campus][language] = list()
 
                     subscriptions[campus][language].append(user)
+
+                print(repr(subscriptions), flush=True)
 
                 for campus, languages in subscriptions.items():
                     for language, sub_users in languages.items():
