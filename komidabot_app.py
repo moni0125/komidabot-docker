@@ -1,5 +1,6 @@
-import logging, os
+import atexit, schedule, logging, os, time
 from concurrent.futures import ThreadPoolExecutor
+from functools import partial
 
 from flask.cli import ScriptInfo
 
@@ -9,12 +10,11 @@ from komidabot.facebook.api_interface import ApiInterface
 from komidabot.facebook.messenger import Messenger
 from komidabot.facebook.users import UserManager as FacebookUserManager
 from komidabot.conversation_manager import ConversationManager
+from komidabot.triggers import SubscriptionTrigger
 from komidabot.komidabot import Komidabot
 from komidabot.users import UnifiedUserManager
 
 from extensions import db
-
-_task_executor = ThreadPoolExecutor(max_workers=5)
 
 
 def create_app(script_info: ScriptInfo = None):
@@ -65,6 +65,24 @@ def create_app(script_info: ScriptInfo = None):
         app.messenger = app.bot_interfaces['facebook']['messenger']
         app.komidabot = app.bot = Komidabot()  # TODO: Deprecate app.komidabot?
         app.conversations = ConversationManager()
-        app.task_executor = _task_executor
+        app.task_executor = ThreadPoolExecutor(max_workers=5)
+
+        if app.debug:
+            # TODO: This is not the right place for this
+            app.scheduler = schedule.Scheduler()
+            # app.scheduler.every().day.at('10:00').do(partial(Komidabot.trigger_received, app.bot,
+            #                                                  SubscriptionTrigger.INSTANCE))
+            # FIXME: Temporary
+            app.scheduler.every().hour.do(partial(Komidabot.trigger_received, app.bot, SubscriptionTrigger.INSTANCE))
+
+            def schedule_executor(scheduler):
+                while True:
+                    scheduler.run_pending()
+                    time.sleep(60)
+
+            app.task_executor.submit(schedule_executor, app.scheduler)
+
+        # Ensure cleanup of resources
+        atexit.register(ThreadPoolExecutor.shutdown, app.task_executor)
 
     return app
