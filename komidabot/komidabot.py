@@ -106,7 +106,27 @@ class Komidabot(Bot):
             print('Komidabot received a trigger: {}'.format(type(trigger).__name__), flush=True)
 
             if isinstance(trigger, triggers.UserTrigger):
-                pass  # Handle trigger
+                sender = trigger.sender
+
+                # TODO: Is this really how we want to handle input?
+                if isinstance(trigger, triggers.UserTextTrigger) and sender.is_admin():
+                    text = trigger.text
+                    if text == 'setup':
+                        recreate_db()
+                        create_standard_values()
+                        import_dump(app.config['DUMP_FILE'])
+                        sender.send_message(messsages.TextMessage(trigger, 'Setup done'))
+                        return
+                    elif text == 'update':
+                        sender.send_message(messsages.TextMessage(trigger, 'Updating menus...'))
+                        self.update_menus(None)
+                        sender.send_message(messsages.TextMessage(trigger, 'Done updating menus...'))
+                        return
+                    elif text == 'psid':  # TODO: Deprecated?
+                        sender.send_message(messsages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
+                        return
+
+                pass  # TODO: Handle trigger
 
             if isinstance(trigger, triggers.SubscriptionTrigger):
                 user_manager = app.user_manager  # type: users.UserManager
@@ -126,6 +146,8 @@ class Komidabot(Bot):
                         subscriptions[campus][language] = list()
 
                     subscriptions[campus][language].append(user)
+
+                    print('Subscribed user {}'.format(user.id), flush=True)
 
                 for campus, languages in subscriptions.items():
                     for language, sub_users in languages.items():
