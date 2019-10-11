@@ -184,7 +184,6 @@ def _do_handle_message_legacy(event, sender_obj: LegacyMessageSender, app):
 
             # print(pprint.pformat(message, indent=2), flush=True)
 
-            # TODO: Should more received message types be supported?
             if 'text' not in message:
                 sender_obj.send_text_message(localisation.ERROR_TEXT_ONLY(sender_obj.get_locale()))
                 return

@@ -15,7 +15,7 @@ def extract_days(date_attributes: List[NLPAttribute]):
         if grain is None or value is None:
             continue
 
-        # TODO: Date parsing could be better
+        # TODO: Date parsing could be a lot better
         # Ex. vanmiddag is rejected
 
         if grain == 'day':

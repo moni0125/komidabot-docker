@@ -33,4 +33,3 @@ class MessageHandler(messages.MessageHandler):
         return app.bot_interfaces['facebook']['api_interface'].post_send_api(data)
 
 # TODO: Batch requests
-# TODO: Limit to admins to start?

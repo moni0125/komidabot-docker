@@ -1,4 +1,5 @@
 from collections import namedtuple
+import functools
 from typing import Dict
 
 from komidabot.messages import MessageHandler, Message
@@ -58,7 +59,7 @@ class UnifiedUserManager(UserManager):
         return self._managers[user_id.provider].get_user(user_id, **kwargs)
 
     def get_subscribed_users(self):
-        return []  # FIXME
+        return functools.reduce(list.__add__, [manager.get_subscribed_users() for manager in self._managers.values()])
 
     def get_message_handler(self, user: 'User') -> MessageHandler:
         return user.manager.get_message_handler(user)

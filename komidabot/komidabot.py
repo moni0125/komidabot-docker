@@ -17,7 +17,6 @@ from komidabot.models import create_standard_values, import_dump, recreate_db
 from extensions import db
 
 
-# TODO: Bot should not be part of the facebook package
 class Komidabot(Bot):
     def __init__(self):
         self.lock = threading.Lock()
@@ -142,6 +141,7 @@ class Komidabot(Bot):
                 # if result.day.value == date.isoweekday() or result.day.value == -1]
                 # TODO: Fix pasta!
                 # TODO: Fix grill stadscampus -> meerdere grills op een week
+                # TODO: This may not be necessary in the near future
 
                 for item in day_menu:
                     if item.name == '':

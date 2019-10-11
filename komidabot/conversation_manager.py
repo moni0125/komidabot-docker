@@ -2,9 +2,9 @@ from typing import Dict
 from komidabot.conversation import Conversation, ReceivedMessage
 
 
+# TODO: Deprecated
 class ConversationManager:
     def __init__(self):
-        # TODO: Keys for this dict would need to allow multiple conversation sources
         self.active_conversations = dict()  # type: Dict[str, Conversation]
 
     def handle_message_conversation(self, message: ReceivedMessage):
@@ -40,4 +40,4 @@ class ConversationManager:
             else:
                 self.active_conversations[user_id].on_conversation_stopped(conversation)
         else:
-            pass  # TODO: Handle?
+            pass

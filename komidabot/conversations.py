@@ -5,6 +5,9 @@ from komidabot.messages import Trigger
 from komidabot.users import User, UserId
 
 
+# TODO: Add a way to save and load conversations?
+
+
 class ActionResult(enum.Enum):
     ACCEPTED = 1  # Action was consumed, do no further processing
     DEFER = 2  # Defer action until a later time

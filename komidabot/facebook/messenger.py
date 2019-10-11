@@ -47,12 +47,10 @@ class Messenger:
     def is_admin(self, user_id):
         return user_id in self.admin_ids
 
-    @check_exceptions
+    @check_exceptions # TODO: Properly handle errors
     @cached(cache=TTLCache(maxsize=64, ttl=300), lock=threading.Lock())
     def lookup_locale(self, user_id):
         response = self.session.get(self.base_endpoint + user_id, params=self.locale_parameters)
-
-        # TODO: Properly handle errors
 
         # print('Received {} for user request {}'.format(response.status_code, user_id), flush=True)
         # print(response.content, flush=True)

@@ -26,7 +26,7 @@ class TextTrigger(Trigger):
 class AnnotatedTextTrigger(TextTrigger):
     def __init__(self, text, nlp_attributes=None):
         super().__init__(text)
-        self.nlp_attributes = nlp_attributes  # type: List[NLPAttribute]
+        self.nlp_attributes = nlp_attributes or []  # type: List[NLPAttribute]
 
     def add_attribute(self, attribute: NLPAttribute):
         self.nlp_attributes.append(attribute)
