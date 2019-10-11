@@ -147,8 +147,6 @@ class Komidabot(Bot):
 
                     subscriptions[campus][language].append(user)
 
-                    print('Subscribed user {}'.format(user.id), flush=True)
-
                 for campus, languages in subscriptions.items():
                     for language, sub_users in languages.items():
                         menu = komidabot.menu.prepare_menu_text(campus, date, language)
@@ -158,7 +156,8 @@ class Komidabot(Bot):
                         for user in sub_users:
                             print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
                                   flush=True)
-                            # user.send_message(messsages.TextMessage(trigger, menu))
+                            if user.is_admin():  # Only send to admins for now
+                                user.send_message(messsages.TextMessage(trigger, menu))
 
     # noinspection PyMethodMayBeStatic
     def update_menus(self, initiator: 'Optional[MessageSender]'):

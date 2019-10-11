@@ -138,8 +138,6 @@ def _do_handle_message(event, user: User, app):
 
                     # sender_obj.send_text_message('Note: The bot is currently disabled')
 
-                user.send_message(TextMessage(trigger, 'Received your message'))
-
                 if user.is_admin() and message_text == 'sub':
                     # Simulate subscription instead
                     trigger = SubscriptionTrigger()

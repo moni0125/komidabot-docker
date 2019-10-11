@@ -20,12 +20,13 @@ class SubscriptionTrigger(Trigger):
 
 class TextTrigger(Trigger):
     def __init__(self, text):
+        Trigger.__init__(self)
         self.text = text
 
 
 class AnnotatedTextTrigger(TextTrigger):
     def __init__(self, text, nlp_attributes=None):
-        super().__init__(text)
+        TextTrigger.__init__(self, text)
         self.nlp_attributes = nlp_attributes or []  # type: List[NLPAttribute]
 
     def add_attribute(self, attribute: NLPAttribute):
@@ -34,6 +35,7 @@ class AnnotatedTextTrigger(TextTrigger):
 
 class UserTrigger(Trigger):
     def __init__(self, sender: users.User):
+        Trigger.__init__(self)
         self.sender = sender
 
 
@@ -43,7 +45,7 @@ class UserTextTrigger(TextTrigger, UserTrigger):
         UserTrigger.__init__(self, sender)
 
 
-class AnnotatedUserTextTrigger(AnnotatedTextTrigger, UserTrigger):
+class AnnotatedUserTextTrigger(AnnotatedTextTrigger, UserTextTrigger, UserTrigger):
     def __init__(self, text, sender, nlp_attributes=None):
         AnnotatedTextTrigger.__init__(self, text, nlp_attributes=nlp_attributes)
         UserTrigger.__init__(self, sender)
