@@ -7,7 +7,7 @@ from komidabot.facebook.received_message import MessageSender as LegacyMessageSe
     NLPAttribute as LegacyNLPAttribute, ReceivedTextMessage as LegacyReceivedTextMessage
 from komidabot.komidabot import Komidabot, Bot
 from komidabot.messages import TextMessage
-from komidabot.triggers import UserTrigger, AnnotatedUserTextTrigger, NLPAttribute
+from komidabot.triggers import AnnotatedUserTextTrigger, NLPAttribute, SubscriptionTrigger, UserTrigger
 from komidabot.users import UnifiedUserManager, UserId, User
 
 import komidabot.localisation as localisation
@@ -117,7 +117,7 @@ def _do_handle_message(event, user: User, app):
                 message_text = message['text']
 
                 if 'admin' in message_text:
-                    return
+                    return  # TODO: Handle properly in the future
 
                 if 'nlp' in message:
                     if 'detected_locales' in message['nlp']:
@@ -139,6 +139,10 @@ def _do_handle_message(event, user: User, app):
                     # sender_obj.send_text_message('Note: The bot is currently disabled')
 
                 user.send_message(TextMessage(trigger, 'Received your message'))
+
+                if user.is_admin() and message_text == 'sub':
+                    # Simulate subscription instead
+                    trigger = SubscriptionTrigger()
 
                 bot.trigger_received(trigger)
             elif 'postback' in event:

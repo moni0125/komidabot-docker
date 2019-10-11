@@ -1,5 +1,5 @@
 import datetime, threading
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from flask import current_app as app
 
@@ -9,7 +9,9 @@ import komidabot.facebook.nlp_dates as nlp_dates
 from komidabot.conversation_manager import ConversationManager as LegacyConversationManager
 import komidabot.menu
 from komidabot.menu_scraper import FrameFoodType, MenuScraper, ParseResult, parse_price
+import komidabot.messages as messsages
 import komidabot.triggers as triggers
+import komidabot.users as users
 
 from komidabot.models import Campus, Day, FoodType, Menu, Subscription, Translatable
 from komidabot.models import create_standard_values, import_dump, recreate_db
@@ -101,13 +103,39 @@ class Komidabot(Bot):
 
     def trigger_received(self, trigger: triggers.Trigger):
         with self.lock:  # TODO: Maybe only lock on critical sections?
-            print('Komidabot received a trigger: {}'.format(type(trigger.__name__)), flush=True)
+            print('Komidabot received a trigger: {}'.format(type(trigger).__name__), flush=True)
 
             if isinstance(trigger, triggers.UserTrigger):
                 pass  # Handle trigger
 
             if isinstance(trigger, triggers.SubscriptionTrigger):
-                pass  # TODO: Gather all subscribed users and send messages
+                user_manager = app.user_manager  # type: users.UserManager
+                subscribed_users = user_manager.get_subscribed_users()
+                subscriptions = dict()  # type: Dict[Campus, Dict[str, List[users.User]]]
+
+                date = datetime.datetime.now().date()
+
+                for user in subscribed_users:
+                    campus = user.get_campus_for_day(date)
+                    language = user.get_locale()
+
+                    if campus not in subscriptions:
+                        subscriptions[campus] = dict()
+
+                    if language not in subscriptions[campus]:
+                        subscriptions[campus][language] = list()
+
+                    subscriptions[campus][language].append(user)
+
+                for campus, languages in subscriptions.items():
+                    for language, sub_users in languages.items():
+                        menu = komidabot.menu.prepare_menu_text(Campus.get_by_id(campus), date, language)
+                        if menu is None:
+                            continue
+
+                        for user in sub_users:
+                            print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id))
+                            # user.send_message(messsages.TextMessage(trigger, menu))
 
     # noinspection PyMethodMayBeStatic
     def update_menus(self, initiator: 'Optional[MessageSender]'):

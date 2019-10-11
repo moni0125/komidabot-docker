@@ -1,5 +1,9 @@
+import datetime
+
 from komidabot.facebook.messages import MessageHandler as FBMessageHandler
 import komidabot.users as users
+
+from komidabot.models import Campus, Day, Subscription
 
 
 class UserManager(users.UserManager):
@@ -32,7 +36,17 @@ class User(users.User):
         self._id = id_str
 
     def get_locale(self):
-        raise NotImplementedError()
+        # FIXME
+        subscription = Subscription.find_by_facebook_id(self._id)
+
+        return subscription.language
+
+    def get_campus_for_day(self, date: datetime.date) -> Campus:
+        day = Day(date.isoweekday())
+        # FIXME
+        subscription = Subscription.find_by_facebook_id(self._id)
+
+        return subscription.get_campus(day)
 
     @property
     def id(self) -> users.UserId:

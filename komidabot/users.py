@@ -1,10 +1,12 @@
 from collections import namedtuple
+import datetime
 import functools
-from typing import Dict
+from typing import Dict, List
 
 from flask import current_app as app
 
 from komidabot.messages import MessageHandler, Message
+from komidabot.models import Campus
 
 UserId = namedtuple('UserId', ['id', 'provider'])
 
@@ -13,7 +15,7 @@ class UserManager:  # TODO: This probably could use more methods
     def get_user(self, user_id: UserId, **kwargs) -> 'User':
         raise NotImplementedError()
 
-    def get_subscribed_users(self):
+    def get_subscribed_users(self) -> 'List[User]':
         raise NotImplementedError()
 
     def get_message_handler(self, user: 'User') -> MessageHandler:
@@ -26,6 +28,9 @@ class User:  # TODO: This probably needs more methods
         raise NotImplementedError()
 
     def get_locale(self):  # TODO: Properly look into this
+        raise NotImplementedError()
+
+    def get_campus_for_day(self, date: datetime.date) -> Campus:
         raise NotImplementedError()
 
     def is_admin(self):

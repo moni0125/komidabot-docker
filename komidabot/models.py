@@ -94,6 +94,9 @@ class Campus(db.Model):
     def get_active() -> 'List[Campus]':
         return Campus.query.filter_by(active=True).all()
 
+    def __hash__(self):
+        return hash(self.id)
+
 
 # TODO: Probably some way of storing when a restaurant is closed (holidays, vacation, etc.)
 
@@ -160,6 +163,9 @@ class Translatable(db.Model):
 
         return translation
 
+    def __hash__(self):
+        return hash(self.id)
+
 
 class Translation(db.Model):
     __tablename__ = 'Translation'
@@ -173,6 +179,9 @@ class Translation(db.Model):
         self.translatable = translatable
         self.language = language
         self.translation = translation
+
+    def __hash__(self):
+        return hash((self.translatable_id, self.language))
 
 
 class Menu(db.Model):
@@ -218,6 +227,9 @@ class Menu(db.Model):
 
         return menu_item
 
+    def __hash__(self):
+        return hash(self.id)
+
 
 class MenuItem(db.Model):
     __tablename__ = 'MenuItem'
@@ -241,6 +253,9 @@ class MenuItem(db.Model):
 
     def get_translation(self, language: str, translator: 'Callable[[str, str, str], str]') -> 'Translation':
         return self.translatable.get_translation(language, translator)
+
+    def __hash__(self):
+        return hash(self.id)
 
 
 class Subscription(db.Model):
@@ -313,9 +328,13 @@ class Subscription(db.Model):
     def set_active(self, active: bool):
         self.active = active
 
+    # FIXME
     @staticmethod
     def find_by_facebook_id(facebook_id: str) -> 'Optional[Subscription]':
         return Subscription.query.filter_by(facebook_id=facebook_id).first()
+
+    def __hash__(self):
+        return hash(self.id)
 
 
 def recreate_db():
