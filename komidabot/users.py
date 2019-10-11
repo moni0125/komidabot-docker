@@ -2,6 +2,8 @@ from collections import namedtuple
 import functools
 from typing import Dict
 
+from flask import current_app as app
+
 from komidabot.messages import MessageHandler, Message
 
 UserId = namedtuple('UserId', ['id', 'provider'])
@@ -27,7 +29,8 @@ class User:  # TODO: This probably needs more methods
         raise NotImplementedError()
 
     def is_admin(self):
-        raise NotImplementedError()
+        user_id = self.id
+        return (user_id.provider, user_id.id) in app.config.get('ADMIN_IDS', [])
 
     @property
     def manager(self) -> UserManager:
