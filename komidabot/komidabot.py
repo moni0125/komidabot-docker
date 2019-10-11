@@ -129,12 +129,13 @@ class Komidabot(Bot):
 
                 for campus, languages in subscriptions.items():
                     for language, sub_users in languages.items():
-                        menu = komidabot.menu.prepare_menu_text(Campus.get_by_id(campus), date, language)
+                        menu = komidabot.menu.prepare_menu_text(campus, date, language)
                         if menu is None:
                             continue
 
                         for user in sub_users:
-                            print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id))
+                            print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
+                                  flush=True)
                             # user.send_message(messsages.TextMessage(trigger, menu))
 
     # noinspection PyMethodMayBeStatic
