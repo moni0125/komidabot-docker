@@ -73,14 +73,14 @@ def create_app(script_info: ScriptInfo = None):
             # app.scheduler.every().day.at('10:00').do(partial(Komidabot.trigger_received, app.bot,
             #                                                  SubscriptionTrigger.INSTANCE))
             # FIXME: Temporary
-            app.scheduler.every().hour.do(partial(Komidabot.trigger_received, app.bot, SubscriptionTrigger.INSTANCE))
+            app.scheduler.every().hour.at(':17').do(partial(Komidabot.trigger_received, app.bot, SubscriptionTrigger()))
 
-            def schedule_executor(scheduler):
-                while True:
+            def schedule_executor(task_executor, scheduler):
+                while not task_executor._shutdown:
                     scheduler.run_pending()
-                    time.sleep(60)
+                    time.sleep(5)
 
-            app.task_executor.submit(schedule_executor, app.scheduler)
+            app.task_executor.submit(schedule_executor, app.task_executor, app.scheduler)
 
         # Ensure cleanup of resources
         atexit.register(ThreadPoolExecutor.shutdown, app.task_executor)

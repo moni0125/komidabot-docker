@@ -15,10 +15,7 @@ class NLPAttribute:
 
 
 class SubscriptionTrigger(Trigger):
-    INSTANCE = None  # type: SubscriptionTrigger
-
-
-SubscriptionTrigger.INSTANCE = SubscriptionTrigger()
+    pass
 
 
 class TextTrigger(Trigger):
