@@ -9,7 +9,7 @@ import komidabot.facebook.nlp_dates as nlp_dates
 from komidabot.conversation_manager import ConversationManager as LegacyConversationManager
 import komidabot.menu
 from komidabot.menu_scraper import FrameFoodType, MenuScraper, ParseResult, parse_price
-import komidabot.messages as messsages
+import komidabot.messages as messages
 import komidabot.triggers as triggers
 import komidabot.users as users
 
@@ -115,15 +115,15 @@ class Komidabot(Bot):
                         recreate_db()
                         create_standard_values()
                         import_dump(app.config['DUMP_FILE'])
-                        sender.send_message(messsages.TextMessage(trigger, 'Setup done'))
+                        sender.send_message(messages.TextMessage(trigger, 'Setup done'))
                         return
                     elif text == 'update':
-                        sender.send_message(messsages.TextMessage(trigger, 'Updating menus...'))
+                        sender.send_message(messages.TextMessage(trigger, 'Updating menus...'))
                         self.update_menus(None)
-                        sender.send_message(messsages.TextMessage(trigger, 'Done updating menus...'))
+                        sender.send_message(messages.TextMessage(trigger, 'Done updating menus...'))
                         return
                     elif text == 'psid':  # TODO: Deprecated?
-                        sender.send_message(messsages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
+                        sender.send_message(messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
                         return
 
                 pass  # TODO: Handle trigger
@@ -160,7 +160,7 @@ class Komidabot(Bot):
                             print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
                                   flush=True)
                             if user.is_admin():  # Only send to admins for now
-                                user.send_message(messsages.TextMessage(trigger, menu))
+                                user.send_message(messages.TextMessage(trigger, menu))
 
     # noinspection PyMethodMayBeStatic
     def update_menus(self, initiator: 'Optional[MessageSender]'):
