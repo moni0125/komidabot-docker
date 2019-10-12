@@ -137,6 +137,9 @@ class Komidabot(Bot):
 
                 for user in subscribed_users:
                     campus = user.get_campus_for_day(date)
+                    if campus is None:
+                        continue
+
                     language = user.get_locale()
 
                     if campus not in subscriptions:
