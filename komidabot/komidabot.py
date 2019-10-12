@@ -1,5 +1,10 @@
-import datetime, threading
+import atexit, datetime, threading
 from typing import Dict, List, Optional
+
+from apscheduler.executors.pool import ThreadPoolExecutor
+from apscheduler.jobstores.memory import MemoryJobStore
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
 
 from flask import current_app as app
 
@@ -20,8 +25,25 @@ from extensions import db
 
 
 class Komidabot(Bot):
-    def __init__(self):
+    def __init__(self, the_app):
         self.lock = threading.Lock()
+
+        self.scheduler = BackgroundScheduler(
+            jobstores={'default': MemoryJobStore()},
+            executors={'default': ThreadPoolExecutor(max_workers=1)}
+        )
+
+        self.scheduler.start()
+        atexit.register(BackgroundScheduler.shutdown, self.scheduler)  # Ensure cleanup of resources
+
+        # Scheduled job should work with DST
+        @self.scheduler.scheduled_job(CronTrigger(day_of_week='mon-fri', hour=10, minute=0, second=0),
+                                      args=(the_app.app_context, self),
+                                      id='daily_menu', name='Daily menu notifications')
+        def trigger_sender(context, bot: 'Komidabot'):
+            with context():
+                bot.trigger_received(triggers.SubscriptionTrigger())
+
         # TODO: Deprecated
         self.legacy_conversation_manager = LegacyConversationManager()
 
@@ -159,7 +181,7 @@ class Komidabot(Bot):
                         for user in sub_users:
                             print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
                                   flush=True)
-                            if user.is_admin():  # Only send to admins for now
+                            if user.is_admin():  # FIXME: Only send to admins for now
                                 user.send_message(messages.TextMessage(trigger, menu))
 
     # noinspection PyMethodMayBeStatic

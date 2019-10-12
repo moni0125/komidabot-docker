@@ -1,11 +1,6 @@
 import atexit, logging, os
 from concurrent.futures import ThreadPoolExecutor as PyThreadPoolExecutor
 
-from apscheduler.executors.pool import ThreadPoolExecutor
-from apscheduler.jobstores.memory import MemoryJobStore
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.triggers.cron import CronTrigger
-
 from flask.cli import ScriptInfo
 
 from flask import Flask
@@ -14,7 +9,6 @@ from komidabot.facebook.api_interface import ApiInterface
 from komidabot.facebook.messenger import Messenger
 from komidabot.facebook.users import UserManager as FacebookUserManager
 from komidabot.conversation_manager import ConversationManager
-from komidabot.triggers import SubscriptionTrigger
 from komidabot.komidabot import Komidabot
 from komidabot.users import UnifiedUserManager
 
@@ -67,28 +61,11 @@ def create_app(script_info: ScriptInfo = None):
         app.user_manager.register_manager('facebook', app.bot_interfaces['facebook']['users'])
 
         app.messenger = app.bot_interfaces['facebook']['messenger']
-        app.komidabot = app.bot = Komidabot()  # TODO: Deprecate app.komidabot?
+        app.komidabot = app.bot = Komidabot(app)  # TODO: Deprecate app.komidabot?
         app.conversations = ConversationManager()
 
+        # TODO: This could probably also be moved to the Komidabot class
         app.task_executor = PyThreadPoolExecutor(max_workers=5)
         atexit.register(PyThreadPoolExecutor.shutdown, app.task_executor)  # Ensure cleanup of resources
-
-        if app.debug:
-            # TODO: This is not the right place for this
-            scheduler = app.scheduler = BackgroundScheduler(
-                jobstores={'default': MemoryJobStore()},
-                executors={'default': ThreadPoolExecutor(max_workers=1)}
-            )
-
-            scheduler.start()
-            atexit.register(BackgroundScheduler.shutdown, scheduler)  # Ensure cleanup of resources
-
-            # Scheduled job should work with DST
-            @app.scheduler.scheduled_job(CronTrigger(day_of_week='mon-fri', hour=10, minute=0, second=0),
-                                         args=(app.app_context, app.bot),
-                                         id='daily_menu', name='Daily menu notifications')
-            def trigger_sender(context, bot: Komidabot):
-                with context():
-                    bot.trigger_received(SubscriptionTrigger())
 
     return app
