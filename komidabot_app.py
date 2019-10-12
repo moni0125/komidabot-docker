@@ -1,6 +1,10 @@
-import atexit, schedule, logging, os, time
-from concurrent.futures import ThreadPoolExecutor
-from functools import partial
+import atexit, logging, os
+from concurrent.futures import ThreadPoolExecutor as PyThreadPoolExecutor
+
+from apscheduler.executors.pool import ThreadPoolExecutor
+from apscheduler.jobstores.memory import MemoryJobStore
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
 
 from flask.cli import ScriptInfo
 
@@ -65,26 +69,25 @@ def create_app(script_info: ScriptInfo = None):
         app.messenger = app.bot_interfaces['facebook']['messenger']
         app.komidabot = app.bot = Komidabot()  # TODO: Deprecate app.komidabot?
         app.conversations = ConversationManager()
-        app.task_executor = ThreadPoolExecutor(max_workers=5)
+
+        app.task_executor = PyThreadPoolExecutor(max_workers=5)
+        atexit.register(ThreadPoolExecutor.shutdown, app.task_executor)  # Ensure cleanup of resources
 
         if app.debug:
             # TODO: This is not the right place for this
-            app.scheduler = schedule.Scheduler()
+            app.scheduler = BackgroundScheduler(
+                jobstores={'default': MemoryJobStore()},
+                executors={'default': ThreadPoolExecutor(max_workers=1)}
+            )
 
+            app.scheduler.start()
+            atexit.register(BackgroundScheduler.shutdown, app.scheduler)
+
+            # Scheduled job should work with DST
+            @app.scheduler.scheduled_job(CronTrigger(day_of_week='mon-fri', hour=10, minute=0, second=0),
+                                         id='daily_menu', name='Daily menu notifications')
             def trigger_sender(context, bot: Komidabot):
                 with context():
                     bot.trigger_received(SubscriptionTrigger())
-
-            app.scheduler.every().day.at('10:00').do(trigger_sender, app.app_context, app.bot)
-
-            def schedule_executor(task_executor, scheduler):
-                while not task_executor._shutdown:
-                    scheduler.run_pending()
-                    time.sleep(1 if app.debug else 10)
-
-            app.task_executor.submit(schedule_executor, app.task_executor, app.scheduler)
-
-        # Ensure cleanup of resources
-        atexit.register(ThreadPoolExecutor.shutdown, app.task_executor)
 
     return app
