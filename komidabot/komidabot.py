@@ -36,13 +36,22 @@ class Komidabot(Bot):
         self.scheduler.start()
         atexit.register(BackgroundScheduler.shutdown, self.scheduler)  # Ensure cleanup of resources
 
-        # Scheduled job should work with DST
+        # Scheduled jobs should work with DST
+
         @self.scheduler.scheduled_job(CronTrigger(day_of_week='mon-fri', hour=10, minute=0, second=0),
                                       args=(the_app.app_context, self),
                                       id='daily_menu', name='Daily menu notifications')
-        def trigger_sender(context, bot: 'Komidabot'):
+        def daily_menu(context, bot: 'Komidabot'):
             with context():
                 bot.trigger_received(triggers.SubscriptionTrigger())
+
+        # FIXME: This is disabled for now
+        # @self.scheduler.scheduled_job(CronTrigger(hour=1, minute=0, second=0),  # Run every day to find changes
+        #                               args=(the_app.app_context, self),
+        #                               id='menu_update', name='Daily late-night update of the menus')
+        # def menu_update(context, bot: 'Komidabot'):
+        #     with context():
+        #         bot.update_menus(None)
 
         # TODO: Deprecated
         self.legacy_conversation_manager = LegacyConversationManager()
