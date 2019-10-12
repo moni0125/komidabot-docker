@@ -71,20 +71,21 @@ def create_app(script_info: ScriptInfo = None):
         app.conversations = ConversationManager()
 
         app.task_executor = PyThreadPoolExecutor(max_workers=5)
-        atexit.register(ThreadPoolExecutor.shutdown, app.task_executor)  # Ensure cleanup of resources
+        atexit.register(PyThreadPoolExecutor.shutdown, app.task_executor)  # Ensure cleanup of resources
 
         if app.debug:
             # TODO: This is not the right place for this
-            app.scheduler = BackgroundScheduler(
+            scheduler = app.scheduler = BackgroundScheduler(
                 jobstores={'default': MemoryJobStore()},
                 executors={'default': ThreadPoolExecutor(max_workers=1)}
             )
 
-            app.scheduler.start()
-            atexit.register(BackgroundScheduler.shutdown, app.scheduler)
+            scheduler.start()
+            atexit.register(BackgroundScheduler.shutdown, scheduler)  # Ensure cleanup of resources
 
             # Scheduled job should work with DST
             @app.scheduler.scheduled_job(CronTrigger(day_of_week='mon-fri', hour=10, minute=0, second=0),
+                                         args=(app.app_context, app.bot),
                                          id='daily_menu', name='Daily menu notifications')
             def trigger_sender(context, bot: Komidabot):
                 with context():
