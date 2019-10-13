@@ -19,7 +19,7 @@ class FrameFoodType(enum.Enum):
     PASTA = 5
 
 
-class Day(enum.Enum):
+class FrameDay(enum.Enum):
     WEEKLY = -1
     MONDAY = 1
     TUESDAY = 2
@@ -70,29 +70,29 @@ BOX_PASTA = [
 ]
 
 FRAMES = [
-    Frame(Day.MONDAY, Box(0.076, 0.177, 0.406, 0.197), (
+    Frame(FrameDay.MONDAY, Box(0.076, 0.177, 0.406, 0.197), (
         tuple(BOX_SOUP + BOX_VEGAN + BOX_MEAT)
     )),
-    Frame(Day.TUESDAY, Box(0.515, 0.177, 0.406, 0.197), (
+    Frame(FrameDay.TUESDAY, Box(0.515, 0.177, 0.406, 0.197), (
         tuple(BOX_SOUP_ALT + BOX_VEGAN_ALT + BOX_MEAT_ALT)
     )),
-    Frame(Day.WEDNESDAY, Box(0.076, 0.429, 0.406, 0.197), (
+    Frame(FrameDay.WEDNESDAY, Box(0.076, 0.429, 0.406, 0.197), (
         tuple(BOX_SOUP + BOX_VEGAN + BOX_MEAT)
     )),
-    Frame(Day.THURSDAY, Box(0.515, 0.429, 0.406, 0.197), (
+    Frame(FrameDay.THURSDAY, Box(0.515, 0.429, 0.406, 0.197), (
         tuple(BOX_SOUP_ALT + BOX_VEGAN_ALT + BOX_MEAT_ALT)
     )),
-    Frame(Day.FRIDAY, Box(0.076, 0.683, 0.406, 0.197), (
+    Frame(FrameDay.FRIDAY, Box(0.076, 0.683, 0.406, 0.197), (
         tuple(BOX_SOUP + BOX_VEGAN + BOX_MEAT)
     )),
-    Frame(Day.WEEKLY, Box(0.515, 0.683, 0.406, 0.197), (
+    Frame(FrameDay.WEEKLY, Box(0.515, 0.683, 0.406, 0.197), (
         tuple(BOX_GRILL + BOX_PASTA)
     ))
 ]
 
 
 class ParsedDocument:
-    def __init__(self, start_date: datetime.date, end_date: datetime.date, frames: Dict[Day, Image]):
+    def __init__(self, start_date: datetime.date, end_date: datetime.date, frames: Dict[FrameDay, Image]):
         self.start_date = start_date
         self.end_date = end_date
         self.parse_results = []  # type:  List[ParseResult]
@@ -115,7 +115,7 @@ class MenuScraper:
         self.image_height = 0
         self.parse_result = None
         self.full_frame = None  # type: Optional[Image]
-        self.frames = dict()  # type: Dict[Day, Image]
+        self.frames = dict()  # type: Dict[FrameDay, Image]
 
     def find_pdf_location(self):
         if self.pdf_location is not None:
@@ -183,7 +183,7 @@ class MenuScraper:
         print('Start date: {}'.format(start_date))
         print('End date: {}'.format(end_date))
 
-        data = dict()  # type: Dict[Tuple[Day, FrameFoodType], Tuple[str, str]]
+        data = dict()  # type: Dict[Tuple[FrameDay, FrameFoodType], Tuple[str, str]]
 
         for day, box, items in FRAMES:
             for food_type, is_price, sub_box in items:

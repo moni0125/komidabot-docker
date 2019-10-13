@@ -24,7 +24,6 @@ food_type_icons = {
 
 
 class Day(enum.Enum):
-    ANY_DAY = -1
     MONDAY = 1
     TUESDAY = 2
     WEDNESDAY = 3
@@ -36,7 +35,7 @@ class Day(enum.Enum):
 
 
 class Campus(db.Model):
-    __tablename__ = 'Campus'
+    __tablename__ = 'campus'
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     name = db.Column(db.String(128), nullable=False)
@@ -45,7 +44,7 @@ class Campus(db.Model):
     active = db.Column(db.Boolean(), default=True, nullable=False)
     page_url = db.Column(db.Text(), default='', nullable=False)
 
-    menus = db.relationship('Menu', backref='campus', passive_deletes=True)
+    menus = db.relationship('menu', backref='campus', passive_deletes=True)
 
     def __init__(self, name: str, short_name: str):
         self.name = name
@@ -102,14 +101,14 @@ class Campus(db.Model):
 
 
 class Translatable(db.Model):
-    __tablename__ = 'Translatable'
+    __tablename__ = 'translatable'
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     original_language = db.Column(db.String(5), nullable=False)
     original_text = db.Column(db.String(256), nullable=False)
 
-    translations = db.relationship('Translation', backref='translatable', passive_deletes=True)
-    menu_items = db.relationship('MenuItem', backref='translatable')
+    translations = db.relationship('translation', backref='translatable', passive_deletes=True)
+    menu_items = db.relationship('menu_item', backref='translatable')
 
     def __init__(self, text: str, language: str):
         self.original_language = language
@@ -168,9 +167,9 @@ class Translatable(db.Model):
 
 
 class Translation(db.Model):
-    __tablename__ = 'Translation'
+    __tablename__ = 'translation'
 
-    translatable_id = db.Column(db.Integer(), db.ForeignKey('Translatable.id', onupdate='CASCADE', ondelete='CASCADE'),
+    translatable_id = db.Column(db.Integer(), db.ForeignKey('translatable.id', onupdate='CASCADE', ondelete='CASCADE'),
                                 primary_key=True)
     language = db.Column(db.String(5), primary_key=True)
     translation = db.Column(db.String(256), nullable=False)
@@ -185,13 +184,13 @@ class Translation(db.Model):
 
 
 class Menu(db.Model):
-    __tablename__ = 'Menu'
+    __tablename__ = 'menu'
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    campus_id = db.Column(db.Integer(), db.ForeignKey('Campus.id'), nullable=False)
+    campus_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
     menu_day = db.Column(db.Date(), nullable=False)
 
-    menu_items = db.relationship('MenuItem', backref='menu', passive_deletes=True)
+    menu_items = db.relationship('menu_item', backref='menu', passive_deletes=True)
 
     def __init__(self, campus: Campus, day: datetime.date):
         self.campus = campus
@@ -232,12 +231,12 @@ class Menu(db.Model):
 
 
 class MenuItem(db.Model):
-    __tablename__ = 'MenuItem'
+    __tablename__ = 'menu_item'
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    menu_id = db.Column(db.Integer(), db.ForeignKey('Menu.id', onupdate='CASCADE', ondelete='CASCADE'),
+    menu_id = db.Column(db.Integer(), db.ForeignKey('menu.id', onupdate='CASCADE', ondelete='CASCADE'),
                         nullable=False)
-    translatable_id = db.Column(db.Integer(), db.ForeignKey('Translatable.id', onupdate='CASCADE', ondelete='RESTRICT'),
+    translatable_id = db.Column(db.Integer(), db.ForeignKey('translatable.id', onupdate='CASCADE', ondelete='RESTRICT'),
                                 nullable=False)
     food_type = db.Column(db.Enum(FoodType), nullable=False)
     price_students = db.Column(db.String(8), nullable=False)
@@ -259,7 +258,7 @@ class MenuItem(db.Model):
 
 
 class Subscription(db.Model):
-    __tablename__ = 'Subscription'
+    __tablename__ = 'subscription'
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     # TODO: Subscriptions should probably reference to an internal user id
@@ -275,17 +274,17 @@ class Subscription(db.Model):
     )
 
     language = db.Column(db.String(5), nullable=False)
-    campus_mon_id = db.Column(db.Integer(), db.ForeignKey('Campus.id'), nullable=False)
-    campus_tue_id = db.Column(db.Integer(), db.ForeignKey('Campus.id'), nullable=False)
-    campus_wed_id = db.Column(db.Integer(), db.ForeignKey('Campus.id'), nullable=False)
-    campus_thu_id = db.Column(db.Integer(), db.ForeignKey('Campus.id'), nullable=False)
-    campus_fri_id = db.Column(db.Integer(), db.ForeignKey('Campus.id'), nullable=False)
+    campus_mon_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
+    campus_tue_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
+    campus_wed_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
+    campus_thu_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
+    campus_fri_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
 
-    campus_mon = db.relationship('Campus', foreign_keys=[campus_mon_id])
-    campus_tue = db.relationship('Campus', foreign_keys=[campus_tue_id])
-    campus_wed = db.relationship('Campus', foreign_keys=[campus_wed_id])
-    campus_thu = db.relationship('Campus', foreign_keys=[campus_thu_id])
-    campus_fri = db.relationship('Campus', foreign_keys=[campus_fri_id])
+    campus_mon = db.relationship('campus', foreign_keys=[campus_mon_id])
+    campus_tue = db.relationship('campus', foreign_keys=[campus_tue_id])
+    campus_wed = db.relationship('campus', foreign_keys=[campus_wed_id])
+    campus_thu = db.relationship('campus', foreign_keys=[campus_thu_id])
+    campus_fri = db.relationship('campus', foreign_keys=[campus_fri_id])
 
     def __init__(self, facebook_id: str, language: str, campus: Optional[Campus]):
         self.facebook_id = facebook_id

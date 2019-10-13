@@ -13,7 +13,7 @@ from komidabot.facebook.messenger import MessageSender
 import komidabot.facebook.nlp_dates as nlp_dates
 from komidabot.conversation_manager import ConversationManager as LegacyConversationManager
 import komidabot.menu
-from komidabot.menu_scraper import FrameFoodType, MenuScraper, ParseResult, parse_price
+from komidabot.menu_scraper import FrameDay, FrameFoodType, MenuScraper, ParseResult, parse_price
 import komidabot.messages as messages
 import komidabot.triggers as triggers
 import komidabot.users as users
@@ -221,7 +221,7 @@ class Komidabot(Bot):
 
                 day_menu: List[ParseResult] = [result for result in parse_result.parse_results
                                                if result.day.value == date.isoweekday()
-                                               or result.food_type == FrameFoodType.GRILL]
+                                               or result.day == FrameDay.WEEKLY]
                 # if result.day.value == date.isoweekday() or result.day.value == -1]
                 # TODO: Fix pasta!
                 # TODO: Fix grill stadscampus -> meerdere grills op een week
