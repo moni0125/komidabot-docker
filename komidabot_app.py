@@ -4,6 +4,7 @@ from concurrent.futures import ThreadPoolExecutor as PyThreadPoolExecutor
 from flask.cli import ScriptInfo
 
 from flask import Flask
+from flask_migrate import Migrate
 
 from komidabot.facebook.api_interface import ApiInterface
 from komidabot.facebook.messenger import Messenger
@@ -12,7 +13,7 @@ from komidabot.conversation_manager import ConversationManager
 from komidabot.komidabot import Komidabot
 from komidabot.users import UnifiedUserManager
 
-from extensions import db
+from extensions import db, migrate
 
 
 def create_app(script_info: ScriptInfo = None):
@@ -30,6 +31,7 @@ def create_app(script_info: ScriptInfo = None):
 
     # set up extensions
     db.init_app(app)
+    migrate.init_app(app)
 
     # register blueprints
     from komidabot.blueprint import blueprint
