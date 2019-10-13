@@ -1,4 +1,4 @@
-"""empty message
+"""Make tables be lowercase to please Postgres
 
 Revision ID: 85b659320f83
 Revises: fe4aca6853a2

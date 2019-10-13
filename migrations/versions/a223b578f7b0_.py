@@ -1,4 +1,4 @@
-"""empty message
+"""Initial imported database structure
 
 Revision ID: a223b578f7b0
 Revises: 
