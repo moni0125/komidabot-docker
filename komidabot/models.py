@@ -286,8 +286,9 @@ class Subscription(db.Model):
     campus_thu = db.relationship('Campus', foreign_keys=[campus_thu_id])
     campus_fri = db.relationship('Campus', foreign_keys=[campus_fri_id])
 
-    def __init__(self, facebook_id: str, language: str, campus: Optional[Campus]):
-        self.facebook_id = facebook_id
+    def __init__(self, provider: str, internal_id: str, language: str, campus: Optional[Campus]):
+        self.provider = provider
+        self.internal_id = internal_id
         self.language = language
         if campus is not None:
             self.campus_mon = campus
@@ -327,15 +328,21 @@ class Subscription(db.Model):
     def set_active(self, active: bool):
         self.active = active
 
-    # FIXME: Use provider
     @staticmethod
     def find_active(provider=None) -> 'List[Subscription]':
-        return Subscription.query.filter_by(active=True).all()
+        if provider:
+            return Subscription.query.filter_by(provider=provider, active=True).all()
+        else:
+            return Subscription.query.filter_by(active=True).all()
 
-    # FIXME
+    # FIXME: Deprecated
     @staticmethod
     def find_by_facebook_id(facebook_id: str) -> 'Optional[Subscription]':
-        return Subscription.query.filter_by(facebook_id=facebook_id).first()
+        return Subscription.query.filter_by(provider='facebook', internal_id=facebook_id).first()
+
+    @staticmethod
+    def find_by_id(provider: str, internal_id: str) -> 'Optional[Subscription]':
+        return Subscription.query.filter_by(provider=provider, internal_id=internal_id).first()
 
     def __hash__(self):
         return hash(self.id)
@@ -378,7 +385,7 @@ def import_dump(dump_file):
             if split[7] == '0':
                 split[7] = ''  # Query locale
 
-            sub = Subscription(split[0], split[7], None)
+            sub = Subscription('facebook', split[0], split[7], None)
             sub.set_active(split[1])
             sub.set_campus(Day.MONDAY, get_campus(split[2]))
             sub.set_campus(Day.TUESDAY, get_campus(split[3]))
