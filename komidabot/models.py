@@ -44,7 +44,7 @@ class Campus(db.Model):
     active = db.Column(db.Boolean(), default=True, nullable=False)
     page_url = db.Column(db.Text(), default='', nullable=False)
 
-    menus = db.relationship('menu', backref='campus', passive_deletes=True)
+    menus = db.relationship('Menu', backref='campus', passive_deletes=True)
 
     def __init__(self, name: str, short_name: str):
         self.name = name
@@ -107,8 +107,8 @@ class Translatable(db.Model):
     original_language = db.Column(db.String(5), nullable=False)
     original_text = db.Column(db.String(256), nullable=False)
 
-    translations = db.relationship('translation', backref='translatable', passive_deletes=True)
-    menu_items = db.relationship('menu_item', backref='translatable')
+    translations = db.relationship('Translation', backref='translatable', passive_deletes=True)
+    menu_items = db.relationship('MenuItem', backref='translatable')
 
     def __init__(self, text: str, language: str):
         self.original_language = language
@@ -190,7 +190,7 @@ class Menu(db.Model):
     campus_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
     menu_day = db.Column(db.Date(), nullable=False)
 
-    menu_items = db.relationship('menu_item', backref='menu', passive_deletes=True)
+    menu_items = db.relationship('MenuItem', backref='menu', passive_deletes=True)
 
     def __init__(self, campus: Campus, day: datetime.date):
         self.campus = campus
@@ -280,11 +280,11 @@ class Subscription(db.Model):
     campus_thu_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
     campus_fri_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
 
-    campus_mon = db.relationship('campus', foreign_keys=[campus_mon_id])
-    campus_tue = db.relationship('campus', foreign_keys=[campus_tue_id])
-    campus_wed = db.relationship('campus', foreign_keys=[campus_wed_id])
-    campus_thu = db.relationship('campus', foreign_keys=[campus_thu_id])
-    campus_fri = db.relationship('campus', foreign_keys=[campus_fri_id])
+    campus_mon = db.relationship('Campus', foreign_keys=[campus_mon_id])
+    campus_tue = db.relationship('Campus', foreign_keys=[campus_tue_id])
+    campus_wed = db.relationship('Campus', foreign_keys=[campus_wed_id])
+    campus_thu = db.relationship('Campus', foreign_keys=[campus_thu_id])
+    campus_fri = db.relationship('Campus', foreign_keys=[campus_fri_id])
 
     def __init__(self, facebook_id: str, language: str, campus: Optional[Campus]):
         self.facebook_id = facebook_id
