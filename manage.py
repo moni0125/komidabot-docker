@@ -1,5 +1,6 @@
 import signal, os
 
+from flask import current_app
 from flask.cli import FlaskGroup
 
 from komidabot_app import create_app
@@ -17,6 +18,7 @@ def recreate_db():
 @cli.command('seed_db')
 def seed_db():
     models.create_standard_values()
+    models.import_dump(current_app.config['DUMP_FILE'])
 
 
 def handler(signum: int, _):

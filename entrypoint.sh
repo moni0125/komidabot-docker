@@ -23,4 +23,11 @@ done
 
 echo "PostgreSQL started"
 
+trap 'kill -TERM $PID' TERM INT
+FLASK_APP=komidabot_app.py flask db upgrade
+PID=$!
+wait $PID
+trap - TERM INT
+wait $PID
+
 exec python3 manage.py run -h 0.0.0.0
