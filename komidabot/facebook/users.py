@@ -1,10 +1,7 @@
-import datetime
-from typing import List
-
 from komidabot.facebook.messages import MessageHandler as FBMessageHandler
 import komidabot.users as users
 
-from komidabot.models import Campus, Day, Subscription
+import komidabot.models as models
 
 
 class UserManager(users.UserManager):
@@ -23,7 +20,7 @@ class UserManager(users.UserManager):
 
     def get_subscribed_users(self):
         # FIXME
-        return [User(self, sub.facebook_id) for sub in Subscription.find_active(provider=UserManager.MANAGER_ID)]
+        return [User(self, sub.facebook_id) for sub in models.User.find_active(provider=UserManager.MANAGER_ID)]
 
     def get_message_handler(self, user: users.User):
         if not isinstance(user, User):
@@ -38,17 +35,8 @@ class User(users.User):
         self._id = id_str
 
     def get_locale(self):
-        # FIXME
-        subscription = Subscription.find_by_facebook_id(self._id)
-
-        return subscription.language
-
-    def get_campus_for_day(self, date: datetime.date) -> Campus:
-        day = Day(date.isoweekday())
-        # FIXME
-        subscription = Subscription.find_by_facebook_id(self._id)
-
-        return subscription.get_campus(day)
+        # FIXME: Does more need to be done?
+        return super().get_locale()
 
     @property
     def id(self) -> users.UserId:

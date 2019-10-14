@@ -18,7 +18,7 @@ import komidabot.messages as messages
 import komidabot.triggers as triggers
 import komidabot.users as users
 
-from komidabot.models import Campus, Day, FoodType, Menu, Subscription, Translatable
+from komidabot.models import Campus, Day, FoodType, Menu, User, Translatable
 from komidabot.models import create_standard_values, import_dump, recreate_db
 
 from extensions import db
@@ -110,12 +110,12 @@ class Komidabot(Bot):
                 if message.text.lower().count(campus.short_name) > 0:
                     requested_campuses.append(campus)
 
-            subscription = Subscription.find_by_facebook_id(message.sender.get_id())
+            user = User.find_by_facebook_id(message.sender.get_id())
 
             for date in dates:
                 if len(requested_campuses) == 0:
-                    if subscription is not None:
-                        campus = subscription.get_campus(Day(date.isoweekday()))
+                    if user is not None:
+                        campus = user.get_campus(Day(date.isoweekday()))
                     if campus is None:
                         campus = Campus.get_by_short_name('cmi')
                 elif len(requested_campuses) > 1:

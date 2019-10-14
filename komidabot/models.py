@@ -45,6 +45,7 @@ class Campus(db.Model):
     page_url = db.Column(db.Text(), default='', nullable=False)
 
     menus = db.relationship('Menu', backref='campus', passive_deletes=True)
+    subscriptions = db.relationship('UserSubscription', backref='campus', passive_deletes=True)
 
     def __init__(self, name: str, short_name: str):
         self.name = name
@@ -257,34 +258,38 @@ class MenuItem(db.Model):
         return hash(self.id)
 
 
-class Subscription(db.Model):
-    __tablename__ = 'subscription'
+class UserSubscription(db.Model):
+    __tablename__ = 'user_subscription'
+
+    user_id = db.Column(db.Integer(), db.ForeignKey('app_user.id', onupdate='CASCADE', ondelete='CASCADE'),
+                        primary_key=True)
+    day = db.Column(db.Enum(Day), primary_key=True)
+    campus_id = db.Column(db.Integer(), db.ForeignKey('campus.id', onupdate='CASCADE', ondelete='CASCADE'),
+                          nullable=False)
+    active = db.Column(db.Boolean(), default=True, nullable=False)  # FIXME: Deprecated
+
+
+class User(db.Model):
+    __tablename__ = 'app_user'
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    # TODO: Subscriptions should probably reference to an internal user id
-    # TODO: (could potentially allow for linking users to multiple origins, but that brings a whole lot of issues)
-    # TODO: OR the facebook ID data is generified (though collisions could then happen?)
     provider = db.Column(db.String(32), nullable=False)  # String ID of the provider
     internal_id = db.Column(db.String(32), nullable=False)  # ID that is specific to the provider
     # facebook_id = db.Column(db.String(32), nullable=False, unique=True)
-    active = db.Column(db.Boolean(), default=True, nullable=False)
+    language = db.Column(db.String(5), nullable=False)
+
+    # active = db.Column(db.Boolean(), default=True, nullable=False)
+    # campus_mon_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
+    # campus_tue_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
+    # campus_wed_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
+    # campus_thu_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
+    # campus_fri_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
 
     __table_args__ = (
         db.UniqueConstraint('provider', 'internal_id'),
     )
 
-    language = db.Column(db.String(5), nullable=False)
-    campus_mon_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
-    campus_tue_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
-    campus_wed_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
-    campus_thu_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
-    campus_fri_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
-
-    campus_mon = db.relationship('Campus', foreign_keys=[campus_mon_id])
-    campus_tue = db.relationship('Campus', foreign_keys=[campus_tue_id])
-    campus_wed = db.relationship('Campus', foreign_keys=[campus_wed_id])
-    campus_thu = db.relationship('Campus', foreign_keys=[campus_thu_id])
-    campus_fri = db.relationship('Campus', foreign_keys=[campus_fri_id])
+    subscriptions = db.relationship('UserSubscription', backref='user', passive_deletes=True)
 
     def __init__(self, provider: str, internal_id: str, language: str, campus: Optional[Campus]):
         self.provider = provider
@@ -329,20 +334,20 @@ class Subscription(db.Model):
         self.active = active
 
     @staticmethod
-    def find_active(provider=None) -> 'List[Subscription]':
+    def find_active(provider=None) -> 'List[User]':
         if provider:
-            return Subscription.query.filter_by(provider=provider, active=True).all()
+            return User.query.filter_by(provider=provider, active=True).all()
         else:
-            return Subscription.query.filter_by(active=True).all()
+            return User.query.filter_by(active=True).all()
 
     # FIXME: Deprecated
     @staticmethod
-    def find_by_facebook_id(facebook_id: str) -> 'Optional[Subscription]':
-        return Subscription.query.filter_by(provider='facebook', internal_id=facebook_id).first()
+    def find_by_facebook_id(facebook_id: str) -> 'Optional[User]':
+        return User.query.filter_by(provider='facebook', internal_id=facebook_id).first()
 
     @staticmethod
-    def find_by_id(provider: str, internal_id: str) -> 'Optional[Subscription]':
-        return Subscription.query.filter_by(provider=provider, internal_id=internal_id).first()
+    def find_by_id(provider: str, internal_id: str) -> 'Optional[User]':
+        return User.query.filter_by(provider=provider, internal_id=internal_id).first()
 
     def __hash__(self):
         return hash(self.id)
@@ -385,7 +390,7 @@ def import_dump(dump_file):
             if split[7] == '0':
                 split[7] = ''  # Query locale
 
-            sub = Subscription('facebook', split[0], split[7], None)
+            sub = User('facebook', split[0], split[7], None)
             sub.set_active(split[1])
             sub.set_campus(Day.MONDAY, get_campus(split[2]))
             sub.set_campus(Day.TUESDAY, get_campus(split[3]))
