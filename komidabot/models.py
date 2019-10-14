@@ -354,12 +354,13 @@ class AppUser(db.Model):
 
         return user
 
+    # FIXME: Check based on the subscription table
     @staticmethod
     def find_active(provider=None) -> 'List[AppUser]':
         if provider:
-            return AppUser.query.filter_by(provider=provider, active=True).all()
+            return AppUser.query.filter_by(provider=provider).all()
         else:
-            return AppUser.query.filter_by(active=True).all()
+            return AppUser.query.all()
 
     # FIXME: Deprecated
     @staticmethod
