@@ -305,6 +305,7 @@ class AppUser(db.Model):
     )
 
     subscriptions = db.relationship('UserSubscription', backref='user', passive_deletes=True)
+    feature_participations = db.relationship('FeatureParticipation', backref='user', passive_deletes=True)
 
     def __init__(self, provider: str, internal_id: str, language: str):
         self.provider = provider
@@ -373,6 +374,91 @@ class AppUser(db.Model):
         return hash(self.id)
 
 
+class Feature(db.Model):
+    __tablename__ = 'feature'
+
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    string_id = db.Column(db.String(256), nullable=False, unique=True)
+    description = db.Column(db.Text())
+    globally_available = db.Column(db.Boolean(), default=False, nullable=False)
+
+    participations = db.relationship('FeatureParticipation', backref='feature', passive_deletes=True)
+
+    def __init__(self, string_id: str, description: str = None, globally_available=False):
+        self.string_id = string_id
+        self.description = description
+        self.globally_available = globally_available
+
+    @staticmethod
+    def find_by_id(string_id: str) -> 'Optional[Feature]':
+        return Feature.query.filter_by(string_id=string_id).first()
+
+    @staticmethod
+    def get_all() -> 'List[Feature]':
+        return Feature.query.all()
+
+    @staticmethod
+    def create(string_id: str, description: str = None, globally_available=False, commit=False) -> 'Optional[Feature]':
+        feature = Feature(string_id, description, globally_available)
+        db.session.add(feature)
+
+        if commit:
+            db.session.commit()
+
+        return feature
+
+    @staticmethod
+    def is_user_participating(user: AppUser, string_id: str) -> bool:
+        feature = Feature.find_by_id(string_id)
+
+        if feature.globally_available:
+            return True
+
+        return FeatureParticipation.get_for_user(user, feature) is not None
+
+    @staticmethod
+    def set_user_participating(user: AppUser, string_id: str, participating: bool, commit=True):
+        feature = Feature.find_by_id(string_id)
+        participation = FeatureParticipation.get_for_user(user, feature)
+
+        if participating:
+            if not participation:
+                FeatureParticipation.create(user, feature, commit=commit)
+        else:
+            if participation:
+                db.session.delete(participation)
+
+                if commit:
+                    db.session.commit()
+
+
+class FeatureParticipation(db.Model):
+    __tablename__ = 'feature_participation'
+
+    user_id = db.Column(db.Integer(), db.ForeignKey('app_user.id', onupdate='CASCADE', ondelete='CASCADE'),
+                        primary_key=True)
+    feature_id = db.Column(db.Integer(), db.ForeignKey('feature.id', onupdate='CASCADE', ondelete='CASCADE'),
+                           primary_key=True)
+
+    def __init__(self, user: AppUser, feature: Feature):
+        self.user = user
+        self.feature = feature
+
+    @staticmethod
+    def get_for_user(user: AppUser, feature: Feature) -> 'Optional[FeatureParticipation]':
+        return FeatureParticipation.query.filter_by(user_id=user.id, feature_id=feature.id).first()
+
+    @staticmethod
+    def create(user: AppUser, feature: Feature, commit=True) -> 'Optional[FeatureParticipation]':
+        participation = FeatureParticipation(user, feature)
+        db.session.add(participation)
+
+        if commit:
+            db.session.commit()
+
+        return participation
+
+
 def recreate_db():
     db.drop_all()
     db.create_all()
@@ -415,7 +501,7 @@ def import_dump(dump_file):
             user.set_campus(Day.TUESDAY, get_campus(split[3]), active=split[1], commit=False)
             user.set_campus(Day.WEDNESDAY, get_campus(split[4]), active=split[1], commit=False)
             user.set_campus(Day.THURSDAY, get_campus(split[5]), active=split[1], commit=False)
-            user.set_campus(Day.FRIDAY, get_campus(split[6]),   active=split[1], commit=False)
+            user.set_campus(Day.FRIDAY, get_campus(split[6]), active=split[1], commit=False)
 
             db.session.add(user)
 

@@ -167,6 +167,10 @@ class Komidabot(Bot):
                 date = datetime.datetime.now().date()
 
                 for user in subscribed_users:
+                    if not user.is_feature_active('menu_subscription'):
+                        print('User {} not eligible for subscription'.format(user.id), flush=True)
+                        continue
+
                     campus = user.get_campus_for_day(date)
                     if campus is None:
                         continue
@@ -190,8 +194,7 @@ class Komidabot(Bot):
                         for user in sub_users:
                             print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
                                   flush=True)
-                            if user.is_admin():  # FIXME: Only send to admins for now
-                                user.send_message(messages.TextMessage(trigger, menu))
+                            user.send_message(messages.TextMessage(trigger, menu))
 
     # noinspection PyMethodMayBeStatic
     def update_menus(self, initiator: 'Optional[MessageSender]'):

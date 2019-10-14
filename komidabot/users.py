@@ -44,6 +44,11 @@ class User:  # TODO: This probably needs more methods
         user_id = self.id
         return (user_id.provider, user_id.id) in app.config.get('ADMIN_IDS', [])
 
+    def is_feature_active(self, feature_id:str):
+        user_id = self.id
+        user = models.AppUser.find_by_id(user_id.provider, user_id.id)
+        return models.Feature.is_user_participating(user, feature_id)
+
     @property
     def manager(self) -> UserManager:
         raise NotImplementedError()

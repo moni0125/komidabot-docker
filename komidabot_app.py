@@ -10,6 +10,7 @@ from komidabot.facebook.api_interface import ApiInterface
 from komidabot.facebook.messenger import Messenger
 from komidabot.facebook.users import UserManager as FacebookUserManager
 from komidabot.conversation_manager import ConversationManager
+from komidabot.features import update_active_features
 from komidabot.komidabot import Komidabot
 from komidabot.users import UnifiedUserManager
 
@@ -48,6 +49,9 @@ def create_app(script_info: ScriptInfo = None):
     if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
         if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
             print(" * Starting worker processes with PID {}".format(os.getpid()), flush=True)
+
+        with app.app_context():
+            update_active_features()
 
         # TODO: Check if we need to initialise the database and blueprints only once as well
 
