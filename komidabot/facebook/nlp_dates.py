@@ -21,7 +21,6 @@ def extract_days(date_attributes: List[NLPAttribute]):
         if grain == 'day':
             date = date_parser.isoparse(value).date()
             dates.append(date)
-            print(date, flush=True)
         else:
             invalid_date = True
 
