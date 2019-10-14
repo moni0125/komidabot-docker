@@ -46,7 +46,7 @@ def create_app(script_info: ScriptInfo = None):
 
     app.logger.setLevel(logging.DEBUG)
 
-    if os.environ.get("FLASK_RUN_FROM_CLI") == "true":
+    if os.environ.get("KOMIDABOT_SKIP_INITIALISATION") == "true":
         # Don't initialise anything if run from the CLI
         return app
 

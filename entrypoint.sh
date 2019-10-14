@@ -24,7 +24,7 @@ done
 echo "PostgreSQL started"
 
 trap 'kill -TERM $PID' TERM INT
-FLASK_APP=komidabot_app.py flask db upgrade
+KOMIDABOT_SKIP_INITIALISATION=true FLASK_APP=komidabot_app.py flask db upgrade
 PID=$!
 wait $PID
 trap - TERM INT
