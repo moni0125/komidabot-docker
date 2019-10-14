@@ -110,7 +110,7 @@ class Komidabot(Bot):
                 if message.text.lower().count(campus.short_name) > 0:
                     requested_campuses.append(campus)
 
-            user = User.find_by_facebook_id(message.sender.get_id())
+            user = AppUser.find_by_facebook_id(message.sender.get_id())
 
             for date in dates:
                 if len(requested_campuses) == 0:
