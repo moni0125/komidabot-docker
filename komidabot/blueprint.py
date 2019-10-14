@@ -107,28 +107,30 @@ def _do_handle_message(event, user: User, app):
 
                 # print(pprint.pformat(message, indent=2), flush=True)
 
-                # TODO: Should more received message types be supported?
-                if 'text' not in message:
-                    user.send_message(TextMessage(trigger, localisation.ERROR_TEXT_ONLY(user.get_locale())))
-                    return
+                # TODO: Is this the preferred way to differentiate inputs?
+                # TODO: What about messages that include attachments or other things?
+                if 'text' in message:
+                    trigger = AnnotatedUserTextTrigger(message['text'], trigger.sender)
 
-                trigger = AnnotatedUserTextTrigger(message['text'], trigger.sender)
+                    message_text = message['text']
 
-                message_text = message['text']
+                    if 'admin' in message_text:
+                        return  # TODO: Handle properly in the future
 
-                if 'admin' in message_text:
-                    return  # TODO: Handle properly in the future
+                    if 'nlp' in message:
+                        if 'detected_locales' in message['nlp']:
+                            for locale_entry in message['nlp']['detected_locales']:
+                                trigger.add_attribute(NLPAttribute('locale', locale_entry['locale'],
+                                                                   locale_entry['confidence']))
+                        if 'entities' in message['nlp']:
+                            for attribute, nlp_entries in message['nlp']['entities'].items():
+                                for nlp_entry in nlp_entries:
+                                    attribute_obj = NLPAttribute(attribute, nlp_entry['confidence'], nlp_entry)
+                                    trigger.add_attribute(attribute_obj)
 
-                if 'nlp' in message:
-                    if 'detected_locales' in message['nlp']:
-                        for locale_entry in message['nlp']['detected_locales']:
-                            trigger.add_attribute(NLPAttribute('locale', locale_entry['locale'],
-                                                               locale_entry['confidence']))
-                    if 'entities' in message['nlp']:
-                        for attribute, nlp_entries in message['nlp']['entities'].items():
-                            for nlp_entry in nlp_entries:
-                                attribute_obj = NLPAttribute(attribute, nlp_entry['confidence'], nlp_entry)
-                                trigger.add_attribute(attribute_obj)
+                    if user.is_admin() and message_text == 'sub':
+                        # Simulate subscription instead
+                        trigger = SubscriptionTrigger()
 
                 if app.config.get('DISABLED'):
                     if not user.is_admin():
@@ -137,10 +139,6 @@ def _do_handle_message(event, user: User, app):
                         return
 
                     # sender_obj.send_text_message('Note: The bot is currently disabled')
-
-                if user.is_admin() and message_text == 'sub':
-                    # Simulate subscription instead
-                    trigger = SubscriptionTrigger()
 
                 bot.trigger_received(trigger)
             elif 'postback' in event:
