@@ -31,15 +31,17 @@ class User:  # TODO: This probably needs more methods
     def get_internal_id(self) -> 'str':
         raise NotImplementedError()
 
-    def get_locale(self) -> 'Optional[str]':  # TODO: Properly look into this
+    def get_db_user(self) -> 'Optional[models.AppUser]':
         user_id = self.id
-        user = models.AppUser.find_by_id(user_id.provider, user_id.id)
+        return models.AppUser.find_by_id(user_id.provider, user_id.id)
+
+    def get_locale(self) -> 'Optional[str]':  # TODO: Properly look into this
+        user = self.get_db_user()
 
         return user.language
 
-    def get_campus_for_day(self, date: datetime.date) -> models.Campus:
-        user_id = self.id
-        user = models.AppUser.find_by_id(user_id.provider, user_id.id)
+    def get_campus_for_day(self, date: datetime.date) -> 'Optional[models.Campus]':
+        user = self.get_db_user()
         day = models.Day(date.isoweekday())
 
         return user.get_campus(day)
@@ -49,8 +51,7 @@ class User:  # TODO: This probably needs more methods
         return user_id in app.config.get('ADMIN_IDS', [])
 
     def is_feature_active(self, feature_id: str):
-        user_id = self.id
-        user = models.AppUser.find_by_id(user_id.provider, user_id.id)
+        user = self.get_db_user()
         return models.Feature.is_user_participating(user, feature_id)
 
     @property

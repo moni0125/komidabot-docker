@@ -157,7 +157,52 @@ class Komidabot(Bot):
                         sender.send_message(messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
                         return
 
-                pass  # TODO: Handle trigger
+                # FIXME: This code is an adapted copy of the old path and should be rewritten
+                # BEGIN DEPRECATED CODE
+                date = None
+
+                if isinstance(trigger, triggers.AnnotatedTextTrigger):
+                    dates, invalid_date = nlp_dates.extract_days(trigger.get_attributes('datetime'))
+
+                    if invalid_date:
+                        sender.send_message(messages.TextMessage(trigger,
+                                                                 'Sorry, I am unable to understand the requested day'))
+
+                    if len(dates) > 1:
+                        sender.send_message(messages.TextMessage(trigger, 'Sorry, please request only a single day'))
+                        return
+                    elif len(dates) == 1:
+                        date = dates[0]
+
+                if date is None:
+                    date = datetime.datetime.now().date()
+
+                campuses = Campus.get_active()
+                requested_campuses = []
+
+                for campus in campuses:
+                    if trigger.text.lower().count(campus.short_name) > 0:
+                        requested_campuses.append(campus)
+
+                if len(requested_campuses) == 0:
+                    campus = sender.get_campus_for_day(date)
+                    if campus is None:
+                        campus = Campus.get_by_short_name('cmi')
+                elif len(requested_campuses) > 1:
+                    sender.send_message(messages.TextMessage(trigger,
+                                                             'Sorry, please only ask for a single campus at a time'))
+                    return
+                else:
+                    campus = requested_campuses[0]
+
+                menu = komidabot.menu.prepare_menu_text(campus, date, sender.get_locale() or 'nl_BE')
+
+                if menu is None:
+                    sender.send_message(messages.TextMessage(trigger, 'Sorry, no menu has been found for {} on {}'
+                                                             .format(campus.short_name.upper(), str(date))))
+                else:
+                    sender.send_message(messages.TextMessage(trigger, menu))
+                # END DEPRECATED CODE
 
             if isinstance(trigger, triggers.SubscriptionTrigger):
                 user_manager = app.user_manager  # type: users.UserManager

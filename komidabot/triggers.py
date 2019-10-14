@@ -32,6 +32,9 @@ class AnnotatedTextTrigger(TextTrigger):
     def add_attribute(self, attribute: NLPAttribute):
         self.nlp_attributes.append(attribute)
 
+    def get_attributes(self, attribute: str):
+        return [attr for attr in self.nlp_attributes if attr.attribute == attribute]
+
 
 class UserTrigger(Trigger):
     def __init__(self, sender: users.User):
