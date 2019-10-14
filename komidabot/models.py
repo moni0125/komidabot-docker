@@ -268,6 +268,29 @@ class UserSubscription(db.Model):
                           nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)  # FIXME: Deprecated
 
+    def __init__(self, user: 'User', day: Day, campus: Campus, active=True) -> None:
+        self.user = user
+        self.day = day
+        self.campus = campus
+        self.active = active
+
+    @staticmethod
+    def get_for_user(user: 'User', day: Day) -> 'Optional[UserSubscription]':
+        return UserSubscription.query.filter_by(user_id=user.id, day=day).first()
+
+    @staticmethod
+    def create(user: 'User', day: Day, campus: Campus, active=True,
+               commit=True) -> 'Optional[UserSubscription]':
+        # TODO: Prevent weekend days from actually being used here
+
+        subscription = UserSubscription(user, day, campus, active)
+        db.session.add(subscription)
+
+        if commit:
+            db.session.commit()
+
+        return subscription
+
 
 class User(db.Model):
     __tablename__ = 'app_user'
@@ -275,15 +298,7 @@ class User(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     provider = db.Column(db.String(32), nullable=False)  # String ID of the provider
     internal_id = db.Column(db.String(32), nullable=False)  # ID that is specific to the provider
-    # facebook_id = db.Column(db.String(32), nullable=False, unique=True)
     language = db.Column(db.String(5), nullable=False)
-
-    # active = db.Column(db.Boolean(), default=True, nullable=False)
-    # campus_mon_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
-    # campus_tue_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
-    # campus_wed_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
-    # campus_thu_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
-    # campus_fri_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
 
     __table_args__ = (
         db.UniqueConstraint('provider', 'internal_id'),
@@ -291,47 +306,52 @@ class User(db.Model):
 
     subscriptions = db.relationship('UserSubscription', backref='user', passive_deletes=True)
 
-    def __init__(self, provider: str, internal_id: str, language: str, campus: Optional[Campus]):
+    def __init__(self, provider: str, internal_id: str, language: str):
         self.provider = provider
         self.internal_id = internal_id
         self.language = language
-        if campus is not None:
-            self.campus_mon = campus
-            self.campus_tue = campus
-            self.campus_wed = campus
-            self.campus_thu = campus
-            self.campus_fri = campus
 
-    def set_campus(self, day: Day, campus: Campus):
-        if day == Day.MONDAY:
-            self.campus_mon = campus
-        elif day == Day.TUESDAY:
-            self.campus_tue = campus
-        elif day == Day.WEDNESDAY:
-            self.campus_wed = campus
-        elif day == Day.THURSDAY:
-            self.campus_thu = campus
-        elif day == Day.FRIDAY:
-            self.campus_fri = campus
+    def set_campus(self, day: Day, campus: Campus, active=None, commit=True):
+        sub = UserSubscription.get_for_user(self, day)
+        if sub is None:
+            UserSubscription.create(self, day, campus, active=True if active is None else active, commit=commit)
+        else:
+            sub.campus = campus
+            if active is not None:
+                sub.active = active
+
+            if commit:
+                db.session.commit()
 
     def get_campus(self, day: Day) -> 'Optional[Campus]':
-        if day == Day.MONDAY:
-            return self.campus_mon
-        elif day == Day.TUESDAY:
-            return self.campus_tue
-        elif day == Day.WEDNESDAY:
-            return self.campus_wed
-        elif day == Day.THURSDAY:
-            return self.campus_thu
-        elif day == Day.FRIDAY:
-            return self.campus_fri
-        return None
+        sub = UserSubscription.get_for_user(self, day)
+        if sub is not None:
+            return sub.campus
+        else:
+            return None
 
     def set_language(self, language: str):
         self.language = language
 
-    def set_active(self, active: bool):
-        self.active = active
+    def set_active(self, day: Day, active: bool, commit=True):
+        sub = UserSubscription.get_for_user(self, day)
+        if sub is None:
+            raise ValueError('User does not have a subscription on day {}'.format(day.name))
+
+        sub.active = active
+
+        if commit:
+            db.session.commit()
+
+    @staticmethod
+    def create(provider: str, internal_id: str, language: str, commit=True):
+        user = User(provider, internal_id, language)
+        db.session.add(user)
+
+        if commit:
+            db.session.commit()
+
+        return user
 
     @staticmethod
     def find_active(provider=None) -> 'List[User]':
@@ -378,7 +398,7 @@ def import_dump(dump_file):
         return campus_dict[short_name]
 
     with open(dump_file) as file:
-        header = file.readline()
+        _ = file.readline()  # Skip header
 
         line = file.readline()
         while line:
@@ -390,15 +410,14 @@ def import_dump(dump_file):
             if split[7] == '0':
                 split[7] = ''  # Query locale
 
-            sub = User('facebook', split[0], split[7], None)
-            sub.set_active(split[1])
-            sub.set_campus(Day.MONDAY, get_campus(split[2]))
-            sub.set_campus(Day.TUESDAY, get_campus(split[3]))
-            sub.set_campus(Day.WEDNESDAY, get_campus(split[4]))
-            sub.set_campus(Day.THURSDAY, get_campus(split[5]))
-            sub.set_campus(Day.FRIDAY, get_campus(split[6]))
+            user = User.create('facebook', split[0], split[7])
+            user.set_campus(Day.MONDAY, get_campus(split[2]), active=split[1], commit=False)
+            user.set_campus(Day.TUESDAY, get_campus(split[3]), active=split[1], commit=False)
+            user.set_campus(Day.WEDNESDAY, get_campus(split[4]), active=split[1], commit=False)
+            user.set_campus(Day.THURSDAY, get_campus(split[5]), active=split[1], commit=False)
+            user.set_campus(Day.FRIDAY, get_campus(split[6]),   active=split[1], commit=False)
 
-            db.session.add(sub)
+            db.session.add(user)
 
             line = file.readline()
 

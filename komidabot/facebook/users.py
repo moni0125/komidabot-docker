@@ -19,8 +19,8 @@ class UserManager(users.UserManager):
         return User(self, user_id.id)
 
     def get_subscribed_users(self):
-        # FIXME
-        return [User(self, sub.facebook_id) for sub in models.User.find_active(provider=UserManager.MANAGER_ID)]
+        # FIXME: Use days
+        return [User(self, sub.internal_id) for sub in models.User.find_active(provider=UserManager.MANAGER_ID)]
 
     def get_message_handler(self, user: users.User):
         if not isinstance(user, User):
