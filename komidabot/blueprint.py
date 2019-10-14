@@ -56,38 +56,40 @@ def validate_signature(func):
 @blueprint.route('/', methods=['POST'])
 @validate_signature
 def handle_message():
-    app = current_app._get_current_object()
-    data = request.get_json()
+    try:
+        app = current_app._get_current_object()
+        data = request.get_json()
 
-    if data and data['object'] == 'page':
-        for entry in data['entry']:  # type: dict
-            if 'messaging' not in entry:
-                continue
+        if data and data['object'] == 'page':
+            for entry in data['entry']:  # type: dict
+                if 'messaging' not in entry:
+                    continue
 
-            for event in entry['messaging']:
-                sender = event["sender"]["id"]
-                # recipient = event["recipient"]["id"]
+                for event in entry['messaging']:
+                    sender = event["sender"]["id"]
+                    # recipient = event["recipient"]["id"]
 
-                user_manager = app.user_manager  # type: UnifiedUserManager
-                user = user_manager.get_user(UserId(sender, 'facebook'), event=event)
+                    user_manager = app.user_manager  # type: UnifiedUserManager
+                    user = user_manager.get_user(UserId(sender, 'facebook'), event=event)
 
-                sender_obj = LegacyMessageSender(sender)
-                sender_obj.mark_seen()
+                    sender_obj = LegacyMessageSender(sender)
+                    sender_obj.mark_seen()
 
-                if user.is_feature_active('new_messaging'):
-                    try:
+                    if user.is_feature_active('new_messaging'):
                         app.task_executor.submit(_do_handle_message, event, user, app)
-                    except Exception as e:
-                        traceback.print_tb(e.__traceback__)
-                        print(e, flush=True, file=sys.stderr)
-                else:
-                    app.task_executor.submit(_do_handle_message_legacy, event, sender_obj, app)
+                    else:
+                        app.task_executor.submit(_do_handle_message_legacy, event, sender_obj, app)
 
-            return 'ok', 200
+                return 'ok', 200
 
-    print(pprint.pformat(data, indent=2), flush=True)
+        print(pprint.pformat(data, indent=2), flush=True)
 
-    return abort(400)
+        return abort(400)
+    except Exception as e:
+        traceback.print_tb(e.__traceback__)
+        print(e, flush=True, file=sys.stderr)
+
+        return 'ok', 200
 
 
 def _do_handle_message(event, user: User, app):
