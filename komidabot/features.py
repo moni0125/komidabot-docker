@@ -1,6 +1,6 @@
 from extensions import db
 from collections import namedtuple
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Optional
 
 import komidabot.models as models
 from komidabot.users import UserId
@@ -13,7 +13,14 @@ _features = [
         # Production user IDs
         UserId('1441134665935530', 'facebook'),
         UserId('1532346296833228', 'facebook'),
-    ])
+    ]),
+    _feature('new_messaging', 'The user can make use of the new messaging system', False, [
+        # Dev user ID
+        UserId('3150885824953769', 'facebook'),
+        # Production user IDs
+        UserId('1441134665935530', 'facebook'),
+        UserId('1532346296833228', 'facebook'),
+    ]),
 ]
 
 

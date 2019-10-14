@@ -68,14 +68,14 @@ def handle_message():
                 sender = event["sender"]["id"]
                 # recipient = event["recipient"]["id"]
 
+                user_manager = app.user_manager  # type: UnifiedUserManager
+                user = user_manager.get_user(UserId(sender, 'facebook'), event=event)
+
                 sender_obj = LegacyMessageSender(sender)
                 sender_obj.mark_seen()
 
-                if app.config.get('TESTING') and sender_obj.is_admin():
+                if user.is_feature_active('new_messaging'):
                     try:
-                        user_manager = app.user_manager  # type: UnifiedUserManager
-                        user = user_manager.get_user(UserId(sender, 'facebook'), event=event)
-
                         app.task_executor.submit(_do_handle_message, event, user, app)
                     except Exception as e:
                         traceback.print_tb(e.__traceback__)
@@ -144,7 +144,7 @@ def _do_handle_message(event, user: User, app):
 
                 bot.trigger_received(trigger)
             elif 'postback' in event:
-                pass
+                user.send_message(TextMessage(trigger, localisation.ERROR_POSTBACK(user.get_locale())))
                 # postback = event['postback']
 
                 # sender_obj.send_text_message(localisation.ERROR_NOT_IMPLEMENTED(sender_obj.get_locale()))
@@ -228,6 +228,7 @@ def _do_handle_message_legacy(event, sender_obj: LegacyMessageSender, app):
                 # traceback.print_tb(e.__traceback__)
                 # print(e, flush=True, file=sys.stderr)
         elif 'postback' in event:
+            sender_obj.send_text_message(localisation.ERROR_POSTBACK(sender_obj.get_locale()))
             # postback = event['postback']
 
-            sender_obj.send_text_message(localisation.ERROR_NOT_IMPLEMENTED(sender_obj.get_locale()))
+            # sender_obj.send_text_message(localisation.ERROR_NOT_IMPLEMENTED(sender_obj.get_locale()))

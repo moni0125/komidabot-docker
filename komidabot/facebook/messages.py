@@ -1,6 +1,6 @@
 from flask import current_app as app
 
-import komidabot.facebook.users
+import komidabot.facebook.users as facebook_users
 import komidabot.messages as messages
 import komidabot.triggers as triggers
 import komidabot.users as users
@@ -11,7 +11,7 @@ TYPE_SUBSCRIPTION = 'NON_PROMOTIONAL_SUBSCRIPTION'
 
 class MessageHandler(messages.MessageHandler):
     def send_message(self, user: users.User, message: messages.Message):
-        if user.id.provider != komidabot.facebook.users.UserManager.MANAGER_ID:
+        if user.id.provider != facebook_users.PROVIDER_ID:
             raise ValueError('User id is not for Facebook')
 
         if isinstance(message, messages.TextMessage):

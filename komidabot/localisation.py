@@ -26,6 +26,13 @@ ERROR_NOT_IMPLEMENTED = localisation_definition('ERROR_NOT_IMPLEMENTED', {
     ('nl_BE', 'nl_NL'): 'Sorry, deze feature is momenteel niet geïmplementeerd',
 })
 
+ERROR_POSTBACK = localisation_definition('ERROR_POSTBACK', {
+    ('en_US', 'en_GB'): 'Sorry, I cannot handle that message right now. '
+                        'Please try sending a message using the textbox instead.',
+    ('nl_BE', 'nl_NL'): 'Sorry, ik kan dit bericht momenteel niet begrijpen. '
+                        'Gelieve het tekstvak te gebruiken voor uw vraag.',
+})
+
 DOWN_FOR_MAINTENANCE1 = localisation_definition('ERROR_TEXT_ONLY', {
     ('en_US', 'en_GB'): 'I am temporarily down for maintenance, please check back later',
     ('nl_BE', 'nl_NL'): 'Wegens onderhoud ben ik tijdelijk onbeschikbaar, probeer het later nog eens',

@@ -5,7 +5,7 @@ from typing import Dict, List
 
 from flask import current_app as app
 
-from komidabot.messages import MessageHandler, Message
+import komidabot.messages as messages
 import komidabot.models as models
 
 UserId = namedtuple('UserId', ['id', 'provider'])
@@ -16,15 +16,19 @@ class UserManager:  # TODO: This probably could use more methods
         raise NotImplementedError()
 
     def get_subscribed_users(self) -> 'List[User]':
+        # FIXME: Use days
         raise NotImplementedError()
-
-    def get_message_handler(self, user: 'User') -> MessageHandler:
-        raise NotImplementedError()  # TODO: Figure out if this needs to be per person or for multicasting purposes
 
 
 class User:  # TODO: This probably needs more methods
     @property
     def id(self) -> UserId:
+        return UserId(self.get_internal_id(), self.get_provider_name())
+
+    def get_provider_name(self) -> 'str':
+        raise NotImplementedError()
+
+    def get_internal_id(self) -> 'str':
         raise NotImplementedError()
 
     def get_locale(self):  # TODO: Properly look into this
@@ -42,21 +46,24 @@ class User:  # TODO: This probably needs more methods
 
     def is_admin(self):
         user_id = self.id
-        return (user_id.provider, user_id.id) in app.config.get('ADMIN_IDS', [])
+        return user_id in app.config.get('ADMIN_IDS', [])
 
-    def is_feature_active(self, feature_id:str):
+    def is_feature_active(self, feature_id: str):
         user_id = self.id
         user = models.AppUser.find_by_id(user_id.provider, user_id.id)
         return models.Feature.is_user_participating(user, feature_id)
 
     @property
     def manager(self) -> UserManager:
+        return self.get_manager()
+
+    def get_manager(self) -> UserManager:
         raise NotImplementedError()
 
-    def get_message_handler(self) -> MessageHandler:
-        return self.manager.get_message_handler(self)
+    def get_message_handler(self) -> messages.MessageHandler:
+        raise NotImplementedError()
 
-    def send_message(self, message: 'Message'):
+    def send_message(self, message: 'messages.Message'):
         return self.get_message_handler().send_message(self, message)
 
 
@@ -79,7 +86,5 @@ class UnifiedUserManager(UserManager):
         return self._managers[user_id.provider].get_user(user_id, **kwargs)
 
     def get_subscribed_users(self):
+        # FIXME: Use days
         return functools.reduce(list.__add__, [manager.get_subscribed_users() for manager in self._managers.values()])
-
-    def get_message_handler(self, user: 'User') -> MessageHandler:
-        return user.manager.get_message_handler(user)
