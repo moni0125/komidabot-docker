@@ -74,14 +74,17 @@ def update_active_features():
                          if feature.feat is not None and feature.obj is not None]
 
     for feature in existing_features:  # type: _Feature
-        print('Keeping existing feature {}: {}'.format(feature.obj.string_id,
-                                                       feature.obj.description or 'no description'), flush=True)
-
         if feature.feat.globally_available != feature.obj.globally_available:
-            feature.obj.globally_available = feature.feat.globally_available
+            print('Updating existing feature {}: {}'.format(feature.obj.string_id,
+                                                            feature.obj.description or 'no description'), flush=True)
             print('Changing general availability to {}'.format(feature.feat.globally_available), flush=True)
+
+            feature.obj.globally_available = feature.feat.globally_available
         if feature.feat.description != feature.obj.description:
+            print('Updating existing feature {}: {}'.format(feature.obj.string_id,
+                                                            feature.obj.description or 'no description'), flush=True)
+            print('Changing description to {}'.format(feature.feat.description), flush=True)
+
             feature.obj.description = feature.feat.description
-            print('Changing description to {}'.format(feature.feat.globally_available), flush=True)
 
     db.session.commit()
