@@ -29,13 +29,13 @@ class User:  # TODO: This probably needs more methods
 
     def get_locale(self):  # TODO: Properly look into this
         user_id = self.id
-        user = models.User.find_by_id(user_id.provider, user_id.id)
+        user = models.AppUser.find_by_id(user_id.provider, user_id.id)
 
         return user.language
 
     def get_campus_for_day(self, date: datetime.date) -> models.Campus:
         user_id = self.id
-        user = models.User.find_by_id(user_id.provider, user_id.id)
+        user = models.AppUser.find_by_id(user_id.provider, user_id.id)
         day = models.Day(date.isoweekday())
 
         return user.get_campus(day)

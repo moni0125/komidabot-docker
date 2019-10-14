@@ -268,18 +268,18 @@ class UserSubscription(db.Model):
                           nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)  # FIXME: Deprecated
 
-    def __init__(self, user: 'User', day: Day, campus: Campus, active=True) -> None:
+    def __init__(self, user: 'AppUser', day: Day, campus: Campus, active=True) -> None:
         self.user = user
         self.day = day
         self.campus = campus
         self.active = active
 
     @staticmethod
-    def get_for_user(user: 'User', day: Day) -> 'Optional[UserSubscription]':
+    def get_for_user(user: 'AppUser', day: Day) -> 'Optional[UserSubscription]':
         return UserSubscription.query.filter_by(user_id=user.id, day=day).first()
 
     @staticmethod
-    def create(user: 'User', day: Day, campus: Campus, active=True,
+    def create(user: 'AppUser', day: Day, campus: Campus, active=True,
                commit=True) -> 'Optional[UserSubscription]':
         # TODO: Prevent weekend days from actually being used here
 
@@ -292,7 +292,7 @@ class UserSubscription(db.Model):
         return subscription
 
 
-class User(db.Model):
+class AppUser(db.Model):
     __tablename__ = 'app_user'
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
@@ -345,7 +345,7 @@ class User(db.Model):
 
     @staticmethod
     def create(provider: str, internal_id: str, language: str, commit=True):
-        user = User(provider, internal_id, language)
+        user = AppUser(provider, internal_id, language)
         db.session.add(user)
 
         if commit:
@@ -354,20 +354,20 @@ class User(db.Model):
         return user
 
     @staticmethod
-    def find_active(provider=None) -> 'List[User]':
+    def find_active(provider=None) -> 'List[AppUser]':
         if provider:
-            return User.query.filter_by(provider=provider, active=True).all()
+            return AppUser.query.filter_by(provider=provider, active=True).all()
         else:
-            return User.query.filter_by(active=True).all()
+            return AppUser.query.filter_by(active=True).all()
 
     # FIXME: Deprecated
     @staticmethod
-    def find_by_facebook_id(facebook_id: str) -> 'Optional[User]':
-        return User.query.filter_by(provider='facebook', internal_id=facebook_id).first()
+    def find_by_facebook_id(facebook_id: str) -> 'Optional[AppUser]':
+        return AppUser.query.filter_by(provider='facebook', internal_id=facebook_id).first()
 
     @staticmethod
-    def find_by_id(provider: str, internal_id: str) -> 'Optional[User]':
-        return User.query.filter_by(provider=provider, internal_id=internal_id).first()
+    def find_by_id(provider: str, internal_id: str) -> 'Optional[AppUser]':
+        return AppUser.query.filter_by(provider=provider, internal_id=internal_id).first()
 
     def __hash__(self):
         return hash(self.id)
@@ -410,7 +410,7 @@ def import_dump(dump_file):
             if split[7] == '0':
                 split[7] = ''  # Query locale
 
-            user = User.create('facebook', split[0], split[7])
+            user = AppUser.create('facebook', split[0], split[7])
             user.set_campus(Day.MONDAY, get_campus(split[2]), active=split[1], commit=False)
             user.set_campus(Day.TUESDAY, get_campus(split[3]), active=split[1], commit=False)
             user.set_campus(Day.WEDNESDAY, get_campus(split[4]), active=split[1], commit=False)

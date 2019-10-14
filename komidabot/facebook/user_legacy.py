@@ -3,7 +3,7 @@ from abc import ABC
 from flask import current_app as app
 
 from komidabot.message_receiver import MessageReceiver
-from komidabot.models import User
+import komidabot.models as models
 
 
 class User(MessageReceiver, ABC):
@@ -19,7 +19,7 @@ class User(MessageReceiver, ABC):
         return app.messenger.is_admin(self.user_id)
 
     def get_locale(self):
-        user = User.find_by_facebook_id(self.user_id)
+        user = models.AppUser.find_by_facebook_id(self.user_id)
         if user is not None:
             if user.language:
                 return user.language

@@ -18,7 +18,7 @@ import komidabot.messages as messages
 import komidabot.triggers as triggers
 import komidabot.users as users
 
-from komidabot.models import Campus, Day, FoodType, Menu, User, Translatable
+from komidabot.models import Campus, Day, FoodType, Menu, AppUser, Translatable
 from komidabot.models import create_standard_values, import_dump, recreate_db
 
 from extensions import db
