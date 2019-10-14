@@ -46,6 +46,10 @@ def create_app(script_info: ScriptInfo = None):
 
     app.logger.setLevel(logging.DEBUG)
 
+    if os.environ.get("FLASK_RUN_FROM_CLI") == "true":
+        # Don't initialise anything if run from the CLI
+        return app
+
     if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
         if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
             print(" * Starting worker processes with PID {}".format(os.getpid()), flush=True)
