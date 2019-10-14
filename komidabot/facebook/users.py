@@ -1,9 +1,10 @@
+from typing import Optional
+
 from komidabot.facebook.messages import MessageHandler as FBMessageHandler
 import komidabot.messages as messages
 import komidabot.users as users
 
 import komidabot.models as models
-
 
 PROVIDER_ID = 'facebook'
 
@@ -30,9 +31,13 @@ class User(users.User):
         self._manager = manager
         self._id = id_str
 
-    def get_locale(self):
-        # FIXME: Does more need to be done?
-        return super().get_locale()
+    def get_locale(self) -> 'Optional[str]':
+        stored_value = super().get_locale()
+
+        if not stored_value:
+            pass  # FIXME: Use the FB API to query the user locale
+
+        return stored_value
 
     def get_provider_name(self) -> 'str':
         return PROVIDER_ID

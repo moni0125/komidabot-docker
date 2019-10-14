@@ -1,7 +1,7 @@
 from collections import namedtuple
 import datetime
 import functools
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from flask import current_app as app
 
@@ -31,7 +31,7 @@ class User:  # TODO: This probably needs more methods
     def get_internal_id(self) -> 'str':
         raise NotImplementedError()
 
-    def get_locale(self):  # TODO: Properly look into this
+    def get_locale(self) -> 'Optional[str]':  # TODO: Properly look into this
         user_id = self.id
         user = models.AppUser.find_by_id(user_id.provider, user_id.id)
 

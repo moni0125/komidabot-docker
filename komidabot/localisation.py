@@ -6,6 +6,8 @@ def localisation_definition(name, obj, fallback='en_US'):
                 obj[k] = value
 
     def wrapper(locale):
+        if locale is None:
+            return obj[fallback]
         return obj[locale] if locale in obj else obj[fallback]
 
     wrapper.__name__ = name

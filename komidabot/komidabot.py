@@ -124,7 +124,7 @@ class Komidabot(Bot):
                 else:
                     campus = requested_campuses[0]
 
-                menu = komidabot.menu.prepare_menu_text(campus, date, message.sender.get_locale())
+                menu = komidabot.menu.prepare_menu_text(campus, date, message.sender.get_locale() or 'nl_BE')
 
                 if menu is None:
                     message.sender.send_text_message('Sorry, no menu has been found for {} on {}'
@@ -175,7 +175,7 @@ class Komidabot(Bot):
                     if campus is None:
                         continue
 
-                    language = user.get_locale()
+                    language = user.get_locale() or 'nl_BE'
 
                     if campus not in subscriptions:
                         subscriptions[campus] = dict()
