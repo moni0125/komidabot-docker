@@ -25,6 +25,8 @@ def prepare_menu_text(campus: Campus, day: datetime.date, locale: str) -> 'Optio
         locale = 'zh-cn'
     elif locale == 'zh_HK' or locale == 'zh_TW':
         locale = 'zh-tw'
+    elif not locale:
+        locale = 'nl_BE'
 
     try:
         for item in menu.menu_items:  # type: MenuItem
