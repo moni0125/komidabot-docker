@@ -19,6 +19,9 @@ class UserManager:  # TODO: This probably could use more methods
         # FIXME: Use days
         raise NotImplementedError()
 
+    def initialise(self):
+        raise NotImplementedError()
+
 
 class User:  # TODO: This probably needs more methods
     @property
@@ -89,3 +92,7 @@ class UnifiedUserManager(UserManager):
     def get_subscribed_users(self):
         # FIXME: Use days
         return functools.reduce(list.__add__, [manager.get_subscribed_users() for manager in self._managers.values()])
+
+    def initialise(self):
+        for manager in self._managers.values():
+            manager.initialise()

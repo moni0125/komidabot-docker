@@ -2,9 +2,7 @@ import atexit, logging, os
 from concurrent.futures import ThreadPoolExecutor as PyThreadPoolExecutor
 
 from flask.cli import ScriptInfo
-
 from flask import Flask
-from flask_migrate import Migrate
 
 from komidabot.facebook.api_interface import ApiInterface
 from komidabot.facebook.messenger import Messenger
@@ -27,8 +25,9 @@ def create_app(script_info: ScriptInfo = None):
         app_settings = script_info.data['APP_SETTINGS']
     app.config.from_object(app_settings)
 
-    # print("The script config is", script_info)
-    # print("The database URI is", app.config.get('SQLALCHEMY_DATABASE_URI'))
+    # print("The script config is", script_info, flush=True)
+    # print(" - Data: ", script_info.data, flush=True)
+    # print("The database URI is", app.config.get('SQLALCHEMY_DATABASE_URI'), flush=True)
 
     # set up extensions
     db.init_app(app)
@@ -52,7 +51,7 @@ def create_app(script_info: ScriptInfo = None):
 
     if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
         if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
-            print(" * Starting worker processes with PID {}".format(os.getpid()), flush=True)
+            print(" * Worker processes PID: {}".format(os.getpid()), flush=True)
 
         with app.app_context():
             update_active_features()
@@ -77,5 +76,7 @@ def create_app(script_info: ScriptInfo = None):
         # TODO: This could probably also be moved to the Komidabot class
         app.task_executor = PyThreadPoolExecutor(max_workers=5)
         atexit.register(PyThreadPoolExecutor.shutdown, app.task_executor)  # Ensure cleanup of resources
+
+        app.user_manager.initialise()
 
     return app

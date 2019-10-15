@@ -15,7 +15,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    restart: on-failure
+    restart: "no"
     stop_signal: SIGINT
     environment:
       POSTGRES_HOST: komidabot-db

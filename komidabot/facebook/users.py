@@ -25,6 +25,9 @@ class UserManager(users.UserManager):
         # FIXME: Use days
         return [User(self, sub.internal_id) for sub in models.AppUser.find_active(provider=PROVIDER_ID)]
 
+    def initialise(self):
+        pass  # TODO: Setup welcome screen and persistent menu
+
 
 class User(users.User):
     def __init__(self, manager: UserManager, id_str: str):
