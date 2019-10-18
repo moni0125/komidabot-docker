@@ -36,27 +36,27 @@ ParseResult = namedtuple('ParseResult', ['day', 'food_type', 'name', 'price'])
 
 DATE_LOCATION = Box(0.703, 0.083, 0.280, 0.022)
 
-BOX_SOUP = [
-    FrameItem(FrameFoodType.SOUP, False, Box(0.190, 0.010, 0.580, 0.240)),
+BOX_SOUP_LEFT = [
+    FrameItem(FrameFoodType.SOUP, False, Box(0.190, 0.010, 0.590, 0.240)),
     FrameItem(FrameFoodType.SOUP, True, Box(0.770, 0.010, 0.220, 0.240))
 ]
-BOX_SOUP_ALT = [
+BOX_SOUP_RIGHT = [
     FrameItem(FrameFoodType.SOUP, False, Box(0.190, 0.010, 0.540, 0.240)),
     FrameItem(FrameFoodType.SOUP, True, Box(0.720, 0.010, 0.220, 0.240))
 ]
-BOX_VEGAN = [
-    FrameItem(FrameFoodType.VEGAN, False, Box(0.190, 0.250, 0.580, 0.410)),
+BOX_VEGAN_LEFT = [
+    FrameItem(FrameFoodType.VEGAN, False, Box(0.190, 0.250, 0.590, 0.410)),
     FrameItem(FrameFoodType.VEGAN, True, Box(0.770, 0.250, 0.220, 0.410))
 ]
-BOX_VEGAN_ALT = [
+BOX_VEGAN_RIGHT = [
     FrameItem(FrameFoodType.VEGAN, False, Box(0.190, 0.250, 0.540, 0.410)),
     FrameItem(FrameFoodType.VEGAN, True, Box(0.720, 0.250, 0.220, 0.410))
 ]
-BOX_MEAT = [
-    FrameItem(FrameFoodType.MEAT, False, Box(0.190, 0.660, 0.580, 0.325)),
+BOX_MEAT_LEFT = [
+    FrameItem(FrameFoodType.MEAT, False, Box(0.190, 0.660, 0.590, 0.325)),
     FrameItem(FrameFoodType.MEAT, True, Box(0.770, 0.660, 0.220, 0.325))
 ]
-BOX_MEAT_ALT = [
+BOX_MEAT_RIGHT = [
     FrameItem(FrameFoodType.MEAT, False, Box(0.190, 0.660, 0.540, 0.325)),
     FrameItem(FrameFoodType.MEAT, True, Box(0.720, 0.660, 0.220, 0.325))
 ]
@@ -71,19 +71,19 @@ BOX_PASTA = [
 
 FRAMES = [
     Frame(FrameDay.MONDAY, Box(0.076, 0.177, 0.406, 0.197), (
-        tuple(BOX_SOUP + BOX_VEGAN + BOX_MEAT)
+        tuple(BOX_SOUP_LEFT + BOX_VEGAN_LEFT + BOX_MEAT_LEFT)
     )),
     Frame(FrameDay.TUESDAY, Box(0.515, 0.177, 0.406, 0.197), (
-        tuple(BOX_SOUP_ALT + BOX_VEGAN_ALT + BOX_MEAT_ALT)
+        tuple(BOX_SOUP_RIGHT + BOX_VEGAN_RIGHT + BOX_MEAT_RIGHT)
     )),
     Frame(FrameDay.WEDNESDAY, Box(0.076, 0.429, 0.406, 0.197), (
-        tuple(BOX_SOUP + BOX_VEGAN + BOX_MEAT)
+        tuple(BOX_SOUP_LEFT + BOX_VEGAN_LEFT + BOX_MEAT_LEFT)
     )),
     Frame(FrameDay.THURSDAY, Box(0.515, 0.429, 0.406, 0.197), (
-        tuple(BOX_SOUP_ALT + BOX_VEGAN_ALT + BOX_MEAT_ALT)
+        tuple(BOX_SOUP_RIGHT + BOX_VEGAN_RIGHT + BOX_MEAT_RIGHT)
     )),
     Frame(FrameDay.FRIDAY, Box(0.076, 0.683, 0.406, 0.197), (
-        tuple(BOX_SOUP + BOX_VEGAN + BOX_MEAT)
+        tuple(BOX_SOUP_LEFT + BOX_VEGAN_LEFT + BOX_MEAT_LEFT)
     )),
     Frame(FrameDay.WEEKLY, Box(0.515, 0.683, 0.406, 0.197), (
         tuple(BOX_GRILL + BOX_PASTA)
