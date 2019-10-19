@@ -37,35 +37,35 @@ ParseResult = namedtuple('ParseResult', ['day', 'food_type', 'name', 'price'])
 DATE_LOCATION = Box(0.703, 0.083, 0.280, 0.022)
 
 BOX_SOUP_LEFT = [
-    FrameItem(FrameFoodType.SOUP, False, Box(0.190, 0.010, 0.590, 0.240)),
+    FrameItem(FrameFoodType.SOUP, False, Box(0.190, 0.010, 0.620, 0.240)),
     FrameItem(FrameFoodType.SOUP, True, Box(0.770, 0.010, 0.220, 0.240))
 ]
 BOX_SOUP_RIGHT = [
-    FrameItem(FrameFoodType.SOUP, False, Box(0.190, 0.010, 0.540, 0.240)),
+    FrameItem(FrameFoodType.SOUP, False, Box(0.190, 0.010, 0.570, 0.240)),
     FrameItem(FrameFoodType.SOUP, True, Box(0.720, 0.010, 0.220, 0.240))
 ]
 BOX_VEGAN_LEFT = [
-    FrameItem(FrameFoodType.VEGAN, False, Box(0.190, 0.250, 0.590, 0.410)),
+    FrameItem(FrameFoodType.VEGAN, False, Box(0.190, 0.250, 0.620, 0.410)),
     FrameItem(FrameFoodType.VEGAN, True, Box(0.770, 0.250, 0.220, 0.410))
 ]
 BOX_VEGAN_RIGHT = [
-    FrameItem(FrameFoodType.VEGAN, False, Box(0.190, 0.250, 0.540, 0.410)),
+    FrameItem(FrameFoodType.VEGAN, False, Box(0.190, 0.250, 0.570, 0.410)),
     FrameItem(FrameFoodType.VEGAN, True, Box(0.720, 0.250, 0.220, 0.410))
 ]
 BOX_MEAT_LEFT = [
-    FrameItem(FrameFoodType.MEAT, False, Box(0.190, 0.660, 0.590, 0.325)),
+    FrameItem(FrameFoodType.MEAT, False, Box(0.190, 0.660, 0.620, 0.325)),
     FrameItem(FrameFoodType.MEAT, True, Box(0.770, 0.660, 0.220, 0.325))
 ]
 BOX_MEAT_RIGHT = [
-    FrameItem(FrameFoodType.MEAT, False, Box(0.190, 0.660, 0.540, 0.325)),
+    FrameItem(FrameFoodType.MEAT, False, Box(0.190, 0.660, 0.570, 0.325)),
     FrameItem(FrameFoodType.MEAT, True, Box(0.720, 0.660, 0.220, 0.325))
 ]
 BOX_GRILL = [
-    FrameItem(FrameFoodType.GRILL, False, Box(0.190, 0.250, 0.540, 0.410)),
+    FrameItem(FrameFoodType.GRILL, False, Box(0.190, 0.250, 0.570, 0.410)),
     FrameItem(FrameFoodType.GRILL, True, Box(0.720, 0.250, 0.220, 0.410))
 ]
 BOX_PASTA = [
-    FrameItem(FrameFoodType.PASTA, False, Box(0.190, 0.660, 0.540, 0.340)),
+    FrameItem(FrameFoodType.PASTA, False, Box(0.190, 0.660, 0.570, 0.340)),
     FrameItem(FrameFoodType.PASTA, True, Box(0.720, 0.660, 0.220, 0.340))
 ]
 
