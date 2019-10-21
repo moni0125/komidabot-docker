@@ -40,11 +40,16 @@ class User:  # TODO: This probably needs more methods
 
     def get_locale(self) -> 'Optional[str]':  # TODO: Properly look into this
         user = self.get_db_user()
+        if user is None:
+            return None
 
         return user.language
 
     def get_campus_for_day(self, date: datetime.date) -> 'Optional[models.Campus]':
         user = self.get_db_user()
+        if user is None:
+            return None
+
         day = models.Day(date.isoweekday())
 
         return user.get_campus(day)
@@ -55,6 +60,9 @@ class User:  # TODO: This probably needs more methods
 
     def is_feature_active(self, feature_id: str):
         user = self.get_db_user()
+        if user is None:
+            return None
+
         return models.Feature.is_user_participating(user, feature_id)
 
     @property
