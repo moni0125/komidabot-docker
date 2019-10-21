@@ -1,7 +1,9 @@
 from functools import wraps
 import hashlib, hmac, pprint, sys, time, traceback
 
-from flask import Blueprint, abort, current_app, request
+from flask import Blueprint, abort, request
+
+from komidabot.app import get_app
 
 from komidabot.facebook.received_message import MessageSender as LegacyMessageSender, \
     NLPAttribute as LegacyNLPAttribute, ReceivedTextMessage as LegacyReceivedTextMessage
@@ -19,7 +21,7 @@ pp = pprint.PrettyPrinter(indent=2)
 @blueprint.route('/', methods=['GET'])
 def handle_verification():
     if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
-        if request.args.get('hub.verify_token', '') == current_app.config['VERIFY_TOKEN']:
+        if request.args.get('hub.verify_token', '') == get_app().config['VERIFY_TOKEN']:
             print("Verified")
             return request.args.get('hub.challenge', '')
         else:
@@ -40,7 +42,7 @@ def validate_signature(func):
         data = request.get_data()
 
         received = hmac.new(
-            key=current_app.config['APP_SECRET'].encode('raw_unicode_escape'),
+            key=get_app().config['APP_SECRET'].encode('raw_unicode_escape'),
             msg=data,
             digestmod=hashlib.sha1
         ).hexdigest()
@@ -57,7 +59,7 @@ def validate_signature(func):
 @validate_signature
 def handle_message():
     try:
-        app = current_app._get_current_object()
+        app = get_app()
         data = request.get_json()
 
         if data and data['object'] == 'page':
@@ -76,9 +78,9 @@ def handle_message():
                     sender_obj.mark_seen()
 
                     if user.is_feature_active('new_messaging'):
-                        app.task_executor.submit(_do_handle_message, event, user, app)
+                        app.task_executor.submit(_do_handle_message, event, user, app._get_current_object())
                     else:
-                        app.task_executor.submit(_do_handle_message_legacy, event, sender_obj, app)
+                        app.task_executor.submit(_do_handle_message_legacy, event, sender_obj, app._get_current_object())
 
                 return 'ok', 200
 

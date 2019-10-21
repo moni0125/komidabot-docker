@@ -3,7 +3,7 @@ import datetime
 import functools
 from typing import Dict, List, Optional
 
-from flask import current_app as app
+from komidabot.app import get_app
 
 import komidabot.messages as messages
 import komidabot.models as models
@@ -51,7 +51,7 @@ class User:  # TODO: This probably needs more methods
 
     def is_admin(self):
         user_id = self.id
-        return user_id in app.config.get('ADMIN_IDS', [])
+        return user_id in get_app().config.get('ADMIN_IDS', [])
 
     def is_feature_active(self, feature_id: str):
         user = self.get_db_user()

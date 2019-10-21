@@ -6,12 +6,11 @@ from apscheduler.jobstores.memory import MemoryJobStore
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from flask import current_app as app
+from komidabot.app import get_app
 
 from komidabot.bot import Bot, ReceivedTextMessage
 from komidabot.facebook.messenger import MessageSender
 import komidabot.facebook.nlp_dates as nlp_dates
-from komidabot.conversation_manager import ConversationManager as LegacyConversationManager
 import komidabot.menu
 from komidabot.menu_scraper import FrameDay, FrameFoodType, MenuScraper, ParseResult, parse_price
 import komidabot.messages as messages
@@ -53,9 +52,6 @@ class Komidabot(Bot):
         #     with context():
         #         bot.update_menus(None)
 
-        # TODO: Deprecated
-        self.legacy_conversation_manager = LegacyConversationManager()
-
     # TODO: Deprecated
     def message_received_legacy(self, message: ReceivedTextMessage):
         with self.lock:
@@ -67,15 +63,11 @@ class Komidabot(Bot):
             # - ADMIN: Weekly menu, confirm the menu for each day/campus
             # - ADMIN: Updating configuration values
 
-            # TODO: This REALLY shouldn't be part of the facebook package
-            if self.legacy_conversation_manager.handle_message_conversation(message):
-                return
-
             if message.sender.is_admin():
                 if message.text == 'setup':
                     recreate_db()
                     create_standard_values()
-                    import_dump(app.config['DUMP_FILE'])
+                    import_dump(get_app().config['DUMP_FILE'])
                     message.sender.send_text_message('Setup done')
                     return
                 elif message.text == 'update':
@@ -145,7 +137,7 @@ class Komidabot(Bot):
                     if text == 'setup':
                         recreate_db()
                         create_standard_values()
-                        import_dump(app.config['DUMP_FILE'])
+                        import_dump(get_app().config['DUMP_FILE'])
                         sender.send_message(messages.TextMessage(trigger, 'Setup done'))
                         return
                     elif text == 'update':
@@ -205,7 +197,7 @@ class Komidabot(Bot):
                 # END DEPRECATED CODE
 
             if isinstance(trigger, triggers.SubscriptionTrigger):
-                user_manager = app.user_manager  # type: users.UserManager
+                user_manager = get_app().user_manager  # type: users.UserManager
                 subscribed_users = user_manager.get_subscribed_users()
                 subscriptions = dict()  # type: Dict[Campus, Dict[str, List[users.User]]]
 

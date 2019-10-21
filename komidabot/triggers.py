@@ -54,6 +54,12 @@ class AnnotatedUserTextTrigger(AnnotatedTextTrigger, UserTextTrigger, UserTrigge
         UserTrigger.__init__(self, sender)
 
 
+# Facebook: postback payload
+# Discord: !commands or using reactions?
+class UserCustomTrigger(UserTrigger):
+    pass
+
+
 class AdminActionTrigger(Trigger):
     def __init__(self, sub_trigger: Trigger):
         self.sub_trigger = sub_trigger

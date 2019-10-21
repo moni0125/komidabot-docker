@@ -1,16 +1,10 @@
-import atexit, logging, os
-from concurrent.futures import ThreadPoolExecutor as PyThreadPoolExecutor
+import logging, os
 
 from flask.cli import ScriptInfo
 from flask import Flask
 
-from komidabot.facebook.api_interface import ApiInterface
-from komidabot.facebook.messenger import Messenger
-from komidabot.facebook.users import UserManager as FacebookUserManager
-from komidabot.conversation_manager import ConversationManager
 from komidabot.features import update_active_features
-from komidabot.komidabot import Komidabot
-from komidabot.users import UnifiedUserManager
+from komidabot.app import App as KomidabotApp
 
 from extensions import db, migrate
 
@@ -59,24 +53,7 @@ def create_app(script_info: ScriptInfo = None):
         # TODO: Check if we need to initialise the database and blueprints only once as well
 
         # The app is not in debug mode or we are in the reloaded process
-        app.bot_interfaces = dict()  # TODO: Deprecate?
-        app.bot_interfaces['facebook'] = {
-            'api_interface': ApiInterface(app.config.get('PAGE_ACCESS_TOKEN')),
-            'messenger': Messenger(app.config.get('PAGE_ACCESS_TOKEN'), app.config.get('ADMIN_IDS_LEGACY')),
-            'users': FacebookUserManager()
-        }
-
-        app.user_manager = UnifiedUserManager()
-        app.user_manager.register_manager('facebook', app.bot_interfaces['facebook']['users'])
-
-        app.messenger = app.bot_interfaces['facebook']['messenger']
-        app.komidabot = app.bot = Komidabot(app)  # TODO: Deprecate app.komidabot?
-        app.conversations = ConversationManager()
-
-        # TODO: This could probably also be moved to the Komidabot class
-        app.task_executor = PyThreadPoolExecutor(max_workers=5)
-        atexit.register(PyThreadPoolExecutor.shutdown, app.task_executor)  # Ensure cleanup of resources
-
-        app.user_manager.initialise()
+        # noinspection PyCallByClass,PyTypeChecker
+        KomidabotApp.__init__(app, app.config)
 
     return app

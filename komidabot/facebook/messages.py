@@ -1,4 +1,4 @@
-from flask import current_app as app
+from komidabot.app import get_app
 
 import komidabot.facebook.users as facebook_users
 import komidabot.messages as messages
@@ -30,6 +30,6 @@ class MessageHandler(messages.MessageHandler):
             'messaging_type': TYPE_REPLY if isinstance(message.trigger, triggers.UserTextTrigger) else TYPE_SUBSCRIPTION
         }
 
-        return app.bot_interfaces['facebook']['api_interface'].post_send_api(data)
+        return get_app().bot_interfaces['facebook']['api_interface'].post_send_api(data)
 
 # TODO: Batch requests

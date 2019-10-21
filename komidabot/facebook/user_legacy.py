@@ -1,6 +1,6 @@
 from abc import ABC
 
-from flask import current_app as app
+from komidabot.app import get_app
 
 from komidabot.message_receiver import MessageReceiver
 import komidabot.models as models
@@ -13,10 +13,10 @@ class User(MessageReceiver, ABC):
 
     def send_message(self, message):
         message.recipient = self.user_id
-        return app.messenger.send_message(message)
+        return get_app().messenger.send_message(message)
 
     def is_admin(self):
-        return app.messenger.is_admin(self.user_id)
+        return get_app().messenger.is_admin(self.user_id)
 
     def get_locale(self):
         user = models.AppUser.find_by_facebook_id(self.user_id)
@@ -24,7 +24,7 @@ class User(MessageReceiver, ABC):
             if user.language:
                 return user.language
         if self._locale is None:
-            self._locale = app.messenger.lookup_locale(self.user_id)
+            self._locale = get_app().messenger.lookup_locale(self.user_id)
         return self._locale
 
     def get_id(self):

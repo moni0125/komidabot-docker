@@ -1,3 +1,5 @@
+# TODO: Deprecated
+
 import enum
 
 from komidabot.conversation import *

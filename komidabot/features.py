@@ -95,3 +95,5 @@ def update_active_features():
             feature.obj.description = feature.feat.description
 
     db.session.commit()
+
+    print('Done updating active features', flush=True)

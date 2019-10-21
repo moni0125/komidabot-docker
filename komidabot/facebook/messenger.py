@@ -2,11 +2,11 @@ import json, requests, threading
 from typing import List
 from cachetools import cached, TTLCache
 
-from flask import current_app as app
+from komidabot.app import get_app
 
 from komidabot.facebook.message_sender import MessageSender
 from komidabot.facebook.message import Message
-from komidabot.conversation import MessageReceiver
+from komidabot.message_receiver import MessageReceiver
 from komidabot.util import check_exceptions
 
 TYPE_REPLY = 'RESPONSE'
@@ -26,7 +26,7 @@ class Messenger:
 
     @check_exceptions
     def send_message(self, message: 'Message'):
-        return app.bot_interfaces['facebook']['api_interface'].post_send_api(message.get_data())
+        return get_app().bot_interfaces['facebook']['api_interface'].post_send_api(message.get_data())
 
     @staticmethod
     def multicast_message(message: 'Message', recipients: List[MessageReceiver]):
@@ -39,7 +39,7 @@ class Messenger:
 
     @check_exceptions
     def mark_read(self, sender: MessageSender):
-        return app.bot_interfaces['facebook']['api_interface'].post_send_api({
+        return get_app().bot_interfaces['facebook']['api_interface'].post_send_api({
             'recipient': {'id': sender.user_id},
             'sender_action': 'mark_seen'
         })
@@ -47,7 +47,7 @@ class Messenger:
     def is_admin(self, user_id):
         return user_id in self.admin_ids
 
-    @check_exceptions # TODO: Properly handle errors
+    @check_exceptions  # TODO: Properly handle errors
     @cached(cache=TTLCache(maxsize=64, ttl=300), lock=threading.Lock())
     def lookup_locale(self, user_id):
         response = self.session.get(self.base_endpoint + user_id, params=self.locale_parameters)

@@ -1,4 +1,4 @@
-from flask import current_app as app
+from komidabot.app import get_app
 
 from komidabot.facebook.message import TextMessage
 from komidabot.facebook.user_legacy import User
@@ -12,7 +12,7 @@ class MessageSender(User):
         return self.send_message(TextMessage(self.user_id, True, message))
 
     def mark_seen(self):
-        return app.messenger.mark_read(self)
+        return get_app().messenger.mark_read(self)
 
     def __repr__(self):
         return 'MessageSender({})'.format(repr(self.user_id))
