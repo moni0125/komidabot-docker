@@ -331,6 +331,9 @@ class AppUser(db.Model):
         else:
             return None
 
+    def get_subscription(self, day: Day) -> 'Optional[UserSubscription]':
+        return UserSubscription.get_for_user(self, day)
+
     def set_language(self, language: str):
         self.language = language
 

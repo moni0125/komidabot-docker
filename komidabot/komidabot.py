@@ -205,12 +205,16 @@ class Komidabot(Bot):
 
                 for user in subscribed_users:
                     if not user.is_feature_active('menu_subscription'):
-                        print('User {} not eligible for subscription'.format(user.id), flush=True)
+                        # print('User {} not eligible for subscription'.format(user.id), flush=True)
                         continue
 
-                    campus = user.get_campus_for_day(date)
-                    if campus is None:
+                    subscription = user.get_subscription_for_day(date)
+                    if subscription is None:
                         continue
+                    if not subscription.active:
+                        continue
+
+                    campus = subscription.campus
 
                     language = user.get_locale() or 'nl_BE'
 
