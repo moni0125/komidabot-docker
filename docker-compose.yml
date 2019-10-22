@@ -2,14 +2,34 @@ version: '3.7'
 
 services:
 
-  komidabot-dev-db:
-    image: postgres:alpine
+  komidabot-db:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
     restart: on-failure
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: komidabot-dev
     volumes:
-      - pgdata-dev:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+
+  komidabot-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: "no"
+    stop_signal: SIGINT
+    environment:
+      POSTGRES_HOST: komidabot-db
+      POSTGRES_USER: postgres
+      POSTGRES_DB: komidabot_prod
+      APP_SETTINGS: config.DevelopmentConfig
+      FLASK_ENV: production
+    env_file:
+      - config-prod.env
+    ports:
+      - 5000:5000
+    depends_on:
+      - komidabot-db
 
   komidabot-dev:
     build:
@@ -18,10 +38,10 @@ services:
     restart: "no"
     stop_signal: SIGINT
     environment:
-      POSTGRES_HOST: komidabot-dev-db
+      POSTGRES_HOST: komidabot-db
       POSTGRES_USER: postgres
-      POSTGRES_DB: komidabot-dev
-      APP_SETTINGS: config.Config
+      POSTGRES_DB: komidabot_dev
+      APP_SETTINGS: config.ProductionConfig
       FLASK_ENV: development
     volumes:
       - .:/usr/src/app
@@ -30,8 +50,8 @@ services:
     ports:
       - 5001:5000
     depends_on:
-      - komidabot-dev-db
+      - komidabot-db
 
 volumes:
-  pgdata-dev:
+  pgdata:
     driver: local
