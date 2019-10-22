@@ -9,6 +9,7 @@ from apscheduler.triggers.cron import CronTrigger
 from komidabot.app import get_app
 
 from komidabot.bot import Bot, ReceivedTextMessage
+# from komidabot.conversations.single_message_conversation import SingleMessageConversation
 from komidabot.facebook.messenger import MessageSender
 import komidabot.facebook.nlp_dates as nlp_dates
 import komidabot.menu
@@ -126,6 +127,7 @@ class Komidabot(Bot):
 
     def trigger_received(self, trigger: triggers.Trigger):
         with self.lock:  # TODO: Maybe only lock on critical sections?
+            app = get_app()
             print('Komidabot received a trigger: {}'.format(type(trigger).__name__), flush=True)
 
             if isinstance(trigger, triggers.UserTrigger):
@@ -137,7 +139,7 @@ class Komidabot(Bot):
                     if text == 'setup':
                         recreate_db()
                         create_standard_values()
-                        import_dump(get_app().config['DUMP_FILE'])
+                        import_dump(app.config['DUMP_FILE'])
                         sender.send_message(messages.TextMessage(trigger, 'Setup done'))
                         return
                     elif text == 'update':
@@ -146,6 +148,9 @@ class Komidabot(Bot):
                         sender.send_message(messages.TextMessage(trigger, 'Done updating menus...'))
                         return
                     elif text == 'psid':  # TODO: Deprecated?
+                        # message = messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id))
+                        # app.conversations.initiate_conversation(SingleMessageConversation, sender, message,
+                        #                                         notify=False)
                         sender.send_message(messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
                         return
 

@@ -54,6 +54,15 @@ class User:  # TODO: This probably needs more methods
 
         return user.get_campus(day)
 
+    def get_subscription_for_day(self, date: datetime.date) -> 'Optional[models.UserSubscription]':
+        user = self.get_db_user()
+        if user is None:
+            return None
+
+        day = models.Day(date.isoweekday())
+
+        return user.get_subscription(day)
+
     def is_admin(self):
         user_id = self.id
         return user_id in get_app().config.get('ADMIN_IDS', [])
