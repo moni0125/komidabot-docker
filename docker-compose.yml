@@ -22,7 +22,7 @@ services:
       POSTGRES_HOST: komidabot-db
       POSTGRES_USER: postgres
       POSTGRES_DB: komidabot_prod
-      APP_SETTINGS: config.DevelopmentConfig
+      APP_SETTINGS: config.ProductionConfig
       FLASK_ENV: production
     env_file:
       - config-prod.env
@@ -41,7 +41,7 @@ services:
       POSTGRES_HOST: komidabot-db
       POSTGRES_USER: postgres
       POSTGRES_DB: komidabot_dev
-      APP_SETTINGS: config.ProductionConfig
+      APP_SETTINGS: config.DevelopmentConfig
       FLASK_ENV: development
     volumes:
       - .:/usr/src/app
