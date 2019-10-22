@@ -27,7 +27,8 @@ def _get_postgres_uri(host, user, password, db):
 
 class BaseConfig:
     """Base configuration"""
-    TESTING = int(os.getenv('TESTING', '0')) != 0
+    TESTING = False
+    PRODUCTION = False
     DISABLED = int(os.getenv('DISABLED', '0')) != 0
     DUMP_FILE = os.getenv('DUMP_FILE')
 
@@ -43,6 +44,7 @@ class BaseConfig:
 
 class ProductionConfig(BaseConfig):
     """Production configuration"""
+    PRODUCTION = True
     SQLALCHEMY_DATABASE_URI = _get_postgres_uri(POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, 'komidabot_prod')
 
 

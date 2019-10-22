@@ -34,6 +34,10 @@ def handle_verification():
 def validate_signature(func):
     @wraps(func)
     def decorated_func(*args, **kwargs):
+        if get_app().config['TESTING']:
+            # Skip validating signature if we're testing
+            return func(*args, **kwargs)
+
         advertised = request.headers.get("X-Hub-Signature")
         if advertised is None:
             return False
@@ -80,7 +84,8 @@ def handle_message():
                     if user.is_feature_active('new_messaging'):
                         app.task_executor.submit(_do_handle_message, event, user, app._get_current_object())
                     else:
-                        app.task_executor.submit(_do_handle_message_legacy, event, sender_obj, app._get_current_object())
+                        app.task_executor.submit(_do_handle_message_legacy, event, sender_obj,
+                                                 app._get_current_object())
 
                 return 'ok', 200
 
