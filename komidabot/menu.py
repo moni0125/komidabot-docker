@@ -33,7 +33,7 @@ def prepare_menu_text(campus: Campus, day: datetime.date, locale: str) -> 'Optio
             translation = item.get_translation(locale, translate_item)
             result.append('{} {} ({} / {})'.format(food_type_icons[item.food_type], translation.translation,
                                                    item.price_students, item.price_staff))
-    except:
+    except Exception:
         print('Failed translating to {}'.format(locale), flush=True)
         raise
 

@@ -244,6 +244,8 @@ class Komidabot(Bot):
 
     # noinspection PyMethodMayBeStatic
     def update_menus(self, initiator: 'Optional[MessageSender]'):
+        session = db.session  # FIXME: Create new session
+
         # TODO: Store a hash of the source file for each menu to check for changes
         campus_list = Campus.get_active()
 
@@ -264,9 +266,9 @@ class Komidabot(Bot):
                 menu = Menu.get_menu(campus, date)
 
                 if menu is not None:
-                    menu.delete(commit=False)
+                    menu.delete(session=session)
 
-                menu = Menu.create(campus, date, commit=False)
+                menu = Menu.create(campus, date, session=session)
 
                 day_menu: List[ParseResult] = [result for result in parse_result.parse_results
                                                if result.day.value == date.isoweekday()
@@ -287,7 +289,7 @@ class Komidabot(Bot):
                     if prices is None:
                         continue  # No price parsed
 
-                    translatable, translation = Translatable.get_or_create(item.name, 'nl_NL', commit=False)
+                    translatable, translation = Translatable.get_or_create(item.name, 'nl_NL', session=session)
                     if item.food_type == FrameFoodType.SOUP:
                         food_type = FoodType.SOUP
                     elif item.food_type == FrameFoodType.VEGAN:
@@ -301,7 +303,7 @@ class Komidabot(Bot):
 
                     print((translatable, food_type, prices[0], prices[1]), flush=True)
 
-                    menu.add_menu_item(translatable, food_type, prices[0], prices[1], commit=False)
+                    menu.add_menu_item(translatable, food_type, prices[0], prices[1], session=session)
 
             db.session.commit()
 
