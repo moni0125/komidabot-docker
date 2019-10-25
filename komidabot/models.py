@@ -377,6 +377,14 @@ class AppUser(db.Model):
         else:
             return AppUser.query.all()
 
+    @staticmethod
+    def find_subscribed_users_by_day(day: Day, provider=None) -> 'List[AppUser]':
+        q = AppUser.query
+        if provider:
+            q = q.filter_by(provider=provider)
+
+        return q.join(AppUser.subscriptions).filter(UserSubscription.day == day, UserSubscription.active == True).all()
+
     # FIXME: Deprecated
     @staticmethod
     def find_by_facebook_id(facebook_id: str) -> 'Optional[AppUser]':
@@ -385,6 +393,10 @@ class AppUser(db.Model):
     @staticmethod
     def find_by_id(provider: str, internal_id: str) -> 'Optional[AppUser]':
         return AppUser.query.filter_by(provider=provider, internal_id=internal_id).first()
+
+    @staticmethod
+    def find_by_provider(provider: str) -> 'List[AppUser]':
+        return AppUser.query.filter_by(provider=provider).all()
 
     def __hash__(self):
         return hash(self.id)

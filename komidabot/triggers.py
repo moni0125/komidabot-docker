@@ -1,3 +1,4 @@
+import datetime
 from typing import List
 
 from komidabot.messages import Trigger
@@ -15,7 +16,9 @@ class NLPAttribute:
 
 
 class SubscriptionTrigger(Trigger):
-    pass
+    def __init__(self, date: datetime.date = None):
+        Trigger.__init__(self)
+        self.date = date
 
 
 class TextTrigger(Trigger):

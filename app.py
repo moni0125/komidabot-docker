@@ -43,6 +43,12 @@ def create_app(script_info: ScriptInfo = None):
         # Don't initialise anything if run from the CLI
         return app
 
+    if app.config['TESTING']:
+        # noinspection PyCallByClass,PyTypeChecker
+        KomidabotApp.__init__(app, app.config)
+
+        return app
+
     if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
         if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
             print(" * Worker processes PID: {}".format(os.getpid()), flush=True)

@@ -202,11 +202,14 @@ class Komidabot(Bot):
                 # END DEPRECATED CODE
 
             if isinstance(trigger, triggers.SubscriptionTrigger):
-                user_manager = get_app().user_manager  # type: users.UserManager
-                subscribed_users = user_manager.get_subscribed_users()
-                subscriptions = dict()  # type: Dict[Campus, Dict[str, List[users.User]]]
+                date = trigger.date or datetime.datetime.now().date()
+                day = Day(date.isoweekday())
 
-                date = datetime.datetime.now().date()
+                # print('Sending out subscription for {} ({})'.format(date, day.name), flush=True)
+
+                user_manager = get_app().user_manager  # type: users.UserManager
+                subscribed_users = user_manager.get_subscribed_users(day)
+                subscriptions = dict()  # type: Dict[Campus, Dict[str, List[users.User]]]
 
                 for user in subscribed_users:
                     if not user.is_feature_active('menu_subscription'):
@@ -233,13 +236,15 @@ class Komidabot(Bot):
 
                 for campus, languages in subscriptions.items():
                     for language, sub_users in languages.items():
+                        # print('Preparing menu for {} in {}'.format(campus.short_name, language), flush=True)
+
                         menu = komidabot.menu.prepare_menu_text(campus, date, language)
                         if menu is None:
                             continue
 
                         for user in sub_users:
-                            print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
-                                  flush=True)
+                            # print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
+                            #       flush=True)
                             user.send_message(messages.TextMessage(trigger, menu))
 
     # noinspection PyMethodMayBeStatic

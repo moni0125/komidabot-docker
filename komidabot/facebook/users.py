@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from komidabot.facebook.messages import MessageHandler as FBMessageHandler
 import komidabot.messages as messages
@@ -13,20 +13,22 @@ class UserManager(users.UserManager):
     def __init__(self):
         self.message_handler = FBMessageHandler()
 
-    def get_user(self, user_id: users.UserId, **kwargs) -> 'User':
-        if user_id.provider != PROVIDER_ID:
+    def get_user(self, user: 'Union[users.UserId, models.AppUser]', **kwargs) -> 'User':
+        if isinstance(user, models.AppUser):
+            return User(self, user.internal_id)
+
+        if user.provider != PROVIDER_ID:
             raise ValueError('User id is not for Facebook')
 
         # TODO: This probably could use more checks or something
         # TODO: For example, check if there is a subscription
-        return User(self, user_id.id)
-
-    def get_subscribed_users(self):
-        # FIXME: Use days
-        return [User(self, sub.internal_id) for sub in models.AppUser.find_active(provider=PROVIDER_ID)]
+        return User(self, user.id)
 
     def initialise(self):
         pass  # TODO: Setup welcome screen and persistent menu
+
+    def get_identifier(self):
+        return PROVIDER_ID
 
 
 class User(users.User):

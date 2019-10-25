@@ -1,7 +1,7 @@
 from collections import namedtuple
 import datetime
 import functools
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 from komidabot.app import get_app
 
@@ -12,14 +12,19 @@ UserId = namedtuple('UserId', ['id', 'provider'])
 
 
 class UserManager:  # TODO: This probably could use more methods
-    def get_user(self, user_id: UserId, **kwargs) -> 'User':
+    def get_user(self, user: 'Union[UserId, models.AppUser]', **kwargs) -> 'User':
         raise NotImplementedError()
 
-    def get_subscribed_users(self) -> 'List[User]':
-        # FIXME: Use days
-        raise NotImplementedError()
+    def get_subscribed_users(self, day: models.Day) -> 'List[User]':
+        identifier = self.get_identifier()
+        users = models.AppUser.find_subscribed_users_by_day(day, provider=identifier)
+
+        return [self.get_user(UserId(user.internal_id, identifier)) for user in users]
 
     def initialise(self):
+        raise NotImplementedError()
+
+    def get_identifier(self) -> str:
         raise NotImplementedError()
 
 
@@ -100,16 +105,19 @@ class UnifiedUserManager(UserManager):
 
         self._managers[provider] = manager
 
-    def get_user(self, user_id: UserId, **kwargs) -> 'User':
-        if user_id.provider not in self._managers:
+    def get_user(self, user: 'Union[UserId, models.AppUser]', **kwargs) -> 'User':
+        if user.provider not in self._managers:
             raise ValueError('Unknown user provider')
 
-        return self._managers[user_id.provider].get_user(user_id, **kwargs)
+        return self._managers[user.provider].get_user(user, **kwargs)
 
-    def get_subscribed_users(self):
-        # FIXME: Use days
-        return functools.reduce(list.__add__, [manager.get_subscribed_users() for manager in self._managers.values()])
+    def get_subscribed_users(self, day: models.Day):
+        return functools.reduce(list.__add__,
+                                [manager.get_subscribed_users(day) for manager in self._managers.values()])
 
     def initialise(self):
         for manager in self._managers.values():
             manager.initialise()
+
+    def get_identifier(self):
+        return None
