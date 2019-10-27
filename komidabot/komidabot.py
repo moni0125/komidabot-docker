@@ -1,5 +1,5 @@
 import atexit, datetime, threading
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 from apscheduler.executors.pool import ThreadPoolExecutor
 from apscheduler.jobstores.memory import MemoryJobStore
@@ -261,7 +261,7 @@ class Komidabot(Bot):
                             user.send_message(messages.TextMessage(trigger, menu))
 
     # noinspection PyMethodMayBeStatic
-    def update_menus(self, initiator: 'Optional[MessageSender]'):
+    def update_menus(self, initiator: 'Optional[Union[MessageSender, triggers.Trigger]]'):
         session = db.session  # FIXME: Create new session
 
         # TODO: Store a hash of the source file for each menu to check for changes
@@ -271,6 +271,15 @@ class Komidabot(Bot):
             scraper = MenuScraper(campus)
 
             scraper.find_pdf_location()
+
+            if not scraper.pdf_location:
+                message = 'No menu has been found for {}'.format(campus.short_name.lower())
+                if isinstance(initiator, MessageSender):
+                    initiator.send_text_message(message)
+                    pass
+                elif isinstance(initiator, triggers.UserTrigger):
+                    initiator.sender.send_message(messages.TextMessage(initiator, message))
+                continue
 
             # initiator.send_text_message('Campus {}\n{}'.format(campus.name, scraper.pdf_location))
 
