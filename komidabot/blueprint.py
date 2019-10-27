@@ -156,10 +156,7 @@ def _do_handle_message(event, user: User, app):
 
                 # sender_obj.send_text_message(localisation.ERROR_NOT_IMPLEMENTED(sender_obj.get_locale()))
         except Exception as e:
-            user.send_message(TextMessage(trigger,
-                                          'An error occured while trying to perform your request, sorry about that'))
-            # user.send_message(TextMessage(trigger, 'oepsie woepsie! de bot is stukkie wukkie! we sijn heul hard '
-            #                                        'aan t werk om dit te make mss kan je beter self kijken  owo'))
+            user.send_message(TextMessage(trigger, localisation.INTERNAL_ERROR(user.get_locale())))
             app.logger.exception(e)
             # traceback.print_tb(e.__traceback__)
             # print(e, flush=True, file=sys.stderr)
@@ -228,9 +225,7 @@ def _do_handle_message_legacy(event, sender_obj: LegacyMessageSender, app):
             try:
                 komidabot.message_received_legacy(message_obj)
             except Exception as e:
-                sender_obj.send_text_message('An error occured while trying to perform your request, sorry about that')
-                # sender_obj.send_text_message('oepsie woepsie! de bot is stukkie wukkie! we sijn heul hard '
-                #                              'aan t werk om dit te make mss kan je beter self kijken  owo')
+                sender_obj.send_text_message(localisation.INTERNAL_ERROR(sender_obj.get_locale()))
                 app.logger.exception(e)
                 # traceback.print_tb(e.__traceback__)
                 # print(e, flush=True, file=sys.stderr)

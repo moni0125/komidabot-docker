@@ -1,3 +1,6 @@
+import random
+
+
 def localisation_definition(name, obj, fallback='en_US'):
     for key, value in obj.copy().items():
         if isinstance(key, tuple):
@@ -7,8 +10,14 @@ def localisation_definition(name, obj, fallback='en_US'):
 
     def wrapper(locale):
         if locale is None:
-            return obj[fallback]
-        return obj[locale] if locale in obj else obj[fallback]
+            result = obj[fallback]
+        else:
+            result = obj[locale] if locale in obj else obj[fallback]
+
+        if callable(result):
+            return result()
+        else:
+            return result
 
     wrapper.__name__ = name
 
@@ -17,6 +26,21 @@ def localisation_definition(name, obj, fallback='en_US'):
 
 # Supported locales:
 #   https://developers.facebook.com/docs/messenger-platform/messenger-profile/supported-locales
+
+INTERNAL_ERROR = localisation_definition('INTERNAL_ERROR', {
+    ('en_US', 'en_GB'): 'An unexpected error occured while trying to perform your request',
+    ('nl_BE', 'nl_NL'):
+        lambda:
+        'oepsie woepsie! de bot is stukkie wukkie! we sijn heul hard '
+        'aan t werk om dit te make mss kan je beter self kijken  owo'
+        if random.randint(0, 100) == 0 else
+        'Een onverwachte fout gebeurde tijdens het uitvoeren van uw verzoek',
+})
+
+# INTERNAL_ERROR = localisation_definition('INTERNAL_ERROR', {
+#     ('en_US', 'en_GB'): 'An unexpected error occured while trying to perform your request',
+#     ('nl_BE', 'nl_NL'): 'Een onverwachte fout gebeurde tijdens het uitvoeren van uw verzoek',
+# })
 
 ERROR_TEXT_ONLY = localisation_definition('ERROR_TEXT_ONLY', {
     ('en_US', 'en_GB'): 'Sorry, I only understand text messages',
