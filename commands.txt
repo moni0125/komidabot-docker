@@ -1,9 +1,9 @@
 
-Create backup of production database manually:
-docker run --rm --volumes-from komidabot-docker_komidabot-db_1 -v $(pwd):/backup ubuntu tar czf /backup/backup.tgz /var/lib/postgresql/data
+Create a new migration script after a schema change:
 
-Restore the backup:
-docker run --rm --volumes-from komidabot-docker_komidabot-db_1 -v $(pwd):/backup ubuntu bash -c "cd /var/lib/postgresql/data && tar xzf /backup/backup.tgz --strip 4"
+docker-compose exec komidabot-dev flask db migrate
 
-Or apply it to the dev bot:
-docker run --rm --volumes-from komidabot-docker_komidabot-dev-db_1 -v $(pwd):/backup ubuntu bash -c "cd /var/lib/postgresql/data && tar xzf /backup/backup.tgz --strip 4"
+
+Run tests:
+
+docker-compose exec komidabot-dev python manage.py test

@@ -19,7 +19,7 @@ import komidabot.messages as messages
 import komidabot.triggers as triggers
 import komidabot.users as users
 
-from komidabot.models import Campus, Day, FoodType, Menu, AppUser, Translatable
+from komidabot.models import Campus, ClosingDays, Day, FoodType, Menu, AppUser, Translatable
 from komidabot.models import create_standard_values, import_dump, recreate_db
 
 from extensions import db
@@ -124,6 +124,17 @@ class Komidabot(Bot):
                 else:
                     campus = requested_campuses[0]
 
+                closed = ClosingDays.find_is_closed(campus, date)
+
+                if closed:
+                    translation = closed.translatable.get_translation(message.sender.get_locale(),
+                                                                      komidabot.menu.translate_item)
+
+                    message.sender.send_text_message(localisation.ERROR_NO_MENU(message.sender.get_locale())
+                                                     .format(campus.short_name.upper(), str(date)))
+                    message.sender.send_text_message(translation.translation)
+                    return
+
                 menu = komidabot.menu.prepare_menu_text(campus, date, message.sender.get_locale() or 'nl_BE')
 
                 if menu is None:
@@ -205,6 +216,17 @@ class Komidabot(Bot):
                 else:
                     campus = requested_campuses[0]
 
+                closed = ClosingDays.find_is_closed(campus, date)
+
+                if closed:
+                    translation = closed.translatable.get_translation(sender.get_locale(),
+                                                                      komidabot.menu.translate_item)
+
+                    sender.send_message(messages.TextMessage(trigger, localisation.ERROR_NO_MENU(sender.get_locale())
+                                                             .format(campus.short_name.upper(), str(date))))
+                    sender.send_message(messages.TextMessage(trigger, translation.translation))
+                    return
+
                 menu = komidabot.menu.prepare_menu_text(campus, date, sender.get_locale() or 'nl_BE')
 
                 if menu is None:
@@ -212,6 +234,8 @@ class Komidabot(Bot):
                                                              .format(campus.short_name.upper(), str(date))))
                 else:
                     sender.send_message(messages.TextMessage(trigger, menu))
+
+                return
                 # END DEPRECATED CODE
 
             if isinstance(trigger, triggers.SubscriptionTrigger):
@@ -273,7 +297,7 @@ class Komidabot(Bot):
             scraper.find_pdf_location()
 
             if not scraper.pdf_location:
-                message = 'No menu has been found for {}'.format(campus.short_name.lower())
+                message = 'No menu has been found for {}'.format(campus.short_name.upper())
                 if isinstance(initiator, MessageSender):
                     initiator.send_text_message(message)
                     pass

@@ -48,6 +48,7 @@ class Campus(db.Model):
     page_url = db.Column(db.Text(), default='', nullable=False)
 
     menus = db.relationship('Menu', backref='campus', passive_deletes=True)
+    closing_days = db.relationship('ClosingDays', backref='campus', passive_deletes=True)
     subscriptions = db.relationship('UserSubscription', backref='campus', passive_deletes=True)
 
     def __init__(self, name: str, short_name: str):
@@ -102,7 +103,43 @@ class Campus(db.Model):
         return hash(self.id)
 
 
-# TODO: Probably some way of storing when a restaurant is closed (holidays, vacation, etc.)
+class ClosingDays(db.Model):
+    __tablename__ = 'closing_days'
+
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    campus_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
+    first_day = db.Column(db.Date(), nullable=False)
+    last_day = db.Column(db.Date(), nullable=False)
+    translatable_id = db.Column(db.Integer(), db.ForeignKey('translatable.id', onupdate='CASCADE', ondelete='RESTRICT'),
+                                nullable=False)
+
+    def __init__(self, campus: Campus, first_day: datetime.date, last_day: datetime.date, translatable: 'Translatable'):
+        self.campus = campus
+        self.first_day = first_day
+        self.last_day = last_day
+        self.translatable = translatable
+
+    @staticmethod
+    def create(campus: Campus, first_day: datetime.date, last_day: datetime.date, reason: str, language: str,
+               session=None) -> 'ClosingDays':
+        translatable, translation = Translatable.get_or_create(reason, language, session=session)
+
+        result = ClosingDays(campus, first_day, last_day, translatable)
+
+        if session is not None:
+            session.add(result)
+        else:
+            db.session.add(result)
+            db.session.commit()
+
+        return result
+
+    @staticmethod
+    def find_is_closed(campus: Campus, day: datetime.date) -> 'Optional[ClosingDays]':
+        return ClosingDays.query.filter(db.and_(ClosingDays.campus_id == campus.id,
+                                                ClosingDays.first_day >= day,
+                                                ClosingDays.last_day <= day
+                                                )).first()
 
 
 class Translatable(db.Model):
@@ -114,6 +151,7 @@ class Translatable(db.Model):
 
     translations = db.relationship('Translation', backref='translatable', passive_deletes=True)
     menu_items = db.relationship('MenuItem', backref='translatable')
+    closing_days = db.relationship('ClosingDays', backref='translatable')
 
     def __init__(self, text: str, language: str):
         self.original_language = language
@@ -160,7 +198,7 @@ class Translatable(db.Model):
     def get_by_id(translatable_id) -> 'Optional[Translatable]':
         return Translatable.query.filter_by(id=translatable_id).first()
 
-    def get_translation(self, language: str, translator: 'Callable[[str, str, str], str]') -> 'Translatable':
+    def get_translation(self, language: str, translator: 'Callable[[str, str, str], str]') -> 'Translation':
         translation = Translation.query.filter_by(translatable_id=self.id, language=language).first()
 
         if translation is None:
