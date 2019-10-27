@@ -127,8 +127,7 @@ class Komidabot(Bot):
                 closed = ClosingDays.find_is_closed(campus, date)
 
                 if closed:
-                    translation = closed.translatable.get_translation(message.sender.get_locale(),
-                                                                      komidabot.menu.translate_item)
+                    translation = komidabot.menu.get_translated_text(closed.translatable, message.sender.get_locale())
 
                     message.sender.send_text_message(localisation.ERROR_NO_MENU(message.sender.get_locale())
                                                      .format(campus.short_name.upper(), str(date)))
@@ -219,8 +218,7 @@ class Komidabot(Bot):
                 closed = ClosingDays.find_is_closed(campus, date)
 
                 if closed:
-                    translation = closed.translatable.get_translation(sender.get_locale(),
-                                                                      komidabot.menu.translate_item)
+                    translation = komidabot.menu.get_translated_text(closed.translatable, sender.get_locale())
 
                     sender.send_message(messages.TextMessage(trigger, localisation.ERROR_NO_MENU(sender.get_locale())
                                                              .format(campus.short_name.upper(), str(date))))
