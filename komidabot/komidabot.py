@@ -92,8 +92,8 @@ class Komidabot(Bot):
             if len(dates) == 0:
                 dates.append(datetime.datetime.now().date())
 
-            if len(dates) > 3:
-                message.sender.send_text_message('Sorry, please ask for at most 3 days')
+            if len(dates) > 1:
+                message.sender.send_text_message('Sorry, please request only a single day')
                 return
 
             campuses = Campus.get_active()
@@ -106,21 +106,27 @@ class Komidabot(Bot):
             user = AppUser.find_by_facebook_id(message.sender.get_id())
 
             for date in dates:
+                day = Day(date.isoweekday())
+
+                if day == Day.SATURDAY or day == Day.SUNDAY:
+                    message.sender.send_text_message('Sorry, there are no menus on Saturdays and Sundays')
+                    continue
+
                 if len(requested_campuses) == 0:
                     if user is not None:
-                        campus = user.get_campus(Day(date.isoweekday()))
+                        campus = user.get_campus(day)
                     if campus is None:
                         campus = Campus.get_by_short_name('cmi')
                 elif len(requested_campuses) > 1:
                     message.sender.send_text_message('Sorry, please only ask for a single campus at a time')
-                    return
+                    continue
                 else:
                     campus = requested_campuses[0]
 
                 menu = komidabot.menu.prepare_menu_text(campus, date, message.sender.get_locale() or 'nl_BE')
 
                 if menu is None:
-                    message.sender.send_text_message('Sorry, no menu has been found for {} on {}'
+                    message.sender.send_text_message('Sorry, no menu is available for {} on {}'
                                                      .format(campus.short_name.upper(), str(date)))
                 else:
                     message.sender.send_text_message(menu)
@@ -174,6 +180,13 @@ class Komidabot(Bot):
                 if date is None:
                     date = datetime.datetime.now().date()
 
+                day = Day(date.isoweekday())
+
+                if day == Day.SATURDAY or day == Day.SUNDAY:
+                    sender.send_message(messages.TextMessage(trigger,
+                                                             'Sorry, there are no menus on Saturdays and Sundays'))
+                    return
+
                 campuses = Campus.get_active()
                 requested_campuses = []
 
@@ -195,7 +208,7 @@ class Komidabot(Bot):
                 menu = komidabot.menu.prepare_menu_text(campus, date, sender.get_locale() or 'nl_BE')
 
                 if menu is None:
-                    sender.send_message(messages.TextMessage(trigger, 'Sorry, no menu has been found for {} on {}'
+                    sender.send_message(messages.TextMessage(trigger, 'Sorry, no menu is available for {} on {}'
                                                              .format(campus.short_name.upper(), str(date))))
                 else:
                     sender.send_message(messages.TextMessage(trigger, menu))
