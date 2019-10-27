@@ -12,6 +12,7 @@ from komidabot.bot import Bot, ReceivedTextMessage
 # from komidabot.conversations.single_message_conversation import SingleMessageConversation
 from komidabot.facebook.messenger import MessageSender
 import komidabot.facebook.nlp_dates as nlp_dates
+import komidabot.localisation as localisation
 import komidabot.menu
 from komidabot.menu_scraper import FrameDay, FrameFoodType, MenuScraper, ParseResult, parse_price
 import komidabot.messages as messages
@@ -109,7 +110,7 @@ class Komidabot(Bot):
                 day = Day(date.isoweekday())
 
                 if day == Day.SATURDAY or day == Day.SUNDAY:
-                    message.sender.send_text_message('Sorry, there are no menus on Saturdays and Sundays')
+                    message.sender.send_text_message(localisation.ERROR_WEEKEND(message.sender.get_locale()))
                     continue
 
                 if len(requested_campuses) == 0:
@@ -126,7 +127,7 @@ class Komidabot(Bot):
                 menu = komidabot.menu.prepare_menu_text(campus, date, message.sender.get_locale() or 'nl_BE')
 
                 if menu is None:
-                    message.sender.send_text_message('Sorry, no menu is available for {} on {}'
+                    message.sender.send_text_message(localisation.ERROR_NO_MENU(message.sender.get_locale())
                                                      .format(campus.short_name.upper(), str(date)))
                 else:
                     message.sender.send_text_message(menu)
@@ -183,8 +184,7 @@ class Komidabot(Bot):
                 day = Day(date.isoweekday())
 
                 if day == Day.SATURDAY or day == Day.SUNDAY:
-                    sender.send_message(messages.TextMessage(trigger,
-                                                             'Sorry, there are no menus on Saturdays and Sundays'))
+                    sender.send_message(messages.TextMessage(trigger, localisation.ERROR_WEEKEND(sender.get_locale())))
                     return
 
                 campuses = Campus.get_active()
@@ -208,7 +208,7 @@ class Komidabot(Bot):
                 menu = komidabot.menu.prepare_menu_text(campus, date, sender.get_locale() or 'nl_BE')
 
                 if menu is None:
-                    sender.send_message(messages.TextMessage(trigger, 'Sorry, no menu is available for {} on {}'
+                    sender.send_message(messages.TextMessage(trigger, localisation.ERROR_NO_MENU(sender.get_locale())
                                                              .format(campus.short_name.upper(), str(date))))
                 else:
                     sender.send_message(messages.TextMessage(trigger, menu))

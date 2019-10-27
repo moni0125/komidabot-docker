@@ -35,6 +35,16 @@ ERROR_POSTBACK = localisation_definition('ERROR_POSTBACK', {
                         'Gelieve het tekstvak te gebruiken voor uw vraag.',
 })
 
+ERROR_NO_MENU = localisation_definition('ERROR_NO_MENU', {
+    ('en_US', 'en_GB'): 'Sorry, no menu is available for {} on {}',
+    ('nl_BE', 'nl_NL'): 'Sorry, er is geen menu beschikbaar voor {} op {}',
+})
+
+ERROR_WEEKEND = localisation_definition('ERROR_WEEKEND', {
+    ('en_US', 'en_GB'): 'Sorry, there are no menus on Saturdays and Sundays',
+    ('nl_BE', 'nl_NL'): 'Sorry, er zijn geen menus op zon- en zaterdagen',
+})
+
 DOWN_FOR_MAINTENANCE1 = localisation_definition('ERROR_TEXT_ONLY', {
     ('en_US', 'en_GB'): 'I am temporarily down for maintenance, please check back later',
     ('nl_BE', 'nl_NL'): 'Wegens onderhoud ben ik tijdelijk onbeschikbaar, probeer het later nog eens',
