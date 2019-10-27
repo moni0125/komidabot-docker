@@ -151,7 +151,7 @@ class Komidabot(Bot):
                         return
                     elif text == 'update':
                         sender.send_message(messages.TextMessage(trigger, 'Updating menus...'))
-                        self.update_menus(None)
+                        self.update_menus(trigger)
                         sender.send_message(messages.TextMessage(trigger, 'Done updating menus...'))
                         return
                     elif text == 'psid':  # TODO: Deprecated?
