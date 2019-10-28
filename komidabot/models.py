@@ -137,8 +137,8 @@ class ClosingDays(db.Model):
     @staticmethod
     def find_is_closed(campus: Campus, day: datetime.date) -> 'Optional[ClosingDays]':
         return ClosingDays.query.filter(db.and_(ClosingDays.campus_id == campus.id,
-                                                ClosingDays.first_day >= day,
-                                                ClosingDays.last_day <= day
+                                                ClosingDays.first_day <= day,
+                                                ClosingDays.last_day >= day
                                                 )).first()
 
 
@@ -199,6 +199,9 @@ class Translatable(db.Model):
         return Translatable.query.filter_by(id=translatable_id).first()
 
     def get_translation(self, language: str, translator: 'Callable[[str, str, str], str]') -> 'Translation':
+        if not language:
+            raise ValueError()
+
         translation = Translation.query.filter_by(translatable_id=self.id, language=language).first()
 
         if translation is None:
