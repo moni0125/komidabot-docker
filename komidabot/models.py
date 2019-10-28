@@ -14,6 +14,8 @@ class FoodType(enum.Enum):
     GRILL = 4
     PASTA_MEAT = 5
     PASTA_VEGAN = 6
+    SALAD = 7
+    SUB = 8
 
 
 food_type_icons = {
@@ -23,6 +25,8 @@ food_type_icons = {
     FoodType.GRILL: '🍖',
     FoodType.PASTA_MEAT: '🍝',
     FoodType.PASTA_VEGAN: '🍝',
+    FoodType.SALAD: '🥗',
+    FoodType.SUB: '🥖',
 }
 
 
