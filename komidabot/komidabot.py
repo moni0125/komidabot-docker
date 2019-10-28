@@ -9,7 +9,7 @@ from apscheduler.triggers.cron import CronTrigger
 from komidabot.app import get_app
 
 from komidabot.bot import Bot, ReceivedTextMessage
-# from komidabot.conversations.single_message_conversation import SingleMessageConversation
+from komidabot.conversations.single_message_conversation import SingleMessageConversation
 from komidabot.facebook.messenger import MessageSender
 import komidabot.facebook.nlp_dates as nlp_dates
 import komidabot.localisation as localisation
@@ -170,10 +170,10 @@ class Komidabot(Bot):
                         sender.send_message(messages.TextMessage(trigger, 'Done applying fixes...'))
                         return
                     elif text == 'psid':  # TODO: Deprecated?
-                        # message = messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id))
-                        # app.conversations.initiate_conversation(SingleMessageConversation, sender, message,
-                        #                                         notify=False)
-                        sender.send_message(messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
+                        message = messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id))
+                        app.conversations.initiate_conversation(SingleMessageConversation, sender, message,
+                                                                notify=False)
+                        # sender.send_message(messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
                         return
 
                 # FIXME: This code is an adapted copy of the old path and should be rewritten
@@ -370,4 +370,125 @@ def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument, se
 
 
 def apply_menu_fixes():
-    pass
+    session = db.session
+
+    # # Stadscampus
+    # campus = Campus.get_by_short_name('cst')
+    #
+    # # Monday
+    # menu = Menu.get_menu(campus, datetime.date(2019, 10, 28))
+    # menu.add_menu_item(Translatable.get_or_create('Kippenbrochette met portosaus', 'nl_NL', session=session)[0],
+    #                    FoodType.GRILL, '€5,20', '€6,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Steak met portosaus', 'nl_NL', session=session)[0],
+    #                    FoodType.GRILL, '€5,40', '€6,70', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta met vegetarische bolognaise', 'nl_NL', session=session)[0],
+    #                    FoodType.PASTA_VEGAN, '€3,80', '€4,70', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta met groene curry, gehaktballetjes en munt', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.PASTA_MEAT, '€3,80', '€4,70', session=session)
+    #
+    # # Tuesday
+    # menu = Menu.get_menu(campus, datetime.date(2019, 10, 29))
+    # menu.add_menu_item(Translatable.get_or_create('Kippenbrochette met portosaus', 'nl_NL', session=session)[0],
+    #                    FoodType.GRILL, '€5,20', '€6,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Steak met portosaus', 'nl_NL', session=session)[0],
+    #                    FoodType.GRILL, '€5,40', '€6,70', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta met vegetarische bolognaise', 'nl_NL', session=session)[0],
+    #                    FoodType.PASTA_VEGAN, '€3,80', '€4,70', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta met groene curry, gehaktballetjes en munt', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.PASTA_MEAT, '€3,80', '€4,70', session=session)
+    #
+    # # Wednesday
+    # menu = Menu.get_menu(campus, datetime.date(2019, 10, 30))
+    # menu.add_menu_item(Translatable.get_or_create('Kippenbrochette met portosaus', 'nl_NL', session=session)[0],
+    #                    FoodType.GRILL, '€5,20', '€6,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Steak met portosaus', 'nl_NL', session=session)[0],
+    #                    FoodType.GRILL, '€5,40', '€6,70', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta met vegetarische bolognaise', 'nl_NL', session=session)[0],
+    #                    FoodType.PASTA_VEGAN, '€3,80', '€4,70', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta met groene curry, gehaktballetjes en munt', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.PASTA_MEAT, '€3,80', '€4,70', session=session)
+    #
+    # # Thursday
+    # menu = Menu.get_menu(campus, datetime.date(2019, 10, 31))
+    # menu.add_menu_item(Translatable.get_or_create('Kippenbrochette met portosaus', 'nl_NL', session=session)[0],
+    #                    FoodType.GRILL, '€5,20', '€6,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Steak met portosaus', 'nl_NL', session=session)[0],
+    #                    FoodType.GRILL, '€5,40', '€6,70', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta met vegetarische bolognaise', 'nl_NL', session=session)[0],
+    #                    FoodType.PASTA_VEGAN, '€3,80', '€4,70', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta met groene curry, gehaktballetjes en munt', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.PASTA_MEAT, '€3,80', '€4,70', session=session)
+    #
+    # # Campus Drie Eiken
+    # campus = Campus.get_by_short_name('cde')
+    #
+    # # Monday
+    # menu = Menu.get_menu(campus, datetime.date(2019, 10, 28))
+    # menu.add_menu_item(Translatable.get_or_create('Pasta alfredo met spinazie', 'nl_NL', session=session)[0],
+    #                    FoodType.PASTA_VEGAN, '€3,60', '€4,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta ricotta met pikante salami', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
+    #
+    # # Tuesday
+    # menu = Menu.get_menu(campus, datetime.date(2019, 10, 29))
+    # menu.add_menu_item(Translatable.get_or_create('Pasta alfredo met spinazie', 'nl_NL', session=session)[0],
+    #                    FoodType.PASTA_VEGAN, '€3,60', '€4,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta ricotta met pikante salami', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
+    #
+    # # Wednesday
+    # menu = Menu.get_menu(campus, datetime.date(2019, 10, 30))
+    # menu.add_menu_item(Translatable.get_or_create('Pasta alfredo met spinazie', 'nl_NL', session=session)[0],
+    #                    FoodType.PASTA_VEGAN, '€3,60', '€4,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta ricotta met pikante salami', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
+    #
+    # # Thursday
+    # menu = Menu.get_menu(campus, datetime.date(2019, 10, 31))
+    # menu.add_menu_item(Translatable.get_or_create('Pasta alfredo met spinazie', 'nl_NL', session=session)[0],
+    #                    FoodType.PASTA_VEGAN, '€3,60', '€4,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta ricotta met pikante salami', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
+    #
+    # # Campus Middelheim
+    # campus = Campus.get_by_short_name('cmi')
+    #
+    # # Monday
+    # menu = Menu.get_menu(campus, datetime.date(2019, 10, 28))
+    # menu.add_menu_item(Translatable.get_or_create('Pasta met schorseneren in lookboter met ei, olijven en peultjes',
+    #                                               'nl_NL', session=session)[0],
+    #                    FoodType.PASTA_VEGAN, '€3,40', '€4,20', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta bolognaise', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
+
+    # document = menu_scraper.ParsedDocument(datetime.date(2019, 10, 28), datetime.date(2019, 10, 31), {})
+    # document.add_parse_result(menu_scraper.ParseResult(menu_scraper.FrameDay.MONDAY,
+    #                                                    menu_scraper.FrameFoodType.SOUP,
+    #                                                    'Wortelsoep',
+    #                                                    '€0,90 / €1,20'))
+    # document.add_parse_result(menu_scraper.ParseResult(menu_scraper.FrameDay.MONDAY,
+    #                                                    menu_scraper.FrameFoodType.VEGAN,
+    #                                                    'Bladerdeeg met geitenkaas, een pittig zoet slaatje '
+    #                                                    'en frietjes',
+    #                                                    '€4,80 / €6,00'))
+    # document.add_parse_result(menu_scraper.ParseResult(menu_scraper.FrameDay.MONDAY,
+    #                                                    menu_scraper.FrameFoodType.MEAT,
+    #                                                    'Kippenoesters, Frieten, Pittig zout slaatje',
+    #                                                    '€3,80 / €4,70'))
+    # document.add_parse_result(menu_scraper.ParseResult(menu_scraper.FrameDay.MONDAY,
+    #                                                    menu_scraper.FrameFoodType.GRILL,
+    #                                                    'Mixed grill, Choronsaus, Frieten, Saladbar',
+    #                                                    '€5,60 / €7,00'))
+    #
+    # handle_parsed_menu(Campus.get_by_short_name('cmi'), document, session)
+
+    session.commit()

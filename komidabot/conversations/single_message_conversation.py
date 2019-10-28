@@ -1,10 +1,10 @@
-from komidabot.conversations import ActionResult, Conversation, IConversationManager
+from komidabot.conversations import ActionResult, Conversation, IConversationManagerBase
 from komidabot.messages import Trigger, Message
 from komidabot.users import User
 
 
 class SingleMessageConversation(Conversation):
-    def __init__(self, user: User, manager: IConversationManager, message: Message, *args, **kwargs):
+    def __init__(self, user: User, manager: IConversationManagerBase, message: Message, *args, **kwargs):
         super().__init__(user, manager, *args, **kwargs)
         self.message = message
 
