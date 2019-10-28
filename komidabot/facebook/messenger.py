@@ -1,6 +1,5 @@
-import json, requests, threading
+import requests
 from typing import List
-from cachetools import cached, TTLCache
 
 from komidabot.app import get_app
 
@@ -47,14 +46,5 @@ class Messenger:
     def is_admin(self, user_id):
         return user_id in self.admin_ids
 
-    @check_exceptions  # TODO: Properly handle errors
-    @cached(cache=TTLCache(maxsize=64, ttl=300), lock=threading.Lock())
     def lookup_locale(self, user_id):
-        response = self.session.get(self.base_endpoint + user_id, params=self.locale_parameters)
-
-        # print('Received {} for user request {}'.format(response.status_code, user_id), flush=True)
-        # print(response.content, flush=True)
-
-        data = json.loads(response.content)
-
-        return data.get('locale', 'nl_BE')
+        return get_app().bot_interfaces['facebook']['api_interface'].lookup_locale(user_id)

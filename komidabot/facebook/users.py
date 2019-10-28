@@ -1,5 +1,7 @@
 from typing import Optional, Union
 
+from komidabot.app import get_app
+
 from komidabot.facebook.messages import MessageHandler as FBMessageHandler
 import komidabot.messages as messages
 import komidabot.users as users
@@ -40,7 +42,7 @@ class User(users.User):
         stored_value = super().get_locale()
 
         if not stored_value:
-            pass  # FIXME: Use the FB API to query the user locale
+            return get_app().bot_interfaces['facebook']['api_interface'].lookup_locale(self._id)
 
         return stored_value
 
