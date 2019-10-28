@@ -101,7 +101,7 @@ class Campus(db.Model):
 
     @staticmethod
     def get_active() -> 'List[Campus]':
-        return Campus.query.filter_by(active=True).all()
+        return Campus.query.filter_by(active=True).order_by(Campus.id).all()
 
     def __hash__(self):
         return hash(self.id)
@@ -243,7 +243,7 @@ class Menu(db.Model):
     campus_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
     menu_day = db.Column(db.Date(), nullable=False)
 
-    menu_items = db.relationship('MenuItem', backref='menu', passive_deletes=True)
+    menu_items = db.relationship('MenuItem', backref='menu', passive_deletes=True, order_by='MenuItem.food_type')
 
     def __init__(self, campus: Campus, day: datetime.date):
         self.campus = campus
@@ -414,21 +414,15 @@ class AppUser(db.Model):
 
         return user
 
-    # FIXME: Check based on the subscription table
-    @staticmethod
-    def find_active(provider=None) -> 'List[AppUser]':
-        if provider:
-            return AppUser.query.filter_by(provider=provider).all()
-        else:
-            return AppUser.query.all()
-
     @staticmethod
     def find_subscribed_users_by_day(day: Day, provider=None) -> 'List[AppUser]':
         q = AppUser.query
         if provider:
             q = q.filter_by(provider=provider)
 
-        return q.join(AppUser.subscriptions).filter(UserSubscription.day == day, UserSubscription.active == True).all()
+        return q.join(AppUser.subscriptions).filter(db.and_(UserSubscription.day == day,
+                                                            UserSubscription.active == True
+                                                            )).order_by(AppUser.provider, AppUser.internal_id).all()
 
     # FIXME: Deprecated
     @staticmethod
@@ -441,7 +435,7 @@ class AppUser(db.Model):
 
     @staticmethod
     def find_by_provider(provider: str) -> 'List[AppUser]':
-        return AppUser.query.filter_by(provider=provider).all()
+        return AppUser.query.filter_by(provider=provider).order_by(AppUser.internal_id).all()
 
     def __hash__(self):
         return hash(self.id)
