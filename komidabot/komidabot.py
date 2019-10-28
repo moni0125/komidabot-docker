@@ -14,7 +14,7 @@ from komidabot.facebook.messenger import MessageSender
 import komidabot.facebook.nlp_dates as nlp_dates
 import komidabot.localisation as localisation
 import komidabot.menu
-from komidabot.menu_scraper import FrameDay, FrameFoodType, MenuScraper, ParseResult, parse_price
+import komidabot.menu_scraper as menu_scraper
 import komidabot.messages as messages
 import komidabot.triggers as triggers
 import komidabot.users as users
@@ -74,7 +74,7 @@ class Komidabot(Bot):
                     return
                 elif message.text == 'update':
                     message.sender.send_text_message('Updating menus...')
-                    self.update_menus(message.sender)
+                    update_menus(message.sender)
                     message.sender.send_text_message('Done updating menus...')
                     return
                 elif message.text == 'psid':
@@ -161,8 +161,13 @@ class Komidabot(Bot):
                         return
                     elif text == 'update':
                         sender.send_message(messages.TextMessage(trigger, 'Updating menus...'))
-                        self.update_menus(trigger)
+                        update_menus(trigger)
                         sender.send_message(messages.TextMessage(trigger, 'Done updating menus...'))
+                        return
+                    elif text == 'fix':
+                        sender.send_message(messages.TextMessage(trigger, 'Applying fixes'))
+                        apply_menu_fixes()
+                        sender.send_message(messages.TextMessage(trigger, 'Done applying fixes...'))
                         return
                     elif text == 'psid':  # TODO: Deprecated?
                         # message = messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id))
@@ -282,80 +287,87 @@ class Komidabot(Bot):
                             #       flush=True)
                             user.send_message(messages.TextMessage(trigger, menu))
 
-    # noinspection PyMethodMayBeStatic
-    def update_menus(self, initiator: 'Optional[Union[MessageSender, triggers.Trigger]]'):
-        session = db.session  # FIXME: Create new session
 
-        # TODO: Store a hash of the source file for each menu to check for changes
-        campus_list = Campus.get_active()
+def update_menus(initiator: 'Optional[Union[MessageSender, triggers.Trigger]]'):
+    session = db.session  # FIXME: Create new session
 
-        for campus in campus_list:
-            scraper = MenuScraper(campus)
+    # TODO: Store a hash of the source file for each menu to check for changes
+    campus_list = Campus.get_active()
 
-            scraper.find_pdf_location()
+    for campus in campus_list:
+        scraper = menu_scraper.MenuScraper(campus)
 
-            if not scraper.pdf_location:
-                message = 'No menu has been found for {}'.format(campus.short_name.upper())
-                if isinstance(initiator, MessageSender):
-                    initiator.send_text_message(message)
-                    pass
-                elif isinstance(initiator, triggers.UserTrigger):
-                    initiator.sender.send_message(messages.TextMessage(initiator, message))
+        scraper.find_pdf_location()
+
+        if not scraper.pdf_location:
+            message = 'No menu has been found for {}'.format(campus.short_name.upper())
+            if isinstance(initiator, MessageSender):
+                initiator.send_text_message(message)
+                pass
+            elif isinstance(initiator, triggers.UserTrigger):
+                initiator.sender.send_message(messages.TextMessage(initiator, message))
+            continue
+
+        # initiator.send_text_message('Campus {}\n{}'.format(campus.name, scraper.pdf_location))
+
+        scraper.download_pdf()
+        scraper.generate_pictures()
+
+        handle_parsed_menu(campus, scraper.parse_pdf(), session)
+
+        # for result in parse_result.parse_results:
+        #     print('{}/{}: {} ({})'.format(result.day.name, result.food_type.name, result.name, result.price),
+        #           flush=True)
+
+
+def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument, session):
+    for day in range(document.start_date.toordinal(), document.end_date.toordinal() + 1):
+        date = datetime.date.fromordinal(day)
+
+        menu = Menu.get_menu(campus, date)
+
+        if menu is not None:
+            menu.delete(session=session)
+
+        menu = Menu.create(campus, date, session=session)
+
+        day_menu: List[menu_scraper.ParseResult] = [result for result in document.parse_results
+                                                    if result.day.value == date.isoweekday()
+                                                    or result.day == menu_scraper.FrameDay.WEEKLY]
+        # if result.day.value == date.isoweekday() or result.day.value == -1]
+        # TODO: Fix pasta!
+        # TODO: Fix grill stadscampus -> meerdere grills op een week
+        # TODO: This may not be necessary in the near future
+
+        for item in day_menu:
+            if item.name == '':
+                continue
+            if item.price == '':
                 continue
 
-            # initiator.send_text_message('Campus {}\n{}'.format(campus.name, scraper.pdf_location))
+            prices = menu_scraper.parse_price(item.price)
 
-            scraper.download_pdf()
-            scraper.generate_pictures()
-            parse_result = scraper.parse_pdf()
+            if prices is None:
+                continue  # No price parsed
 
-            for day in range(parse_result.start_date.toordinal(), parse_result.end_date.toordinal() + 1):
-                date = datetime.date.fromordinal(day)
+            translatable, translation = Translatable.get_or_create(item.name, 'nl_NL', session=session)
+            if item.food_type == menu_scraper.FrameFoodType.SOUP:
+                food_type = FoodType.SOUP
+            elif item.food_type == menu_scraper.FrameFoodType.VEGAN:
+                food_type = FoodType.VEGAN
+            elif item.food_type == menu_scraper.FrameFoodType.MEAT:
+                food_type = FoodType.MEAT
+            elif item.food_type == menu_scraper.FrameFoodType.GRILL:
+                food_type = FoodType.GRILL
+            else:
+                continue  # TODO: Fix pasta!
 
-                menu = Menu.get_menu(campus, date)
+            print((translatable, food_type, prices[0], prices[1]), flush=True)
 
-                if menu is not None:
-                    menu.delete(session=session)
+            menu.add_menu_item(translatable, food_type, prices[0], prices[1], session=session)
 
-                menu = Menu.create(campus, date, session=session)
+    session.commit()
 
-                day_menu: List[ParseResult] = [result for result in parse_result.parse_results
-                                               if result.day.value == date.isoweekday()
-                                               or result.day == FrameDay.WEEKLY]
-                # if result.day.value == date.isoweekday() or result.day.value == -1]
-                # TODO: Fix pasta!
-                # TODO: Fix grill stadscampus -> meerdere grills op een week
-                # TODO: This may not be necessary in the near future
 
-                for item in day_menu:
-                    if item.name == '':
-                        continue
-                    if item.price == '':
-                        continue
-
-                    prices = parse_price(item.price)
-
-                    if prices is None:
-                        continue  # No price parsed
-
-                    translatable, translation = Translatable.get_or_create(item.name, 'nl_NL', session=session)
-                    if item.food_type == FrameFoodType.SOUP:
-                        food_type = FoodType.SOUP
-                    elif item.food_type == FrameFoodType.VEGAN:
-                        food_type = FoodType.VEGAN
-                    elif item.food_type == FrameFoodType.MEAT:
-                        food_type = FoodType.MEAT
-                    elif item.food_type == FrameFoodType.GRILL:
-                        food_type = FoodType.GRILL
-                    else:
-                        continue  # TODO: Fix pasta!
-
-                    print((translatable, food_type, prices[0], prices[1]), flush=True)
-
-                    menu.add_menu_item(translatable, food_type, prices[0], prices[1], session=session)
-
-            db.session.commit()
-
-            # for result in parse_result.parse_results:
-            #     print('{}/{}: {} ({})'.format(result.day.name, result.food_type.name, result.name, result.price),
-            #           flush=True)
+def apply_menu_fixes():
+    pass
