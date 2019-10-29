@@ -13,7 +13,6 @@ class App:
         from komidabot.facebook.api_interface import ApiInterface
         from komidabot.facebook.messenger import Messenger
         from komidabot.facebook.users import UserManager as FacebookUserManager
-        from komidabot.conversations import ConversationManager
         from komidabot.komidabot import Komidabot
         from komidabot.users import UnifiedUserManager
 
@@ -29,7 +28,6 @@ class App:
 
         self.messenger = self.bot_interfaces['facebook']['messenger']
         self.komidabot = self.bot = Komidabot(self)  # TODO: Deprecate self.komidabot?
-        self.conversations = ConversationManager()
 
         # TODO: This could probably also be moved to the Komidabot class
         self.task_executor = PyThreadPoolExecutor(max_workers=5)

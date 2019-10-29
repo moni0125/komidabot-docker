@@ -9,7 +9,6 @@ from apscheduler.triggers.cron import CronTrigger
 from komidabot.app import get_app
 
 from komidabot.bot import Bot, ReceivedTextMessage
-from komidabot.conversations.single_message_conversation import SingleMessageConversation
 from komidabot.facebook.messenger import MessageSender
 import komidabot.facebook.nlp_dates as nlp_dates
 import komidabot.localisation as localisation
@@ -59,12 +58,6 @@ class Komidabot(Bot):
         with self.lock:
             print('Komidabot received a legacy message', flush=True)
 
-            # TODO: It may be an idea to keep track of active conversations
-            # Simple requests to get the menu would then be conversations that end immediately
-            # - Initial setup -> ask user some basic questions to get started
-            # - ADMIN: Weekly menu, confirm the menu for each day/campus
-            # - ADMIN: Updating configuration values
-
             if message.sender.is_admin():
                 if message.text == 'setup':
                     recreate_db()
@@ -79,9 +72,6 @@ class Komidabot(Bot):
                     return
                 elif message.text == 'psid':
                     message.sender.send_text_message('Your ID is {}'.format(message.sender.get_id()))
-                    return
-                elif message.text == 'test':
-                    # Conversation.initiate_conversation(MenuConfirmationConversation(message.sender, None), message)
                     return
 
             # TODO: This requires some modifications
@@ -170,10 +160,7 @@ class Komidabot(Bot):
                         sender.send_message(messages.TextMessage(trigger, 'Done applying fixes...'))
                         return
                     elif text == 'psid':  # TODO: Deprecated?
-                        message = messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id))
-                        app.conversations.initiate_conversation(SingleMessageConversation, sender, message,
-                                                                notify=False)
-                        # sender.send_message(messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
+                        sender.send_message(messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
                         return
 
                 # FIXME: This code is an adapted copy of the old path and should be rewritten
@@ -469,6 +456,78 @@ def apply_menu_fixes():
     # menu.add_menu_item(Translatable.get_or_create('Pasta bolognaise', 'nl_NL',
     #                                               session=session)[0],
     #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Salade met krieltjes, ei en croutons',
+    #                                               'nl_NL', session=session)[0],
+    #                    FoodType.SALAD, '€3,80', '€4,70', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Salade Jambon', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.SALAD, '€5,20', '€6,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Bagel atletico', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.SUB, '€2,30', '', session=session)
+    #
+    # # Tuesday
+    # menu = Menu.get_menu(campus, datetime.date(2019, 10, 29))
+    # menu.add_menu_item(Translatable.get_or_create('Knolseldersoep',
+    #                                               'nl_NL', session=session)[0],
+    #                    FoodType.SOUP, '€0,90', '€1,20', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Oostends vispasteitje met wortelpuree',
+    #                                               'nl_NL', session=session)[0],
+    #                    FoodType.MEAT, '€4,40', '€5,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Paddenstoelencurry met rijst en wortelen',
+    #                                               'nl_NL', session=session)[0],
+    #                    FoodType.VEGAN, '€3,60', '€4,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta met schorseneren in lookboter met ei, olijven en peultjes',
+    #                                               'nl_NL', session=session)[0],
+    #                    FoodType.PASTA_VEGAN, '€3,40', '€4,20', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta bolognaise', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Mixed grill met choronsaus, salad-bar en frieten', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.GRILL, '€5,60', '€7,00', session=session)
+    #
+    # # Wednesday
+    # menu = Menu.get_menu(campus, datetime.date(2019, 10, 30))
+    # menu.add_menu_item(Translatable.get_or_create('Ministrone',
+    #                                               'nl_NL', session=session)[0],
+    #                    FoodType.SOUP, '€0,90', '€1,20', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Blinde vink met champignonsaus, broccoli en peterselieaardappelen',
+    #                                               'nl_NL', session=session)[0],
+    #                    FoodType.MEAT, '€3,60', '€4,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pizza Margherita',
+    #                                               'nl_NL', session=session)[0],
+    #                    FoodType.VEGAN, '€4,00', '€5,00', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta met schorseneren in lookboter met ei, olijven en peultjes',
+    #                                               'nl_NL', session=session)[0],
+    #                    FoodType.PASTA_VEGAN, '€3,40', '€4,20', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta bolognaise', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Mixed grill met choronsaus, salad-bar en frieten', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.GRILL, '€5,60', '€7,00', session=session)
+    #
+    # # Thursday
+    # menu = Menu.get_menu(campus, datetime.date(2019, 10, 31))
+    # menu.add_menu_item(Translatable.get_or_create('Bio-pompoensoep',
+    #                                               'nl_NL', session=session)[0],
+    #                    FoodType.SOUP, '€0,90', '€1,20', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Goulash met spletrisotto',
+    #                                               'nl_NL', session=session)[0],
+    #                    FoodType.MEAT, '€4,40', '€5,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Griekse pasta met paprikaharissa en geitenkaas',
+    #                                               'nl_NL', session=session)[0],
+    #                    FoodType.VEGAN, '€3,60', '€4,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta met schorseneren in lookboter met ei, olijven en peultjes',
+    #                                               'nl_NL', session=session)[0],
+    #                    FoodType.PASTA_VEGAN, '€3,40', '€4,20', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Pasta bolognaise', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
+    # menu.add_menu_item(Translatable.get_or_create('Mixed grill met choronsaus, salad-bar en frieten', 'nl_NL',
+    #                                               session=session)[0],
+    #                    FoodType.GRILL, '€5,60', '€7,00', session=session)
 
     # document = menu_scraper.ParsedDocument(datetime.date(2019, 10, 28), datetime.date(2019, 10, 31), {})
     # document.add_parse_result(menu_scraper.ParseResult(menu_scraper.FrameDay.MONDAY,
