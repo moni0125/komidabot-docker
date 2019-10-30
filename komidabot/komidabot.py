@@ -201,9 +201,10 @@ class Komidabot(Bot):
                 campuses = Campus.get_active()
                 requested_campuses = []
 
-                for campus in campuses:
-                    if trigger.text.lower().count(campus.short_name) > 0:
-                        requested_campuses.append(campus)
+                if isinstance(trigger, triggers.TextTrigger):
+                    for campus in campuses:
+                        if trigger.text.lower().count(campus.short_name) > 0:
+                            requested_campuses.append(campus)
 
                 if len(requested_campuses) == 0:
                     campus = sender.get_campus_for_day(date)
