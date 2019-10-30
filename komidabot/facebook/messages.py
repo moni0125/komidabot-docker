@@ -27,7 +27,7 @@ class MessageHandler(messages.MessageHandler):
             'message': {
                 'text': message.text
             },
-            'messaging_type': TYPE_REPLY if isinstance(message.trigger, triggers.UserTextTrigger) else TYPE_SUBSCRIPTION
+            'messaging_type': TYPE_REPLY if triggers.SenderAspect in message.trigger else TYPE_SUBSCRIPTION
         }
 
         return get_app().bot_interfaces['facebook']['api_interface'].post_send_api(data)

@@ -9,7 +9,7 @@ from komidabot.facebook.received_message import MessageSender as LegacyMessageSe
     NLPAttribute as LegacyNLPAttribute, ReceivedTextMessage as LegacyReceivedTextMessage
 from komidabot.komidabot import Komidabot, Bot
 from komidabot.messages import TextMessage
-from komidabot.triggers import AnnotatedUserTextTrigger, NLPAttribute, SubscriptionTrigger, UserTrigger
+import komidabot.triggers as triggers
 from komidabot.users import UnifiedUserManager, UserId, User
 
 import komidabot.localisation as localisation
@@ -103,7 +103,7 @@ def _do_handle_message(event, user: User, app):
     time.sleep(0.1)  # Yield
 
     with app.app_context():
-        trigger = UserTrigger(user)
+        trigger = triggers.Trigger(aspects=[triggers.SenderAspect(user)])
 
         bot: Bot = app.bot
 
@@ -118,8 +118,9 @@ def _do_handle_message(event, user: User, app):
 
                 # TODO: Is this the preferred way to differentiate inputs?
                 # TODO: What about messages that include attachments or other things?
+                # TODO: This now works with aspects rather than inheritance, so in theory this could be done
                 if 'text' in message:
-                    trigger = AnnotatedUserTextTrigger(message['text'], trigger.sender)
+                    trigger = triggers.TextTrigger.extend(trigger)
 
                     message_text = message['text']
 
@@ -129,17 +130,17 @@ def _do_handle_message(event, user: User, app):
                     if 'nlp' in message:
                         if 'detected_locales' in message['nlp']:
                             for locale_entry in message['nlp']['detected_locales']:
-                                trigger.add_attribute(NLPAttribute('locale', locale_entry['locale'],
-                                                                   locale_entry['confidence']))
+                                trigger.add_aspect(triggers.LocaleAspect(locale_entry['locale']))
                         if 'entities' in message['nlp']:
                             for attribute, nlp_entries in message['nlp']['entities'].items():
-                                for nlp_entry in nlp_entries:
-                                    attribute_obj = NLPAttribute(attribute, nlp_entry['confidence'], nlp_entry)
-                                    trigger.add_attribute(attribute_obj)
+                                if attribute == 'datetime':
+                                    for nlp_entry in nlp_entries:
+                                        trigger.add_aspect(triggers.DatetimeAspect(nlp_entry['value'],
+                                                                                   nlp_entry['grain']))
 
                     if user.is_admin() and message_text == 'sub':
                         # Simulate subscription instead
-                        trigger = SubscriptionTrigger()
+                        trigger = triggers.SubscriptionTrigger.extend(trigger)
 
                 if app.config.get('DISABLED'):
                     if not user.is_admin():
@@ -158,8 +159,6 @@ def _do_handle_message(event, user: User, app):
         except Exception as e:
             user.send_message(TextMessage(trigger, localisation.INTERNAL_ERROR(user.get_locale())))
             app.logger.exception(e)
-            # traceback.print_tb(e.__traceback__)
-            # print(e, flush=True, file=sys.stderr)
 
 
 # komidabot_1     | { 'message': { 'attachments': [ { 'payload': { 'sticker_id': 369239263222822,

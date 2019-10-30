@@ -75,7 +75,7 @@ class Komidabot(Bot):
                     return
 
             # TODO: This requires some modifications
-            dates, invalid_date = nlp_dates.extract_days(message.get_attributes('datetime'))
+            dates, invalid_date = nlp_dates.extract_days_legacy(message.get_attributes('datetime'))
 
             if invalid_date:
                 message.sender.send_text_message('Sorry, I am unable to understand some of the entered dates')
@@ -137,11 +137,11 @@ class Komidabot(Bot):
             app = get_app()
             print('Komidabot received a trigger: {}'.format(type(trigger).__name__), flush=True)
 
-            if isinstance(trigger, triggers.UserTrigger):
-                sender = trigger.sender
+            if triggers.SenderAspect in trigger:
+                sender = trigger[triggers.SenderAspect].sender
 
                 # TODO: Is this really how we want to handle input?
-                if isinstance(trigger, triggers.UserTextTrigger) and sender.is_admin():
+                if isinstance(trigger, triggers.TextTrigger) and sender.is_admin():
                     text = trigger.text
                     if text == 'setup':
                         recreate_db()
@@ -167,8 +167,9 @@ class Komidabot(Bot):
                 # BEGIN DEPRECATED CODE
                 date = None
 
-                if isinstance(trigger, triggers.AnnotatedTextTrigger):
-                    dates, invalid_date = nlp_dates.extract_days(trigger.get_attributes('datetime'))
+                if triggers.DatetimeAspect in trigger:
+                    date_times = trigger[triggers.DatetimeAspect]
+                    dates, invalid_date = nlp_dates.extract_days(date_times)
 
                     if invalid_date:
                         sender.send_message(messages.TextMessage(trigger,
@@ -291,8 +292,9 @@ def update_menus(initiator: 'Optional[Union[MessageSender, triggers.Trigger]]'):
             if isinstance(initiator, MessageSender):
                 initiator.send_text_message(message)
                 pass
-            elif isinstance(initiator, triggers.UserTrigger):
-                initiator.sender.send_message(messages.TextMessage(initiator, message))
+            elif isinstance(initiator, triggers.Trigger):
+                if triggers.SenderAspect in initiator:
+                    initiator[triggers.SenderAspect].sender.send_message(messages.TextMessage(initiator, message))
             continue
 
         # initiator.send_text_message('Campus {}\n{}'.format(campus.name, scraper.pdf_location))

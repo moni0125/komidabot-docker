@@ -4,7 +4,7 @@ from typing import Dict, List, Tuple
 from komidabot.app import get_app
 import komidabot.messages as messages
 from komidabot.models import AppUser, Day, FoodType, UserSubscription, food_type_icons
-from komidabot.triggers import SubscriptionTrigger
+import komidabot.triggers as triggers
 
 from app import db
 
@@ -136,11 +136,11 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
         self.activate_feature('menu_subscription', available=True)
 
         with self.app.app_context():
-            self.app.bot.trigger_received(SubscriptionTrigger(self.day_mon))
-            self.app.bot.trigger_received(SubscriptionTrigger(self.day_tue))
-            self.app.bot.trigger_received(SubscriptionTrigger(self.day_wed))
-            self.app.bot.trigger_received(SubscriptionTrigger(self.day_thu))
-            self.app.bot.trigger_received(SubscriptionTrigger(self.day_fri))
+            self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_mon))
+            self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_tue))
+            self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_wed))
+            self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_thu))
+            self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_fri))
 
             db.session.add_all(self.campuses)
 
