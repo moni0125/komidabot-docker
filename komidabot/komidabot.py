@@ -100,7 +100,7 @@ class Komidabot(Bot):
                 day = Day(date.isoweekday())
 
                 if day == Day.SATURDAY or day == Day.SUNDAY:
-                    message.sender.send_text_message(localisation.ERROR_WEEKEND(message.sender.get_locale()))
+                    message.sender.send_text_message(localisation.REPLY_WEEKEND(message.sender.get_locale()))
                     continue
 
                 if len(requested_campuses) == 0:
@@ -119,7 +119,7 @@ class Komidabot(Bot):
                 if closed:
                     translation = komidabot.menu.get_translated_text(closed.translatable, message.sender.get_locale())
 
-                    message.sender.send_text_message(localisation.ERROR_NO_MENU(message.sender.get_locale())
+                    message.sender.send_text_message(localisation.REPLY_NO_MENU(message.sender.get_locale())
                                                      .format(campus.short_name.upper(), str(date)))
                     message.sender.send_text_message(translation.translation)
                     return
@@ -127,7 +127,7 @@ class Komidabot(Bot):
                 menu = komidabot.menu.prepare_menu_text(campus, date, message.sender.get_locale() or 'nl_BE')
 
                 if menu is None:
-                    message.sender.send_text_message(localisation.ERROR_NO_MENU(message.sender.get_locale())
+                    message.sender.send_text_message(localisation.REPLY_NO_MENU(message.sender.get_locale())
                                                      .format(campus.short_name.upper(), str(date)))
                 else:
                     message.sender.send_text_message(menu)
