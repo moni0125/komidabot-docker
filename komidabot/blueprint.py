@@ -131,12 +131,13 @@ def _do_handle_message(event, user: User, app):
                         if 'detected_locales' in message['nlp']:
                             for locale_entry in message['nlp']['detected_locales']:
                                 trigger.add_aspect(triggers.LocaleAspect(locale_entry['locale']))
+
                         if 'entities' in message['nlp']:
-                            for attribute, nlp_entries in message['nlp']['entities'].items():
-                                if attribute == 'datetime':
-                                    for nlp_entry in nlp_entries:
-                                        trigger.add_aspect(triggers.DatetimeAspect(nlp_entry['value'],
-                                                                                   nlp_entry['grain']))
+                            entities = message['nlp']['entities']
+
+                            if 'datetime' in entities:
+                                for entity in entities['datetime']:
+                                    trigger.add_aspect(triggers.DatetimeAspect(entity['value'], entity['grain']))
 
                     if user.is_admin() and message_text == 'sub':
                         # Simulate subscription instead

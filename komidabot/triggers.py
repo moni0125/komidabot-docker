@@ -10,7 +10,7 @@ class SubscriptionTrigger(Trigger):
         self.date = date
 
     def get_repr_text(self):
-        return ['SubscriptionTrigger', 'Date: ' + repr(self.date)]
+        return ['SubscriptionTrigger', '- Date: ' + repr(self.date)]
 
 
 class TextTrigger(Trigger):
@@ -19,7 +19,7 @@ class TextTrigger(Trigger):
         self.text = text
 
     def get_repr_text(self):
-        return ['SubscriptionTrigger', 'Text: ' + repr(self.text)]
+        return ['SubscriptionTrigger', '- Text: ' + repr(self.text)]
 
 
 class SenderAspect(Aspect):

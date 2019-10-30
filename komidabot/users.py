@@ -92,6 +92,10 @@ class User:  # TODO: This probably needs more methods
     def send_message(self, message: 'messages.Message'):
         return self.get_message_handler().send_message(self, message)
 
+    def __repr__(self):
+        user_id = self.id
+        return 'User: {}/{}'.format(user_id.provider, user_id.id)
+
 
 class UnifiedUserManager(UserManager):
     def __init__(self):

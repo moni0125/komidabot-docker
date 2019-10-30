@@ -138,8 +138,15 @@ class Komidabot(Bot):
             print('Komidabot received a trigger: {}'.format(type(trigger).__name__), flush=True)
             print(repr(trigger), flush=True)
 
+            locale = None
+            if triggers.LocaleAspect in trigger:
+                locale = trigger[triggers.LocaleAspect].locale
+
             if triggers.SenderAspect in trigger:
                 sender = trigger[triggers.SenderAspect].sender
+
+                if locale is None:
+                    locale = sender.get_locale()
 
                 # TODO: Is this really how we want to handle input?
                 if isinstance(trigger, triggers.TextTrigger) and sender.is_admin():
@@ -188,7 +195,7 @@ class Komidabot(Bot):
                 day = Day(date.isoweekday())
 
                 if day == Day.SATURDAY or day == Day.SUNDAY:
-                    sender.send_message(messages.TextMessage(trigger, localisation.ERROR_WEEKEND(sender.get_locale())))
+                    sender.send_message(messages.TextMessage(trigger, localisation.ERROR_WEEKEND(locale)))
                     return
 
                 campuses = Campus.get_active()
@@ -212,17 +219,17 @@ class Komidabot(Bot):
                 closed = ClosingDays.find_is_closed(campus, date)
 
                 if closed:
-                    translation = komidabot.menu.get_translated_text(closed.translatable, sender.get_locale())
+                    translation = komidabot.menu.get_translated_text(closed.translatable, locale)
 
-                    sender.send_message(messages.TextMessage(trigger, localisation.ERROR_NO_MENU(sender.get_locale())
+                    sender.send_message(messages.TextMessage(trigger, localisation.ERROR_NO_MENU(locale)
                                                              .format(campus.short_name.upper(), str(date))))
                     sender.send_message(messages.TextMessage(trigger, translation.translation))
                     return
 
-                menu = komidabot.menu.prepare_menu_text(campus, date, sender.get_locale() or 'nl_BE')
+                menu = komidabot.menu.prepare_menu_text(campus, date, locale or 'nl_BE')
 
                 if menu is None:
-                    sender.send_message(messages.TextMessage(trigger, localisation.ERROR_NO_MENU(sender.get_locale())
+                    sender.send_message(messages.TextMessage(trigger, localisation.ERROR_NO_MENU(locale)
                                                              .format(campus.short_name.upper(), str(date))))
                 else:
                     sender.send_message(messages.TextMessage(trigger, menu))
