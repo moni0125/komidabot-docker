@@ -84,8 +84,9 @@ def handle_message():
                     if user.is_feature_active('new_messaging'):
                         app.task_executor.submit(_do_handle_message, event, user, app._get_current_object())
                     else:
-                        app.task_executor.submit(_do_handle_message_legacy, event, sender_obj,
-                                                 app._get_current_object())
+                        raise RuntimeError('Unreachable code')
+                        # app.task_executor.submit(_do_handle_message_legacy, event, sender_obj,
+                        #                          app._get_current_object())
 
                 return 'ok', 200
 
