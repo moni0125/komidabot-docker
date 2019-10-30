@@ -9,17 +9,26 @@ class SubscriptionTrigger(Trigger):
         super().__init__(*args, **kwargs)
         self.date = date
 
+    def get_repr_text(self):
+        return ['SubscriptionTrigger', 'Date: ' + repr(self.date)]
+
 
 class TextTrigger(Trigger):
     def __init__(self, text, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.text = text
 
+    def get_repr_text(self):
+        return ['SubscriptionTrigger', 'Text: ' + repr(self.text)]
+
 
 class SenderAspect(Aspect):
     def __init__(self, sender: users.User):
         super().__init__()
         self.sender = sender
+
+    def __repr__(self):
+        return 'SenderAspect({})'.format(repr(self.sender))
 
 
 class DatetimeAspect(Aspect):
@@ -30,8 +39,14 @@ class DatetimeAspect(Aspect):
         self.value = value
         self.grain = grain
 
+    def __repr__(self):
+        return 'DatetimeAspect({})'.format(repr(self.value), self.grain)
+
 
 class LocaleAspect(Aspect):
     def __init__(self, locale: str):
         super().__init__()
         self.locale = locale
+
+    def __repr__(self):
+        return 'LocaleAspect({})'.format(self.locale)

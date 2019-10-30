@@ -136,6 +136,7 @@ class Komidabot(Bot):
         with self.lock:  # TODO: Maybe only lock on critical sections?
             app = get_app()
             print('Komidabot received a trigger: {}'.format(type(trigger).__name__), flush=True)
+            print(repr(trigger), flush=True)
 
             if triggers.SenderAspect in trigger:
                 sender = trigger[triggers.SenderAspect].sender

@@ -109,7 +109,7 @@ def _do_handle_message(event, user: User, app):
 
         try:
             print('Handling message in new path for {}'.format(user.id), flush=True)
-            print(pprint.pformat(event, indent=2), flush=True)
+            # print(pprint.pformat(event, indent=2), flush=True)
 
             if 'message' in event:
                 message = event['message']

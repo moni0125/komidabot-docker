@@ -4,6 +4,9 @@ from typing import Dict, List, Type, TypeVar, Union
 class Aspect:
     allows_multiple = False
 
+    def __repr__(self):
+        return 'Aspect'
+
 
 T = TypeVar('T')
 
@@ -52,6 +55,16 @@ class Trigger:
                 new_instance.add_aspect(aspect)
 
         return new_instance
+
+    def __repr__(self):
+        result = self.get_repr_text()
+        for aspect_type in self._aspects:
+            result.append('- ' + repr(self._aspects[aspect_type]))
+
+        return '\n'.join(result)
+
+    def get_repr_text(self):
+        return ['Trigger']
 
 
 class Message:
