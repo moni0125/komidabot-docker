@@ -120,9 +120,9 @@ def _do_handle_message(event, user: User, app):
                 # TODO: What about messages that include attachments or other things?
                 # TODO: This now works with aspects rather than inheritance, so in theory this could be done
                 if 'text' in message:
-                    trigger = triggers.TextTrigger.extend(trigger)
-
                     message_text = message['text']
+
+                    trigger = triggers.TextTrigger.extend(trigger, message_text)
 
                     if 'admin' in message_text:
                         return  # TODO: Handle properly in the future

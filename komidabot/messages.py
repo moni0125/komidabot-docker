@@ -38,7 +38,7 @@ class Trigger:
         del self._aspects[aspect_type]
 
     @classmethod
-    def extend(cls, trigger: 'Trigger', aspects: List[Aspect] = None, *args, **kwargs):
+    def extend(cls, trigger: 'Trigger', *args, aspects: List[Aspect] = None, **kwargs):
         new_instance = cls(*args, **kwargs)
         for aspect_type in trigger._aspects:
             if not aspect_type.allows_multiple:
