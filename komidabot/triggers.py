@@ -19,7 +19,7 @@ class TextTrigger(Trigger):
         self.text = text
 
     def get_repr_text(self):
-        return ['SubscriptionTrigger', '- Text: ' + repr(self.text)]
+        return ['TextTrigger', '- Text: ' + repr(self.text)]
 
 
 class SenderAspect(Aspect):
