@@ -1,18 +1,21 @@
+import hashlib
+import hmac
+import pprint
+import sys
+import time
+import traceback
 from functools import wraps
-import hashlib, hmac, pprint, sys, time, traceback
 
 from flask import Blueprint, abort, request
 
+import komidabot.localisation as localisation
+import komidabot.triggers as triggers
 from komidabot.app import get_app
-
 from komidabot.facebook.received_message import MessageSender as LegacyMessageSender, \
     NLPAttribute as LegacyNLPAttribute, ReceivedTextMessage as LegacyReceivedTextMessage
 from komidabot.komidabot import Komidabot, Bot
 from komidabot.messages import TextMessage
-import komidabot.triggers as triggers
 from komidabot.users import UnifiedUserManager, UserId, User
-
-import komidabot.localisation as localisation
 
 blueprint = Blueprint('komidabot', __name__)
 pp = pprint.PrettyPrinter(indent=2)
@@ -94,6 +97,11 @@ def handle_message():
 
         return abort(400)
     except Exception as e:
+        try:
+            get_app().bot.notify_error(e)
+        except Exception:
+            pass
+
         traceback.print_tb(e.__traceback__)
         print(e, flush=True, file=sys.stderr)
 
@@ -163,6 +171,11 @@ def _do_handle_message(event, user: User, app):
 
                 # sender_obj.send_text_message(localisation.ERROR_NOT_IMPLEMENTED(locale))
         except Exception as e:
+            try:
+                get_app().bot.notify_error(e)
+            except Exception:
+                pass
+
             user.send_message(TextMessage(trigger, localisation.INTERNAL_ERROR(locale)))
             app.logger.exception(e)
 
@@ -190,52 +203,58 @@ def _do_handle_message_legacy(event, sender_obj: LegacyMessageSender, app):
 
         komidabot: Komidabot = app.komidabot
 
-        if 'message' in event:
-            message = event['message']
+        try:
+            if 'message' in event:
+                message = event['message']
 
-            # print(pprint.pformat(message, indent=2), flush=True)
+                # print(pprint.pformat(message, indent=2), flush=True)
 
-            if 'text' not in message:
-                sender_obj.send_text_message(localisation.ERROR_TEXT_ONLY(sender_obj.get_locale()))
-                return
-
-            message_text = message['text']
-
-            if 'admin' in message_text:
-                return
-
-            message_obj = LegacyReceivedTextMessage(sender_obj, message_text)
-
-            if 'nlp' in message:
-                if 'detected_locales' in message['nlp']:
-                    for locale_entry in message['nlp']['detected_locales']:
-                        message_obj.add_attribute(LegacyNLPAttribute('locale', locale_entry['locale'],
-                                                                     locale_entry['confidence']))
-                if 'entities' in message['nlp']:
-                    for attribute, nlp_entries in message['nlp']['entities'].items():
-                        for nlp_entry in nlp_entries:
-                            attribute_obj = LegacyNLPAttribute(attribute, nlp_entry['confidence'], nlp_entry)
-                            message_obj.add_attribute(attribute_obj)
-
-            if app.config.get('DISABLED'):
-                if not sender_obj.is_admin():
-                    sender_obj.send_text_message(localisation.DOWN_FOR_MAINTENANCE1(sender_obj.get_locale()))
-                    sender_obj.send_text_message(localisation.DOWN_FOR_MAINTENANCE2(sender_obj.get_locale()))
+                if 'text' not in message:
+                    sender_obj.send_text_message(localisation.ERROR_TEXT_ONLY(sender_obj.get_locale()))
                     return
 
-                # sender_obj.send_text_message('Note: The bot is currently disabled')
+                message_text = message['text']
 
-            print(repr(message_obj), flush=True)
+                if 'admin' in message_text:
+                    return
 
-            try:
+                message_obj = LegacyReceivedTextMessage(sender_obj, message_text)
+
+                if 'nlp' in message:
+                    if 'detected_locales' in message['nlp']:
+                        for locale_entry in message['nlp']['detected_locales']:
+                            message_obj.add_attribute(LegacyNLPAttribute('locale', locale_entry['locale'],
+                                                                         locale_entry['confidence']))
+                    if 'entities' in message['nlp']:
+                        for attribute, nlp_entries in message['nlp']['entities'].items():
+                            for nlp_entry in nlp_entries:
+                                attribute_obj = LegacyNLPAttribute(attribute, nlp_entry['confidence'], nlp_entry)
+                                message_obj.add_attribute(attribute_obj)
+
+                if app.config.get('DISABLED'):
+                    if not sender_obj.is_admin():
+                        sender_obj.send_text_message(localisation.DOWN_FOR_MAINTENANCE1(sender_obj.get_locale()))
+                        sender_obj.send_text_message(localisation.DOWN_FOR_MAINTENANCE2(sender_obj.get_locale()))
+                        return
+
+                    # sender_obj.send_text_message('Note: The bot is currently disabled')
+
+                print(repr(message_obj), flush=True)
+
                 komidabot.message_received_legacy(message_obj)
-            except Exception as e:
-                sender_obj.send_text_message(localisation.INTERNAL_ERROR(sender_obj.get_locale()))
-                app.logger.exception(e)
-                # traceback.print_tb(e.__traceback__)
-                # print(e, flush=True, file=sys.stderr)
-        elif 'postback' in event:
-            sender_obj.send_text_message(localisation.ERROR_POSTBACK(sender_obj.get_locale()))
-            # postback = event['postback']
+            elif 'postback' in event:
+                sender_obj.send_text_message(localisation.ERROR_POSTBACK(sender_obj.get_locale()))
+                # postback = event['postback']
 
-            # sender_obj.send_text_message(localisation.ERROR_NOT_IMPLEMENTED(sender_obj.get_locale()))
+                # sender_obj.send_text_message(localisation.ERROR_NOT_IMPLEMENTED(sender_obj.get_locale()))
+
+        except Exception as e:
+            try:
+                get_app().bot.notify_error(e)
+            except Exception:
+                pass
+
+            sender_obj.send_text_message(localisation.INTERNAL_ERROR(sender_obj.get_locale()))
+            app.logger.exception(e)
+            # traceback.print_tb(e.__traceback__)
+            # print(e, flush=True, file=sys.stderr)

@@ -35,6 +35,8 @@ class App:
 
         self.user_manager.initialise()
 
+        self.admin_ids = get_app().config.get('ADMIN_IDS', [])
+
     def app_context(self):
         raise NotImplementedError()
 

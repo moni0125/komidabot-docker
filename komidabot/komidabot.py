@@ -1,4 +1,6 @@
-import atexit, datetime, threading
+import atexit
+import datetime
+import threading
 from typing import Dict, List, Optional, Union
 
 from apscheduler.executors.pool import ThreadPoolExecutor
@@ -6,10 +8,6 @@ from apscheduler.jobstores.memory import MemoryJobStore
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from komidabot.app import get_app
-
-from komidabot.bot import Bot, ReceivedTextMessage
-from komidabot.facebook.messenger import MessageSender
 import komidabot.facebook.nlp_dates as nlp_dates
 import komidabot.localisation as localisation
 import komidabot.menu
@@ -17,11 +15,12 @@ import komidabot.menu_scraper as menu_scraper
 import komidabot.messages as messages
 import komidabot.triggers as triggers
 import komidabot.users as users
-
+from extensions import db
+from komidabot.app import get_app
+from komidabot.bot import Bot, ReceivedTextMessage
+from komidabot.facebook.messenger import MessageSender
 from komidabot.models import Campus, ClosingDays, Day, FoodType, Menu, AppUser, Translatable
 from komidabot.models import create_standard_values, import_dump, recreate_db
-
-from extensions import db
 
 
 class Komidabot(Bot):
@@ -32,6 +31,8 @@ class Komidabot(Bot):
             jobstores={'default': MemoryJobStore()},
             executors={'default': ThreadPoolExecutor(max_workers=1)}
         )
+
+        self._handling_error = False
 
         self.scheduler.start()
         atexit.register(BackgroundScheduler.shutdown, self.scheduler)  # Ensure cleanup of resources
@@ -280,6 +281,24 @@ class Komidabot(Bot):
                             # print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
                             #       flush=True)
                             user.send_message(messages.TextMessage(trigger, menu))
+
+    def notify_error(self, error: Exception):
+        with self.lock:
+            if self._handling_error:
+                # Already handling an error, or we failed handling the previous error, so don't try handling more
+                return
+            self._handling_error = True
+
+            app = get_app()
+
+            for admin in app.admin_ids:  # type: users.UserId
+                user = app.user_manager.get_user(admin)
+
+                user.send_message(messages.TextMessage(triggers.Trigger(),
+                                                       'An internal error occurred, '
+                                                       'please check the console for more information'))
+
+            self._handling_error = False
 
 
 def update_menus(initiator: 'Optional[Union[MessageSender, triggers.Trigger]]'):
