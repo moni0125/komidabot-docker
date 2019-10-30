@@ -19,14 +19,14 @@ class App:
         self.bot_interfaces = dict()  # TODO: Deprecate?
         self.bot_interfaces['facebook'] = {
             'api_interface': ApiInterface(config.get('PAGE_ACCESS_TOKEN')),
-            'messenger': Messenger(config.get('PAGE_ACCESS_TOKEN'), config.get('ADMIN_IDS_LEGACY')),
+            'messenger': Messenger(config.get('PAGE_ACCESS_TOKEN'), config.get('ADMIN_IDS_LEGACY')),  # TODO: Deprecated
             'users': FacebookUserManager()
         }
 
         self.user_manager = UnifiedUserManager()
         self.user_manager.register_manager('facebook', self.bot_interfaces['facebook']['users'])
 
-        self.messenger = self.bot_interfaces['facebook']['messenger']
+        self.messenger = self.bot_interfaces['facebook']['messenger']  # TODO: Deprecated
         self.komidabot = self.bot = Komidabot(self)  # TODO: Deprecate self.komidabot?
 
         # TODO: This could probably also be moved to the Komidabot class

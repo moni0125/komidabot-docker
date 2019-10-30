@@ -136,7 +136,6 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
         self.activate_feature('menu_subscription', available=True)
 
         with self.app.app_context():
-            # TODO: For each trigger, check the output
             self.app.bot.trigger_received(SubscriptionTrigger(self.day_mon))
             self.app.bot.trigger_received(SubscriptionTrigger(self.day_tue))
             self.app.bot.trigger_received(SubscriptionTrigger(self.day_wed))

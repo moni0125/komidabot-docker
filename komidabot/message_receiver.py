@@ -1,6 +1,7 @@
 from typing import Hashable
 
 
+# TODO: Deprecated
 class MessageReceiver:
     def send_message(self, message):
         raise NotImplementedError
