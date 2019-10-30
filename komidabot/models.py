@@ -478,14 +478,15 @@ class Feature(db.Model):
 
     @staticmethod
     def is_user_participating(user: AppUser, string_id: str) -> bool:
-        if user is None:
-            return False
         feature = Feature.find_by_id(string_id)
         if feature is None:
             return False
 
         if feature.globally_available:
             return True
+
+        if user is None:
+            return False
 
         return FeatureParticipation.get_for_user(user, feature) is not None
 
