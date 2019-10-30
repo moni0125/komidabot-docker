@@ -180,11 +180,10 @@ class Komidabot(Bot):
                     dates, invalid_date = nlp_dates.extract_days(date_times)
 
                     if invalid_date:
-                        sender.send_message(messages.TextMessage(trigger,
-                                                                 'Sorry, I am unable to understand the requested day'))
+                        sender.send_message(messages.TextMessage(trigger, localisation.REPLY_INVALID_DATE(locale)))
 
                     if len(dates) > 1:
-                        sender.send_message(messages.TextMessage(trigger, 'Sorry, please request only a single day'))
+                        sender.send_message(messages.TextMessage(trigger, localisation.REPLY_TOO_MANY_DAYS(locale)))
                         return
                     elif len(dates) == 1:
                         date = dates[0]
@@ -195,7 +194,7 @@ class Komidabot(Bot):
                 day = Day(date.isoweekday())
 
                 if day == Day.SATURDAY or day == Day.SUNDAY:
-                    sender.send_message(messages.TextMessage(trigger, localisation.ERROR_WEEKEND(locale)))
+                    sender.send_message(messages.TextMessage(trigger, localisation.REPLY_WEEKEND(locale)))
                     return
 
                 campuses = Campus.get_active()
@@ -210,8 +209,7 @@ class Komidabot(Bot):
                     if campus is None:
                         campus = Campus.get_by_short_name('cmi')
                 elif len(requested_campuses) > 1:
-                    sender.send_message(messages.TextMessage(trigger,
-                                                             'Sorry, please only ask for a single campus at a time'))
+                    sender.send_message(messages.TextMessage(trigger, localisation.REPLY_TOO_MANY_CAMPUSES(locale)))
                     return
                 else:
                     campus = requested_campuses[0]
@@ -221,15 +219,15 @@ class Komidabot(Bot):
                 if closed:
                     translation = komidabot.menu.get_translated_text(closed.translatable, locale)
 
-                    sender.send_message(messages.TextMessage(trigger, localisation.ERROR_NO_MENU(locale)
+                    sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NO_MENU(locale)
                                                              .format(campus.short_name.upper(), str(date))))
                     sender.send_message(messages.TextMessage(trigger, translation.translation))
                     return
 
-                menu = komidabot.menu.prepare_menu_text(campus, date, locale or 'nl_BE')
+                menu = komidabot.menu.prepare_menu_text(campus, date, locale)
 
                 if menu is None:
-                    sender.send_message(messages.TextMessage(trigger, localisation.ERROR_NO_MENU(locale)
+                    sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NO_MENU(locale)
                                                              .format(campus.short_name.upper(), str(date))))
                 else:
                     sender.send_message(messages.TextMessage(trigger, menu))

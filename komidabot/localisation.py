@@ -59,14 +59,31 @@ ERROR_POSTBACK = localisation_definition('ERROR_POSTBACK', {
                         'Gelieve het tekstvak te gebruiken voor uw vraag.',
 })
 
-ERROR_NO_MENU = localisation_definition('ERROR_NO_MENU', {
+REPLY_NO_MENU = localisation_definition('REPLY_NO_MENU', {
     ('en_US', 'en_GB'): 'Sorry, no menu is available for {} on {}',
     ('nl_BE', 'nl_NL'): 'Sorry, er is geen menu beschikbaar voor {} op {}',
 })
 
-ERROR_WEEKEND = localisation_definition('ERROR_WEEKEND', {
+REPLY_WEEKEND = localisation_definition('REPLY_WEEKEND', {
     ('en_US', 'en_GB'): 'Sorry, there are no menus on Saturdays and Sundays',
     ('nl_BE', 'nl_NL'): 'Sorry, er zijn geen menus op zon- en zaterdagen',
+})
+
+REPLY_TOO_MANY_DAYS = localisation_definition('REPLY_TOO_MANY_DAYS', {
+    ('en_US', 'en_GB'): 'Sorry, please request only a single day',
+    ('nl_BE', 'nl_NL'): 'Sorry, gelieve een enkele dag te specificeren',
+})
+
+REPLY_INVALID_DATE = localisation_definition('REPLY_INVALID_DATE', {
+    ('en_US', 'en_GB'): 'Sorry, I am unable to understand the requested day. '
+                        'Please try to specify the day as e.g. "Monday" or "Tomorrow"',
+    ('nl_BE', 'nl_NL'): 'Sorry, ik kan de gevraagde dag niet begrijpen. '
+                        'Gelieve de dag aan te geven als bvb. "Maandag" of "Morgen"',
+})
+
+REPLY_TOO_MANY_CAMPUSES = localisation_definition('REPLY_TOO_MANY_CAMPUSES', {
+    ('en_US', 'en_GB'): 'Sorry, please only ask for a single campus at a time',
+    ('nl_BE', 'nl_NL'): 'Sorry, gelieve een enkele campus te specificeren',
 })
 
 DOWN_FOR_MAINTENANCE1 = localisation_definition('ERROR_TEXT_ONLY', {

@@ -107,6 +107,8 @@ def _do_handle_message(event, user: User, app):
 
         bot: Bot = app.bot
 
+        locale = user.get_locale()
+
         try:
             print('Handling message in new path for {}'.format(user.id), flush=True)
             # print(pprint.pformat(event, indent=2), flush=True)
@@ -129,8 +131,10 @@ def _do_handle_message(event, user: User, app):
 
                     if 'nlp' in message:
                         if 'detected_locales' in message['nlp']:
-                            for locale_entry in message['nlp']['detected_locales']:
-                                trigger.add_aspect(triggers.LocaleAspect(locale_entry['locale']))
+                            # Get the locale that has the highest confidence
+                            locale_entry = max(message['nlp']['detected_locales'], key=lambda x: x['confidence'])
+                            trigger.add_aspect(triggers.LocaleAspect(locale_entry['locale']))
+                            locale = locale_entry['locale']
 
                         if 'entities' in message['nlp']:
                             entities = message['nlp']['entities']
@@ -145,20 +149,20 @@ def _do_handle_message(event, user: User, app):
 
                 if app.config.get('DISABLED'):
                     if not user.is_admin():
-                        user.send_message(TextMessage(trigger, localisation.DOWN_FOR_MAINTENANCE1(user.get_locale())))
-                        user.send_message(TextMessage(trigger, localisation.DOWN_FOR_MAINTENANCE2(user.get_locale())))
+                        user.send_message(TextMessage(trigger, localisation.DOWN_FOR_MAINTENANCE1(locale)))
+                        user.send_message(TextMessage(trigger, localisation.DOWN_FOR_MAINTENANCE2(locale)))
                         return
 
                     # sender_obj.send_text_message('Note: The bot is currently disabled')
 
                 bot.trigger_received(trigger)
             elif 'postback' in event:
-                user.send_message(TextMessage(trigger, localisation.ERROR_POSTBACK(user.get_locale())))
+                user.send_message(TextMessage(trigger, localisation.ERROR_POSTBACK(locale)))
                 # postback = event['postback']
 
-                # sender_obj.send_text_message(localisation.ERROR_NOT_IMPLEMENTED(sender_obj.get_locale()))
+                # sender_obj.send_text_message(localisation.ERROR_NOT_IMPLEMENTED(locale))
         except Exception as e:
-            user.send_message(TextMessage(trigger, localisation.INTERNAL_ERROR(user.get_locale())))
+            user.send_message(TextMessage(trigger, localisation.INTERNAL_ERROR(locale)))
             app.logger.exception(e)
 
 
