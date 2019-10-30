@@ -238,50 +238,7 @@ class Komidabot(Bot):
                 # END DEPRECATED CODE
 
             if isinstance(trigger, triggers.SubscriptionTrigger):
-                date = trigger.date or datetime.datetime.now().date()
-                day = Day(date.isoweekday())
-
-                # print('Sending out subscription for {} ({})'.format(date, day.name), flush=True)
-
-                user_manager = get_app().user_manager  # type: users.UserManager
-                subscribed_users = user_manager.get_subscribed_users(day)
-                subscriptions = dict()  # type: Dict[Campus, Dict[str, List[users.User]]]
-
-                for user in subscribed_users:
-                    if not user.is_feature_active('menu_subscription'):
-                        # print('User {} not eligible for subscription'.format(user.id), flush=True)
-                        continue
-
-                    subscription = user.get_subscription_for_day(date)
-                    if subscription is None:
-                        continue
-                    if not subscription.active:
-                        continue
-
-                    campus = subscription.campus
-
-                    language = user.get_locale() or 'nl_BE'
-
-                    if campus not in subscriptions:
-                        subscriptions[campus] = dict()
-
-                    if language not in subscriptions[campus]:
-                        subscriptions[campus][language] = list()
-
-                    subscriptions[campus][language].append(user)
-
-                for campus, languages in subscriptions.items():
-                    for language, sub_users in languages.items():
-                        # print('Preparing menu for {} in {}'.format(campus.short_name, language), flush=True)
-
-                        menu = komidabot.menu.prepare_menu_text(campus, date, language)
-                        if menu is None:
-                            continue
-
-                        for user in sub_users:
-                            # print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
-                            #       flush=True)
-                            user.send_message(messages.TextMessage(trigger, menu))
+                dispatch_daily_menus(trigger)
 
     def notify_error(self, error: Exception):
         with self.lock:
@@ -300,6 +257,58 @@ class Komidabot(Bot):
                                                        'please check the console for more information'))
 
             self._handling_error = False
+
+
+def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
+    date = trigger.date or datetime.datetime.now().date()
+    day = Day(date.isoweekday())
+
+    # print('Sending out subscription for {} ({})'.format(date, day.name), flush=True)
+
+    user_manager = get_app().user_manager  # type: users.UserManager
+    subscribed_users = user_manager.get_subscribed_users(day)
+    subscriptions = dict()  # type: Dict[Campus, Dict[str, List[users.User]]]
+
+    for user in subscribed_users:
+        if not user.is_feature_active('menu_subscription'):
+            # print('User {} not eligible for subscription'.format(user.id), flush=True)
+            continue
+
+        subscription = user.get_subscription_for_day(date)
+        if subscription is None:
+            continue
+        if not subscription.active:
+            continue
+
+        campus = subscription.campus
+
+        language = user.get_locale() or 'nl_BE'
+
+        if campus not in subscriptions:
+            subscriptions[campus] = dict()
+
+        if language not in subscriptions[campus]:
+            subscriptions[campus][language] = list()
+
+        subscriptions[campus][language].append(user)
+
+    for campus, languages in subscriptions.items():
+        for language, sub_users in languages.items():
+            # print('Preparing menu for {} in {}'.format(campus.short_name, language), flush=True)
+
+            closed = ClosingDays.find_is_closed(campus, date)
+
+            if closed:
+                continue  # Campus closed, no daily menu
+
+            menu = komidabot.menu.prepare_menu_text(campus, date, language)
+            if menu is None:
+                continue
+
+            for user in sub_users:
+                # print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
+                #       flush=True)
+                user.send_message(messages.TextMessage(trigger, menu))
 
 
 def update_menus(initiator: 'Optional[Union[MessageSender, triggers.Trigger]]'):
