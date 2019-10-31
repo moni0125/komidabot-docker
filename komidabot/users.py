@@ -71,12 +71,8 @@ class User:  # TODO: This probably needs more methods
         user_id = self.id
         return user_id in get_app().admin_ids
 
-    def is_feature_active(self, feature_id: str):
-        user = self.get_db_user()
-        if user is None:
-            return None
-
-        return models.Feature.is_user_participating(user, feature_id)
+    def is_feature_active(self, feature_id: str) -> bool:
+        return models.Feature.is_user_participating(self.get_db_user(), feature_id)
 
     @property
     def manager(self) -> UserManager:

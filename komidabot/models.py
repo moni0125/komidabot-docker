@@ -477,7 +477,7 @@ class Feature(db.Model):
         return feature
 
     @staticmethod
-    def is_user_participating(user: AppUser, string_id: str) -> bool:
+    def is_user_participating(user: Optional[AppUser], string_id: str) -> bool:
         feature = Feature.find_by_id(string_id)
         if feature is None:
             return False
