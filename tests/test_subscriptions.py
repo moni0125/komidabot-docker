@@ -1,13 +1,12 @@
-import datetime, unittest, requests
+import datetime
+import unittest
 from typing import Dict, List, Tuple
 
-from komidabot.app import get_app
 import komidabot.messages as messages
-from komidabot.models import AppUser, Day, FoodType, UserSubscription, food_type_icons
 import komidabot.triggers as triggers
-
 from app import db
-
+from komidabot.app import get_app
+from komidabot.models import AppUser, Day, FoodType, UserSubscription, food_type_icons
 from tests.base import BaseTestCase, HttpCapture, menu_item
 from tests.users_stub import UserManager as TestUserManager, users, PROVIDER_ID
 
@@ -136,30 +135,31 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
         self.activate_feature('menu_subscription', available=True)
 
         with self.app.app_context():
-            self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_mon))
-            self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_tue))
-            self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_wed))
-            self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_thu))
-            self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_fri))
+            with HttpCapture():  # Ensure no requests are made
+                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_mon))
+                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_tue))
+                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_wed))
+                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_thu))
+                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_fri))
 
-            db.session.add_all(self.campuses)
+                db.session.add_all(self.campuses)
 
-            self.assertEqual(self.message_handler.message_log[self.user1.id], [
-                self.expected_menus[(self.campuses[0].short_name, self.day_mon)],
-                self.expected_menus[(self.campuses[1].short_name, self.day_tue)],
-                self.expected_menus[(self.campuses[0].short_name, self.day_wed)],
-                self.expected_menus[(self.campuses[1].short_name, self.day_thu)],
-                self.expected_menus[(self.campuses[0].short_name, self.day_fri)],
-            ])
+                self.assertEqual(self.message_handler.message_log[self.user1.id], [
+                    self.expected_menus[(self.campuses[0].short_name, self.day_mon)],
+                    self.expected_menus[(self.campuses[1].short_name, self.day_tue)],
+                    self.expected_menus[(self.campuses[0].short_name, self.day_wed)],
+                    self.expected_menus[(self.campuses[1].short_name, self.day_thu)],
+                    self.expected_menus[(self.campuses[0].short_name, self.day_fri)],
+                ])
 
-            self.assertEqual(self.message_handler.message_log[self.user2.id], [
-                self.expected_menus[(self.campuses[1].short_name, self.day_tue)],
-                self.expected_menus[(self.campuses[0].short_name, self.day_thu)],
-            ])
+                self.assertEqual(self.message_handler.message_log[self.user2.id], [
+                    self.expected_menus[(self.campuses[1].short_name, self.day_tue)],
+                    self.expected_menus[(self.campuses[0].short_name, self.day_thu)],
+                ])
 
-            self.assertNotIn(self.user3.id, self.message_handler.message_log)
+                self.assertNotIn(self.user3.id, self.message_handler.message_log)
 
-            # print(self.message_handler.message_log, flush=True)
+                # print(self.message_handler.message_log, flush=True)
 
 
 # class TestFacebookSubscriptions(BaseSubscriptionsTestCase):

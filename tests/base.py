@@ -1,13 +1,13 @@
-import datetime, httpretty
+import datetime
+import httpretty
 from typing import List, NamedTuple
 
 from flask.cli import ScriptInfo
 from flask_testing import TestCase
 
-from app import create_app, db
-
-from komidabot.app import App
 import komidabot.users as users
+from app import create_app, db
+from komidabot.app import App
 from komidabot.models import AppUser, Campus, Feature, FoodType, Menu, Translatable
 
 menu_item = NamedTuple('menu_item', [('type', FoodType),
@@ -101,8 +101,11 @@ class HttpCapture:
     OPTIONS = httpretty.OPTIONS
     CONNECT = httpretty.CONNECT
 
+    def __init__(self, allow_net_connect=False):
+        self.allow_net_connect = allow_net_connect
+
     def __enter__(self):
-        httpretty.enable(allow_net_connect=False)
+        httpretty.enable(allow_net_connect=self.allow_net_connect)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

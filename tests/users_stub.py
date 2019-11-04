@@ -1,7 +1,7 @@
 from typing import Dict, Optional, Union
 
-from komidabot.models import AppUser
 import komidabot.users as users
+from komidabot.models import AppUser
 
 PROVIDER_ID = 'stub'
 
