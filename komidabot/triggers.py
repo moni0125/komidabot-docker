@@ -40,7 +40,7 @@ class DatetimeAspect(Aspect):
         self.grain = grain
 
     def __repr__(self):
-        return 'DatetimeAspect({})'.format(repr(self.value), self.grain)
+        return 'DatetimeAspect({}, {})'.format(repr(self.value), self.grain)
 
 
 class LocaleAspect(Aspect):
