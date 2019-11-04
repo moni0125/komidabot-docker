@@ -1,7 +1,7 @@
 import atexit
 import datetime
 import threading
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional
 
 from apscheduler.executors.pool import ThreadPoolExecutor
 from apscheduler.jobstores.memory import MemoryJobStore
@@ -17,9 +17,8 @@ import komidabot.triggers as triggers
 import komidabot.users as users
 from extensions import db
 from komidabot.app import get_app
-from komidabot.bot import Bot, ReceivedTextMessage
-from komidabot.facebook.messenger import MessageSender
-from komidabot.models import Campus, ClosingDays, Day, FoodType, Menu, AppUser, Translatable
+from komidabot.bot import Bot
+from komidabot.models import Campus, ClosingDays, Day, FoodType, Menu, Translatable
 from komidabot.models import create_standard_values, import_dump, recreate_db
 
 
@@ -54,85 +53,6 @@ class Komidabot(Bot):
         # def menu_update(context, bot: 'Komidabot'):
         #     with context():
         #         bot.update_menus(None)
-
-    # TODO: Deprecated
-    def message_received_legacy(self, message: ReceivedTextMessage):
-        with self.lock:
-            print('Komidabot received a legacy message', flush=True)
-
-            if message.sender.is_admin():
-                if message.text == 'setup':
-                    recreate_db()
-                    create_standard_values()
-                    import_dump(get_app().config['DUMP_FILE'])
-                    message.sender.send_text_message('Setup done')
-                    return
-                elif message.text == 'update':
-                    message.sender.send_text_message('Updating menus...')
-                    update_menus(message.sender)
-                    message.sender.send_text_message('Done updating menus...')
-                    return
-                elif message.text == 'psid':
-                    message.sender.send_text_message('Your ID is {}'.format(message.sender.get_id()))
-                    return
-
-            # TODO: This requires some modifications
-            dates, invalid_date = nlp_dates.extract_days_legacy(message.get_attributes('datetime'))
-
-            if invalid_date:
-                message.sender.send_text_message('Sorry, I am unable to understand some of the entered dates')
-
-            if len(dates) == 0:
-                dates.append(datetime.datetime.now().date())
-
-            if len(dates) > 1:
-                message.sender.send_text_message('Sorry, please request only a single day')
-                return
-
-            campuses = Campus.get_active()
-            requested_campuses = []
-
-            for campus in campuses:
-                if message.text.lower().count(campus.short_name) > 0:
-                    requested_campuses.append(campus)
-
-            user = AppUser.find_by_facebook_id(message.sender.get_id())
-
-            for date in dates:
-                day = Day(date.isoweekday())
-
-                if day == Day.SATURDAY or day == Day.SUNDAY:
-                    message.sender.send_text_message(localisation.REPLY_WEEKEND(message.sender.get_locale()))
-                    continue
-
-                if len(requested_campuses) == 0:
-                    if user is not None:
-                        campus = user.get_campus(day)
-                    if campus is None:
-                        campus = Campus.get_by_short_name('cmi')
-                elif len(requested_campuses) > 1:
-                    message.sender.send_text_message('Sorry, please only ask for a single campus at a time')
-                    continue
-                else:
-                    campus = requested_campuses[0]
-
-                closed = ClosingDays.find_is_closed(campus, date)
-
-                if closed:
-                    translation = komidabot.menu.get_translated_text(closed.translatable, message.sender.get_locale())
-
-                    message.sender.send_text_message(localisation.REPLY_NO_MENU(message.sender.get_locale())
-                                                     .format(campus.short_name.upper(), str(date)))
-                    message.sender.send_text_message(translation.translation)
-                    return
-
-                menu = komidabot.menu.prepare_menu_text(campus, date, message.sender.get_locale() or 'nl_BE')
-
-                if menu is None:
-                    message.sender.send_text_message(localisation.REPLY_NO_MENU(message.sender.get_locale())
-                                                     .format(campus.short_name.upper(), str(date)))
-                else:
-                    message.sender.send_text_message(menu)
 
     def trigger_received(self, trigger: triggers.Trigger):
         with self.lock:  # TODO: Maybe only lock on critical sections?
@@ -313,7 +233,7 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
                 user.send_message(messages.TextMessage(trigger, menu))
 
 
-def update_menus(initiator: 'Optional[Union[MessageSender, triggers.Trigger]]'):
+def update_menus(initiator: 'Optional[triggers.Trigger]'):
     session = db.session  # FIXME: Create new session
 
     # TODO: Store a hash of the source file for each menu to check for changes
@@ -326,10 +246,7 @@ def update_menus(initiator: 'Optional[Union[MessageSender, triggers.Trigger]]'):
 
         if not scraper.pdf_location:
             message = 'No menu has been found for {}'.format(campus.short_name.upper())
-            if isinstance(initiator, MessageSender):
-                initiator.send_text_message(message)
-                pass
-            elif isinstance(initiator, triggers.Trigger):
+            if initiator:
                 if triggers.SenderAspect in initiator:
                     initiator[triggers.SenderAspect].sender.send_message(messages.TextMessage(initiator, message))
             continue

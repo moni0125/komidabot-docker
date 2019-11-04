@@ -1,4 +1,7 @@
-import json, requests, threading
+import json
+import requests
+import threading
+
 from cachetools import cached, TTLCache
 
 from komidabot.util import check_exceptions

@@ -1,12 +1,10 @@
 from typing import Optional, Union
 
-from komidabot.app import get_app
-
-from komidabot.facebook.messages import MessageHandler as FBMessageHandler
 import komidabot.messages as messages
-import komidabot.users as users
-
 import komidabot.models as models
+import komidabot.users as users
+from komidabot.app import get_app
+from komidabot.facebook.messages import MessageHandler as FBMessageHandler
 
 PROVIDER_ID = 'facebook'
 
@@ -57,3 +55,9 @@ class User(users.User):
 
     def get_message_handler(self) -> messages.MessageHandler:
         return self._manager.message_handler
+
+    def mark_message_seen(self):
+        return get_app().bot_interfaces['facebook']['api_interface'].post_send_api({
+            'recipient': {'id': self._id},
+            'sender_action': 'mark_seen'
+        })

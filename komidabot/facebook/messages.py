@@ -1,9 +1,8 @@
-from komidabot.app import get_app
-
 import komidabot.facebook.users as facebook_users
 import komidabot.messages as messages
 import komidabot.triggers as triggers
 import komidabot.users as users
+from komidabot.app import get_app
 
 TYPE_REPLY = 'RESPONSE'
 TYPE_SUBSCRIPTION = 'NON_PROMOTIONAL_SUBSCRIPTION'

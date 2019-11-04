@@ -331,7 +331,7 @@ class UserSubscription(db.Model):
     day = db.Column(db.Enum(Day), primary_key=True)
     campus_id = db.Column(db.Integer(), db.ForeignKey('campus.id', onupdate='CASCADE', ondelete='CASCADE'),
                           nullable=False)
-    active = db.Column(db.Boolean(), default=True, nullable=False)  # FIXME: Deprecated
+    active = db.Column(db.Boolean(), default=True, nullable=False)
 
     def __init__(self, user: 'AppUser', day: Day, campus: Campus, active=True) -> None:
         self.user = user
@@ -431,11 +431,6 @@ class AppUser(db.Model):
         return q.join(AppUser.subscriptions).filter(db.and_(UserSubscription.day == day,
                                                             UserSubscription.active == True
                                                             )).order_by(AppUser.provider, AppUser.internal_id).all()
-
-    # FIXME: Deprecated
-    @staticmethod
-    def find_by_facebook_id(facebook_id: str) -> 'Optional[AppUser]':
-        return AppUser.query.filter_by(provider='facebook', internal_id=facebook_id).first()
 
     @staticmethod
     def find_by_id(provider: str, internal_id: str) -> 'Optional[AppUser]':

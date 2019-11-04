@@ -11,11 +11,10 @@ from flask import Blueprint, abort, request
 import komidabot.localisation as localisation
 import komidabot.triggers as triggers
 from komidabot.app import get_app
-from komidabot.facebook.received_message import MessageSender as LegacyMessageSender, \
-    NLPAttribute as LegacyNLPAttribute, ReceivedTextMessage as LegacyReceivedTextMessage
-from komidabot.komidabot import Komidabot, Bot
+from komidabot.komidabot import Bot
 from komidabot.messages import TextMessage
 from komidabot.users import UnifiedUserManager, UserId, User
+from komidabot.facebook.users import User as FacebookUser
 
 blueprint = Blueprint('komidabot', __name__)
 pp = pprint.PrettyPrinter(indent=2)
@@ -79,17 +78,14 @@ def handle_message():
                     # recipient = event["recipient"]["id"]
 
                     user_manager = app.user_manager  # type: UnifiedUserManager
-                    user = user_manager.get_user(UserId(sender, 'facebook'), event=event)
+                    user = user_manager.get_user(UserId(sender, 'facebook'), event=event)  # type: FacebookUser
 
-                    sender_obj = LegacyMessageSender(sender)
-                    sender_obj.mark_seen()
+                    if not isinstance(user, FacebookUser):
+                        raise RuntimeError('Expected Facebook User')
 
-                    if user.is_feature_active('new_messaging'):
-                        app.task_executor.submit(_do_handle_message, event, user, app._get_current_object())
-                    else:
-                        raise RuntimeError('Unreachable code')
-                        # app.task_executor.submit(_do_handle_message_legacy, event, sender_obj,
-                        #                          app._get_current_object())
+                    user.mark_message_seen()
+
+                    app.task_executor.submit(_do_handle_message, event, user, app._get_current_object())
 
                 return 'ok', 200
 
@@ -180,7 +176,6 @@ def _do_handle_message(event, user: User, app):
             user.send_message(TextMessage(trigger, localisation.INTERNAL_ERROR(locale)))
             app.logger.exception(e)
 
-
 # komidabot_1     | { 'message': { 'attachments': [ { 'payload': { 'sticker_id': 369239263222822,
 # komidabot_1     |                                                'url': 'https://scontent.xx.fbcdn.net/v/t39.1997-6/39
 # 178562_1505197616293642_5411344281094848512_n.png?_nc_cat=1&_nc_oc=AQm57VHu6KQauDTkvWGzNJE91vLieGwdA9u0sTl2KhZy8gUqm3z
@@ -193,70 +188,3 @@ def _do_handle_message(event, user: User, app):
 # komidabot_1     |   'recipient': {'id': '1502601723123151'},
 # komidabot_1     |   'sender': {'id': '1468689523250850'},
 # komidabot_1     |   'timestamp': 1570008603230}
-
-
-def _do_handle_message_legacy(event, sender_obj: LegacyMessageSender, app):
-    time.sleep(0.1)  # Yield
-
-    with app.app_context():
-        print('Handling message in legacy path', flush=True)
-        print(pprint.pformat(event, indent=2), flush=True)
-
-        komidabot: Komidabot = app.komidabot
-
-        try:
-            if 'message' in event:
-                message = event['message']
-
-                # print(pprint.pformat(message, indent=2), flush=True)
-
-                if 'text' not in message:
-                    sender_obj.send_text_message(localisation.ERROR_TEXT_ONLY(sender_obj.get_locale()))
-                    return
-
-                message_text = message['text']
-
-                if 'admin' in message_text:
-                    return
-
-                message_obj = LegacyReceivedTextMessage(sender_obj, message_text)
-
-                if 'nlp' in message:
-                    if 'detected_locales' in message['nlp']:
-                        for locale_entry in message['nlp']['detected_locales']:
-                            message_obj.add_attribute(LegacyNLPAttribute('locale', locale_entry['locale'],
-                                                                         locale_entry['confidence']))
-                    if 'entities' in message['nlp']:
-                        for attribute, nlp_entries in message['nlp']['entities'].items():
-                            for nlp_entry in nlp_entries:
-                                attribute_obj = LegacyNLPAttribute(attribute, nlp_entry['confidence'], nlp_entry)
-                                message_obj.add_attribute(attribute_obj)
-
-                if app.config.get('DISABLED'):
-                    if not sender_obj.is_admin():
-                        sender_obj.send_text_message(localisation.DOWN_FOR_MAINTENANCE1(sender_obj.get_locale()))
-                        sender_obj.send_text_message(localisation.DOWN_FOR_MAINTENANCE2(sender_obj.get_locale()))
-                        return
-
-                    # sender_obj.send_text_message('Note: The bot is currently disabled')
-
-                print(repr(message_obj), flush=True)
-
-                komidabot.message_received_legacy(message_obj)
-            elif 'postback' in event:
-                sender_obj.send_text_message(localisation.ERROR_POSTBACK(sender_obj.get_locale()))
-                # postback = event['postback']
-
-                # sender_obj.send_text_message(localisation.ERROR_NOT_IMPLEMENTED(sender_obj.get_locale()))
-
-        except Exception as e:
-            try:
-                app.logger.error('Error while handling event:\n{}', pprint.pformat(event, indent=2))
-                get_app().bot.notify_error(e)
-            except Exception:
-                pass
-
-            sender_obj.send_text_message(localisation.INTERNAL_ERROR(sender_obj.get_locale()))
-            app.logger.exception(e)
-            # traceback.print_tb(e.__traceback__)
-            # print(e, flush=True, file=sys.stderr)
