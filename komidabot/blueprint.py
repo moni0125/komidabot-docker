@@ -139,7 +139,7 @@ def _do_handle_message(event, user: User, app):
                         return  # TODO: Handle properly in the future
 
                     if 'nlp' in message:
-                        if 'detected_locales' in message['nlp']:
+                        if 'detected_locales' in message['nlp'] and len(message['nlp']['detected_locales']) > 0:
                             # Get the locale that has the highest confidence
                             locale_entry = max(message['nlp']['detected_locales'], key=lambda x: x['confidence'])
                             trigger.add_aspect(triggers.LocaleAspect(locale_entry['locale']))
@@ -172,6 +172,7 @@ def _do_handle_message(event, user: User, app):
                 # sender_obj.send_text_message(localisation.ERROR_NOT_IMPLEMENTED(locale))
         except Exception as e:
             try:
+                app.logger.error('Error while handling event:\n{}', pprint.pformat(event, indent=2))
                 get_app().bot.notify_error(e)
             except Exception:
                 pass
@@ -250,6 +251,7 @@ def _do_handle_message_legacy(event, sender_obj: LegacyMessageSender, app):
 
         except Exception as e:
             try:
+                app.logger.error('Error while handling event:\n{}', pprint.pformat(event, indent=2))
                 get_app().bot.notify_error(e)
             except Exception:
                 pass
