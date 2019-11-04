@@ -47,6 +47,7 @@ class Komidabot(Bot):
                 bot.trigger_received(triggers.SubscriptionTrigger())
 
         # FIXME: This is disabled for now
+        # TODO: Looks like we'll need to reenable this as apparently they're updating menus on the day as well now
         # @self.scheduler.scheduled_job(CronTrigger(hour=1, minute=0, second=0),  # Run every day to find changes
         #                               args=(the_app.app_context, self),
         #                               id='menu_update', name='Daily late-night update of the menus')

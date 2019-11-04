@@ -91,17 +91,21 @@ class ExternalMenu:
                     if not enabled:
                         continue
 
-                    name = course['dispNameNl']
+                    name_nl = course['dispNameNl']
+                    name_en = course['dispNameEn']
                     main_course = course['maincourse']
                     price = course['price']
+                    staff_price = None
                     calculate_multi_price = course['calculatedMultiplePrices']
                     fixed_price = course['fixedprice']
                     show_first = course['showFirst']
-                    # menu_contents.append(
-                    #     (name, course_sort_order, main_course, price, calculate_multi_price, fixed_price,
-                    #      show_first))
-                    course_obj = ExternalCourse(course_sort_order, show_first, main_course, price, None)
-                    course_obj.add_name('nl_BE', name)
+
+                    if calculate_multi_price:
+                        pass  # FIXME: Get staff price
+
+                    course_obj = ExternalCourse(course_sort_order, show_first, main_course, price, staff_price)
+                    course_obj.add_name('nl_BE', name_nl)
+                    course_obj.add_name('en_US', name_en)
                     menu_contents.append(course_obj)
 
                 print(sort_order, menu_contents)
