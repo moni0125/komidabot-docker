@@ -50,7 +50,8 @@ class Campus(db.Model):
     short_name = db.Column(db.String(8), nullable=False)
     keywords = db.Column(db.Text(), default='', nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)
-    page_url = db.Column(db.Text(), default='', nullable=False)
+    page_url = db.Column(db.Text(), nullable=True)
+    external_id = db.Column(db.Integer(), nullable=True)
 
     menus = db.relationship('Menu', backref='campus', passive_deletes=True)
     closing_days = db.relationship('ClosingDays', backref='campus', passive_deletes=True)
@@ -75,6 +76,9 @@ class Campus(db.Model):
 
     def set_page_url(self, page_url):
         self.page_url = page_url
+
+    def set_external_id(self, external_id):
+        self.external_id = external_id
 
     @staticmethod
     def create(name: str, short_name: str, keywords: List[str], page_url: str, session=None):
