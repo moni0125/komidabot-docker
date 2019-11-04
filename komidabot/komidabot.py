@@ -140,8 +140,9 @@ class Komidabot(Bot):
             print(repr(trigger), flush=True)
 
             locale = None
-            if triggers.LocaleAspect in trigger:
-                locale = trigger[triggers.LocaleAspect].locale
+            # XXX: Don't use the sender locale, as some messages get mistakenly seen as a different language
+            # if triggers.LocaleAspect in trigger:
+            #     locale = trigger[triggers.LocaleAspect].locale
 
             if triggers.SenderAspect in trigger:
                 sender = trigger[triggers.SenderAspect].sender
