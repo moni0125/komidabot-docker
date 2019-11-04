@@ -18,6 +18,7 @@ class FoodType(enum.Enum):
     SUB = 8
 
 
+# TODO: Onboarding: User should get information on what each icon means
 food_type_icons = {
     FoodType.SOUP: '🍵',
     FoodType.MEAT: '🥩',
@@ -61,10 +62,13 @@ class Campus(db.Model):
         self.keywords = ''
 
     def add_keyword(self, keyword: str):
-        self.keywords = ' '.join(set(self.keywords.split() + [keyword, ]))
+        self._set_keywords(self.keywords.split(';') + [keyword, ])
 
     def remove_keyword(self, keyword: str):
-        self.keywords = ' '.join(set([kw for kw in self.keywords.split() if kw != keyword]))
+        self._set_keywords([kw for kw in self.keywords.split(';') if kw != keyword])
+
+    def _set_keywords(self, keywords: List[str]):
+        self.keywords = ';' + ';'.join(set([kw for kw in keywords if kw])) + ';'
 
     def set_active(self, active: bool):
         self.active = active
