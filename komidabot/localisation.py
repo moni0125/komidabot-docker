@@ -16,6 +16,9 @@ def localisation_definition(name, obj, fallback='en_US'):
 
         if callable(result):
             return result()
+        elif isinstance(result, list):
+            weights, strings = zip(*result)
+            return random.choices(strings, weights=weights)
         else:
             return result
 
@@ -29,12 +32,11 @@ def localisation_definition(name, obj, fallback='en_US'):
 
 INTERNAL_ERROR = localisation_definition('INTERNAL_ERROR', {
     ('en_US', 'en_GB'): 'An unexpected error occured while trying to perform your request',
-    ('nl_BE', 'nl_NL'):
-        lambda:
-        'oepsie woepsie! de bot is stukkie wukkie! we sijn heul hard '
-        'aan t werk om dit te make mss kan je beter self kijken  owo'
-        if random.randint(0, 100) == 0 else
-        'Een onverwachte fout gebeurde tijdens het uitvoeren van uw verzoek',
+    ('nl_BE', 'nl_NL'): [
+        (1, 'oepsie woepsie! de bot is stukkie wukkie! we sijn heul hard '
+            'aan t werk om dit te make mss kan je beter self kijken  owo'),
+        (99, 'Een onverwachte fout gebeurde tijdens het uitvoeren van uw verzoek'),
+    ],
 })
 
 # INTERNAL_ERROR = localisation_definition('INTERNAL_ERROR', {

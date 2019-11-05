@@ -81,6 +81,7 @@ def handle_message():
                     user = user_manager.get_user(UserId(sender, 'facebook'), event=event)  # type: FacebookUser
 
                     if not isinstance(user, FacebookUser):
+                        # FIXME: Rather have a check that when the user supports "read" markers, we mark as read
                         raise RuntimeError('Expected Facebook User')
 
                     user.mark_message_seen()
