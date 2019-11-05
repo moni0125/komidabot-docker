@@ -29,6 +29,8 @@ class BaseTestCase(TestCase):
         return script_info.load_app()
 
     def setUp(self):
+        super().setUp()
+
         with self.app.app_context():
             db.create_all()
             db.session.commit()
@@ -37,6 +39,8 @@ class BaseTestCase(TestCase):
         with self.app.app_context():
             db.session.remove()
             db.drop_all()
+
+        super().tearDown()
 
     def create_test_campuses(self) -> List[Campus]:
         with self.app.app_context():

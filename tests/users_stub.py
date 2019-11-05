@@ -1,5 +1,7 @@
-from typing import Dict, Optional, Union
+from typing import Dict, List
+from typing import Optional, Union
 
+import komidabot.messages as messages
 import komidabot.users as users
 from komidabot.models import AppUser
 
@@ -10,7 +12,7 @@ class UserManager(users.UserManager):
     def __init__(self):
         self.users = dict()  # type: Dict[users.UserId,User]
 
-        self.message_handler = None
+        self.message_handler = MessageHandler()
 
     def add_user(self, internal_id: str) -> 'User':
         user_id = users.UserId(internal_id, PROVIDER_ID)
@@ -74,3 +76,24 @@ class User(users.User):
         if self._manager.message_handler is None:
             raise NotImplementedError()
         return self._manager.message_handler
+
+
+class MessageHandler(messages.MessageHandler):
+    """Message handler that stores messages in a user->messages dictionary"""
+
+    def __init__(self):
+        self.message_log = dict()  # type: Dict[users.UserId, List[str]]
+
+    def reset(self):
+        self.message_log = dict()
+
+    def send_message(self, user, message: 'messages.Message'):
+        if user.id.provider != PROVIDER_ID:
+            raise ValueError('User id is not for Facebook')
+
+        if isinstance(message, messages.TextMessage):
+            if user.id not in self.message_log:
+                self.message_log[user.id] = []
+            self.message_log[user.id].append(message.text)
+        else:
+            raise NotImplementedError()

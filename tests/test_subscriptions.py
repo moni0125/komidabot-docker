@@ -2,13 +2,13 @@ import datetime
 import unittest
 from typing import Dict, List, Tuple
 
-import komidabot.messages as messages
 import komidabot.triggers as triggers
+import komidabot.users as users
+import tests.users_stub as users_stub
+import tests.utils as utils
 from app import db
-from komidabot.app import get_app
 from komidabot.models import AppUser, Day, FoodType, UserSubscription, food_type_icons
 from tests.base import BaseTestCase, HttpCapture, menu_item
-from tests.users_stub import UserManager as TestUserManager, users, PROVIDER_ID
 
 
 class BaseSubscriptionsTestCase(BaseTestCase):
@@ -17,42 +17,14 @@ class BaseSubscriptionsTestCase(BaseTestCase):
         self.campuses = self.create_test_campuses()
 
 
-class TestMessageHandler(messages.MessageHandler):
-    def __init__(self):
-        self.message_log = dict()  # type: Dict[users.UserId, List[str]]
-
-    def reset(self):
-        self.message_log = dict()
-
-    def send_message(self, user, message: 'messages.Message'):
-        if user.id.provider != PROVIDER_ID:
-            raise ValueError('User id is not for Facebook')
-
-        if isinstance(message, messages.TextMessage):
-            if user.id not in self.message_log:
-                self.message_log[user.id] = []
-            self.message_log[user.id].append(message.text)
-        else:
-            raise NotImplementedError()
-
-
 class TestGenericSubscriptions(BaseSubscriptionsTestCase):
     def setUp(self):
         super().setUp()
 
-        self.day_mon = datetime.date(2019, 7, 1)
-        self.day_tue = datetime.date(2019, 7, 2)
-        self.day_wed = datetime.date(2019, 7, 3)
-        self.day_thu = datetime.date(2019, 7, 4)
-        self.day_fri = datetime.date(2019, 7, 5)
-
-        self.days = [self.day_mon, self.day_tue, self.day_wed, self.day_thu, self.day_fri]
-
         with self.app.app_context():
-            app = get_app()
-            user_manager = TestUserManager()
-            self.message_handler = user_manager.message_handler = TestMessageHandler()
-            app.user_manager = user_manager  # Replace the unified user manager completely to test
+            user_manager = users_stub.UserManager()
+            self.message_handler = user_manager.message_handler
+            self.app.user_manager = user_manager  # Replace the unified user manager completely to test
 
             self.user1 = user_manager.add_user('user1')
             self.user2 = user_manager.add_user('user2')
@@ -106,7 +78,7 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
             for campus in self.campuses:
                 session.add(campus)
 
-                for day in self.days:
+                for day in utils.DAYS_LIST:
                     day_name = Day(day.isoweekday()).name
                     items = [menu_item(food_type, '{} at {} for {}'.format(food_type.name, campus.short_name, day_name),
                                        'nl_BE', '€0,00', '€0,00') for food_type in food_types]
@@ -121,13 +93,6 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
 
             session.commit()
 
-    def test_setup(self):
-        self.assertEqual(self.day_mon.isoweekday(), 1, 'Date is not a Monday')
-        self.assertEqual(self.day_tue.isoweekday(), 2, 'Date is not a Tuesday')
-        self.assertEqual(self.day_wed.isoweekday(), 3, 'Date is not a Wednesday')
-        self.assertEqual(self.day_thu.isoweekday(), 4, 'Date is not a Thursday')
-        self.assertEqual(self.day_fri.isoweekday(), 5, 'Date is not a Friday')
-
     def test_active_subscriptions(self):
         self.setup_subscriptions()
         self.setup_menu()
@@ -136,25 +101,25 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
 
         with self.app.app_context():
             with HttpCapture():  # Ensure no requests are made
-                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_mon))
-                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_tue))
-                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_wed))
-                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_thu))
-                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=self.day_fri))
+                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=utils.DAYS['MON']))
+                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=utils.DAYS['TUE']))
+                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=utils.DAYS['WED']))
+                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=utils.DAYS['THU']))
+                self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=utils.DAYS['FRI']))
 
                 db.session.add_all(self.campuses)
 
                 self.assertEqual(self.message_handler.message_log[self.user1.id], [
-                    self.expected_menus[(self.campuses[0].short_name, self.day_mon)],
-                    self.expected_menus[(self.campuses[1].short_name, self.day_tue)],
-                    self.expected_menus[(self.campuses[0].short_name, self.day_wed)],
-                    self.expected_menus[(self.campuses[1].short_name, self.day_thu)],
-                    self.expected_menus[(self.campuses[0].short_name, self.day_fri)],
+                    self.expected_menus[(self.campuses[0].short_name, utils.DAYS['MON'])],
+                    self.expected_menus[(self.campuses[1].short_name, utils.DAYS['TUE'])],
+                    self.expected_menus[(self.campuses[0].short_name, utils.DAYS['WED'])],
+                    self.expected_menus[(self.campuses[1].short_name, utils.DAYS['THU'])],
+                    self.expected_menus[(self.campuses[0].short_name, utils.DAYS['FRI'])],
                 ])
 
                 self.assertEqual(self.message_handler.message_log[self.user2.id], [
-                    self.expected_menus[(self.campuses[1].short_name, self.day_tue)],
-                    self.expected_menus[(self.campuses[0].short_name, self.day_thu)],
+                    self.expected_menus[(self.campuses[1].short_name, utils.DAYS['TUE'])],
+                    self.expected_menus[(self.campuses[0].short_name, utils.DAYS['THU'])],
                 ])
 
                 self.assertNotIn(self.user3.id, self.message_handler.message_log)
