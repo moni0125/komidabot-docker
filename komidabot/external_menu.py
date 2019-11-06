@@ -108,14 +108,18 @@ class ExternalMenuItem:
         tail = self.courses[1:]
 
         if len(tail) > 0:
-            front = tail[:-1]
-            last = tail[-1]
-            if len(front) > 0:
-                extra = '{} en {}'.format(', '.join([elem.name['nl_BE'] for elem in front]), last.name['nl_BE'])
-            else:
-                extra = last.name['nl_BE']
+            def get_tail(l):
+                front = l[:-1]
+                last = l[-1]
+                if len(front) > 0:
+                    return '{}, en {}'.format(', '.join([elem.name['nl_BE'] for elem in front]), last.name['nl_BE'])
+                else:
+                    return last.name['nl_BE']
 
-            return '{} met {}'.format(head.name['nl_BE'], extra)
+            if ' met ' in head.name:
+                return '{}, {}'.format(head.name['nl_BE'], get_tail(tail))
+
+            return '{} met {}'.format(head.name['nl_BE'], get_tail(tail))
         else:
             return head.name['nl_BE']
 
