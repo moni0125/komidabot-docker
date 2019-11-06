@@ -1,5 +1,6 @@
 import atexit
 import datetime
+import locale
 import threading
 from typing import Dict, List, Optional
 
@@ -8,11 +9,11 @@ from apscheduler.jobstores.memory import MemoryJobStore
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 
+import komidabot.external_menu as external_menu
 import komidabot.facebook.nlp_dates as nlp_dates
 import komidabot.localisation as localisation
 import komidabot.menu
 import komidabot.menu_scraper as menu_scraper
-import komidabot.external_menu as external_menu
 import komidabot.messages as messages
 import komidabot.triggers as triggers
 import komidabot.users as users
@@ -259,6 +260,9 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
     # Storing a hash probably won't be needed anymore, so can probably drop this
     campus_list = Campus.get_active()
 
+    def format_price(price: float):
+        return locale.currency(price).replace(' ', '')
+
     for campus in campus_list:
         if len(campuses) > 0 and campus.short_name not in campuses:
             continue
@@ -288,8 +292,8 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
                         translatable, translation = Translatable.get_or_create(item.get_combined_text(), 'nl_NL',
                                                                                session=session)
 
-                        menu.add_menu_item(translatable, item.food_type, item.get_student_price(),
-                                           item.get_staff_price() or '', session=session)
+                        menu.add_menu_item(translatable, item.food_type, format_price(item.get_student_price()),
+                                           format_price(item.get_staff_price()), session=session)
 
         else:
             scraper = menu_scraper.MenuScraper(campus)

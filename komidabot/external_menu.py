@@ -113,7 +113,7 @@ class ExternalMenuItem:
             if len(front) > 0:
                 extra = '{} en {}'.format(', '.join([elem.name['nl_BE'] for elem in front]), last.name['nl_BE'])
             else:
-                extra = last
+                extra = last.name['nl_BE']
 
             return '{} met {}'.format(head.name['nl_BE'], extra)
         else:

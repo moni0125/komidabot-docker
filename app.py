@@ -1,15 +1,18 @@
-import logging, os
+import locale
+import logging
+import os
 
-from flask.cli import ScriptInfo
 from flask import Flask
-
-from komidabot.features import update_active_features
-from komidabot.app import App as KomidabotApp
+from flask.cli import ScriptInfo
 
 from extensions import db, migrate
+from komidabot.app import App as KomidabotApp
+from komidabot.features import update_active_features
 
 
 def create_app(script_info: ScriptInfo = None):
+    locale.setlocale(locale.LC_MONETARY, 'nl_BE.utf8')
+
     # instantiate the app
     app = Flask(__name__)
 
