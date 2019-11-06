@@ -314,6 +314,8 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
             #     print('{}/{}: {} ({})'.format(result.day.name, result.food_type.name, result.name, result.price),
             #           flush=True)
 
+    session.commit()
+
 
 def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument, session):
     for day in range(document.start_date.toordinal(), document.end_date.toordinal() + 1):
@@ -360,8 +362,6 @@ def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument, se
             print((translatable, food_type, prices[0], prices[1]), flush=True)
 
             menu.add_menu_item(translatable, food_type, prices[0], prices[1], session=session)
-
-    session.commit()
 
 
 def apply_menu_fixes():
