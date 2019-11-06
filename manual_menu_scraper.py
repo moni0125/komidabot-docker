@@ -34,7 +34,14 @@ if __name__ == '__main__':
         for date in dates:
             menu.add_to_lookup(campus, date)
 
-        menu.lookup_menu()
+        result = menu.lookup_menus()
+
+        for (campus, date), items in result.items():
+            print('{} @ {}'.format(campus.short_name, date.strftime('%Y-%m-%d')), flush=True)
+
+            for item in items:
+                print(item)
+
     else:
         scraper = MenuScraper(campus)
 
