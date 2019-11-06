@@ -261,6 +261,8 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
     campus_list = Campus.get_active()
 
     def format_price(price: float):
+        if not price:
+            return ''
         return locale.currency(price).replace(' ', '')
 
     for campus in campus_list:
