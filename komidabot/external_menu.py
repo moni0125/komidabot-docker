@@ -119,6 +119,12 @@ class ExternalMenuItem:
         else:
             return head.name['nl_BE']
 
+    def get_student_price(self):
+        return sum([item.price_students for item in self.courses if item.price_students])
+
+    def get_staff_price(self):
+        return sum([item.price_staff for item in self.courses if item.price_staff]) or None
+
     def __repr__(self):
         return '{} {} {}'.format(self.sort_order, models.food_type_icons[self.food_type], self.get_combined_text())
 

@@ -12,6 +12,7 @@ import komidabot.facebook.nlp_dates as nlp_dates
 import komidabot.localisation as localisation
 import komidabot.menu
 import komidabot.menu_scraper as menu_scraper
+import komidabot.external_menu as external_menu
 import komidabot.messages as messages
 import komidabot.triggers as triggers
 import komidabot.users as users
@@ -46,13 +47,29 @@ class Komidabot(Bot):
                 bot.trigger_received(triggers.SubscriptionTrigger())
 
         # FIXME: This is disabled for now
-        # TODO: Looks like we'll need to reenable this as apparently they're updating menus on the day as well now
         # @self.scheduler.scheduled_job(CronTrigger(hour=1, minute=0, second=0),  # Run every day to find changes
         #                               args=(the_app.app_context, self),
         #                               id='menu_update', name='Daily late-night update of the menus')
         # def menu_update(context, bot: 'Komidabot'):
         #     with context():
         #         bot.update_menus(None)
+
+        @self.scheduler.scheduled_job(CronTrigger(hour=1, minute=0, second=0),  # Run every day to find changes
+                                      args=(the_app.app_context,),
+                                      id='menu_update', name='Daily late-night update of the menus')
+        def menu_update(context):
+            with context():
+                today = datetime.datetime.today().date()
+                dates = [
+                    today,
+                    today + datetime.timedelta(days=1),
+                    today + datetime.timedelta(days=2),
+                    today + datetime.timedelta(days=3),
+                    today + datetime.timedelta(days=4),
+                    today + datetime.timedelta(days=5),
+                ]
+
+                update_menus(None, 'cmi', dates=dates)
 
     def trigger_received(self, trigger: triggers.Trigger):
         with self.lock:  # TODO: Maybe only lock on critical sections?
@@ -74,23 +91,25 @@ class Komidabot(Bot):
                 # TODO: Is this really how we want to handle input?
                 if isinstance(trigger, triggers.TextTrigger) and sender.is_admin():
                     text = trigger.text
-                    if text == 'setup':
+                    split = text.lower().split(' ')
+
+                    if split[0] == 'setup':
                         recreate_db()
                         create_standard_values()
                         import_dump(app.config['DUMP_FILE'])
                         sender.send_message(messages.TextMessage(trigger, 'Setup done'))
                         return
-                    elif text == 'update':
+                    elif split[0] == 'update':
                         sender.send_message(messages.TextMessage(trigger, 'Updating menus...'))
-                        update_menus(trigger)
+                        update_menus(trigger, *split[1:])
                         sender.send_message(messages.TextMessage(trigger, 'Done updating menus...'))
                         return
-                    elif text == 'fix':
+                    elif split[0] == 'fix':
                         sender.send_message(messages.TextMessage(trigger, 'Applying fixes'))
                         apply_menu_fixes()
                         sender.send_message(messages.TextMessage(trigger, 'Done applying fixes...'))
                         return
-                    elif text == 'psid':  # TODO: Deprecated?
+                    elif split[0] == 'psid':  # TODO: Deprecated?
                         sender.send_message(messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
                         return
 
@@ -233,34 +252,63 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
                 user.send_message(messages.TextMessage(trigger, menu))
 
 
-def update_menus(initiator: 'Optional[triggers.Trigger]'):
+def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates: 'List[datetime.date]' = None):
     session = db.session  # FIXME: Create new session
 
     # TODO: Store a hash of the source file for each menu to check for changes
+    # Storing a hash probably won't be needed anymore, so can probably drop this
     campus_list = Campus.get_active()
 
     for campus in campus_list:
-        scraper = menu_scraper.MenuScraper(campus)
-
-        scraper.find_pdf_location()
-
-        if not scraper.pdf_location:
-            message = 'No menu has been found for {}'.format(campus.short_name.upper())
-            if initiator:
-                if triggers.SenderAspect in initiator:
-                    initiator[triggers.SenderAspect].sender.send_message(messages.TextMessage(initiator, message))
+        if len(campuses) > 0 and campus.short_name not in campuses:
             continue
 
-        # initiator.send_text_message('Campus {}\n{}'.format(campus.name, scraper.pdf_location))
+        if campus.external_id:
+            fetcher = external_menu.ExternalMenu()
 
-        scraper.download_pdf()
-        scraper.generate_pictures()
+            for date in dates:
+                fetcher.add_to_lookup(campus, date)
 
-        handle_parsed_menu(campus, scraper.parse_pdf(), session)
+            result = fetcher.lookup_menus()
 
-        # for result in parse_result.parse_results:
-        #     print('{}/{}: {} ({})'.format(result.day.name, result.food_type.name, result.name, result.price),
-        #           flush=True)
+            for (_, date), items in result.items():
+                if len(items) > 0:
+                    menu = Menu.get_menu(campus, date)
+
+                    if menu is not None:
+                        menu.delete(session=session)
+
+                    menu = Menu.create(campus, date, session=session)
+
+                    for item in items:
+                        translatable, translation = Translatable.get_or_create(item.get_combined_text(), 'nl_NL',
+                                                                               session=session)
+
+                        menu.add_menu_item(translatable, item.food_type, item.get_student_price(),
+                                           item.get_staff_price(), session=session)
+
+        else:
+            scraper = menu_scraper.MenuScraper(campus)
+
+            scraper.find_pdf_location()
+
+            if not scraper.pdf_location:
+                if initiator:
+                    if triggers.SenderAspect in initiator:
+                        message = 'No menu has been found for {}'.format(campus.short_name.upper())
+                        initiator[triggers.SenderAspect].sender.send_message(messages.TextMessage(initiator, message))
+                continue
+
+            # initiator.send_text_message('Campus {}\n{}'.format(campus.name, scraper.pdf_location))
+
+            scraper.download_pdf()
+            scraper.generate_pictures()
+
+            handle_parsed_menu(campus, scraper.parse_pdf(), session)
+
+            # for result in parse_result.parse_results:
+            #     print('{}/{}: {} ({})'.format(result.day.name, result.food_type.name, result.name, result.price),
+            #           flush=True)
 
 
 def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument, session):
