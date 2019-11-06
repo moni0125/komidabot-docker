@@ -289,7 +289,7 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
                                                                                session=session)
 
                         menu.add_menu_item(translatable, item.food_type, item.get_student_price(),
-                                           item.get_staff_price(), session=session)
+                                           item.get_staff_price() or '', session=session)
 
         else:
             scraper = menu_scraper.MenuScraper(campus)
