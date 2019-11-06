@@ -266,6 +266,10 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
         if campus.external_id:
             fetcher = external_menu.ExternalMenu()
 
+            if not dates:
+                today = datetime.datetime.today().date()
+                dates = [today + datetime.timedelta(days=i) for i in range(0 - today.weekday(), 5 - today.weekday())]
+
             for date in dates:
                 fetcher.add_to_lookup(campus, date)
 
