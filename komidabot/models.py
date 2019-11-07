@@ -1,4 +1,7 @@
-import datetime, enum
+import datetime
+import enum
+import locale
+from decimal import Decimal
 from typing import Callable, Dict, List, Optional, Tuple
 
 from extensions import db
@@ -280,8 +283,8 @@ class Menu(db.Model):
     def get_menu(campus: Campus, day: datetime.date) -> 'Optional[Menu]':
         return Menu.query.filter_by(campus_id=campus.id, menu_day=day).first()
 
-    def add_menu_item(self, translatable: Translatable, food_type: FoodType, price_students: str, price_staff: str,
-                      session=None):
+    def add_menu_item(self, translatable: Translatable, food_type: FoodType, price_students: Decimal,
+                      price_staff: Decimal, session=None):
         menu_item = MenuItem(self, translatable, food_type, price_students, price_staff)
 
         if session is not None:
@@ -305,11 +308,11 @@ class MenuItem(db.Model):
     translatable_id = db.Column(db.Integer(), db.ForeignKey('translatable.id', onupdate='CASCADE', ondelete='RESTRICT'),
                                 nullable=False)
     food_type = db.Column(db.Enum(FoodType), nullable=False)
-    price_students = db.Column(db.String(8), nullable=False)
-    price_staff = db.Column(db.String(8), nullable=False)
+    price_students = db.Column(db.Numeric(4, 2), nullable=False)
+    price_staff = db.Column(db.Numeric(4, 2), nullable=False)
 
-    def __init__(self, menu: Menu, translatable: Translatable, food_type: FoodType, price_students: str,
-                 price_staff: str):
+    def __init__(self, menu: Menu, translatable: Translatable, food_type: FoodType, price_students: Decimal,
+                 price_staff: Decimal):
         self.menu = menu
         self.translatable = translatable
         self.food_type = food_type
@@ -321,6 +324,12 @@ class MenuItem(db.Model):
 
     def __hash__(self):
         return hash(self.id)
+
+    @staticmethod
+    def format_price(price: Decimal) -> str:
+        if price == 0.0:
+            return ''
+        return locale.currency(price).replace(' ', '')
 
 
 class UserSubscription(db.Model):

@@ -1,7 +1,8 @@
 import datetime
-import httpretty
+from decimal import Decimal
 from typing import List, NamedTuple
 
+import httpretty
 from flask.cli import ScriptInfo
 from flask_testing import TestCase
 
@@ -13,8 +14,8 @@ from komidabot.models import AppUser, Campus, Feature, FoodType, Menu, Translata
 menu_item = NamedTuple('menu_item', [('type', FoodType),
                                      ('text', str),
                                      ('language', str),
-                                     ('price_students', str),
-                                     ('price_staff', str)])
+                                     ('price_students', Decimal),
+                                     ('price_staff', Decimal)])
 
 
 class BaseTestCase(TestCase):

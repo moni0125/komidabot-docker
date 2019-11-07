@@ -116,8 +116,11 @@ class ExternalMenuItem:
                 else:
                     return last.name['nl_BE']
 
-            if ' met ' in head.name:
-                return '{}, {}'.format(head.name['nl_BE'], get_tail(tail))
+            if ' met ' in head.name['nl_BE']:
+                if len(tail) == 1:
+                    return '{} en {}'.format(head.name['nl_BE'], tail[0].name['nl_BE'])
+                else:
+                    return '{}, {}'.format(head.name['nl_BE'], get_tail(tail))
 
             return '{} met {}'.format(head.name['nl_BE'], get_tail(tail))
         else:

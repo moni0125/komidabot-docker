@@ -1,9 +1,11 @@
 import datetime
 import unittest
+from decimal import Decimal
 from typing import Dict, List, Tuple
 
 import komidabot.triggers as triggers
 import komidabot.users as users
+import komidabot.models as models
 import tests.users_stub as users_stub
 import tests.utils as utils
 from app import db
@@ -81,13 +83,14 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
                 for day in utils.DAYS_LIST:
                     day_name = Day(day.isoweekday()).name
                     items = [menu_item(food_type, '{} at {} for {}'.format(food_type.name, campus.short_name, day_name),
-                                       'nl_BE', '€0,00', '€0,00') for food_type in food_types]
+                                       'nl_BE', Decimal('1.0'), Decimal('2.0')) for food_type in food_types]
                     self.create_menu(campus, day, items, session=session)
 
                     result = ['Menu at {} on {}'.format(campus.short_name.upper(), str(day)), '']
                     for item in items:
                         result.append('{} {} ({} / {})'.format(food_type_icons[item.type], item.text,
-                                                               item.price_students, item.price_staff))
+                                                               models.MenuItem.format_price(item.price_students),
+                                                               models.MenuItem.format_price(item.price_staff)))
 
                     self.expected_menus[(campus.short_name, day)] = '\n'.join(result)
 

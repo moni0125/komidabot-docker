@@ -9,9 +9,10 @@ def get_menu_line(menu_item: models.MenuItem, locale: str = None) -> str:
     translation = get_translated_text(menu_item.translatable, locale)
 
     if not menu_item.price_staff:
-        price_str = menu_item.price_students
+        price_str = models.MenuItem.format_price(menu_item.price_students)
     else:
-        price_str = '{} / {}'.format(menu_item.price_students, menu_item.price_staff)
+        price_str = '{} / {}'.format(models.MenuItem.format_price(menu_item.price_students),
+                                     models.MenuItem.format_price(menu_item.price_staff))
 
     return '{} {} ({})'.format(models.food_type_icons[menu_item.food_type], translation.translation, price_str)
 
