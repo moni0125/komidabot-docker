@@ -200,7 +200,7 @@ class Komidabot(Bot):
                 user = app.user_manager.get_user(admin)
 
                 user.send_message(messages.TextMessage(triggers.Trigger(),
-                                                       'An internal error occurred, '
+                                                       '⚠️ An internal error occurred, '
                                                        'please check the console for more information'))
 
             self._handling_error = False

@@ -25,6 +25,9 @@ def prepare_menu_text(campus: models.Campus, day: datetime.date, locale: str) ->
 
     result = ['Menu at {} on {}'.format(campus.short_name.upper(), str(day)), '']
 
+    if len(menu.menu_items) < 6:
+        result.insert(1, '⚠️ NOTE: Menu may be incomplete')
+
     try:
         for item in menu.menu_items:  # type: models.MenuItem
             result.append(get_menu_line(item, locale))

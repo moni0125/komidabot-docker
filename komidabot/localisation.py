@@ -31,11 +31,11 @@ def localisation_definition(name, obj, fallback='en_US'):
 #   https://developers.facebook.com/docs/messenger-platform/messenger-profile/supported-locales
 
 INTERNAL_ERROR = localisation_definition('INTERNAL_ERROR', {
-    ('en_US', 'en_GB'): 'An unexpected error occured while trying to perform your request',
+    ('en_US', 'en_GB'): '⚠️ An unexpected error occured while trying to perform your request',
     ('nl_BE', 'nl_NL'): [
         (1, 'oepsie woepsie! de bot is stukkie wukkie! we sijn heul hard '
             'aan t werk om dit te make mss kan je beter self kijken  owo'),
-        (99, 'Een onverwachte fout gebeurde tijdens het uitvoeren van uw verzoek'),
+        (99, '⚠️ Een onverwachte fout gebeurde tijdens het uitvoeren van uw verzoek'),
     ],
 })
 
@@ -89,8 +89,8 @@ REPLY_TOO_MANY_CAMPUSES = localisation_definition('REPLY_TOO_MANY_CAMPUSES', {
 })
 
 DOWN_FOR_MAINTENANCE1 = localisation_definition('ERROR_TEXT_ONLY', {
-    ('en_US', 'en_GB'): 'I am temporarily down for maintenance, please check back later',
-    ('nl_BE', 'nl_NL'): 'Wegens onderhoud ben ik tijdelijk onbeschikbaar, probeer het later nog eens',
+    ('en_US', 'en_GB'): '⚠️ I am temporarily down for maintenance, please check back later',
+    ('nl_BE', 'nl_NL'): '⚠️ Wegens onderhoud ben ik tijdelijk onbeschikbaar, probeer het later nog eens',
 })
 
 DOWN_FOR_MAINTENANCE2 = localisation_definition('ERROR_TEXT_ONLY', {
