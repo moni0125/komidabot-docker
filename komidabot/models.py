@@ -279,6 +279,17 @@ class Menu(db.Model):
             db.session.delete(self)
             db.session.commit()
 
+    def clear(self, session=None):
+        items = list(self.menu_items)
+
+        if session is not None:
+            for item in items:
+                session.delete(item)
+        else:
+            for item in items:
+                db.session.delete(item)
+            db.session.commit()
+
     @staticmethod
     def get_menu(campus: Campus, day: datetime.date) -> 'Optional[Menu]':
         return Menu.query.filter_by(campus_id=campus.id, menu_day=day).first()

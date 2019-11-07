@@ -281,7 +281,7 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
                     menu = Menu.get_menu(campus, date)
 
                     if menu is not None:
-                        menu.delete(session=session)
+                        menu.clear(session=session)
 
                     menu = Menu.create(campus, date, session=session)
 
@@ -325,7 +325,7 @@ def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument, se
         menu = Menu.get_menu(campus, date)
 
         if menu is not None:
-            menu.delete(session=session)
+            menu.clear(session=session)
 
         menu = Menu.create(campus, date, session=session)
 
