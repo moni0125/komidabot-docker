@@ -1,3 +1,5 @@
+import logging
+
 from flask import current_app as _current_app
 
 
@@ -14,6 +16,8 @@ class App:
         from komidabot.facebook.users import UserManager as FacebookUserManager
         from komidabot.komidabot import Komidabot
         from komidabot.users import UnifiedUserManager
+
+        self.logger = self.logger  # type: logging.Logger
 
         self.bot_interfaces = dict()  # TODO: Deprecate?
         self.bot_interfaces['facebook'] = {

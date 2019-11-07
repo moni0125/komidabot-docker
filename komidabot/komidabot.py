@@ -56,21 +56,26 @@ class Komidabot(Bot):
         #         bot.update_menus(None)
 
         @self.scheduler.scheduled_job(CronTrigger(hour=1, minute=0, second=0),  # Run every day to find changes
-                                      args=(the_app.app_context,),
+                                      args=(the_app.app_context, self),
                                       id='menu_update', name='Daily late-night update of the menus')
-        def menu_update(context):
+        def menu_update(context, bot: 'Komidabot'):
             with context():
-                today = datetime.datetime.today().date()
-                dates = [
-                    today,
-                    today + datetime.timedelta(days=1),
-                    today + datetime.timedelta(days=2),
-                    today + datetime.timedelta(days=3),
-                    today + datetime.timedelta(days=4),
-                    today + datetime.timedelta(days=5),
-                ]
+                try:
+                    today = datetime.datetime.today().date()
+                    dates = [
+                        today,
+                        today + datetime.timedelta(days=1),
+                        today + datetime.timedelta(days=2),
+                        today + datetime.timedelta(days=3),
+                        today + datetime.timedelta(days=4),
+                        today + datetime.timedelta(days=5),
+                    ]
 
-                update_menus(None, 'cmi', dates=dates)
+                    update_menus(None, 'cmi', dates=dates)
+                except Exception as e:
+                    bot.notify_error(e)
+
+                    get_app().logger.exception(e)
 
     def trigger_received(self, trigger: triggers.Trigger):
         with self.lock:  # TODO: Maybe only lock on critical sections?
