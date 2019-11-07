@@ -409,7 +409,7 @@ def apply_menu_fixes():
     #                                               'nl_NL', session=session)[0],
     #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
     #
-    # # Wednesda
+    # # Wednesday
     # menu = Menu.get_menu(campus, datetime.date(2019, 11, 6))
     # menu.add_menu_item(Translatable.get_or_create('Steak met mosterdsaus',
     #                                               'nl_NL', session=session)[0],
@@ -475,7 +475,7 @@ def apply_menu_fixes():
     #                                               'nl_NL', session=session)[0],
     #                    FoodType.PASTA_MEAT, '€4,20', '€5,20', session=session)
     #
-    # # Wednesda
+    # # Wednesday
     # menu = Menu.get_menu(campus, datetime.date(2019, 11, 6))
     # menu.add_menu_item(Translatable.get_or_create('Ravioli verdura met tomatengroentesaus',
     #                                               'nl_NL', session=session)[0],
@@ -501,162 +501,5 @@ def apply_menu_fixes():
     # menu.add_menu_item(Translatable.get_or_create('Pasta met gegrilde kip en chorizo',
     #                                               'nl_NL', session=session)[0],
     #                    FoodType.PASTA_MEAT, '€4,20', '€5,20', session=session)
-    #
-    # # Campus Middelheim
-    # campus = Campus.get_by_short_name('cmi')
-    #
-    # # Monday
-    # menu = Menu.create(campus, datetime.date(2019, 11, 4), session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Linzensoep met salie',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.SOUP, '€0,90', '€1,20', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Kipfilet met currysaus, couscous en couscousgroenten',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.MEAT, '€3,80', '€4,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Nasi-groenterolletjes met currysaus en couscous',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.VEGAN, '€5,20', '€6,50', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met vegetarische bolognaise',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.PASTA_VEGAN, '€3,80', '€4,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Spaghetti met carbonarasaus', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Steak met champignonroomsaus, aardappelpartjes en saladbar', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.GRILL, '€5,40', '€6,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Boerensalade',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.SALAD, '€3,80', '€4,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Pittige wintersalade', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.SALAD, '€4,80', '€6,00', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Granaatappel-fetasalade', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.SALAD, '€4,60', '€5,70', session=session)
-    # # menu.add_menu_item(Translatable.get_or_create('Bagel atletico', 'nl_NL',
-    # #                                               session=session)[0],
-    # #                    FoodType.SUB, '€2,30', '', session=session)
-    #
-    # # Tuesday
-    # menu = Menu.create(campus, datetime.date(2019, 11, 5), session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Venkelsoep',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.SOUP, '€0,90', '€1,20', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Cordon bleu met erwten en wortelen en gebakken aardappelschijfjes',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.MEAT, '€3,80', '€4,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Quorn-cordon bleu met erwten en wortelen '
-    #                                               'en gebakken aardappelschijfjes',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.VEGAN, '€4,40', '€5,50', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met vegetarische bolognaise',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.PASTA_VEGAN, '€3,80', '€4,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Spaghetti met carbonarasaus', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Steak met champignonroomsaus, aardappelpartjes en saladbar', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.GRILL, '€5,40', '€6,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Boerensalade',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.SALAD, '€3,80', '€4,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Pittige wintersalade', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.SALAD, '€4,80', '€6,00', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Granaatappel-fetasalade', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.SALAD, '€4,60', '€5,70', session=session)
-    #
-    # # Wednesday
-    # menu = Menu.create(campus, datetime.date(2019, 11, 6), session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Pompoensoep',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.SOUP, '€0,90', '€1,20', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Gegratineerde hamrolletjes met witloof',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.MEAT, '€3,80', '€4,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Gegratineerd witloofpannetje',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.VEGAN, '€3,60', '€4,50', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met vegetarische bolognaise',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.PASTA_VEGAN, '€3,80', '€4,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Spaghetti met carbonarasaus', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Steak met champignonroomsaus, aardappelpartjes en saladbar', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.GRILL, '€5,40', '€6,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Boerensalade',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.SALAD, '€3,80', '€4,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Pittige wintersalade', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.SALAD, '€4,80', '€6,00', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Granaatappel-fetasalade', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.SALAD, '€4,60', '€5,70', session=session)
-    #
-    # # Thursday
-    # menu = Menu.create(campus, datetime.date(2019, 11, 7), session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Bio-bloemkoolsoep',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.SOUP, '€0,90', '€1,20', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Koninginnehapje met frieten en rauwkostslaatje',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.MEAT, '€5,40', '€6,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('New Orleans pepper burger met frieten en rauwkostslaatje',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.VEGAN, '€5,00', '€6,20', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met vegetarische bolognaise',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.PASTA_VEGAN, '€3,80', '€4,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Spaghetti met carbonarasaus', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Steak met champignonroomsaus, aardappelpartjes en saladbar', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.GRILL, '€5,40', '€6,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Boerensalade',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.SALAD, '€3,80', '€4,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Pittige wintersalade', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.SALAD, '€4,80', '€6,00', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Granaatappel-fetasalade', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.SALAD, '€4,60', '€5,70', session=session)
-    #
-    # # Friday
-    # menu = Menu.create(campus, datetime.date(2019, 11, 8), session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Groentebouillon',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.SOUP, '€0,90', '€1,20', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Zalmrösti (ASC) met gestoofde prei en kruidenpuree',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.MEAT, '€3,60', '€4,50', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Gevulde omelet met broccoli en kruidenpuree',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.VEGAN, '€3,40', '€4,20', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met vegetarische bolognaise',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.PASTA_VEGAN, '€3,80', '€4,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Spaghetti met carbonarasaus', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Steak met champignonroomsaus, aardappelpartjes en saladbar', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.GRILL, '€5,40', '€6,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Boerensalade',
-    #                                               'nl_NL', session=session)[0],
-    #                    FoodType.SALAD, '€3,80', '€4,70', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Pittige wintersalade', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.SALAD, '€4,80', '€6,00', session=session)
-    # menu.add_menu_item(Translatable.get_or_create('Granaatappel-fetasalade', 'nl_NL',
-    #                                               session=session)[0],
-    #                    FoodType.SALAD, '€4,60', '€5,70', session=session)
 
     session.commit()
