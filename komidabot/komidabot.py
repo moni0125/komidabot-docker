@@ -1,7 +1,7 @@
 import atexit
 import datetime
-import locale
 import threading
+from decimal import Decimal
 from typing import Dict, List, Optional
 
 from apscheduler.executors.pool import ThreadPoolExecutor
@@ -260,11 +260,6 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
     # Storing a hash probably won't be needed anymore, so can probably drop this
     campus_list = Campus.get_active()
 
-    def format_price(price: float):
-        if not price:
-            return ''
-        return locale.currency(price).replace(' ', '')
-
     for campus in campus_list:
         if len(campuses) > 0 and campus.short_name not in campuses:
             continue
@@ -294,8 +289,8 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
                         translatable, translation = Translatable.get_or_create(item.get_combined_text(), 'nl_NL',
                                                                                session=session)
 
-                        menu.add_menu_item(translatable, item.food_type, format_price(item.get_student_price()),
-                                           format_price(item.get_staff_price()), session=session)
+                        menu.add_menu_item(translatable, item.food_type, item.get_student_price(),
+                                           item.get_staff_price(), session=session)
 
         else:
             scraper = menu_scraper.MenuScraper(campus)
@@ -352,6 +347,9 @@ def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument, se
 
             if prices is None:
                 continue  # No price parsed
+
+            prices[0] = Decimal(prices[0].replace('€', '').replace(',', '.').strip())
+            prices[1] = Decimal(prices[1].replace('€', '').replace(',', '.').strip())
 
             translatable, translation = Translatable.get_or_create(item.name, 'nl_NL', session=session)
             if item.food_type == menu_scraper.FrameFoodType.SOUP:
