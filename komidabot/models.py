@@ -84,7 +84,7 @@ class Campus(db.Model):
         self.external_id = external_id
 
     @staticmethod
-    def create(name: str, short_name: str, keywords: List[str], page_url: str, session=None):
+    def create(name: str, short_name: str, keywords: List[str], page_url: str):
         result = Campus(name, short_name)
 
         for keyword in keywords:
@@ -94,11 +94,7 @@ class Campus(db.Model):
 
         result.set_page_url(page_url)
 
-        if session is not None:
-            session.add(result)
-        else:
-            db.session.add(result)
-            db.session.commit()
+        db.session.add(result)
 
         return result
 
@@ -135,17 +131,13 @@ class ClosingDays(db.Model):
         self.translatable = translatable
 
     @staticmethod
-    def create(campus: Campus, first_day: datetime.date, last_day: datetime.date, reason: str, language: str,
-               session=None) -> 'ClosingDays':
-        translatable, translation = Translatable.get_or_create(reason, language, session=session)
+    def create(campus: Campus, first_day: datetime.date, last_day: datetime.date, reason: str,
+               language: str) -> 'ClosingDays':
+        translatable, translation = Translatable.get_or_create(reason, language)
 
         result = ClosingDays(campus, first_day, last_day, translatable)
 
-        if session is not None:
-            session.add(result)
-        else:
-            db.session.add(result)
-            db.session.commit()
+        db.session.add(result)
 
         return result
 
@@ -172,7 +164,7 @@ class Translatable(db.Model):
         self.original_language = language
         self.original_text = text
 
-    def add_translation(self, language: str, text: str, session=None) -> 'Translation':
+    def add_translation(self, language: str, text: str) -> 'Translation':
         translation = Translation.query.filter_by(translatable_id=self.id, language=language).first()
 
         if translation is not None:
@@ -181,16 +173,12 @@ class Translatable(db.Model):
         translation = Translation(self, language, text)
 
         if translation is not None:
-            if session is not None:
-                session.add(translation)
-            else:
-                db.session.add(translation)
-                db.session.commit()
+            db.session.add(translation)
 
         return translation
 
     @staticmethod
-    def get_or_create(text: str, language='nl_BE', session=None) -> 'Tuple[Translatable, Translation]':
+    def get_or_create(text: str, language='nl_BE') -> 'Tuple[Translatable, Translation]':
         translatable = Translatable.query.filter_by(original_language=language, original_text=text).first()
 
         if translatable is not None:
@@ -199,13 +187,8 @@ class Translatable(db.Model):
         translatable = Translatable(text, language)
         translation = Translation(translatable, language, text)
 
-        if session is not None:
-            session.add(translatable)
-            session.add(translation)
-        else:
-            db.session.add(translatable)
-            db.session.add(translation)
-            db.session.commit()
+        db.session.add(translatable)
+        db.session.add(translation)
 
         return translatable, translation
 
@@ -261,48 +244,31 @@ class Menu(db.Model):
         self.menu_day = day
 
     @staticmethod
-    def create(campus: Campus, day: datetime.date, session=None):
+    def create(campus: Campus, day: datetime.date):
         menu = Menu(campus, day)
 
-        if session is not None:
-            session.add(menu)
-        else:
-            db.session.add(menu)
-            db.session.commit()
+        db.session.add(menu)
 
         return menu
 
-    def delete(self, session=None):
-        if session is not None:
-            session.delete(self)
-        else:
-            db.session.delete(self)
-            db.session.commit()
+    def delete(self):
+        db.session.delete(self)
 
-    def clear(self, session=None):
+    def clear(self):
         items = list(self.menu_items)
 
-        if session is not None:
-            for item in items:
-                session.delete(item)
-        else:
-            for item in items:
-                db.session.delete(item)
-            db.session.commit()
+        for item in items:
+            db.session.delete(item)
 
     @staticmethod
     def get_menu(campus: Campus, day: datetime.date) -> 'Optional[Menu]':
         return Menu.query.filter_by(campus_id=campus.id, menu_day=day).first()
 
     def add_menu_item(self, translatable: Translatable, food_type: FoodType, price_students: Decimal,
-                      price_staff: Decimal, session=None):
+                      price_staff: Decimal):
         menu_item = MenuItem(self, translatable, food_type, price_students, price_staff)
 
-        if session is not None:
-            session.add(menu_item)
-        else:
-            db.session.add(menu_item)
-            db.session.commit()
+        db.session.add(menu_item)
 
         return menu_item
 
@@ -364,16 +330,12 @@ class UserSubscription(db.Model):
         return UserSubscription.query.filter_by(user_id=user.id, day=day).first()
 
     @staticmethod
-    def create(user: 'AppUser', day: Day, campus: Campus, active=True, session=None) -> 'Optional[UserSubscription]':
+    def create(user: 'AppUser', day: Day, campus: Campus, active=True) -> 'Optional[UserSubscription]':
         # TODO: Prevent weekend days from actually being used here
 
         subscription = UserSubscription(user, day, campus, active)
 
-        if session is not None:
-            session.add(subscription)
-        else:
-            db.session.add(subscription)
-            db.session.commit()
+        db.session.add(subscription)
 
         return subscription
 
@@ -398,17 +360,14 @@ class AppUser(db.Model):
         self.internal_id = internal_id
         self.language = language
 
-    def set_campus(self, day: Day, campus: Campus, active=None, session=None):
+    def set_campus(self, day: Day, campus: Campus, active=None):
         sub = UserSubscription.get_for_user(self, day)
         if sub is None:
-            UserSubscription.create(self, day, campus, active=True if active is None else active, session=session)
+            UserSubscription.create(self, day, campus, active=True if active is None else active)
         else:
             sub.campus = campus
             if active is not None:
                 sub.active = active
-
-            if session is None:
-                db.session.commit()
 
     def get_campus(self, day: Day) -> 'Optional[Campus]':
         sub = UserSubscription.get_for_user(self, day)
@@ -431,14 +390,10 @@ class AppUser(db.Model):
         sub.active = active
 
     @staticmethod
-    def create(provider: str, internal_id: str, language: str, session=None):
+    def create(provider: str, internal_id: str, language: str):
         user = AppUser(provider, internal_id, language)
 
-        if session is not None:
-            session.add(user)
-        else:
-            db.session.add(user)
-            db.session.commit()
+        db.session.add(user)
 
         return user
 
@@ -488,14 +443,10 @@ class Feature(db.Model):
         return Feature.query.all()
 
     @staticmethod
-    def create(string_id: str, description: str = None, globally_available=False, session=None) -> 'Optional[Feature]':
+    def create(string_id: str, description: str = None, globally_available=False) -> 'Optional[Feature]':
         feature = Feature(string_id, description, globally_available)
 
-        if session is not None:
-            session.add(feature)
-        else:
-            db.session.add(feature)
-            db.session.commit()
+        db.session.add(feature)
 
         return feature
 
@@ -514,20 +465,16 @@ class Feature(db.Model):
         return FeatureParticipation.get_for_user(user, feature) is not None
 
     @staticmethod
-    def set_user_participating(user: AppUser, string_id: str, participating: bool, session=None):
+    def set_user_participating(user: AppUser, string_id: str, participating: bool):
         feature = Feature.find_by_id(string_id)
         participation = FeatureParticipation.get_for_user(user, feature)
 
         if participating:
             if not participation:
-                FeatureParticipation.create(user, feature, session=session)
+                FeatureParticipation.create(user, feature)
         else:
             if participation:
-                if session is not None:
-                    session.delete(feature)
-                else:
-                    db.session.delete(feature)
-                    db.session.commit()
+                db.session.delete(feature)
 
 
 class FeatureParticipation(db.Model):
@@ -547,14 +494,10 @@ class FeatureParticipation(db.Model):
         return FeatureParticipation.query.filter_by(user_id=user.id, feature_id=feature.id).first()
 
     @staticmethod
-    def create(user: AppUser, feature: Feature, session=None) -> 'Optional[FeatureParticipation]':
+    def create(user: AppUser, feature: Feature) -> 'Optional[FeatureParticipation]':
         participation = FeatureParticipation(user, feature)
 
-        if session is not None:
-            session.add(participation)
-        else:
-            db.session.add(participation)
-            db.session.commit()
+        db.session.add(participation)
 
         return participation
 
@@ -566,14 +509,9 @@ def recreate_db():
 
 
 def create_standard_values():
-    session = db.session  # FIXME: Get session as a parameter
-    Campus.create('Stadscampus', 'cst', [], 'https://www.uantwerpen.be/nl/studentenleven/eten/stadscampus/',
-                  session=session)
-    Campus.create('Campus Drie Eiken', 'cde', [], 'https://www.uantwerpen.be/nl/studentenleven/eten/campus-drie-eiken/',
-                  session=session)
-    Campus.create('Campus Middelheim', 'cmi', [], 'https://www.uantwerpen.be/nl/studentenleven/eten/campus-middelheim/',
-                  session=session)
-    session.commit()
+    Campus.create('Stadscampus', 'cst', [], 'https://www.uantwerpen.be/nl/studentenleven/eten/stadscampus/')
+    Campus.create('Campus Drie Eiken', 'cde', [], 'https://www.uantwerpen.be/nl/studentenleven/eten/campus-drie-eiken/')
+    Campus.create('Campus Middelheim', 'cmi', [], 'https://www.uantwerpen.be/nl/studentenleven/eten/campus-middelheim/')
 
 
 def import_dump(dump_file):
@@ -587,8 +525,6 @@ def import_dump(dump_file):
     with open(dump_file) as file:
         _ = file.readline()  # Skip header
 
-        session = db.session  # FIXME: Create new session
-
         line = file.readline()
         while line:
             line = line.strip()
@@ -600,14 +536,14 @@ def import_dump(dump_file):
                 split[7] = ''  # Query locale
 
             user = AppUser.create('facebook', split[0], split[7])
-            user.set_campus(Day.MONDAY, get_campus(split[2]), active=split[1], session=session)
-            user.set_campus(Day.TUESDAY, get_campus(split[3]), active=split[1], session=session)
-            user.set_campus(Day.WEDNESDAY, get_campus(split[4]), active=split[1], session=session)
-            user.set_campus(Day.THURSDAY, get_campus(split[5]), active=split[1], session=session)
-            user.set_campus(Day.FRIDAY, get_campus(split[6]), active=split[1], session=session)
+            user.set_campus(Day.MONDAY, get_campus(split[2]), active=split[1])
+            user.set_campus(Day.TUESDAY, get_campus(split[3]), active=split[1])
+            user.set_campus(Day.WEDNESDAY, get_campus(split[4]), active=split[1])
+            user.set_campus(Day.THURSDAY, get_campus(split[5]), active=split[1])
+            user.set_campus(Day.FRIDAY, get_campus(split[6]), active=split[1])
 
-            session.add(user)
+            db.session.add(user)
 
             line = file.readline()
 
-        session.commit()
+        db.session.commit()

@@ -29,8 +29,6 @@ class _Feature:
 def update_active_features():
     print('Updating active features', flush=True)
 
-    session = db.session  # FIXME: Create new session
-
     current_features = models.Feature.get_all()
 
     feature_mapping = dict()  # type: Dict[str, _Feature]
@@ -49,16 +47,16 @@ def update_active_features():
 
     for feature in removed_features:  # type: models.Feature
         print('Removing feature {}: {}'.format(feature.string_id, feature.description or 'no description'), flush=True)
-        session.delete(feature)
+        db.session.delete(feature)
 
-    session.commit()
+    db.session.commit()
 
     new_features = [feature.feat for feature in feature_mapping.values() if feature.obj is None]
 
     for feature in new_features:  # type: _feature
         print('Adding new feature {}: {}'.format(feature.string_id, feature.description or 'no description'),
               flush=True)
-        models.Feature.create(feature.string_id, feature.description, feature.globally_available, session=session)
+        models.Feature.create(feature.string_id, feature.description, feature.globally_available)
 
         for user_id in feature.active_users:  # type: UserId
             user = models.AppUser.find_by_id(user_id.provider, user_id.id)
@@ -68,9 +66,9 @@ def update_active_features():
                 continue
             print('Adding user {}/{} to new feature {}'.format(user_id.provider, user_id.id, feature.string_id),
                   flush=True)
-            models.Feature.set_user_participating(user, feature.string_id, True, session=session)
+            models.Feature.set_user_participating(user, feature.string_id, True)
 
-    session.commit()
+    db.session.commit()
 
     existing_features = [feature for feature in feature_mapping.values()
                          if feature.feat is not None and feature.obj is not None]
@@ -89,6 +87,6 @@ def update_active_features():
 
             feature.obj.description = feature.feat.description
 
-    session.commit()
+    db.session.commit()
 
     print('Done updating active features', flush=True)

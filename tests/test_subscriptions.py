@@ -32,15 +32,15 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
             self.user2 = user_manager.add_user('user2')
             self.user3 = user_manager.add_user('user3')
 
+            db.session.commit()
+
     def setup_subscriptions(self):
         def create_subscriptions(user: users.UserId, days: List[Tuple[Day, int, bool]]):
             for day, campus, active in days:
                 user_obj = AppUser.find_by_id(user.provider, user.id)
-                UserSubscription.create(user_obj, day, self.campuses[campus], active=active, session=session)
+                UserSubscription.create(user_obj, day, self.campuses[campus], active=active)
 
         with self.app.app_context():
-            session = db.session  # FIXME: Create new session?
-
             # First user, subscribed every day
             create_subscriptions(self.user1.id, [
                 (Day.MONDAY, 0, True),
@@ -68,23 +68,21 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
                 (Day.FRIDAY, 1, False),
             ])
 
-            session.commit()
+            db.session.commit()
 
     def setup_menu(self):
         self.expected_menus = dict()  # type: Dict[Tuple[str, datetime.date], str]
         food_types = FoodType
 
         with self.app.app_context():
-            session = db.session  # FIXME: Create new session?
-
             for campus in self.campuses:
-                session.add(campus)
+                db.session.add(campus)
 
                 for day in utils.DAYS_LIST:
                     day_name = Day(day.isoweekday()).name
                     items = [menu_item(food_type, '{} at {} for {}'.format(food_type.name, campus.short_name, day_name),
                                        'nl_BE', Decimal('1.0'), Decimal('2.0')) for food_type in food_types]
-                    self.create_menu(campus, day, items, session=session)
+                    TestGenericSubscriptions.create_menu(campus, day, items)
 
                     result = ['Menu at {} on {}'.format(campus.short_name.upper(), str(day)), '']
                     for item in items:
@@ -94,7 +92,7 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
 
                     self.expected_menus[(campus.short_name, day)] = '\n'.join(result)
 
-            session.commit()
+            db.session.commit()
 
     def test_active_subscriptions(self):
         self.setup_subscriptions()

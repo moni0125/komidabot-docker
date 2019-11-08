@@ -45,55 +45,41 @@ class BaseTestCase(TestCase):
 
     def create_test_campuses(self) -> List[Campus]:
         with self.app.app_context():
-            session = db.session  # FIXME: Create new session?
-
-            campus1 = Campus.create('Testcampus', 'ctst', [], 'mock://campus_ctst/', session=session)
-            campus2 = Campus.create('Campus Omega', 'com', [], 'mock://campus_com/', session=session)
-            campus3 = Campus.create('Campus Paardenmarkt', 'cpm', [], 'mock://campus_cpm/', session=session)
+            campus1 = Campus.create('Testcampus', 'ctst', [], 'mock://campus_ctst/')
+            campus2 = Campus.create('Campus Omega', 'com', [], 'mock://campus_com/')
+            campus3 = Campus.create('Campus Paardenmarkt', 'cpm', [], 'mock://campus_cpm/')
             campus3.set_active(False)
-            session.commit()
+            db.session.commit()
 
             return [campus1, campus2, campus3]
 
     def activate_feature(self, feature_id: str, user_list: 'List[users.UserId]' = None, available=None) -> Feature:
         with self.app.app_context():
-            session = db.session  # FIXME: Create new session?
-
-            feature = Feature.create(feature_id, session=session)
+            feature = Feature.create(feature_id)
 
             if user_list:
                 for user in user_list:
                     user_obj = AppUser.find_by_id(user.provider, user.id)
                     if user_obj is None:
                         raise ValueError()
-                    Feature.set_user_participating(user_obj, feature.string_id, True, session=session)
+                    Feature.set_user_participating(user_obj, feature.string_id, True)
 
             if available is not None:
                 feature.globally_available = available
 
-            session.commit()
+            db.session.commit()
             return feature
 
-    def create_menu(self, campus: Campus, day: datetime.date, items: 'List[menu_item]', session=None) -> Menu:
-        def _run():
-            menu = Menu.create(campus, day, session=session)
+    @staticmethod
+    def create_menu(campus: Campus, day: datetime.date, items: 'List[menu_item]') -> Menu:
+        menu = Menu.create(campus, day)
 
-            for item in items:
-                translatable, translation = Translatable.get_or_create(item.text, item.language, session=session)
-                menu.add_menu_item(translatable, item.type, item.price_students, item.price_staff, session=session)
+        for item in items:
+            translatable, translation = Translatable.get_or_create(item.text, item.language)
+            menu.add_menu_item(translatable, item.type, item.price_students, item.price_staff)
 
-            return menu
-
-        if session is None:
-            with self.app.app_context():
-                session = db.session
-
-                result = _run()
-
-                session.commit()
-                return result
-        else:
-            return _run()
+        db.session.commit()
+        return menu
 
 
 class HttpCapture:
