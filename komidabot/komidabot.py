@@ -277,6 +277,8 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
                 dates = [today + datetime.timedelta(days=i) for i in range(0 - today.weekday(), 5 - today.weekday())]
 
             for date in dates:
+                if date.isoweekday() in [6, 7]:
+                    continue
                 fetcher.add_to_lookup(campus, date)
 
             result = fetcher.lookup_menus()
