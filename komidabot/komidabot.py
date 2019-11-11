@@ -376,130 +376,41 @@ def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument):
 
 
 def apply_menu_fixes():
+    pass
+    # def add_course(campus: Campus, course: str, language: str, food_type: FoodType,
+    #                price_students: Decimal, price_staff: Optional[Decimal], *dates):
+    #     for date in dates:
+    #         menu = Menu.get_menu(campus, datetime.date(*date))
+    #
+    #         menu.add_menu_item(Translatable.get_or_create(course, language)[0],
+    #                            food_type, price_students, price_staff)
+    #
+    # days = [
+    #     # (2019, 11, 11),  # Monday
+    #     (2019, 11, 12),  # Tuesday
+    #     (2019, 11, 13),  # Wednesday
+    #     (2019, 11, 14),  # Thursday
+    #     (2019, 11, 15),  # Friday
+    # ]
+    #
     # # Stadscampus
     # campus = Campus.get_by_short_name('cst')
     #
-    # # Monday
-    # menu = Menu.get_menu(campus, datetime.date(2019, 11, 4))
-    # menu.add_menu_item(Translatable.get_or_create('Steak met mosterdsaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.GRILL, '€5,40', '€6,70')
-    # menu.add_menu_item(Translatable.get_or_create('Braadworst met mosterdsaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.GRILL, '€4,00', '€5,00')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met mediterraanse groentesaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_VEGAN, '€3,40', '€4,20')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta carbonara',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50')
-    #
-    # # Tuesday
-    # menu = Menu.get_menu(campus, datetime.date(2019, 11, 5))
-    # menu.add_menu_item(Translatable.get_or_create('Steak met mosterdsaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.GRILL, '€5,40', '€6,70')
-    # menu.add_menu_item(Translatable.get_or_create('Braadworst met mosterdsaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.GRILL, '€4,00', '€5,00')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met mediterraanse groentesaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_VEGAN, '€3,40', '€4,20')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta carbonara',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50')
-    #
-    # # Wednesday
-    # menu = Menu.get_menu(campus, datetime.date(2019, 11, 6))
-    # menu.add_menu_item(Translatable.get_or_create('Steak met mosterdsaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.GRILL, '€5,40', '€6,70')
-    # menu.add_menu_item(Translatable.get_or_create('Braadworst met mosterdsaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.GRILL, '€4,00', '€5,00')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met mediterraanse groentesaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_VEGAN, '€3,40', '€4,20')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta carbonara',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50')
-    #
-    # # Thursday
-    # menu = Menu.get_menu(campus, datetime.date(2019, 11, 7))
-    # menu.add_menu_item(Translatable.get_or_create('Steak met mosterdsaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.GRILL, '€5,40', '€6,70')
-    # menu.add_menu_item(Translatable.get_or_create('Braadworst met mosterdsaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.GRILL, '€4,00', '€5,00')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met mediterraanse groentesaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_VEGAN, '€3,40', '€4,20')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta carbonara',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50')
-    #
-    # # Friday
-    # menu = Menu.get_menu(campus, datetime.date(2019, 11, 8))
-    # menu.add_menu_item(Translatable.get_or_create('Steak met mosterdsaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.GRILL, '€5,40', '€6,70')
-    # menu.add_menu_item(Translatable.get_or_create('Braadworst met mosterdsaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.GRILL, '€4,00', '€5,00')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met mediterraanse groentesaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_VEGAN, '€3,40', '€4,20')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta carbonara',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_MEAT, '€3,60', '€4,50')
+    # add_course(campus, 'Steak met pepersaus', 'nl_NL',
+    #            FoodType.GRILL, Decimal('5.40'), Decimal('6.70'), *days)
+    # add_course(campus, 'Kippenbrochette met pepersaus', 'nl_NL',
+    #            FoodType.GRILL, Decimal('5.20'), Decimal('6.50'), *days)
+    # add_course(campus, 'Rollade van aubergine', 'nl_NL',
+    #            FoodType.PASTA_VEGAN, Decimal('4.40'), Decimal('5.50'), *days)
+    # add_course(campus, 'Lasagne bolognaise', 'nl_NL',
+    #            FoodType.PASTA_MEAT, Decimal('4.40'), Decimal('5.50'), *days)
     #
     # # Campus Drie Eiken
     # campus = Campus.get_by_short_name('cde')
     #
-    # # Monday
-    # menu = Menu.get_menu(campus, datetime.date(2019, 11, 4))
-    # menu.add_menu_item(Translatable.get_or_create('Ravioli verdura met tomatengroentesaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_VEGAN, '€5,00', '€6,20')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met gegrilde kip en chorizo',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_MEAT, '€4,20', '€5,20')
+    # add_course(campus, 'Pasta met kervelroom, zongedroogde tomaten en pijnboompittten', 'nl_NL',
+    #            FoodType.PASTA_VEGAN, Decimal('3.80'), Decimal('4.70'), *days)
+    # add_course(campus, 'Pasta met ham- en kaassaus', 'nl_NL',
+    #            FoodType.PASTA_MEAT, Decimal('3.60'), Decimal('4.50'), *days)
     #
-    # # Tuesday
-    # menu = Menu.get_menu(campus, datetime.date(2019, 11, 5))
-    # menu.add_menu_item(Translatable.get_or_create('Ravioli verdura met tomatengroentesaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_VEGAN, '€5,00', '€6,20')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met gegrilde kip en chorizo',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_MEAT, '€4,20', '€5,20')
-    #
-    # # Wednesday
-    # menu = Menu.get_menu(campus, datetime.date(2019, 11, 6))
-    # menu.add_menu_item(Translatable.get_or_create('Ravioli verdura met tomatengroentesaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_VEGAN, '€5,00', '€6,20')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met gegrilde kip en chorizo',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_MEAT, '€4,20', '€5,20')
-    #
-    # # Thursday
-    # menu = Menu.get_menu(campus, datetime.date(2019, 11, 7))
-    # menu.add_menu_item(Translatable.get_or_create('Ravioli verdura met tomatengroentesaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_VEGAN, '€5,00', '€6,20')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met gegrilde kip en chorizo',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_MEAT, '€4,20', '€5,20')
-    #
-    # # Friday
-    # menu = Menu.get_menu(campus, datetime.date(2019, 11, 8))
-    # menu.add_menu_item(Translatable.get_or_create('Ravioli verdura met tomatengroentesaus',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_VEGAN, '€5,00', '€6,20')
-    # menu.add_menu_item(Translatable.get_or_create('Pasta met gegrilde kip en chorizo',
-    #                                               'nl_NL')[0],
-    #                    FoodType.PASTA_MEAT, '€4,20', '€5,20')
-
-    db.session.commit()
+    # db.session.commit()

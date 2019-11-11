@@ -265,7 +265,7 @@ class Menu(db.Model):
         return Menu.query.filter_by(campus_id=campus.id, menu_day=day).first()
 
     def add_menu_item(self, translatable: Translatable, food_type: FoodType, price_students: Decimal,
-                      price_staff: Decimal):
+                      price_staff: Optional[Decimal]):
         menu_item = MenuItem(self, translatable, food_type, price_students, price_staff)
 
         db.session.add(menu_item)
@@ -286,10 +286,10 @@ class MenuItem(db.Model):
                                 nullable=False)
     food_type = db.Column(db.Enum(FoodType), nullable=False)
     price_students = db.Column(db.Numeric(4, 2), nullable=False)
-    price_staff = db.Column(db.Numeric(4, 2), nullable=False)
+    price_staff = db.Column(db.Numeric(4, 2), nullable=True)
 
     def __init__(self, menu: Menu, translatable: Translatable, food_type: FoodType, price_students: Decimal,
-                 price_staff: Decimal):
+                 price_staff: Optional[Decimal]):
         self.menu = menu
         self.translatable = translatable
         self.food_type = food_type
