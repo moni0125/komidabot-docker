@@ -290,8 +290,8 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
 
                     if menu is not None:
                         menu.clear()
-
-                    menu = Menu.create(campus, date)
+                    else:
+                        menu = Menu.create(campus, date)
 
                     for item in items:
                         translatable, translation = Translatable.get_or_create(item.get_combined_text(), 'nl_NL')
@@ -333,8 +333,8 @@ def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument):
 
         if menu is not None:
             menu.clear()
-
-        menu = Menu.create(campus, date)
+        else:
+            menu = Menu.create(campus, date)
 
         day_menu: List[menu_scraper.ParseResult] = [result for result in document.parse_results
                                                     if result.day.value == date.isoweekday()
