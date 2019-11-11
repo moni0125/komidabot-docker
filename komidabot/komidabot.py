@@ -319,6 +319,7 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
             #     print('{}/{}: {} ({})'.format(result.day.name, result.food_type.name, result.name, result.price),
             #           flush=True)
 
+    db.session.commit()
 
 
 def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument):
