@@ -169,7 +169,7 @@ class Komidabot(Bot):
                     translation = komidabot.menu.get_translated_text(closed.translatable, locale)
 
                     sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NO_MENU(locale)
-                                                             .format(campus.short_name.upper(), str(date))))
+                                                             .format(campus=campus.short_name.upper(), date=str(date))))
                     sender.send_message(messages.TextMessage(trigger, translation.translation))
                     return
 
@@ -177,7 +177,7 @@ class Komidabot(Bot):
 
                 if menu is None:
                     sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NO_MENU(locale)
-                                                             .format(campus.short_name.upper(), str(date))))
+                                                             .format(campus=campus.short_name.upper(), date=str(date))))
                 else:
                     sender.send_message(messages.TextMessage(trigger, menu))
 
@@ -217,6 +217,9 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
     subscriptions = dict()  # type: Dict[Campus, Dict[str, List[users.User]]]
 
     for user in subscribed_users:
+        if get_app().config.get('DISABLED') and not user.is_admin():
+            continue
+
         if not user.is_feature_active('menu_subscription'):
             # print('User {} not eligible for subscription'.format(user.id), flush=True)
             continue

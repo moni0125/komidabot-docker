@@ -62,8 +62,8 @@ ERROR_POSTBACK = localisation_definition('ERROR_POSTBACK', {
 })
 
 REPLY_NO_MENU = localisation_definition('REPLY_NO_MENU', {
-    ('en_US', 'en_GB'): 'Sorry, no menu is available for {} on {}',
-    ('nl_BE', 'nl_NL'): 'Sorry, er is geen menu beschikbaar voor {} op {}',
+    ('en_US', 'en_GB'): 'Sorry, no menu is available for {campus} on {date}',
+    ('nl_BE', 'nl_NL'): 'Sorry, er is geen menu beschikbaar voor {campus} op {date}',
 })
 
 REPLY_WEEKEND = localisation_definition('REPLY_WEEKEND', {
@@ -86,6 +86,16 @@ REPLY_INVALID_DATE = localisation_definition('REPLY_INVALID_DATE', {
 REPLY_TOO_MANY_CAMPUSES = localisation_definition('REPLY_TOO_MANY_CAMPUSES', {
     ('en_US', 'en_GB'): 'Sorry, please only ask for a single campus at a time',
     ('nl_BE', 'nl_NL'): 'Sorry, gelieve een enkele campus te specificeren',
+})
+
+REPLY_MENU_START = localisation_definition('REPLY_MENU_START', {
+    ('en_US', 'en_GB'): 'Menu at {campus} on {date}',
+    ('nl_BE', 'nl_NL'): 'Menu van {date} in {campus}',
+})
+
+REPLY_MENU_INCOMPLETE = localisation_definition('REPLY_MENU_START', {
+    ('en_US', 'en_GB'): '⚠️ NOTE: This menu may be incomplete',
+    ('nl_BE', 'nl_NL'): '⚠️ LET OP: Dit menu is mogelijks incompleet',
 })
 
 DOWN_FOR_MAINTENANCE1 = localisation_definition('ERROR_TEXT_ONLY', {

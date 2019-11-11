@@ -1,6 +1,7 @@
 import datetime
 from typing import Optional
 
+import komidabot.localisation as localisation
 # import komidabot.models as models
 from komidabot.translation import *
 
@@ -23,10 +24,10 @@ def prepare_menu_text(campus: models.Campus, day: datetime.date, locale: str) ->
     if menu is None:
         return None
 
-    result = ['Menu at {} on {}'.format(campus.short_name.upper(), str(day)), '']
+    result = [localisation.REPLY_MENU_START(locale).format(campus=campus.short_name.upper(), date=str(day)), '']
 
     if len(menu.menu_items) < 6:
-        result.insert(1, '⚠️ NOTE: Menu may be incomplete')
+        result.insert(1, localisation.REPLY_MENU_INCOMPLETE(locale))
 
     try:
         for item in menu.menu_items:  # type: models.MenuItem
