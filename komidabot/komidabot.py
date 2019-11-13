@@ -92,6 +92,13 @@ class Komidabot(Bot):
             print('Komidabot received a trigger: {}'.format(type(trigger).__name__), flush=True)
             print(repr(trigger), flush=True)
 
+            if isinstance(trigger, triggers.SubscriptionTrigger):
+                dispatch_daily_menus(trigger)
+                return
+
+            if triggers.AtAdminAspect in trigger:
+                return  # Don't process messages targeted at the admin
+
             locale = None
 
             if triggers.LocaleAspect in trigger and trigger[triggers.LocaleAspect].confidence > 0.9:
@@ -129,28 +136,33 @@ class Komidabot(Bot):
                             sender.send_message(messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
                             return
 
-                    if split[0] == '':
-                        pass
+                    # TODO: Allow users to send manual commands as well
+                    # if split[0] == '':
+                    #     pass
 
-                # FIXME: This code is an adapted copy of the old path and should be rewritten
-                # BEGIN DEPRECATED CODE
-                date = None
+                requested_dates = []
+                default_date = False
 
                 if triggers.DatetimeAspect in trigger:
                     date_times = trigger[triggers.DatetimeAspect]
-                    dates, invalid_date = nlp_dates.extract_days(date_times)
+                    requested_dates, invalid_date = nlp_dates.extract_days(
+                        date_times)  # TODO: Date parsing needs improving
 
                     if invalid_date:
                         sender.send_message(messages.TextMessage(trigger, localisation.REPLY_INVALID_DATE(locale)))
-
-                    if len(dates) > 1:
-                        sender.send_message(messages.TextMessage(trigger, localisation.REPLY_TOO_MANY_DAYS(locale)))
                         return
-                    elif len(dates) == 1:
-                        date = dates[0]
 
-                if date is None:
+                if len(requested_dates) > 1:
+                    sender.send_message(messages.TextMessage(trigger, localisation.REPLY_TOO_MANY_DAYS(locale)))
+                    return
+                elif len(requested_dates) == 1:
+                    date = requested_dates[0]
+                else:
+                    default_date = True
                     date = datetime.datetime.now().date()
+
+                # TODO: How about getting the menu for the next day after a certain time of day?
+                #       Only if we're returning the default day
 
                 day = Day(date.isoweekday())
 
@@ -160,25 +172,37 @@ class Komidabot(Bot):
 
                 campuses = Campus.get_active()
                 requested_campuses = []
+                default_campus = False
 
                 if isinstance(trigger, triggers.TextTrigger):
                     for campus in campuses:
+                        # FIXME: This should use keywords instead of the short name
                         if trigger.text.lower().count(campus.short_name) > 0:
                             requested_campuses.append(campus)
 
-                if len(requested_campuses) == 0:
-                    campus = sender.get_campus_for_day(date)
-                    if campus is None:
-                        campus = Campus.get_by_short_name('cmi')
-                elif len(requested_campuses) > 1:
+                if len(requested_campuses) > 1:
                     sender.send_message(messages.TextMessage(trigger, localisation.REPLY_TOO_MANY_CAMPUSES(locale)))
                     return
-                else:
+                elif len(requested_campuses) == 1:
                     campus = requested_campuses[0]
+                else:
+                    default_campus = True
+                    campus = sender.get_campus_for_day(date)
+
+                    if campus is None:  # User has no campus for the specified day
+                        campus = Campus.get_by_short_name('cmi')
+
+                if default_date and default_campus:
+                    if not isinstance(trigger, triggers.TextTrigger):
+                        # User did not send a text message, so we'll continue anyway
+                        sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NO_DATE_OR_CAMPUS(locale)))
+                        sender.send_message(messages.TextMessage(trigger, localisation.REPLY_INSTRUCTIONS(locale)))
+                        return
 
                 closed = ClosingDays.find_is_closed(campus, date)
 
                 if closed:
+                    # FIXME: Translations need to be moved to a different file
                     translation = komidabot.menu.get_translated_text(closed.translatable, locale)
 
                     sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NO_MENU(locale)
@@ -193,12 +217,6 @@ class Komidabot(Bot):
                                                              .format(campus=campus.short_name.upper(), date=str(date))))
                 else:
                     sender.send_message(messages.TextMessage(trigger, menu))
-
-                return
-                # END DEPRECATED CODE
-
-            if isinstance(trigger, triggers.SubscriptionTrigger):
-                dispatch_daily_menus(trigger)
 
     def notify_error(self, error: Exception):
         with self.lock:

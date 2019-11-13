@@ -28,9 +28,9 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
             self.message_handler = user_manager.message_handler
             self.app.user_manager = user_manager  # Replace the unified user manager completely to test
 
-            self.user1 = user_manager.add_user('user1')
-            self.user2 = user_manager.add_user('user2')
-            self.user3 = user_manager.add_user('user3')
+            self.user1 = user_manager.add_user('user1', locale='nl_BE')
+            self.user2 = user_manager.add_user('user2', locale='nl_BE')
+            self.user3 = user_manager.add_user('user3', locale='nl_BE')
 
             db.session.commit()
 
@@ -84,7 +84,10 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
                                        'nl_BE', Decimal('1.0'), Decimal('2.0')) for food_type in food_types]
                     TestGenericSubscriptions.create_menu(campus, day, items)
 
-                    result = ['Menu at {} on {}'.format(campus.short_name.upper(), str(day)), '']
+                    result = [
+                        'Menu van {date} in {campus}'.format(campus=campus.short_name.upper(), date=str(day)),
+                        '',
+                    ]
                     for item in items:
                         result.append('{} {} ({} / {})'.format(food_type_icons[item.type], item.text,
                                                                models.MenuItem.format_price(item.price_students),
@@ -110,6 +113,7 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
 
                 db.session.add_all(self.campuses)
 
+                self.assertIn(self.user1.id, self.message_handler.message_log)
                 self.assertEqual(self.message_handler.message_log[self.user1.id], [
                     self.expected_menus[(self.campuses[0].short_name, utils.DAYS['MON'])],
                     self.expected_menus[(self.campuses[1].short_name, utils.DAYS['TUE'])],
@@ -118,6 +122,7 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
                     self.expected_menus[(self.campuses[0].short_name, utils.DAYS['FRI'])],
                 ])
 
+                self.assertIn(self.user2.id, self.message_handler.message_log)
                 self.assertEqual(self.message_handler.message_log[self.user2.id], [
                     self.expected_menus[(self.campuses[1].short_name, utils.DAYS['TUE'])],
                     self.expected_menus[(self.campuses[0].short_name, utils.DAYS['THU'])],

@@ -31,6 +31,11 @@ class SenderAspect(Aspect):
         return 'SenderAspect({})'.format(repr(self.sender))
 
 
+class AtAdminAspect(Aspect):
+    def __repr__(self):
+        return 'AtAdminAspect()'
+
+
 class DatetimeAspect(Aspect):
     allows_multiple = True
 

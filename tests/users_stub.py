@@ -14,13 +14,13 @@ class UserManager(users.UserManager):
 
         self.message_handler = MessageHandler()
 
-    def add_user(self, internal_id: str) -> 'User':
+    def add_user(self, internal_id: str, locale: str = 'nl_BE') -> 'User':
         user_id = users.UserId(internal_id, PROVIDER_ID)
 
         if user_id in self.users:
             raise ValueError('Duplicate user ID')
 
-        user = User(self, user_id.id)
+        user = User(self, user_id.id, locale)
         self.users[user_id] = user
 
         AppUser.create(PROVIDER_ID, internal_id, user.get_locale())
@@ -44,7 +44,7 @@ class UserManager(users.UserManager):
 
         for db_user in db_users:
             user_id = users.UserId(db_user.internal_id, db_user.provider)
-            user = User(self, user_id.id)
+            user = User(self, user_id.id, db_user.language)
             self.users[user_id] = user
 
     def get_identifier(self):
@@ -52,10 +52,10 @@ class UserManager(users.UserManager):
 
 
 class User(users.User):
-    def __init__(self, manager: UserManager, internal_id: str):
+    def __init__(self, manager: UserManager, internal_id: str, locale: str):
         self._manager = manager
         self._id = internal_id
-        self._locale = 'nl_BE'
+        self._locale = locale
 
     def get_locale(self) -> 'Optional[str]':
         return self._locale

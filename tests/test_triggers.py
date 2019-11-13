@@ -23,7 +23,7 @@ class TestTriggers(BaseTestCase):
         self.aspects = [
             (triggers.SenderAspect, (self.user1,), {}),
             (triggers.DatetimeAspect, ('1999-12-31T00:00:00.000+01:00', 'day',), {}),
-            (triggers.LocaleAspect, ('nl_XX',), {}),
+            (triggers.LocaleAspect, ('nl_XX', 1.0,), {}),
         ]
 
     def test_simple_trigger_constructors(self):

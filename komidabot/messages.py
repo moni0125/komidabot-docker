@@ -18,8 +18,8 @@ class Trigger:
             for aspect in aspects:
                 self.add_aspect(aspect)
 
-    def add_aspect(self, aspect: Aspect):
-        aspect_type = type(aspect)
+    def add_aspect(self, aspect: Aspect, aspect_type: Type[Aspect] = None):
+        aspect_type = aspect_type or type(aspect)
         if aspect_type in self._aspects:
             if aspect_type.allows_multiple:
                 self._aspects[aspect_type].append(aspect)

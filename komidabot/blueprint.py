@@ -132,8 +132,8 @@ def _do_handle_message(event, user: User, app):
 
                     trigger = triggers.TextTrigger.extend(trigger, message_text)
 
-                    if 'admin' in message_text:
-                        return  # TODO: Handle properly in the future
+                    if '@admin' in message_text:
+                        trigger.add_aspect(triggers.AtAdminAspect())
 
                     if 'nlp' in message:
                         if 'detected_locales' in message['nlp'] and len(message['nlp']['detected_locales']) > 0:
@@ -158,8 +158,9 @@ def _do_handle_message(event, user: User, app):
 
                 if app.config.get('DISABLED'):
                     if not user.is_admin():
-                        user.send_message(TextMessage(trigger, localisation.DOWN_FOR_MAINTENANCE1(locale)))
-                        user.send_message(TextMessage(trigger, localisation.DOWN_FOR_MAINTENANCE2(locale)))
+                        if triggers.AtAdminAspect not in trigger:
+                            user.send_message(TextMessage(trigger, localisation.DOWN_FOR_MAINTENANCE(locale)))
+
                         return
 
                     # sender_obj.send_text_message('Note: The bot is currently disabled')

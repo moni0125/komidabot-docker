@@ -31,11 +31,11 @@ def localisation_definition(name, obj, fallback='en_US'):
 #   https://developers.facebook.com/docs/messenger-platform/messenger-profile/supported-locales
 
 INTERNAL_ERROR = localisation_definition('INTERNAL_ERROR', {
-    ('en_US', 'en_GB'): '⚠️ An unexpected error occured while trying to perform your request',
+    ('en_US', 'en_GB'): 'An unexpected error occured while trying to perform your request',
     ('nl_BE', 'nl_NL'): [
         (1, 'oepsie woepsie! de bot is stukkie wukkie! we sijn heul hard '
             'aan t werk om dit te make mss kan je beter self kijken  owo'),
-        (99, '⚠️ Een onverwachte fout gebeurde tijdens het uitvoeren van uw verzoek'),
+        (99, 'Een onverwachte fout gebeurde tijdens het uitvoeren van uw verzoek'),
     ],
 })
 
@@ -98,14 +98,21 @@ REPLY_MENU_INCOMPLETE = localisation_definition('REPLY_MENU_START', {
     ('nl_BE', 'nl_NL'): '⚠️ LET OP: Dit menu is mogelijks incompleet',
 })
 
-DOWN_FOR_MAINTENANCE1 = localisation_definition('ERROR_TEXT_ONLY', {
-    ('en_US', 'en_GB'): '⚠️ I am temporarily down for maintenance, please check back later',
-    ('nl_BE', 'nl_NL'): '⚠️ Wegens onderhoud ben ik tijdelijk onbeschikbaar, probeer het later nog eens',
+REPLY_NO_DATE_OR_CAMPUS = localisation_definition('REPLY_NO_DATE_OR_CAMPUS', {
+    ('en_US', 'en_GB'): "I'm sorry, I don't quite understand your request.",
+    ('nl_BE', 'nl_NL'): 'Het spijt me, ik begrijp je bericht niet helemaal.',
 })
 
-DOWN_FOR_MAINTENANCE2 = localisation_definition('ERROR_TEXT_ONLY', {
-    ('en_US', 'en_GB'): 'You can check the menu manually for now by going to '
-                        'https://www.uantwerpen.be/nl/studentenleven/eten/',
-    ('nl_BE', 'nl_NL'): 'U kunt het menu ook manueel bezien op het volgende adres: '
-                        'https://www.uantwerpen.be/nl/studentenleven/eten/',
+REPLY_INSTRUCTIONS = localisation_definition('REPLY_INSTRUCTIONS', {
+    ('en_US', 'en_GB'): 'You can request the menu by choosing a campus ({campuses}) and/or '
+                        'asking for a specific day (Monday - Friday, Today, Tomorrow, etc.)\n\n'
+                        'To reach the admin, you can use @admin.',
+    ('nl_BE', 'nl_NL'): 'Je kan het menu opvragen door een campus te kiezen ({campuses}) en/of '
+                        'een specifieke dag te vragen (maandag - vrijdag, vandaag, morgen, etc.)\n\n'
+                        'Om de admin te bereiken, kan je @admin gebruiken.',
+})
+
+DOWN_FOR_MAINTENANCE = localisation_definition('DOWN_FOR_MAINTENANCE', {
+    ('en_US', 'en_GB'): 'I am temporarily down for maintenance, please check back later',
+    ('nl_BE', 'nl_NL'): 'Wegens onderhoud ben ik tijdelijk onbeschikbaar, probeer het later nog eens',
 })
