@@ -101,9 +101,9 @@ REPLY_MENU_INCOMPLETE = localisation_definition('REPLY_MENU_START', {
 
 REPLY_USE_AT_ADMIN = localisation_definition('REPLY_USE_AT_ADMIN', {
     'en': "If you would like to talk to the admin instead, use @admin in your message and "
-          "I won't disturb you ~ Komidabot",
+          "I won't disturb you\n~ 🤖 Komidabot",
     'nl': 'Als je met de admin wilt praten, dan kan je @admin gebruiken en '
-          'zal ik je niet storen ~ Komidabot',
+          'zal ik je niet storen\n~ 🤖 Komidabot',
 })
 
 REPLY_INSTRUCTIONS = localisation_definition('REPLY_INSTRUCTIONS', {
