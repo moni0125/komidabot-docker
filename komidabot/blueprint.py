@@ -147,7 +147,8 @@ def _do_handle_message(event, user: User, app):
 
                             if 'datetime' in entities:
                                 for entity in entities['datetime']:
-                                    trigger.add_aspect(triggers.DatetimeAspect(entity['value'], entity['grain']))
+                                    if 'value' in entity:
+                                        trigger.add_aspect(triggers.DatetimeAspect(entity['value'], entity['grain']))
 
                     if user.is_admin() and message_text == 'sub':
                         # Simulate subscription instead
@@ -169,7 +170,7 @@ def _do_handle_message(event, user: User, app):
                 # sender_obj.send_text_message(localisation.ERROR_NOT_IMPLEMENTED(locale))
         except Exception as e:
             try:
-                app.logger.error('Error while handling event:\n{}', pprint.pformat(event, indent=2))
+                app.logger.error('Error while handling event:\n{}'.format(pprint.pformat(event, indent=2)))
                 get_app().bot.notify_error(e)
             except Exception:
                 pass
