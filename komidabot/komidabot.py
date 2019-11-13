@@ -193,11 +193,15 @@ class Komidabot(Bot):
                         campus = Campus.get_by_short_name('cmi')
 
                 if default_date and default_campus:
-                    if not isinstance(trigger, triggers.TextTrigger):
-                        # User did not send a text message, so we'll continue anyway
+                    if isinstance(trigger, triggers.TextTrigger):
                         sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NO_DATE_OR_CAMPUS(locale)))
-                        sender.send_message(messages.TextMessage(trigger, localisation.REPLY_INSTRUCTIONS(locale)))
+                        msg = localisation.REPLY_INSTRUCTIONS(locale).format(
+                            ', '.join([campus.short_name for campus in campuses])
+                        )
+                        sender.send_message(messages.TextMessage(trigger, msg))
                         return
+
+                    # User did not send a text message, so we'll continue anyway
 
                 closed = ClosingDays.find_is_closed(campus, date)
 
