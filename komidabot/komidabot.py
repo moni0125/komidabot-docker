@@ -45,6 +45,9 @@ class Komidabot(Bot):
                                       id='daily_menu', name='Daily menu notifications')
         def daily_menu(context, bot: 'Komidabot'):
             with context():
+                if get_app().config.get('DISABLED'):
+                    return
+
                 bot.trigger_received(triggers.SubscriptionTrigger())
 
         # FIXME: This is disabled for now
@@ -53,6 +56,9 @@ class Komidabot(Bot):
         #                               id='menu_update', name='Daily late-night update of the menus')
         # def menu_update(context, bot: 'Komidabot'):
         #     with context():
+        #         if get_app().config.get('DISABLED'):
+        #             return
+        #
         #         bot.update_menus(None)
 
         @self.scheduler.scheduled_job(CronTrigger(hour=1, minute=0, second=0),  # Run every day to find changes
@@ -60,6 +66,9 @@ class Komidabot(Bot):
                                       id='menu_update', name='Daily late-night update of the menus')
         def menu_update(context, bot: 'Komidabot'):
             with context():
+                if get_app().config.get('DISABLED'):
+                    return
+
                 try:
                     today = datetime.datetime.today().date()
                     dates = [
@@ -84,9 +93,9 @@ class Komidabot(Bot):
             print(repr(trigger), flush=True)
 
             locale = None
-            # XXX: Don't use the sender locale, as some messages get mistakenly seen as a different language
-            # if triggers.LocaleAspect in trigger:
-            #     locale = trigger[triggers.LocaleAspect].locale
+
+            if triggers.LocaleAspect in trigger and trigger[triggers.LocaleAspect].confidence > 0.9:
+                locale = trigger[triggers.LocaleAspect].locale
 
             if triggers.SenderAspect in trigger:
                 sender = trigger[triggers.SenderAspect].sender
@@ -95,29 +104,33 @@ class Komidabot(Bot):
                     locale = sender.get_locale()
 
                 # TODO: Is this really how we want to handle input?
-                if isinstance(trigger, triggers.TextTrigger) and sender.is_admin():
+                if isinstance(trigger, triggers.TextTrigger):
                     text = trigger.text
                     split = text.lower().split(' ')
 
-                    if split[0] == 'setup':
-                        recreate_db()
-                        create_standard_values()
-                        import_dump(app.config['DUMP_FILE'])
-                        sender.send_message(messages.TextMessage(trigger, 'Setup done'))
-                        return
-                    elif split[0] == 'update':
-                        sender.send_message(messages.TextMessage(trigger, 'Updating menus...'))
-                        update_menus(trigger, *split[1:])
-                        sender.send_message(messages.TextMessage(trigger, 'Done updating menus...'))
-                        return
-                    elif split[0] == 'fix':
-                        sender.send_message(messages.TextMessage(trigger, 'Applying fixes'))
-                        apply_menu_fixes()
-                        sender.send_message(messages.TextMessage(trigger, 'Done applying fixes...'))
-                        return
-                    elif split[0] == 'psid':  # TODO: Deprecated?
-                        sender.send_message(messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
-                        return
+                    if sender.is_admin():
+                        if split[0] == 'setup':
+                            recreate_db()
+                            create_standard_values()
+                            import_dump(app.config['DUMP_FILE'])
+                            sender.send_message(messages.TextMessage(trigger, 'Setup done'))
+                            return
+                        elif split[0] == 'update':
+                            sender.send_message(messages.TextMessage(trigger, 'Updating menus...'))
+                            update_menus(trigger, *split[1:])
+                            sender.send_message(messages.TextMessage(trigger, 'Done updating menus...'))
+                            return
+                        elif split[0] == 'fix':
+                            sender.send_message(messages.TextMessage(trigger, 'Applying fixes'))
+                            apply_menu_fixes()
+                            sender.send_message(messages.TextMessage(trigger, 'Done applying fixes...'))
+                            return
+                        elif split[0] == 'psid':  # TODO: Deprecated?
+                            sender.send_message(messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
+                            return
+
+                    if split[0] == '':
+                        pass
 
                 # FIXME: This code is an adapted copy of the old path and should be rewritten
                 # BEGIN DEPRECATED CODE

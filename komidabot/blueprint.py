@@ -139,7 +139,8 @@ def _do_handle_message(event, user: User, app):
                         if 'detected_locales' in message['nlp'] and len(message['nlp']['detected_locales']) > 0:
                             # Get the locale that has the highest confidence
                             locale_entry = max(message['nlp']['detected_locales'], key=lambda x: x['confidence'])
-                            trigger.add_aspect(triggers.LocaleAspect(locale_entry['locale']))
+                            trigger.add_aspect(triggers.LocaleAspect(locale_entry['locale'],
+                                                                     locale_entry['confidence']))
                             locale = locale_entry['locale']
 
                         if 'entities' in message['nlp']:
@@ -147,7 +148,8 @@ def _do_handle_message(event, user: User, app):
 
                             if 'datetime' in entities:
                                 for entity in entities['datetime']:
-                                    if 'value' in entity:
+                                    if 'value' in entity:  # Specific date given, vs. date range
+                                        # FIXME: Do we want to add range datetimes?
                                         trigger.add_aspect(triggers.DatetimeAspect(entity['value'], entity['grain']))
 
                     if user.is_admin() and message_text == 'sub':

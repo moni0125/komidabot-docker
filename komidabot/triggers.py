@@ -44,9 +44,10 @@ class DatetimeAspect(Aspect):
 
 
 class LocaleAspect(Aspect):
-    def __init__(self, locale: str):
+    def __init__(self, locale: str, confidence: float):
         super().__init__()
         self.locale = locale
+        self.confidence = confidence
 
     def __repr__(self):
-        return 'LocaleAspect({})'.format(self.locale)
+        return 'LocaleAspect({}, {})'.format(self.locale, self.confidence)
