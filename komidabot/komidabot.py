@@ -196,7 +196,7 @@ class Komidabot(Bot):
                     if isinstance(trigger, triggers.TextTrigger):
                         sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NO_DATE_OR_CAMPUS(locale)))
                         msg = localisation.REPLY_INSTRUCTIONS(locale).format(
-                            ', '.join([campus.short_name for campus in campuses])
+                            campuses=', '.join([campus.short_name for campus in campuses])
                         )
                         sender.send_message(messages.TextMessage(trigger, msg))
                         return
