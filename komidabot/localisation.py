@@ -98,9 +98,11 @@ REPLY_MENU_INCOMPLETE = localisation_definition('REPLY_MENU_START', {
     ('nl_BE', 'nl_NL'): '⚠️ LET OP: Dit menu is mogelijks incompleet',
 })
 
-REPLY_NO_DATE_OR_CAMPUS = localisation_definition('REPLY_NO_DATE_OR_CAMPUS', {
-    ('en_US', 'en_GB'): "I'm sorry, I don't quite understand your request.",
-    ('nl_BE', 'nl_NL'): 'Het spijt me, ik begrijp je bericht niet helemaal.',
+REPLY_USE_AT_ADMIN = localisation_definition('REPLY_USE_AT_ADMIN', {
+    ('en_US', 'en_GB'): "If you would like to talk to the admin instead, use @admin in your message and "
+                        "I won't disturb you ~ Komidabot",
+    ('nl_BE', 'nl_NL'): 'Als je met de admin wilt praten, dan kan je @admin gebruiken en '
+                        'zal ik je niet storen ~ Komidabot',
 })
 
 REPLY_INSTRUCTIONS = localisation_definition('REPLY_INSTRUCTIONS', {

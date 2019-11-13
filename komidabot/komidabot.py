@@ -106,6 +106,7 @@ class Komidabot(Bot):
 
             if triggers.SenderAspect in trigger:
                 sender = trigger[triggers.SenderAspect].sender
+                campuses = Campus.get_active()
 
                 if locale is None:
                     locale = sender.get_locale()
@@ -136,9 +137,13 @@ class Komidabot(Bot):
                             sender.send_message(messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
                             return
 
-                    # TODO: Allow users to send manual commands as well
-                    # if split[0] == '':
-                    #     pass
+                    # TODO: Allow users to send more manual commands
+                    if split[0] == 'help':
+                        msg = localisation.REPLY_INSTRUCTIONS(locale).format(
+                            campuses=', '.join([campus.short_name.lower() for campus in campuses])
+                        )
+                        sender.send_message(messages.TextMessage(trigger, msg))
+                        return
 
                 requested_dates = []
                 default_date = False
@@ -170,7 +175,6 @@ class Komidabot(Bot):
                     sender.send_message(messages.TextMessage(trigger, localisation.REPLY_WEEKEND(locale)))
                     return
 
-                campuses = Campus.get_active()
                 requested_campuses = []
                 default_campus = False
 
@@ -192,16 +196,17 @@ class Komidabot(Bot):
                     if campus is None:  # User has no campus for the specified day
                         campus = Campus.get_by_short_name('cmi')
 
-                if default_date and default_campus:
-                    if isinstance(trigger, triggers.TextTrigger):
-                        sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NO_DATE_OR_CAMPUS(locale)))
-                        msg = localisation.REPLY_INSTRUCTIONS(locale).format(
-                            campuses=', '.join([campus.short_name for campus in campuses])
-                        )
-                        sender.send_message(messages.TextMessage(trigger, msg))
-                        return
-
-                    # User did not send a text message, so we'll continue anyway
+                # if default_date and default_campus:
+                #     if isinstance(trigger, triggers.TextTrigger):
+                #         sender.send_message(messages.TextMessage(trigger,
+                # localisation.REPLY_NO_DATE_OR_CAMPUS(locale)))
+                #         msg = localisation.REPLY_INSTRUCTIONS(locale).format(
+                #             campuses=', '.join([campus.short_name for campus in campuses])
+                #         )
+                #         sender.send_message(messages.TextMessage(trigger, msg))
+                #         return
+                #
+                #     # User did not send a text message, so we'll continue anyway
 
                 closed = ClosingDays.find_is_closed(campus, date)
 
@@ -221,6 +226,9 @@ class Komidabot(Bot):
                                                              .format(campus=campus.short_name.upper(), date=str(date))))
                 else:
                     sender.send_message(messages.TextMessage(trigger, menu))
+
+                if default_date and default_campus:
+                    sender.send_message(messages.TextMessage(trigger, localisation.REPLY_USE_AT_ADMIN(locale)))
 
     def notify_error(self, error: Exception):
         with self.lock:
