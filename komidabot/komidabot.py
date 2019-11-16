@@ -321,7 +321,15 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
 
             if not dates:
                 today = datetime.datetime.today().date()
-                dates = [today + datetime.timedelta(days=i) for i in range(0 - today.weekday(), 5 - today.weekday())]
+                dates = [
+                    today + datetime.timedelta(days=1),
+                    today + datetime.timedelta(days=2),
+                    today + datetime.timedelta(days=3),
+                    today + datetime.timedelta(days=4),
+                    today + datetime.timedelta(days=5),
+                    today + datetime.timedelta(days=6),
+                    today + datetime.timedelta(days=7),
+                ]
 
             for date in dates:
                 if date.isoweekday() in [6, 7]:
