@@ -440,24 +440,23 @@ def apply_menu_fixes():
     #                            food_type, price_students, price_staff)
     #
     # days = [
-    #     # (2019, 11, 11),  # Monday
-    #     (2019, 11, 12),  # Tuesday
-    #     (2019, 11, 13),  # Wednesday
-    #     (2019, 11, 14),  # Thursday
-    #     (2019, 11, 15),  # Friday
+    #     (2019, 11, 18),  # Monday
+    #     (2019, 11, 19),  # Tuesday
+    #     (2019, 11, 20),  # Wednesday
+    #     (2019, 11, 21),  # Thursday
+    #     (2019, 11, 22),  # Friday
     # ]
     #
     # # Stadscampus
     # campus = Campus.get_by_short_name('cst')
     #
-    # add_course(campus, 'Steak met pepersaus', 'nl_NL',
-    #            FoodType.GRILL, Decimal('5.40'), Decimal('6.70'), *days)
-    # add_course(campus, 'Kippenbrochette met pepersaus', 'nl_NL',
-    #            FoodType.GRILL, Decimal('5.20'), Decimal('6.50'), *days)
-    # add_course(campus, 'Rollade van aubergine', 'nl_NL',
-    #            FoodType.PASTA_VEGAN, Decimal('4.40'), Decimal('5.50'), *days)
-    # add_course(campus, 'Lasagne bolognaise', 'nl_NL',
-    #            FoodType.PASTA_MEAT, Decimal('4.40'), Decimal('5.50'), *days)
+    # add_course(campus, 'Pasta met schorseneren in lookboter met ei, olijven en peultjes', 'nl_NL',
+    #            FoodType.PASTA_VEGAN, Decimal('3.40'), Decimal('4.20'), *days[1:4])
+    # add_course(campus, 'Pasta met kippenblokjes, champignons en dragon en pasta', 'nl_NL',
+    #            FoodType.PASTA_MEAT, Decimal('4.40'), Decimal('5.50'), *days[1:4])
+    #
+    # add_course(campus, 'Steak met rode wijnsaus, frieten, en Saladbar', 'nl_NL',
+    #            FoodType.GRILL, Decimal('5.20'), Decimal('6.50'), days[3])
     #
     # # Campus Drie Eiken
     # campus = Campus.get_by_short_name('cde')
