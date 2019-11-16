@@ -61,30 +61,31 @@ class Komidabot(Bot):
         #
         #         bot.update_menus(None)
 
-        @self.scheduler.scheduled_job(CronTrigger(hour=1, minute=0, second=0),  # Run every day to find changes
-                                      args=(the_app.app_context, self),
-                                      id='menu_update', name='Daily late-night update of the menus')
-        def menu_update(context, bot: 'Komidabot'):
-            with context():
-                if get_app().config.get('DISABLED'):
-                    return
-
-                try:
-                    today = datetime.datetime.today().date()
-                    dates = [
-                        today,
-                        today + datetime.timedelta(days=1),
-                        today + datetime.timedelta(days=2),
-                        today + datetime.timedelta(days=3),
-                        today + datetime.timedelta(days=4),
-                        today + datetime.timedelta(days=5),
-                    ]
-
-                    update_menus(None, 'cmi', dates=dates)
-                except Exception as e:
-                    bot.notify_error(e)
-
-                    get_app().logger.exception(e)
+        # FIXME: This is disabled until some changes are done to updating menus
+        # @self.scheduler.scheduled_job(CronTrigger(hour=1, minute=0, second=0),  # Run every day to find changes
+        #                               args=(the_app.app_context, self),
+        #                               id='menu_update', name='Daily late-night update of the menus')
+        # def menu_update(context, bot: 'Komidabot'):
+        #     with context():
+        #         if get_app().config.get('DISABLED'):
+        #             return
+        #
+        #         try:
+        #             today = datetime.datetime.today().date()
+        #             dates = [
+        #                 today,
+        #                 today + datetime.timedelta(days=1),
+        #                 today + datetime.timedelta(days=2),
+        #                 today + datetime.timedelta(days=3),
+        #                 today + datetime.timedelta(days=4),
+        #                 today + datetime.timedelta(days=5),
+        #             ]
+        #
+        #             update_menus(None, 'cmi', dates=dates)
+        #         except Exception as e:
+        #             bot.notify_error(e)
+        #
+        #             get_app().logger.exception(e)
 
     def trigger_received(self, trigger: triggers.Trigger):
         with self.lock:  # TODO: Maybe only lock on critical sections?
@@ -227,8 +228,12 @@ class Komidabot(Bot):
                 else:
                     sender.send_message(messages.TextMessage(trigger, menu))
 
-                if default_date and default_campus:
-                    sender.send_message(messages.TextMessage(trigger, localisation.REPLY_USE_AT_ADMIN(locale)))
+                if default_date and default_campus and isinstance(trigger, triggers.TextTrigger):
+                    for keyword in ['lunch', 'menu', 'komida']:
+                        if keyword.lower() in trigger.text.lower():
+                            break
+                    else:
+                        sender.send_message(messages.TextMessage(trigger, localisation.REPLY_USE_AT_ADMIN(locale)))
 
     def notify_error(self, error: Exception):
         with self.lock:
@@ -305,8 +310,6 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
 
 
 def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates: 'List[datetime.date]' = None):
-    # TODO: Store a hash of the source file for each menu to check for changes
-    # Storing a hash probably won't be needed anymore, so can probably drop this
     campus_list = Campus.get_active()
 
     for campus in campus_list:
@@ -343,6 +346,7 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
                                            item.get_staff_price())
 
         else:
+            # TODO: The other campuses are soon using the new system, so this code will be removed once this happens
             scraper = menu_scraper.MenuScraper(campus)
 
             scraper.find_pdf_location()
@@ -368,6 +372,7 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
     db.session.commit()
 
 
+# TODO: Deprecated once each campus changes to the new system
 def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument):
     for day in range(document.start_date.toordinal(), document.end_date.toordinal() + 1):
         date = datetime.date.fromordinal(day)
@@ -382,10 +387,6 @@ def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument):
         day_menu: List[menu_scraper.ParseResult] = [result for result in document.parse_results
                                                     if result.day.value == date.isoweekday()
                                                     or result.day == menu_scraper.FrameDay.WEEKLY]
-        # if result.day.value == date.isoweekday() or result.day.value == -1]
-        # TODO: Fix pasta!
-        # TODO: Fix grill stadscampus -> meerdere grills op een week
-        # TODO: This may not be necessary in the near future
 
         for item in day_menu:
             if item.name == '':
@@ -411,13 +412,15 @@ def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument):
             elif item.food_type == menu_scraper.FrameFoodType.GRILL:
                 food_type = FoodType.GRILL
             else:
-                continue  # TODO: Fix pasta!
+                continue
 
             print((translatable, food_type, prices[0], prices[1]), flush=True)
 
             menu.add_menu_item(translatable, food_type, prices[0], prices[1])
 
 
+
+# TODO: Deprecated once each campus changes to the new system
 def apply_menu_fixes():
     pass
     # def add_course(campus: Campus, course: str, language: str, food_type: FoodType,
