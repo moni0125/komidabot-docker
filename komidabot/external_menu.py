@@ -161,12 +161,13 @@ class ExternalMenu:
             try:
                 url = MENU_API.format(endpoint=BASE_ENDPOINT, campus=campus.external_id, date=date.strftime('%Y-%m-%d'))
 
-                print("Checking URL {}".format(url), flush=True)
-
                 response = self.session.get(url, headers=API_GET_HEADERS)
                 response.raise_for_status()
 
-                data = json.loads(response.text)
+                try:
+                    data = json.loads(response.text)
+                except json.decoder.JSONDecodeError as e:
+                    continue
 
                 # print(data)
 
@@ -255,7 +256,8 @@ class ExternalMenu:
 
                 items.sort(key=lambda i: i.food_type.value)
 
-                result[(campus, date)] = items
+                if len(items) > 0:
+                    result[(campus, date)] = items
             except Exception as e:
                 raise Exception('Failed retrieving menu data for ({}, {})'.format(campus.short_name, date)) from e
 
