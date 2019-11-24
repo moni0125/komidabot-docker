@@ -91,15 +91,15 @@ class ExternalCourse:
         return repr(self.name)
 
     def __lt__(self, other: 'ExternalCourse'):
-        if self.main_course:
-            if not other.main_course:
+        if self.show_first:
+            if not other.show_first:
                 return True
-            elif self.show_first:
-                return not other.show_first
-        elif other.main_course:
+            elif self.main_course:
+                return not other.main_course
+        elif other.show_first:
             return False
-        elif self.show_first:
-            return not other.show_first
+        elif self.main_course:
+            return not other.main_course
 
 
 class ExternalMenuItem:
@@ -133,11 +133,11 @@ class ExternalMenuItem:
             return head.name['nl_BE']
 
     def get_student_price(self):
-        return self.courses[0].price_students
+        return [course for course in self.courses if course.main_course][0].price_students
         # return sum((item.price_students for item in self.courses if item.price_students), Decimal('0.0'))
 
     def get_staff_price(self):
-        return self.courses[0].price_staff
+        return [course for course in self.courses if course.main_course][0].price_staff
         # return sum((item.price_staff for item in self.courses if item.price_staff), Decimal('0.0')) or None
 
     def __repr__(self):
@@ -211,13 +211,12 @@ class ExternalMenu:
 
                     combined_logos += [entry['courseLogoId'] for entry in course['course_CourseLogos']]
 
-                    if main_course:
-                        for pasta in ['spaghetti', 'tagliatelle', 'papardelle', 'bucatini', 'cannelloni', 'ravioli',
-                                      'tortellini', 'caramelle', 'penne', 'rigatoni', 'orecchiette', 'farfalle',
-                                      'caserecce', 'fusilli', 'pasta', ]:
-                            if pasta in name_nl.lower():
-                                has_pasta = True
-                                break
+                    for pasta in ['spaghetti', 'tagliatelle', 'papardelle', 'bucatini', 'cannelloni', 'ravioli',
+                                  'tortellini', 'caramelle', 'penne', 'rigatoni', 'orecchiette', 'farfalle',
+                                  'caserecce', 'fusilli', 'pasta', ]:
+                        if pasta in name_nl.lower():
+                            has_pasta = True
+                            break
 
                     course_obj = ExternalCourse(course_sort_order, show_first, main_course, price, staff_price)
                     course_obj.add_name('nl_BE', name_nl.strip())
@@ -250,6 +249,8 @@ class ExternalMenu:
                 menu_item = ExternalMenuItem(sort_order, course_type, menu_contents)
 
                 items.append(menu_item)
+
+            items.sort(key=lambda i: i.food_type.value)
 
             result[(campus, date)] = items
 
