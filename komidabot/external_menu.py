@@ -64,7 +64,7 @@ COURSE_LOGOS = {
 
 class ExternalCourse:
     def __init__(self, sort_order: int, show_first: bool, main_course: bool,
-                 price_students: float, price_staff: Optional[float]):
+                 price_students: float):
         self.name = dict()  # type: Dict[str, str]
         self.sort_order = sort_order
         self.show_first = show_first
@@ -72,12 +72,6 @@ class ExternalCourse:
 
         price_students = Decimal(price_students)
         self.price_students = round(price_students, 2)  # type: Decimal
-
-        if not price_staff:
-            self.price_staff = None  # type: Optional[Decimal]
-        else:
-            price_staff = Decimal(price_staff)
-            self.price_staff = round(price_staff, 2)  # type: Optional[Decimal]
 
     def add_name(self, locale, name):
         if locale in self.name:
@@ -109,6 +103,8 @@ class ExternalMenuItem:
         self.courses = courses[:]
         self.courses.sort()
 
+        self.price_staff = None
+
     def get_combined_text(self):
         head = self.courses[0]
         tail = self.courses[1:]
@@ -133,12 +129,10 @@ class ExternalMenuItem:
             return head.name['nl_BE']
 
     def get_student_price(self):
-        return [course for course in self.courses if course.main_course][0].price_students
-        # return sum((item.price_students for item in self.courses if item.price_students), Decimal('0.0'))
+        return sum((item.price_students for item in self.courses if item.price_students), Decimal('0.0'))
 
     def get_staff_price(self):
-        return [course for course in self.courses if course.main_course][0].price_staff
-        # return sum((item.price_staff for item in self.courses if item.price_staff), Decimal('0.0')) or None
+        return self.price_staff
 
     def __repr__(self):
         return '{} {} {} ({} / {})'.format(self.sort_order, models.food_type_icons[self.food_type],
@@ -185,33 +179,27 @@ class ExternalMenu:
                         continue
 
                     combined_logos = []
+                    calculate_multi_price = False
 
                     has_pasta = False
 
                     for item_content in item['menuItemContents']:
                         course = item_content['course']
                         enabled = course['enabled']
+                        deleted = course['deleted']
                         course_sort_order = item_content['sortOrder']
 
-                        if not enabled:
+                        if not enabled or deleted:
                             continue
 
                         name_nl = course['dispNameNl']
                         name_en = course['dispNameEn']
                         main_course = course['maincourse']
                         price = course['price']
-                        staff_price = None
-                        calculate_multi_price = course['calculatedMultiplePrices']
+                        calculate_multi_price = calculate_multi_price or course['calculatedMultiplePrices']
                         fixed_price = course['fixedprice']
                         fixed_multiple_prices = course['fixedMultiplePrices']
                         show_first = course['showFirst']
-
-                        if fixed_multiple_prices or calculate_multi_price:
-                            url = PRICE_API.format(endpoint=BASE_ENDPOINT, price=price)
-                            price_response = self.session.get(url, headers=API_GET_HEADERS)
-                            price_data = json.loads(price_response.text)
-
-                            staff_price = price_data['staffprice']
 
                         combined_logos += [entry['courseLogoId'] for entry in course['course_CourseLogos']]
 
@@ -222,7 +210,7 @@ class ExternalMenu:
                                 has_pasta = True
                                 break
 
-                        course_obj = ExternalCourse(course_sort_order, show_first, main_course, price, staff_price)
+                        course_obj = ExternalCourse(course_sort_order, show_first, main_course, price)
                         course_obj.add_name('nl_BE', name_nl.strip())
                         if name_en:
                             course_obj.add_name('en_US', name_en.strip())
@@ -251,6 +239,13 @@ class ExternalMenu:
                             course_type = models.FoodType.VEGAN if vegan else models.FoodType.MEAT
 
                     menu_item = ExternalMenuItem(sort_order, course_type, menu_contents)
+
+                    if calculate_multi_price:
+                        url = PRICE_API.format(endpoint=BASE_ENDPOINT, price=menu_item.get_student_price())
+                        price_response = self.session.get(url, headers=API_GET_HEADERS)
+                        price_data = json.loads(price_response.text)
+
+                        menu_item.price_staff = round(Decimal(price_data['staffprice']), 2)
 
                     items.append(menu_item)
 
