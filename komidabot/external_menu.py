@@ -161,10 +161,12 @@ class ExternalMenu:
             try:
                 url = MENU_API.format(endpoint=BASE_ENDPOINT, campus=campus.external_id, date=date.strftime('%Y-%m-%d'))
 
+                print("Checking URL {}".format(url), flush=True)
+
                 response = self.session.get(url, headers=API_GET_HEADERS)
                 response.raise_for_status()
 
-                data = json.loads(str(response.content))
+                data = json.loads(response.text)
 
                 # print(data)
 
@@ -206,7 +208,7 @@ class ExternalMenu:
                         if fixed_multiple_prices or calculate_multi_price:
                             url = PRICE_API.format(endpoint=BASE_ENDPOINT, price=price)
                             price_response = self.session.get(url, headers=API_GET_HEADERS)
-                            price_data = json.loads(price_response.content)
+                            price_data = json.loads(price_response.text)
 
                             staff_price = price_data['staffprice']
 
