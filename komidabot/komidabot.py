@@ -129,11 +129,6 @@ class Komidabot(Bot):
                             update_menus(trigger, *split[1:])
                             sender.send_message(messages.TextMessage(trigger, 'Done updating menus...'))
                             return
-                        elif split[0] == 'fix':
-                            sender.send_message(messages.TextMessage(trigger, 'Applying fixes'))
-                            apply_menu_fixes()
-                            sender.send_message(messages.TextMessage(trigger, 'Done applying fixes...'))
-                            return
                         elif split[0] == 'psid':  # TODO: Deprecated?
                             sender.send_message(messages.TextMessage(trigger, 'Your ID is {}'.format(sender.id.id)))
                             return
@@ -425,45 +420,3 @@ def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument):
             print((translatable, food_type, prices[0], prices[1]), flush=True)
 
             menu.add_menu_item(translatable, food_type, prices[0], prices[1])
-
-
-
-# TODO: Deprecated once each campus changes to the new system
-def apply_menu_fixes():
-    pass
-    # def add_course(campus: Campus, course: str, language: str, food_type: FoodType,
-    #                price_students: Decimal, price_staff: Optional[Decimal], *dates):
-    #     for date in dates:
-    #         menu = Menu.get_menu(campus, datetime.date(*date))
-    #
-    #         menu.add_menu_item(Translatable.get_or_create(course, language)[0],
-    #                            food_type, price_students, price_staff)
-    #
-    # days = [
-    #     (2019, 11, 18),  # Monday
-    #     (2019, 11, 19),  # Tuesday
-    #     (2019, 11, 20),  # Wednesday
-    #     (2019, 11, 21),  # Thursday
-    #     (2019, 11, 22),  # Friday
-    # ]
-    #
-    # # Stadscampus
-    # campus = Campus.get_by_short_name('cst')
-    #
-    # add_course(campus, 'Pasta met schorseneren in lookboter met ei, olijven en peultjes', 'nl_NL',
-    #            FoodType.PASTA_VEGAN, Decimal('3.40'), Decimal('4.20'), *days[1:4])
-    # add_course(campus, 'Pasta met kippenblokjes, champignons en dragon en pasta', 'nl_NL',
-    #            FoodType.PASTA_MEAT, Decimal('4.40'), Decimal('5.50'), *days[1:4])
-    #
-    # add_course(campus, 'Steak met rode wijnsaus, frieten, en Saladbar', 'nl_NL',
-    #            FoodType.GRILL, Decimal('5.20'), Decimal('6.50'), days[3])
-    #
-    # # Campus Drie Eiken
-    # campus = Campus.get_by_short_name('cde')
-    #
-    # add_course(campus, 'Pasta met kervelroom, zongedroogde tomaten en pijnboompittten', 'nl_NL',
-    #            FoodType.PASTA_VEGAN, Decimal('3.80'), Decimal('4.70'), *days)
-    # add_course(campus, 'Pasta met ham- en kaassaus', 'nl_NL',
-    #            FoodType.PASTA_MEAT, Decimal('3.60'), Decimal('4.50'), *days)
-    #
-    # db.session.commit()
