@@ -158,100 +158,103 @@ class ExternalMenu:
         result = dict()
 
         for campus, date in self.lookups:
-            url = MENU_API.format(endpoint=BASE_ENDPOINT, campus=campus.external_id, date=date.strftime('%Y-%m-%d'))
+            try:
+                url = MENU_API.format(endpoint=BASE_ENDPOINT, campus=campus.external_id, date=date.strftime('%Y-%m-%d'))
 
-            response = self.session.get(url, headers=API_GET_HEADERS)
-            response.raise_for_status()
+                response = self.session.get(url, headers=API_GET_HEADERS)
+                response.raise_for_status()
 
-            data = json.loads(response.content)
+                data = json.loads(str(response.content))
 
-            # print(data)
+                # print(data)
 
-            if data['restaurantId'] != campus.external_id:
-                raise RuntimeError('Got menu for different restaurant!')
+                if data['restaurantId'] != campus.external_id:
+                    raise RuntimeError('Got menu for different restaurant!')
 
-            items = []
+                items = []
 
-            for item in data['menuItems']:
-                enabled = item['enabled']
-                sort_order = item['sortorder']
-                menu_contents = []
-
-                if not enabled:
-                    continue
-
-                combined_logos = []
-
-                has_pasta = False
-
-                for item_content in item['menuItemContents']:
-                    course = item_content['course']
-                    enabled = course['enabled']
-                    course_sort_order = item_content['sortOrder']
+                for item in data['menuItems']:
+                    enabled = item['enabled']
+                    sort_order = item['sortorder']
+                    menu_contents = []
 
                     if not enabled:
                         continue
 
-                    name_nl = course['dispNameNl']
-                    name_en = course['dispNameEn']
-                    main_course = course['maincourse']
-                    price = course['price']
-                    staff_price = None
-                    calculate_multi_price = course['calculatedMultiplePrices']
-                    fixed_price = course['fixedprice']
-                    fixed_multiple_prices = course['fixedMultiplePrices']
-                    show_first = course['showFirst']
+                    combined_logos = []
 
-                    if fixed_multiple_prices or calculate_multi_price:
-                        url = PRICE_API.format(endpoint=BASE_ENDPOINT, price=price)
-                        price_response = self.session.get(url, headers=API_GET_HEADERS)
-                        price_data = json.loads(price_response.content)
+                    has_pasta = False
 
-                        staff_price = price_data['staffprice']
+                    for item_content in item['menuItemContents']:
+                        course = item_content['course']
+                        enabled = course['enabled']
+                        course_sort_order = item_content['sortOrder']
 
-                    combined_logos += [entry['courseLogoId'] for entry in course['course_CourseLogos']]
+                        if not enabled:
+                            continue
 
-                    for pasta in ['spaghetti', 'tagliatelle', 'papardelle', 'bucatini', 'cannelloni', 'ravioli',
-                                  'tortellini', 'caramelle', 'penne', 'rigatoni', 'orecchiette', 'farfalle',
-                                  'caserecce', 'fusilli', 'pasta', ]:
-                        if pasta in name_nl.lower():
-                            has_pasta = True
-                            break
+                        name_nl = course['dispNameNl']
+                        name_en = course['dispNameEn']
+                        main_course = course['maincourse']
+                        price = course['price']
+                        staff_price = None
+                        calculate_multi_price = course['calculatedMultiplePrices']
+                        fixed_price = course['fixedprice']
+                        fixed_multiple_prices = course['fixedMultiplePrices']
+                        show_first = course['showFirst']
 
-                    course_obj = ExternalCourse(course_sort_order, show_first, main_course, price, staff_price)
-                    course_obj.add_name('nl_BE', name_nl.strip())
-                    if name_en:
-                        course_obj.add_name('en_US', name_en.strip())
-                    menu_contents.append(course_obj)
+                        if fixed_multiple_prices or calculate_multi_price:
+                            url = PRICE_API.format(endpoint=BASE_ENDPOINT, price=price)
+                            price_response = self.session.get(url, headers=API_GET_HEADERS)
+                            price_data = json.loads(price_response.content)
 
-                has_pasta = has_pasta or (COURSE_LOGOS['PASTA'] in combined_logos)
+                            staff_price = price_data['staffprice']
 
-                if COURSE_LOGOS['GRILL'] in combined_logos:
-                    if COURSE_LOGOS['VEGGIE'] in combined_logos:
-                        # SPECIAL CASE! Sometimes the grill can be vegan, so we'll count this as VEGAN for now
-                        # TODO: Should a new food category "GRILL_VEGAN" be added?
-                        course_type = models.FoodType.VEGAN
+                        combined_logos += [entry['courseLogoId'] for entry in course['course_CourseLogos']]
+
+                        for pasta in ['spaghetti', 'tagliatelle', 'papardelle', 'bucatini', 'cannelloni', 'ravioli',
+                                      'tortellini', 'caramelle', 'penne', 'rigatoni', 'orecchiette', 'farfalle',
+                                      'caserecce', 'fusilli', 'pasta', ]:
+                            if pasta in name_nl.lower():
+                                has_pasta = True
+                                break
+
+                        course_obj = ExternalCourse(course_sort_order, show_first, main_course, price, staff_price)
+                        course_obj.add_name('nl_BE', name_nl.strip())
+                        if name_en:
+                            course_obj.add_name('en_US', name_en.strip())
+                        menu_contents.append(course_obj)
+
+                    has_pasta = has_pasta or (COURSE_LOGOS['PASTA'] in combined_logos)
+
+                    if COURSE_LOGOS['GRILL'] in combined_logos:
+                        if COURSE_LOGOS['VEGGIE'] in combined_logos:
+                            # SPECIAL CASE! Sometimes the grill can be vegan, so we'll count this as VEGAN for now
+                            # TODO: Should a new food category "GRILL_VEGAN" be added?
+                            course_type = models.FoodType.VEGAN
+                        else:
+                            course_type = models.FoodType.GRILL
+                    elif COURSE_LOGOS['SOUP'] in combined_logos:
+                        course_type = models.FoodType.SOUP
+                    elif COURSE_LOGOS['SNACK'] in combined_logos:
+                        course_type = models.FoodType.SUB
+                    elif COURSE_LOGOS['SALAD'] in combined_logos:
+                        course_type = models.FoodType.SALAD
                     else:
-                        course_type = models.FoodType.GRILL
-                elif COURSE_LOGOS['SOUP'] in combined_logos:
-                    course_type = models.FoodType.SOUP
-                elif COURSE_LOGOS['SNACK'] in combined_logos:
-                    course_type = models.FoodType.SUB
-                elif COURSE_LOGOS['SALAD'] in combined_logos:
-                    course_type = models.FoodType.SALAD
-                else:
-                    vegan = (COURSE_LOGOS['VEGGIE'] in combined_logos) or (COURSE_LOGOS['VEGAN'] in combined_logos)
-                    if has_pasta:
-                        course_type = models.FoodType.PASTA_VEGAN if vegan else models.FoodType.PASTA_MEAT
-                    else:
-                        course_type = models.FoodType.VEGAN if vegan else models.FoodType.MEAT
+                        vegan = (COURSE_LOGOS['VEGGIE'] in combined_logos) or (COURSE_LOGOS['VEGAN'] in combined_logos)
+                        if has_pasta:
+                            course_type = models.FoodType.PASTA_VEGAN if vegan else models.FoodType.PASTA_MEAT
+                        else:
+                            course_type = models.FoodType.VEGAN if vegan else models.FoodType.MEAT
 
-                menu_item = ExternalMenuItem(sort_order, course_type, menu_contents)
+                    menu_item = ExternalMenuItem(sort_order, course_type, menu_contents)
 
-                items.append(menu_item)
+                    items.append(menu_item)
 
-            items.sort(key=lambda i: i.food_type.value)
+                items.sort(key=lambda i: i.food_type.value)
 
-            result[(campus, date)] = items
+                result[(campus, date)] = items
+            except Exception as e:
+                raise Exception('Failed retrieving menu data for ({}, {})'.format(campus.short_name, date)) from e
 
         return result
