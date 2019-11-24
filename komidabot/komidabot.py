@@ -102,8 +102,9 @@ class Komidabot(Bot):
 
             locale = None
 
-            if triggers.LocaleAspect in trigger and trigger[triggers.LocaleAspect].confidence > 0.9:
-                locale = trigger[triggers.LocaleAspect].locale
+            # XXX: Disabled once more because responses aren't reliably in the language the user expects it to be
+            # if triggers.LocaleAspect in trigger and trigger[triggers.LocaleAspect].confidence > 0.9:
+            #     locale = trigger[triggers.LocaleAspect].locale
 
             if triggers.SenderAspect in trigger:
                 sender = trigger[triggers.SenderAspect].sender
@@ -223,12 +224,13 @@ class Komidabot(Bot):
                 else:
                     sender.send_message(messages.TextMessage(trigger, menu))
 
-                if default_date and default_campus and isinstance(trigger, triggers.TextTrigger):
-                    for keyword in ['lunch', 'menu', 'komida']:
-                        if keyword.lower() in trigger.text.lower():
-                            break
-                    else:
-                        sender.send_message(messages.TextMessage(trigger, localisation.REPLY_USE_AT_ADMIN(locale)))
+                # XXX: Disabled experiment
+                # if default_date and default_campus and isinstance(trigger, triggers.TextTrigger):
+                #     for keyword in ['lunch', 'menu', 'komida']:
+                #         if keyword.lower() in trigger.text.lower():
+                #             break
+                #     else:
+                #         sender.send_message(messages.TextMessage(trigger, localisation.REPLY_USE_AT_ADMIN(locale)))
 
     def notify_error(self, error: Exception):
         with self.lock:
