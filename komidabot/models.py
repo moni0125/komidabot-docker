@@ -2,8 +2,9 @@ import datetime
 import enum
 import locale
 from decimal import Decimal
-from typing import Callable, Dict, List, Optional, Tuple
+from typing import Callable, Dict, List, Optional, Set, Tuple
 
+import komidabot.util as util
 from extensions import db
 
 
@@ -61,6 +62,11 @@ class Campus(db.Model):
     subscriptions = db.relationship('UserSubscription', backref='campus', passive_deletes=True)
 
     def __init__(self, name: str, short_name: str):
+        if not isinstance(name, str):
+            raise ValueError('name')
+        if not isinstance(short_name, str):
+            raise ValueError('short_name')
+
         self.name = name
         self.short_name = short_name
         self.keywords = ''
@@ -124,18 +130,28 @@ class ClosingDays(db.Model):
     translatable_id = db.Column(db.Integer(), db.ForeignKey('translatable.id', onupdate='CASCADE', ondelete='RESTRICT'),
                                 nullable=False)
 
-    def __init__(self, campus: Campus, first_day: datetime.date, last_day: datetime.date, translatable: 'Translatable'):
-        self.campus = campus
+    def __init__(self, campus_id: int, first_day: datetime.date, last_day: datetime.date,
+                 translatable_id: int):
+        if not isinstance(campus_id, int):
+            raise ValueError('campus_id')
+        if not isinstance(first_day, datetime.date):
+            raise ValueError('first_day')
+        if not isinstance(last_day, datetime.date):
+            raise ValueError('last_day')
+        if not isinstance(translatable_id, int):
+            raise ValueError('translatable_id')
+
+        self.campus_id = campus_id
         self.first_day = first_day
         self.last_day = last_day
-        self.translatable = translatable
+        self.translatable_id = translatable_id
 
     @staticmethod
     def create(campus: Campus, first_day: datetime.date, last_day: datetime.date, reason: str,
                language: str) -> 'ClosingDays':
         translatable, translation = Translatable.get_or_create(reason, language)
 
-        result = ClosingDays(campus, first_day, last_day, translatable)
+        result = ClosingDays(campus.id, first_day, last_day, translatable.id)
 
         db.session.add(result)
 
@@ -161,6 +177,11 @@ class Translatable(db.Model):
     closing_days = db.relationship('ClosingDays', backref='translatable')
 
     def __init__(self, text: str, language: str):
+        if not isinstance(text, str):
+            raise ValueError('text')
+        if not isinstance(language, str):
+            raise ValueError('language')
+
         self.original_language = language
         self.original_text = text
 
@@ -170,7 +191,7 @@ class Translatable(db.Model):
         if translation is not None:
             return translation
 
-        translation = Translation(self, language, text)
+        translation = Translation(self.id, language, text)
 
         if translation is not None:
             db.session.add(translation)
@@ -185,9 +206,10 @@ class Translatable(db.Model):
             return translatable, Translation.query.filter_by(translatable_id=translatable.id, language=language).one()
 
         translatable = Translatable(text, language)
-        translation = Translation(translatable, language, text)
-
         db.session.add(translatable)
+        db.session.flush()
+
+        translation = Translation(translatable.id, language, text)
         db.session.add(translation)
 
         return translatable, translation
@@ -221,8 +243,15 @@ class Translation(db.Model):
     language = db.Column(db.String(5), primary_key=True)
     translation = db.Column(db.String(256), nullable=False)
 
-    def __init__(self, translatable: Translatable, language: str, translation: str):
-        self.translatable = translatable
+    def __init__(self, translatable_id: int, language: str, translation: str):
+        if not isinstance(translatable_id, int):
+            raise ValueError('translatable_id')
+        if not isinstance(language, str):
+            raise ValueError('language')
+        if not isinstance(translation, str):
+            raise ValueError('translation')
+
+        self.translatable_id = translatable_id
         self.language = language
         self.translation = translation
 
@@ -239,20 +268,38 @@ class Menu(db.Model):
 
     menu_items = db.relationship('MenuItem', backref='menu', passive_deletes=True, order_by='MenuItem.food_type')
 
-    def __init__(self, campus: Campus, day: datetime.date):
-        self.campus = campus
+    def __init__(self, campus_id: int, day: datetime.date):
+        if not isinstance(campus_id, int):
+            raise ValueError('campus_id')
+        if not isinstance(day, datetime.date):
+            raise ValueError('day')
+
+        self.campus_id = campus_id
         self.menu_day = day
 
     @staticmethod
-    def create(campus: Campus, day: datetime.date):
-        menu = Menu(campus, day)
+    def create(campus: Campus, day: datetime.date, add_to_db=True):
+        menu = Menu(campus.id, day)
 
-        db.session.add(menu)
+        if add_to_db:
+            db.session.add(menu)
 
         return menu
 
     def delete(self):
         db.session.delete(self)
+
+    def update(self, new_menu: 'Menu'):
+        old = self.menu_items  # type: List[MenuItem]
+        new = new_menu.menu_items  # type: List[MenuItem]
+
+        _, added, removed = util.get_list_diff(old, new)
+
+        for item in removed:
+            db.session.delete(item)
+        for item in added:
+            # FIXME: Is this safe?
+            self.menu_items.append(item.copy(self))
 
     def clear(self):
         items = list(self.menu_items)
@@ -266,9 +313,10 @@ class Menu(db.Model):
 
     def add_menu_item(self, translatable: Translatable, food_type: FoodType, price_students: Decimal,
                       price_staff: Optional[Decimal]):
-        menu_item = MenuItem(self, translatable, food_type, price_students, price_staff)
+        menu_item = MenuItem(self.id, translatable.id, food_type, price_students, price_staff)
 
-        db.session.add(menu_item)
+        # FIXME: Is this safe?
+        self.menu_items.append(menu_item)
 
         return menu_item
 
@@ -288,19 +336,54 @@ class MenuItem(db.Model):
     price_students = db.Column(db.Numeric(4, 2), nullable=False)
     price_staff = db.Column(db.Numeric(4, 2), nullable=True)
 
-    def __init__(self, menu: Menu, translatable: Translatable, food_type: FoodType, price_students: Decimal,
+    def __init__(self, menu_id: int, translatable_id: int, food_type: FoodType, price_students: Decimal,
                  price_staff: Optional[Decimal]):
-        self.menu = menu
-        self.translatable = translatable
+        if menu_id is not None and not isinstance(menu_id, int):  # FIXME: Allowing a null ID is a dirty hack
+            raise ValueError('menu_id')
+        if not isinstance(translatable_id, int):
+            raise ValueError('translatable_id')
+        if not isinstance(food_type, FoodType):
+            raise ValueError('food_type')
+        if not isinstance(price_students, Decimal):
+            raise ValueError('price_students')
+        if price_staff is not None and not isinstance(price_staff, Decimal):
+            raise ValueError('price_staff')
+
+        self.menu_id = menu_id
+        self.translatable_id = translatable_id
         self.food_type = food_type
         self.price_students = price_students
         self.price_staff = price_staff
+
+    def copy(self, menu: Menu):
+        return MenuItem(menu.id, self.translatable_id, self.food_type, self.price_students, self.price_staff)
 
     def get_translation(self, language: str, translator: 'Callable[[str, str, str], str]') -> 'Translation':
         return self.translatable.get_translation(language, translator)
 
     def __hash__(self):
         return hash(self.id)
+
+    def __lt__(self, other: 'MenuItem') -> bool:
+        if self.food_type == other.food_type:
+            if self.translatable_id == other.translatable_id:
+                return self.id < other.id
+            return self.translatable_id < other.translatable_id
+        return self.food_type < other.food_type
+
+    def __eq__(self, other: 'MenuItem') -> bool:
+        if self is other or (self.id is not None and self.id == other.id):
+            return True
+        # menu_id is ignored
+        if self.translatable_id != other.translatable_id:
+            return False
+        if self.food_type != other.food_type:
+            return False
+        if self.price_students != other.price_students:
+            return False
+        if self.price_staff != other.price_staff:
+            return False
+        return True
 
     @staticmethod
     def format_price(price: Decimal) -> str:
@@ -319,10 +402,19 @@ class UserSubscription(db.Model):
                           nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)
 
-    def __init__(self, user: 'AppUser', day: Day, campus: Campus, active=True) -> None:
-        self.user = user
+    def __init__(self, user_id: int, day: Day, campus_id: int, active=True) -> None:
+        if not isinstance(user_id, int):
+            raise ValueError('user_id')
+        if not isinstance(day, Day):
+            raise ValueError('day')
+        if not isinstance(campus_id, int):
+            raise ValueError('campus_id')
+        if not isinstance(active, bool):
+            raise ValueError('active')
+
+        self.user_id = user_id
         self.day = day
-        self.campus = campus
+        self.campus_id = campus_id
         self.active = active
 
     @staticmethod
@@ -333,7 +425,7 @@ class UserSubscription(db.Model):
     def create(user: 'AppUser', day: Day, campus: Campus, active=True) -> 'Optional[UserSubscription]':
         # TODO: Prevent weekend days from actually being used here
 
-        subscription = UserSubscription(user, day, campus, active)
+        subscription = UserSubscription(user.id, day, campus.id, active)
 
         db.session.add(subscription)
 
@@ -356,6 +448,13 @@ class AppUser(db.Model):
     feature_participations = db.relationship('FeatureParticipation', backref='user', passive_deletes=True)
 
     def __init__(self, provider: str, internal_id: str, language: str):
+        if not isinstance(provider, str):
+            raise ValueError('provider')
+        if not isinstance(internal_id, str):
+            raise ValueError('internal_id')
+        if not isinstance(language, str):
+            raise ValueError('language')
+
         self.provider = provider
         self.internal_id = internal_id
         self.language = language
@@ -430,6 +529,13 @@ class Feature(db.Model):
     participations = db.relationship('FeatureParticipation', backref='feature', passive_deletes=True)
 
     def __init__(self, string_id: str, description: str = None, globally_available=False):
+        if not isinstance(string_id, str):
+            raise ValueError('string_id')
+        if description is not None and not isinstance(description, str):
+            raise ValueError('description')
+        if globally_available is not None and not isinstance(globally_available, bool):
+            raise ValueError('globally_available')
+
         self.string_id = string_id
         self.description = description
         self.globally_available = globally_available
@@ -485,9 +591,14 @@ class FeatureParticipation(db.Model):
     feature_id = db.Column(db.Integer(), db.ForeignKey('feature.id', onupdate='CASCADE', ondelete='CASCADE'),
                            primary_key=True)
 
-    def __init__(self, user: AppUser, feature: Feature):
-        self.user = user
-        self.feature = feature
+    def __init__(self, user_id: int, feature_id: int):
+        if not isinstance(user_id, int):
+            raise ValueError('user_id')
+        if not isinstance(feature_id, int):
+            raise ValueError('feature_id')
+
+        self.user_id = user_id
+        self.feature_id = feature_id
 
     @staticmethod
     def get_for_user(user: AppUser, feature: Feature) -> 'Optional[FeatureParticipation]':
@@ -495,7 +606,7 @@ class FeatureParticipation(db.Model):
 
     @staticmethod
     def create(user: AppUser, feature: Feature) -> 'Optional[FeatureParticipation]':
-        participation = FeatureParticipation(user, feature)
+        participation = FeatureParticipation(user.id, feature.id)
 
         db.session.add(participation)
 

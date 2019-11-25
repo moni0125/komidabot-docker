@@ -3,9 +3,9 @@ import unittest
 from decimal import Decimal
 from typing import Dict, List, Tuple
 
+import komidabot.models as models
 import komidabot.triggers as triggers
 import komidabot.users as users
-import komidabot.models as models
 import tests.users_stub as users_stub
 import tests.utils as utils
 from app import db
@@ -16,7 +16,8 @@ from tests.base import BaseTestCase, HttpCapture, menu_item
 class BaseSubscriptionsTestCase(BaseTestCase):
     def setUp(self):
         super().setUp()
-        self.campuses = self.create_test_campuses()
+
+        self.create_test_campuses()
 
 
 class TestGenericSubscriptions(BaseSubscriptionsTestCase):
@@ -41,6 +42,8 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
                 UserSubscription.create(user_obj, day, self.campuses[campus], active=active)
 
         with self.app.app_context():
+            db.session.add_all(self.campuses)
+
             # First user, subscribed every day
             create_subscriptions(self.user1.id, [
                 (Day.MONDAY, 0, True),
@@ -75,9 +78,9 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
         food_types = FoodType
 
         with self.app.app_context():
-            for campus in self.campuses:
-                db.session.add(campus)
+            db.session.add_all(self.campuses)
 
+            for campus in self.campuses:
                 for day in utils.DAYS_LIST:
                     day_name = Day(day.isoweekday()).name
                     items = [menu_item(food_type, '{} at {} for {}'.format(food_type.name, campus.short_name, day_name),
@@ -101,9 +104,9 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
         self.setup_subscriptions()
         self.setup_menu()
 
-        self.activate_feature('menu_subscription', available=True)
-
         with self.app.app_context():
+            self.activate_feature('menu_subscription', available=True, has_context=True)
+
             with HttpCapture():  # Ensure no requests are made
                 self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=utils.DAYS['MON']))
                 self.app.bot.trigger_received(triggers.SubscriptionTrigger(date=utils.DAYS['TUE']))

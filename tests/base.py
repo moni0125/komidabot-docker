@@ -1,21 +1,36 @@
 import datetime
 from decimal import Decimal
-from typing import List, NamedTuple
+from typing import Dict, List, NamedTuple, Tuple
+from functools import wraps
 
 import httpretty
 from flask.cli import ScriptInfo
 from flask_testing import TestCase
 
+import komidabot.models as models
 import komidabot.users as users
 from app import create_app, db
 from komidabot.app import App
-from komidabot.models import AppUser, Campus, Feature, FoodType, Menu, Translatable
 
-menu_item = NamedTuple('menu_item', [('type', FoodType),
+menu_item = NamedTuple('menu_item', [('type', models.FoodType),
                                      ('text', str),
                                      ('language', str),
                                      ('price_students', Decimal),
                                      ('price_staff', Decimal)])
+
+
+def with_context(func):
+    @wraps(func)
+    def decorated_func(self, *args, **kwargs):
+        if 'has_context' in kwargs:
+            has_context = kwargs.pop('has_context')
+            if has_context:
+                return func(self, *args, **kwargs)
+
+        with self.app.app_context():
+            return func(self, *args, **kwargs)
+
+    return decorated_func
 
 
 class BaseTestCase(TestCase):
@@ -43,39 +58,65 @@ class BaseTestCase(TestCase):
 
         super().tearDown()
 
-    def create_test_campuses(self) -> List[Campus]:
-        with self.app.app_context():
-            campus1 = Campus.create('Testcampus', 'ctst', [], 'mock://campus_ctst/')
-            campus2 = Campus.create('Campus Omega', 'com', [], 'mock://campus_com/')
-            campus3 = Campus.create('Campus Paardenmarkt', 'cpm', [], 'mock://campus_cpm/')
-            campus3.set_active(False)
-            db.session.commit()
+    @with_context
+    def create_translation(self, data: Dict[str, str], default_language: str) -> Tuple[models.Translatable,
+                                                                                       Dict[str, models.Translation]]:
+        if default_language not in data:
+            raise ValueError()
 
-            return [campus1, campus2, campus3]
+        result = dict()
 
-    def activate_feature(self, feature_id: str, user_list: 'List[users.UserId]' = None, available=None) -> Feature:
-        with self.app.app_context():
-            feature = Feature.create(feature_id)
+        translatable, translation = models.Translatable.get_or_create(data[default_language], default_language)
 
-            if user_list:
-                for user in user_list:
-                    user_obj = AppUser.find_by_id(user.provider, user.id)
-                    if user_obj is None:
-                        raise ValueError()
-                    Feature.set_user_participating(user_obj, feature.string_id, True)
+        result[default_language] = translation
 
-            if available is not None:
-                feature.globally_available = available
+        for language, text in data.items():
+            if language == default_language:
+                continue
 
-            db.session.commit()
-            return feature
+            translation = translatable.add_translation(language, text)
+            result[language] = translation
+
+        db.session.commit()
+
+        return translatable, result
+
+    @with_context
+    def create_test_campuses(self) -> List[models.Campus]:
+        campus1 = models.Campus.create('Testcampus', 'ctst', [], 'mock://campus_ctst/')
+        campus2 = models.Campus.create('Campus Omega', 'com', [], 'mock://campus_com/')
+        campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', [], 'mock://campus_cpm/')
+        campus3.set_active(False)
+        db.session.commit()
+
+        self.campuses = [campus1, campus2, campus3]
+
+        return self.campuses
+
+    @with_context
+    def activate_feature(self, feature_id: str, user_list: 'List[users.UserId]' = None,
+                         available=None) -> models.Feature:
+        feature = models.Feature.create(feature_id)
+
+        if user_list:
+            for user in user_list:
+                user_obj = models.AppUser.find_by_id(user.provider, user.id)
+                if user_obj is None:
+                    raise ValueError()
+                models.Feature.set_user_participating(user_obj, feature.string_id, True)
+
+        if available is not None:
+            feature.globally_available = available
+
+        db.session.commit()
+        return feature
 
     @staticmethod
-    def create_menu(campus: Campus, day: datetime.date, items: 'List[menu_item]') -> Menu:
-        menu = Menu.create(campus, day)
+    def create_menu(campus: models.Campus, day: datetime.date, items: 'List[menu_item]') -> models.Menu:
+        menu = models.Menu.create(campus, day)
 
         for item in items:
-            translatable, translation = Translatable.get_or_create(item.text, item.language)
+            translatable, translation = models.Translatable.get_or_create(item.text, item.language)
             menu.add_menu_item(translatable, item.type, item.price_students, item.price_staff)
 
         db.session.commit()

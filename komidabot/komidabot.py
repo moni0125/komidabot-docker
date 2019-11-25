@@ -338,87 +338,88 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
             for (_, date), items in result.items():
                 if len(items) > 0:
                     menu = Menu.get_menu(campus, date)
-
-                    if menu is not None:
-                        menu.clear()
-                    else:
-                        menu = Menu.create(campus, date)
+                    new_menu = Menu.create(campus, date, add_to_db=False)
 
                     for item in items:
                         translatable, translation = Translatable.get_or_create(item.get_combined_text(), 'nl_NL')
 
-                        menu.add_menu_item(translatable, item.food_type, item.get_student_price(),
-                                           item.get_staff_price())
+                        new_menu.add_menu_item(translatable, item.food_type, item.get_student_price(),
+                                               item.get_staff_price())
 
-        else:
-            # TODO: The other campuses are soon using the new system, so this code will be removed once this happens
-            scraper = menu_scraper.MenuScraper(campus)
+                    if menu is not None:
+                        menu.update(new_menu)
+                    else:
+                        db.session.add(new_menu)
 
-            scraper.find_pdf_location()
-
-            if not scraper.pdf_location:
-                if initiator:
-                    if triggers.SenderAspect in initiator:
-                        message = 'No menu has been found for {}'.format(campus.short_name.upper())
-                        initiator[triggers.SenderAspect].sender.send_message(messages.TextMessage(initiator, message))
-                continue
-
-            # initiator.send_text_message('Campus {}\n{}'.format(campus.name, scraper.pdf_location))
-
-            scraper.download_pdf()
-            scraper.generate_pictures()
-
-            handle_parsed_menu(campus, scraper.parse_pdf())
-
-            # for result in parse_result.parse_results:
-            #     print('{}/{}: {} ({})'.format(result.day.name, result.food_type.name, result.name, result.price),
-            #           flush=True)
+        # else:
+        #     # TODO: The other campuses are soon using the new system, so this code will be removed once this happens
+        #     scraper = menu_scraper.MenuScraper(campus)
+        #
+        #     scraper.find_pdf_location()
+        #
+        #     if not scraper.pdf_location:
+        #         if initiator:
+        #             if triggers.SenderAspect in initiator:
+        #                 message = 'No menu has been found for {}'.format(campus.short_name.upper())
+        #                 initiator[triggers.SenderAspect].sender.send_message(messages.TextMessage(initiator, message))
+        #         continue
+        #
+        #     # initiator.send_text_message('Campus {}\n{}'.format(campus.name, scraper.pdf_location))
+        #
+        #     scraper.download_pdf()
+        #     scraper.generate_pictures()
+        #
+        #     handle_parsed_menu(campus, scraper.parse_pdf())
+        #
+        #     # for result in parse_result.parse_results:
+        #     #     print('{}/{}: {} ({})'.format(result.day.name, result.food_type.name, result.name, result.price),
+        #     #           flush=True)
 
     db.session.commit()
 
 
 # TODO: Deprecated once each campus changes to the new system
-def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument):
-    for day in range(document.start_date.toordinal(), document.end_date.toordinal() + 1):
-        date = datetime.date.fromordinal(day)
-
-        menu = Menu.get_menu(campus, date)
-
-        if menu is not None:
-            menu.clear()
-        else:
-            menu = Menu.create(campus, date)
-
-        day_menu: List[menu_scraper.ParseResult] = [result for result in document.parse_results
-                                                    if result.day.value == date.isoweekday()
-                                                    or result.day == menu_scraper.FrameDay.WEEKLY]
-
-        for item in day_menu:
-            if item.name == '':
-                continue
-            if item.price == '':
-                continue
-
-            prices = menu_scraper.parse_price(item.price)
-
-            if prices is None:
-                continue  # No price parsed
-
-            prices[0] = Decimal(prices[0].replace('€', '').replace(',', '.').strip())
-            prices[1] = Decimal(prices[1].replace('€', '').replace(',', '.').strip())
-
-            translatable, translation = Translatable.get_or_create(item.name, 'nl_NL')
-            if item.food_type == menu_scraper.FrameFoodType.SOUP:
-                food_type = FoodType.SOUP
-            elif item.food_type == menu_scraper.FrameFoodType.VEGAN:
-                food_type = FoodType.VEGAN
-            elif item.food_type == menu_scraper.FrameFoodType.MEAT:
-                food_type = FoodType.MEAT
-            elif item.food_type == menu_scraper.FrameFoodType.GRILL:
-                food_type = FoodType.GRILL
-            else:
-                continue
-
-            print((translatable, food_type, prices[0], prices[1]), flush=True)
-
-            menu.add_menu_item(translatable, food_type, prices[0], prices[1])
+# def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument):
+#     for day in range(document.start_date.toordinal(), document.end_date.toordinal() + 1):
+#         date = datetime.date.fromordinal(day)
+#
+#         menu = Menu.get_menu(campus, date)
+#         new_menu = Menu.create(campus, date)
+#
+#         day_menu: List[menu_scraper.ParseResult] = [result for result in document.parse_results
+#                                                     if result.day.value == date.isoweekday()
+#                                                     or result.day == menu_scraper.FrameDay.WEEKLY]
+#
+#         for item in day_menu:
+#             if item.name == '':
+#                 continue
+#             if item.price == '':
+#                 continue
+#
+#             prices = menu_scraper.parse_price(item.price)
+#
+#             if prices is None:
+#                 continue  # No price parsed
+#
+#             prices[0] = Decimal(prices[0].replace('€', '').replace(',', '.').strip())
+#             prices[1] = Decimal(prices[1].replace('€', '').replace(',', '.').strip())
+#
+#             translatable, translation = Translatable.get_or_create(item.name, 'nl_NL')
+#             if item.food_type == menu_scraper.FrameFoodType.SOUP:
+#                 food_type = FoodType.SOUP
+#             elif item.food_type == menu_scraper.FrameFoodType.VEGAN:
+#                 food_type = FoodType.VEGAN
+#             elif item.food_type == menu_scraper.FrameFoodType.MEAT:
+#                 food_type = FoodType.MEAT
+#             elif item.food_type == menu_scraper.FrameFoodType.GRILL:
+#                 food_type = FoodType.GRILL
+#             else:
+#                 continue
+#
+#             print((translatable, food_type, prices[0], prices[1]), flush=True)
+#
+#             menu.add_menu_item(translatable, food_type, prices[0], prices[1])
+#
+#         if menu is not None:
+#             menu.update(new_menu)
+#             new_menu.delete()
