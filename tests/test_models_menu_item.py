@@ -204,18 +204,11 @@ class TestModelsMenuItem(BaseTestCase):
             # db.session.add(menu2)
             # db.session.commit()
 
-            self.assertEqual(menu_item1, menu_item2)
-            self.assertNotEqual(menu_item1, menu_item3)
-            self.assertNotEqual(menu_item1, menu_item4)
-            self.assertNotEqual(menu_item1, menu_item5)
-            self.assertNotEqual(menu_item1, menu_item6)
-
-            # Try the other direction as well
-            self.assertEqual(menu_item2, menu_item1)
-            self.assertNotEqual(menu_item3, menu_item1)
-            self.assertNotEqual(menu_item4, menu_item1)
-            self.assertNotEqual(menu_item5, menu_item1)
-            self.assertNotEqual(menu_item6, menu_item1)
+            self.assertEqualCommutative(menu_item1, menu_item2)
+            self.assertNotEqualCommutative(menu_item1, menu_item3)
+            self.assertNotEqualCommutative(menu_item1, menu_item4)
+            self.assertNotEqualCommutative(menu_item1, menu_item5)
+            self.assertNotEqualCommutative(menu_item1, menu_item6)
 
             db.session.add(menu_item2)
             db.session.add(menu_item3)
@@ -225,18 +218,11 @@ class TestModelsMenuItem(BaseTestCase):
             db.session.flush()
 
             # Check that these conditions still hold after flushing
-            self.assertEqual(menu_item1, menu_item2)
-            self.assertNotEqual(menu_item1, menu_item3)
-            self.assertNotEqual(menu_item1, menu_item4)
-            self.assertNotEqual(menu_item1, menu_item5)
-            self.assertNotEqual(menu_item1, menu_item6)
-
-            # Try the other direction as well
-            self.assertEqual(menu_item2, menu_item1)
-            self.assertNotEqual(menu_item3, menu_item1)
-            self.assertNotEqual(menu_item4, menu_item1)
-            self.assertNotEqual(menu_item5, menu_item1)
-            self.assertNotEqual(menu_item6, menu_item1)
+            self.assertEqualCommutative(menu_item1, menu_item2)
+            self.assertNotEqualCommutative(menu_item1, menu_item3)
+            self.assertNotEqualCommutative(menu_item1, menu_item4)
+            self.assertNotEqualCommutative(menu_item1, menu_item5)
+            self.assertNotEqualCommutative(menu_item1, menu_item6)
 
             db.session.rollback()
 

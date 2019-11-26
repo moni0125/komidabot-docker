@@ -58,6 +58,14 @@ class BaseTestCase(TestCase):
 
         super().tearDown()
 
+    def assertEqualCommutative(self, first, second, msg=None):
+        self.assertEqual(first, second, msg=msg)
+        self.assertEqual(second, first, msg=msg)
+
+    def assertNotEqualCommutative(self, first, second, msg=None):
+        self.assertNotEqual(first, second, msg=msg)
+        self.assertNotEqual(second, first, msg=msg)
+
     @with_context
     def create_translation(self, data: Dict[str, str], default_language: str) -> Tuple[models.Translatable,
                                                                                        Dict[str, models.Translation]]:
