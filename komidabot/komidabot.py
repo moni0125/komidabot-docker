@@ -108,7 +108,7 @@ class Komidabot(Bot):
 
             if triggers.SenderAspect in trigger:
                 sender = trigger[triggers.SenderAspect].sender
-                campuses = Campus.get_active()
+                campuses = Campus.get_all_active()
 
                 if locale is None:
                     locale = sender.get_locale()
@@ -307,7 +307,7 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
 
 
 def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates: 'List[datetime.date]' = None):
-    campus_list = Campus.get_active()
+    campus_list = Campus.get_all_active()
 
     for campus in campus_list:
         if len(campuses) > 0 and campus.short_name not in campuses:

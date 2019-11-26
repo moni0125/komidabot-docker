@@ -2,13 +2,17 @@ import datetime
 import enum
 import locale
 from decimal import Decimal
-from typing import Callable, Dict, List, Optional, Set, Tuple
+from typing import Callable, Dict, List, Optional, Tuple
+
+from sqlalchemy.orm.session import make_transient, make_transient_to_detached
 
 import komidabot.util as util
 from extensions import db
 
+make_transient = make_transient
+make_transient_to_detached = make_transient_to_detached
 
-# FIXME: Every query operation in this file should require a session object?
+_KEYWORDS_SEPARATOR = ' '
 
 
 class FoodType(enum.Enum):
@@ -52,10 +56,11 @@ class Campus(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     name = db.Column(db.String(128), nullable=False)
     short_name = db.Column(db.String(8), nullable=False)
+    # TODO: Wouldn't it be easier to instead have a new table mapping keywords to campuses, resolving possible conflicts
     keywords = db.Column(db.Text(), default='', nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)
-    page_url = db.Column(db.Text(), nullable=True)
-    external_id = db.Column(db.Integer(), nullable=True)
+    page_url = db.Column(db.Text(), nullable=True)  # TODO: No campuses use this anymore in production, can be removed
+    external_id = db.Column(db.Integer(), nullable=True)  # TODO: This can be made NOT NULL
 
     menus = db.relationship('Menu', backref='campus', passive_deletes=True)
     closing_days = db.relationship('ClosingDays', backref='campus', passive_deletes=True)
@@ -68,52 +73,54 @@ class Campus(db.Model):
             raise ValueError('short_name')
 
         self.name = name
-        self.short_name = short_name
-        self.keywords = ''
+        self.short_name = short_name.lower()
+        self._set_keywords([short_name, ])
+
+    def get_keywords(self) -> List[str]:
+        return self.keywords.split(_KEYWORDS_SEPARATOR)
 
     def add_keyword(self, keyword: str):
-        self._set_keywords(self.keywords.split(';') + [keyword, ])
+        if _KEYWORDS_SEPARATOR in keyword:
+            raise ValueError('Cannot have a space (the separator) in a keyword: {}'.format(repr(keyword)))
+
+        self._set_keywords(self.get_keywords() + [keyword.lower(), ])
 
     def remove_keyword(self, keyword: str):
-        self._set_keywords([kw for kw in self.keywords.split(';') if kw != keyword])
+        self._set_keywords([kw for kw in self.get_keywords() if kw != keyword])
 
     def _set_keywords(self, keywords: List[str]):
-        self.keywords = ';' + ';'.join(set([kw for kw in keywords if kw])) + ';'
-
-    def set_active(self, active: bool):
-        self.active = active
-
-    def set_page_url(self, page_url):
-        self.page_url = page_url
-
-    def set_external_id(self, external_id):
-        self.external_id = external_id
+        separator = _KEYWORDS_SEPARATOR
+        # XXX: Add separator at the front and end for queries
+        self.keywords = separator + separator.join(set(kw for kw in keywords if kw)) + separator
 
     @staticmethod
-    def create(name: str, short_name: str, keywords: List[str], page_url: str):
+    def create(name: str, short_name: str, keywords: List[str], add_to_db=True) -> 'Campus':
         result = Campus(name, short_name)
 
         for keyword in keywords:
             result.add_keyword(keyword)
 
-        result.add_keyword(short_name)
-
-        result.set_page_url(page_url)
-
-        db.session.add(result)
+        if add_to_db:
+            db.session.add(result)
 
         return result
-
-    @staticmethod
-    def get_by_short_name(short_name: str) -> 'Optional[Campus]':
-        return Campus.query.filter_by(short_name=short_name).first()
 
     @staticmethod
     def get_by_id(campus_id: int) -> 'Optional[Campus]':
         return Campus.query.filter_by(id=campus_id).first()
 
     @staticmethod
-    def get_active() -> 'List[Campus]':
+    def get_by_short_name(short_name: str) -> 'Optional[Campus]':
+        return Campus.query.filter_by(short_name=short_name).first()
+
+    @staticmethod
+    def find_by_keyword(keyword: str) -> 'List[Campus]':
+        # XXX: Each keyword is prepended and appended with the separator
+        return Campus.query.filter(Campus.keywords.contains(_KEYWORDS_SEPARATOR + keyword.lower() + _KEYWORDS_SEPARATOR,
+                                                            autoescape=True)).all()
+
+    @staticmethod
+    def get_all_active() -> 'List[Campus]':
         return Campus.query.filter_by(active=True).order_by(Campus.id).all()
 
     def __hash__(self):
@@ -620,9 +627,12 @@ def recreate_db():
 
 
 def create_standard_values():
-    Campus.create('Stadscampus', 'cst', [], 'https://www.uantwerpen.be/nl/studentenleven/eten/stadscampus/')
-    Campus.create('Campus Drie Eiken', 'cde', [], 'https://www.uantwerpen.be/nl/studentenleven/eten/campus-drie-eiken/')
-    Campus.create('Campus Middelheim', 'cmi', [], 'https://www.uantwerpen.be/nl/studentenleven/eten/campus-middelheim/')
+    cst = Campus.create('Stadscampus', 'cst', [])
+    cst.external_id = 1
+    cde = Campus.create('Campus Drie Eiken', 'cde', [])
+    cde.external_id = 2
+    cmi = Campus.create('Campus Middelheim', 'cmi', [])
+    cmi.external_id = 3
     db.session.commit()
 
 

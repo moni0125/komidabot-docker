@@ -7,13 +7,13 @@ from komidabot.models import Campus
 if __name__ == '__main__':
     if sys.argv[1] == 'cst':
         campus = Campus('Stadscampus', 'cst')
-        campus.set_external_id(1)
+        campus.external_id = 1
     elif sys.argv[1] == 'cde':
         campus = Campus('Campus Drie Eiken', 'cde')
-        campus.set_external_id(2)
+        campus.external_id = 2
     else:
         campus = Campus('Campus Middelheim', 'cmi')
-        campus.set_external_id(3)
+        campus.external_id = 3
 
     if len(sys.argv) > 2:
         dates = [datetime.datetime.strptime(arg, '%Y-%m-%d').date() for arg in sys.argv[2:]]

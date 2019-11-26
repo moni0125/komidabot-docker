@@ -160,7 +160,7 @@ class ExternalMenu:
 
                 try:
                     data = json.loads(response.text)
-                except json.decoder.JSONDecodeError as e:
+                except json.decoder.JSONDecodeError:
                     continue
 
                 # print(data)

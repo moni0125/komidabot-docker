@@ -7,7 +7,7 @@ from app import db
 from tests.base import BaseTestCase
 
 
-class TestModelsMenuItem(BaseTestCase):
+class TestModelsMenu(BaseTestCase):
     def setUp(self):
         super().setUp()
 
