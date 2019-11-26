@@ -61,31 +61,30 @@ class Komidabot(Bot):
         #
         #         bot.update_menus(None)
 
-        # FIXME: This is disabled until some changes are done to updating menus
-        # @self.scheduler.scheduled_job(CronTrigger(hour=1, minute=0, second=0),  # Run every day to find changes
-        #                               args=(the_app.app_context, self),
-        #                               id='menu_update', name='Daily late-night update of the menus')
-        # def menu_update(context, bot: 'Komidabot'):
-        #     with context():
-        #         if get_app().config.get('DISABLED'):
-        #             return
-        #
-        #         try:
-        #             today = datetime.datetime.today().date()
-        #             dates = [
-        #                 today,
-        #                 today + datetime.timedelta(days=1),
-        #                 today + datetime.timedelta(days=2),
-        #                 today + datetime.timedelta(days=3),
-        #                 today + datetime.timedelta(days=4),
-        #                 today + datetime.timedelta(days=5),
-        #             ]
-        #
-        #             update_menus(None, 'cmi', dates=dates)
-        #         except Exception as e:
-        #             bot.notify_error(e)
-        #
-        #             get_app().logger.exception(e)
+        @self.scheduler.scheduled_job(CronTrigger(hour=1, minute=0, second=0),  # Run every day to find changes
+                                      args=(the_app.app_context, self),
+                                      id='menu_update', name='Daily late-night update of the menus')
+        def menu_update(context, bot: 'Komidabot'):
+            with context():
+                if get_app().config.get('DISABLED'):
+                    return
+
+                try:
+                    today = datetime.datetime.today().date()
+                    dates = [
+                        today,
+                        today + datetime.timedelta(days=1),
+                        today + datetime.timedelta(days=2),
+                        today + datetime.timedelta(days=3),
+                        today + datetime.timedelta(days=4),
+                        today + datetime.timedelta(days=5),
+                    ]
+
+                    update_menus(None, dates=dates)
+                except Exception as e:
+                    bot.notify_error(e)
+
+                    get_app().logger.exception(e)
 
     def trigger_received(self, trigger: triggers.Trigger):
         with self.lock:  # TODO: Maybe only lock on critical sections?
@@ -376,7 +375,6 @@ def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates:
         #     #           flush=True)
 
     db.session.commit()
-
 
 # TODO: Deprecated once each campus changes to the new system
 # def handle_parsed_menu(campus: Campus, document: menu_scraper.ParsedDocument):
