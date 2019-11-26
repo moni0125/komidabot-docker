@@ -1,7 +1,6 @@
 import atexit
 import datetime
 import threading
-from decimal import Decimal
 from typing import Dict, List, Optional
 
 from apscheduler.executors.pool import ThreadPoolExecutor
@@ -13,14 +12,13 @@ import komidabot.external_menu as external_menu
 import komidabot.facebook.nlp_dates as nlp_dates
 import komidabot.localisation as localisation
 import komidabot.menu
-import komidabot.menu_scraper as menu_scraper
 import komidabot.messages as messages
 import komidabot.triggers as triggers
 import komidabot.users as users
 from extensions import db
 from komidabot.app import get_app
 from komidabot.bot import Bot
-from komidabot.models import Campus, ClosingDays, Day, FoodType, Menu, Translatable
+from komidabot.models import Campus, ClosingDays, Day, Menu, Translatable
 from komidabot.models import create_standard_values, import_dump, recreate_db
 
 
@@ -276,6 +274,9 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
 
         campus = subscription.campus
 
+        if not campus.active:
+            continue
+
         language = user.get_locale() or 'nl_BE'
 
         if campus not in subscriptions:
@@ -305,7 +306,7 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
                 user.send_message(messages.TextMessage(trigger, menu))
 
 
-def update_menus(initiator: 'Optional[triggers.Trigger]', *campuses: str, dates: 'List[datetime.date]' = None):
+def update_menus(trigger: 'Optional[triggers.Trigger]', *campuses: str, dates: 'List[datetime.date]' = None):
     campus_list = Campus.get_all_active()
 
     for campus in campus_list:

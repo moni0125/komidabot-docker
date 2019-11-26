@@ -634,6 +634,15 @@ def create_standard_values():
     cde.external_id = 2
     cmi = Campus.create('Campus Middelheim', 'cmi', [])
     cmi.external_id = 3
+    cgb = Campus.create('Campus Groenenborger', 'cgb', [])
+    cgb.external_id = 4
+    cgb.active = False
+    cmu = Campus.create('Campus Mutsaard', 'cmu', [])
+    cmu.external_id = 5
+    cmu.active = False
+    hzs = Campus.create('Hogere Zeevaartschool', 'hzs', [])
+    hzs.external_id = 6
+    hzs.active = False
     db.session.commit()
 
 
