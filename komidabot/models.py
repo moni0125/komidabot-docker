@@ -154,13 +154,14 @@ class ClosingDays(db.Model):
         self.translatable_id = translatable_id
 
     @staticmethod
-    def create(campus: Campus, first_day: datetime.date, last_day: datetime.date, reason: str,
-               language: str) -> 'ClosingDays':
+    def create(campus: Campus, first_day: datetime.date, last_day: datetime.date, reason: str, language: str,
+               add_to_db=True) -> 'ClosingDays':
         translatable, translation = Translatable.get_or_create(reason, language)
 
         result = ClosingDays(campus.id, first_day, last_day, translatable.id)
 
-        db.session.add(result)
+        if add_to_db:
+            db.session.add(result)
 
         return result
 

@@ -28,7 +28,7 @@ class TestModelsCampus(BaseTestCase):
             db.session.commit()
 
     def test_create(self):
-        # Test usage of Campus.create with add_to_db set to False
+        # Test usage of Campus.create with add_to_db set to True
 
         with self.app.app_context():
             campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'],
