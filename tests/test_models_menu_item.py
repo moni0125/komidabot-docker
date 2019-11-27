@@ -230,8 +230,7 @@ class TestModelsMenuItem(BaseTestCase):
         # Test that translation requests are passed through
 
         with self.app.app_context():
-            def trans(text: str, from_language: str, to_language: str) -> str:
-                return 'No translation "{}" {} -> {}'.format(text, from_language, to_language)
+            trans = self.translator
 
             db.session.add_all(self.campuses)
 

@@ -15,6 +15,7 @@ class App:
         from komidabot.facebook.api_interface import ApiInterface
         from komidabot.facebook.users import UserManager as FacebookUserManager
         from komidabot.komidabot import Komidabot
+        from komidabot.translation import GoogleTranslationService, TranslationService
         from komidabot.users import UnifiedUserManager
 
         self.logger = self.logger  # type: logging.Logger
@@ -29,6 +30,8 @@ class App:
         self.user_manager.register_manager('facebook', self.bot_interfaces['facebook']['users'])
 
         self.bot = Komidabot(self)
+
+        self.translator = GoogleTranslationService()  # type: TranslationService
 
         # TODO: This could probably also be moved to the Komidabot class
         self.task_executor = PyThreadPoolExecutor(max_workers=5)

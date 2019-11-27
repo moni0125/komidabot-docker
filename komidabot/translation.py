@@ -1,20 +1,54 @@
 from googletrans import Translator
 
-import komidabot.models as models
-
-translator = Translator()
+Language = str
 
 
-def translate_item(text: str, original_language: str, translated_language: str):
-    return translator.translate(text, src=original_language, dest=translated_language).text
+def _fix_language(language: Language):
+    if language == 'zh_CN' or language == 'zh_SG':
+        return 'zh-cn'
+    elif language == 'zh_HK' or language == 'zh_TW':
+        return 'zh-tw'
+
+    return language
 
 
-def get_translated_text(translatable: models.Translatable, locale: str) -> models.Translation:
-    if locale == 'zh_CN' or locale == 'zh_SG':
-        locale = 'zh-cn'
-    elif locale == 'zh_HK' or locale == 'zh_TW':
-        locale = 'zh-tw'
-    elif not locale:
-        locale = translatable.original_language
+class TranslationService:
+    def translate(self, text: str, from_language: Language, to_language: Language):
+        raise NotImplementedError()
 
-    return translatable.get_translation(locale, translate_item)
+    @property
+    def identifier(self):
+        raise NotImplementedError()
+
+    @property
+    def pretty_name(self):
+        raise NotImplementedError()
+
+
+class GoogleTranslationService(TranslationService):
+    def __init__(self):
+        self.translator = Translator()
+
+    def translate(self, text: str, from_language: Language, to_language: Language):
+        return self.translator.translate(text, src=from_language, dest=to_language).text
+
+    @property
+    def identifier(self):
+        return 'google'
+
+    @property
+    def pretty_name(self):
+        return 'Google Translate'
+
+
+class BingTranslationService(TranslationService):
+    def translate(self, text: str, from_language: Language, to_language: Language):
+        raise NotImplementedError()
+
+    @property
+    def identifier(self):
+        return 'bing'
+
+    @property
+    def pretty_name(self):
+        return 'Bing Translate'

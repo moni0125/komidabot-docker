@@ -2,12 +2,14 @@ import datetime
 import enum
 import locale
 from decimal import Decimal
-from typing import Callable, Dict, List, Optional, Tuple
+from typing import Collection, Dict, List, Optional, Tuple
 
+from sqlalchemy import inspect as sqlalchemy_inspect
 from sqlalchemy.orm.session import make_transient, make_transient_to_detached
 
 import komidabot.util as util
 from extensions import db
+from komidabot.translation import TranslationService
 
 make_transient = make_transient
 make_transient_to_detached = make_transient_to_detached
@@ -184,7 +186,7 @@ class Translatable(db.Model):
     original_language = db.Column(db.String(5), nullable=False)
     original_text = db.Column(db.String(256), nullable=False)
 
-    translations = db.relationship('Translation', backref='translatable', passive_deletes=True)
+    _translations = db.relationship('Translation', backref='translatable', passive_deletes=True)
     menu_items = db.relationship('MenuItem', backref='translatable')
     closing_days = db.relationship('ClosingDays', backref='translatable')
 
@@ -198,50 +200,72 @@ class Translatable(db.Model):
         self.original_text = text
 
     def add_translation(self, language: str, text: str) -> 'Translation':
-        translation = Translation.query.filter_by(translatable_id=self.id, language=language).first()
+        if sqlalchemy_inspect(self).transient:
+            raise ValueError('Translatable is transient and cannot have translations')
 
-        if translation is not None:
-            return translation
-
-        translation = Translation(self.id, language, text)
-
-        if translation is not None:
-            db.session.add(translation)
-
-        return translation
-
-    @staticmethod
-    def get_or_create(text: str, language='nl_BE') -> 'Tuple[Translatable, Translation]':
-        translatable = Translatable.query.filter_by(original_language=language, original_text=text).first()
-
-        if translatable is not None:
-            return translatable, Translation.query.filter_by(translatable_id=translatable.id, language=language).one()
-
-        translatable = Translatable(text, language)
-        db.session.add(translatable)
-        db.session.flush()
-
-        translation = Translation(translatable.id, language, text)
-        db.session.add(translation)
-
-        return translatable, translation
-
-    @staticmethod
-    def get_by_id(translatable_id) -> 'Optional[Translatable]':
-        return Translatable.query.filter_by(id=translatable_id).first()
-
-    def get_translation(self, language: str, translator: 'Callable[[str, str, str], str]') -> 'Translation':
-        if not language:
-            raise ValueError()
+        if language == self.original_language:
+            return self._get_dummy_translation()
 
         translation = Translation.query.filter_by(translatable_id=self.id, language=language).first()
 
         if translation is None:
-            original = Translation.query.filter_by(translatable_id=self.id, language=self.original_language).one()
-
-            translation = self.add_translation(language, translator(original.translation, original.language, language))
+            translation = Translation(self.id, language, text)
+            db.session.add(translation)
 
         return translation
+
+    def get_translation(self, language: str, translator: 'Optional[TranslationService]') -> 'Translation':
+        if not language:
+            raise ValueError('language')
+        if translator is not None and not isinstance(translator, TranslationService):
+            raise ValueError('translator')
+
+        if sqlalchemy_inspect(self).transient:
+            raise ValueError('Translatable is transient and cannot have translations')
+
+        if language == self.original_language:
+            return self._get_dummy_translation()
+
+        translation = Translation.query.filter_by(translatable_id=self.id, language=language).first()
+
+        if translation is None:
+            if translator is None:
+                raise ValueError('Cannot translate without translator function')
+
+            translation_text = translator.translate(self.original_text, self.original_language, language)
+
+            translation = self.add_translation(language, translation_text)
+
+        return translation
+
+    @property
+    def translations(self) -> 'Collection[Translation]':
+        return (self._get_dummy_translation(), *list(self._translations))
+
+    def _get_dummy_translation(self) -> 'Translation':
+        translation = getattr(self, '_dummy_translation', None)
+        if translation is None:
+            # Make a fake Translation object
+            translation = Translation(self.id, self.original_language, self.original_text)
+            make_transient_to_detached(translation)
+
+        setattr(self, '_dummy_translation', translation)
+        return translation
+
+    @staticmethod
+    def get_or_create(text: str, language) -> 'Tuple[Translatable, Translation]':
+        translatable = Translatable.query.filter_by(original_language=language, original_text=text).first()
+
+        if translatable is None:
+            translatable = Translatable(text, language)
+            db.session.add(translatable)
+            db.session.flush()
+
+        return translatable, translatable.get_translation(language, None)
+
+    @staticmethod
+    def get_by_id(translatable_id) -> 'Optional[Translatable]':
+        return Translatable.query.filter_by(id=translatable_id).first()
 
     def __hash__(self):
         return hash(self.id)
@@ -267,6 +291,15 @@ class Translation(db.Model):
         self.language = language
         self.translation = translation
 
+    def __eq__(self, other: 'Translation'):
+        if self.translatable_id != other.translatable_id:
+            return False
+        if self.language != other.language:
+            return False
+        if self.translation != other.translation:
+            return False
+        return True
+
     def __hash__(self):
         return hash((self.translatable_id, self.language))
 
@@ -289,15 +322,6 @@ class Menu(db.Model):
         self.campus_id = campus_id
         self.menu_day = day
 
-    @staticmethod
-    def create(campus: Campus, day: datetime.date, add_to_db=True):
-        menu = Menu(campus.id, day)
-
-        if add_to_db:
-            db.session.add(menu)
-
-        return menu
-
     def delete(self):
         db.session.delete(self)
 
@@ -319,10 +343,6 @@ class Menu(db.Model):
         for item in items:
             db.session.delete(item)
 
-    @staticmethod
-    def get_menu(campus: Campus, day: datetime.date) -> 'Optional[Menu]':
-        return Menu.query.filter_by(campus_id=campus.id, menu_day=day).first()
-
     def add_menu_item(self, translatable: Translatable, food_type: FoodType, price_students: Decimal,
                       price_staff: Optional[Decimal]):
         menu_item = MenuItem(self.id, translatable.id, food_type, price_students, price_staff)
@@ -331,6 +351,19 @@ class Menu(db.Model):
         self.menu_items.append(menu_item)
 
         return menu_item
+
+    @staticmethod
+    def create(campus: Campus, day: datetime.date, add_to_db=True):
+        menu = Menu(campus.id, day)
+
+        if add_to_db:
+            db.session.add(menu)
+
+        return menu
+
+    @staticmethod
+    def get_menu(campus: Campus, day: datetime.date) -> 'Optional[Menu]':
+        return Menu.query.filter_by(campus_id=campus.id, menu_day=day).first()
 
     def __hash__(self):
         return hash(self.id)
@@ -370,11 +403,14 @@ class MenuItem(db.Model):
     def copy(self, menu: Menu):
         return MenuItem(menu.id, self.translatable_id, self.food_type, self.price_students, self.price_staff)
 
-    def get_translation(self, language: str, translator: 'Callable[[str, str, str], str]') -> 'Translation':
+    def get_translation(self, language: str, translator: 'TranslationService') -> 'Translation':
         return self.translatable.get_translation(language, translator)
 
-    def __hash__(self):
-        return hash(self.id)
+    @staticmethod
+    def format_price(price: Decimal) -> str:
+        if price == 0.0:
+            return ''
+        return locale.currency(price).replace(' ', '')
 
     def __lt__(self, other: 'MenuItem') -> bool:
         if self.food_type == other.food_type:
@@ -384,9 +420,9 @@ class MenuItem(db.Model):
         return self.food_type < other.food_type
 
     def __eq__(self, other: 'MenuItem') -> bool:
-        if self is other or (self.id is not None and self.id == other.id):
+        if self is other or (self.id is not None and self.id == other.id):  # FIXME: Allowing a null ID is a dirty hack
             return True
-        # menu_id is ignored
+            # menu_id is ignored
         if self.translatable_id != other.translatable_id:
             return False
         if self.food_type != other.food_type:
@@ -397,11 +433,8 @@ class MenuItem(db.Model):
             return False
         return True
 
-    @staticmethod
-    def format_price(price: Decimal) -> str:
-        if price == 0.0:
-            return ''
-        return locale.currency(price).replace(' ', '')
+    def __hash__(self):
+        return hash(self.id)
 
 
 class UserSubscription(db.Model):
@@ -435,13 +468,17 @@ class UserSubscription(db.Model):
 
     @staticmethod
     def create(user: 'AppUser', day: Day, campus: Campus, active=True) -> 'Optional[UserSubscription]':
-        # TODO: Prevent weekend days from actually being used here
+        if day in [Day.SATURDAY, Day.SUNDAY]:
+            raise ValueError('Day cannot be SATURDAY or SUNDAY')
 
         subscription = UserSubscription(user.id, day, campus.id, active)
 
         db.session.add(subscription)
 
         return subscription
+
+    def __hash__(self):
+        return hash((self.user_id, self.day))
 
 
 class AppUser(db.Model):
@@ -553,20 +590,20 @@ class Feature(db.Model):
         self.globally_available = globally_available
 
     @staticmethod
-    def find_by_id(string_id: str) -> 'Optional[Feature]':
-        return Feature.query.filter_by(string_id=string_id).first()
-
-    @staticmethod
-    def get_all() -> 'List[Feature]':
-        return Feature.query.all()
-
-    @staticmethod
     def create(string_id: str, description: str = None, globally_available=False) -> 'Optional[Feature]':
         feature = Feature(string_id, description, globally_available)
 
         db.session.add(feature)
 
         return feature
+
+    @staticmethod
+    def find_by_id(string_id: str) -> 'Optional[Feature]':
+        return Feature.query.filter_by(string_id=string_id).first()
+
+    @staticmethod
+    def get_all() -> 'List[Feature]':
+        return Feature.query.all()
 
     @staticmethod
     def is_user_participating(user: Optional[AppUser], string_id: str) -> bool:
@@ -594,6 +631,9 @@ class Feature(db.Model):
             if participation:
                 db.session.delete(feature)
 
+    def __hash__(self):
+        return hash(self.id)
+
 
 class FeatureParticipation(db.Model):
     __tablename__ = 'feature_participation'
@@ -613,16 +653,19 @@ class FeatureParticipation(db.Model):
         self.feature_id = feature_id
 
     @staticmethod
-    def get_for_user(user: AppUser, feature: Feature) -> 'Optional[FeatureParticipation]':
-        return FeatureParticipation.query.filter_by(user_id=user.id, feature_id=feature.id).first()
-
-    @staticmethod
     def create(user: AppUser, feature: Feature) -> 'Optional[FeatureParticipation]':
         participation = FeatureParticipation(user.id, feature.id)
 
         db.session.add(participation)
 
         return participation
+
+    @staticmethod
+    def get_for_user(user: AppUser, feature: Feature) -> 'Optional[FeatureParticipation]':
+        return FeatureParticipation.query.filter_by(user_id=user.id, feature_id=feature.id).first()
+
+    def __hash__(self):
+        return hash((self.user_id, self.feature_id))
 
 
 def recreate_db():

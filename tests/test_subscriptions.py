@@ -85,7 +85,7 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
                     day_name = Day(day.isoweekday()).name
                     items = [menu_item(food_type, '{} at {} for {}'.format(food_type.name, campus.short_name, day_name),
                                        'nl_BE', Decimal('1.0'), Decimal('2.0')) for food_type in food_types]
-                    TestGenericSubscriptions.create_menu(campus, day, items)
+                    self.create_menu(campus, day, items, has_context=True)
 
                     result = [
                         'Menu van {date} in {campus}'.format(campus=campus.short_name.upper(), date=str(day)),

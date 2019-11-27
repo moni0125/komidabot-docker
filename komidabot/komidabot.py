@@ -61,7 +61,7 @@ class Komidabot(Bot):
 
         @self.scheduler.scheduled_job(CronTrigger(hour=1, minute=0, second=0),  # Run every day to find changes
                                       args=(the_app.app_context, self),
-                                      id='menu_update', name='Daily late-night update of the menus')
+                                      id='menu_update', name='Hourly update of the menus')
         def menu_update(context, bot: 'Komidabot'):
             with context():
                 if get_app().config.get('DISABLED'):
@@ -210,15 +210,14 @@ class Komidabot(Bot):
                 closed = ClosingDays.find_is_closed(campus, date)
 
                 if closed:
-                    # FIXME: Translations need to be moved to a different file
-                    translation = komidabot.menu.get_translated_text(closed.translatable, locale)
+                    translation = closed.translatable.get_translation(locale, app.translator)
 
                     sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NO_MENU(locale)
                                                              .format(campus=campus.short_name.upper(), date=str(date))))
                     sender.send_message(messages.TextMessage(trigger, translation.translation))
                     return
 
-                menu = komidabot.menu.prepare_menu_text(campus, date, locale)
+                menu = komidabot.menu.prepare_menu_text(campus, date, app.translator, locale)
 
                 if menu is None:
                     sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NO_MENU(locale)
@@ -254,17 +253,21 @@ class Komidabot(Bot):
 
 
 def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
+    # TODO: Ensure we don't send messages too quickly
+    #       https://developers.facebook.com/docs/messenger-platform/send-messages/high-mps
     date = trigger.date or datetime.datetime.now().date()
     day = Day(date.isoweekday())
 
     # print('Sending out subscription for {} ({})'.format(date, day.name), flush=True)
 
-    user_manager = get_app().user_manager  # type: users.UserManager
+    app = get_app()
+
+    user_manager = app.user_manager  # type: users.UserManager
     subscribed_users = user_manager.get_subscribed_users(day)
     subscriptions = dict()  # type: Dict[Campus, Dict[str, List[users.User]]]
 
     for user in subscribed_users:
-        if get_app().config.get('DISABLED') and not user.is_admin():
+        if app.config.get('DISABLED') and not user.is_admin():
             continue
 
         if not user.is_feature_active('menu_subscription'):
@@ -301,7 +304,7 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
             if closed:
                 continue  # Campus closed, no daily menu
 
-            menu = komidabot.menu.prepare_menu_text(campus, date, language)
+            menu = komidabot.menu.prepare_menu_text(campus, date, app.translator, language)
             if menu is None:
                 continue
 

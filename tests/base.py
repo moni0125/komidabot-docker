@@ -1,7 +1,7 @@
 import datetime
 from decimal import Decimal
-from typing import Dict, List, NamedTuple, Tuple
 from functools import wraps
+from typing import Dict, List, NamedTuple, Tuple
 
 import httpretty
 from flask.cli import ScriptInfo
@@ -11,6 +11,7 @@ import komidabot.models as models
 import komidabot.users as users
 from app import create_app, db
 from komidabot.app import App
+from tests.utils import StubTranslator
 
 menu_item = NamedTuple('menu_item', [('type', models.FoodType),
                                      ('text', str),
@@ -22,13 +23,24 @@ menu_item = NamedTuple('menu_item', [('type', models.FoodType),
 def with_context(func):
     @wraps(func)
     def decorated_func(self, *args, **kwargs):
+        if getattr(with_context, 'active', False):
+            return func(self, *args, **kwargs)
+
         if 'has_context' in kwargs:
             has_context = kwargs.pop('has_context')
             if has_context:
-                return func(self, *args, **kwargs)
+                try:
+                    setattr(with_context, 'active', True)
+                    return func(self, *args, **kwargs)
+                finally:
+                    setattr(with_context, 'active', False)
 
         with self.app.app_context():
-            return func(self, *args, **kwargs)
+            try:
+                setattr(with_context, 'active', True)
+                return func(self, *args, **kwargs)
+            finally:
+                setattr(with_context, 'active', False)
 
     return decorated_func
 
@@ -46,6 +58,8 @@ class BaseTestCase(TestCase):
 
     def setUp(self):
         super().setUp()
+
+        self.app.translator = self.translator = StubTranslator()
 
         with self.app.app_context():
             db.create_all()
@@ -119,12 +133,12 @@ class BaseTestCase(TestCase):
         db.session.commit()
         return feature
 
-    @staticmethod
-    def create_menu(campus: models.Campus, day: datetime.date, items: 'List[menu_item]') -> models.Menu:
+    @with_context
+    def create_menu(self, campus: models.Campus, day: datetime.date, items: 'List[menu_item]') -> models.Menu:
         menu = models.Menu.create(campus, day)
 
         for item in items:
-            translatable, translation = models.Translatable.get_or_create(item.text, item.language)
+            translatable, _ = models.Translatable.get_or_create(item.text, item.language)
             menu.add_menu_item(translatable, item.type, item.price_students, item.price_staff)
 
         db.session.commit()
