@@ -23,7 +23,8 @@ class TextTrigger(Trigger):
 
 
 class NewUserAspect(Aspect):
-    pass
+    def __repr__(self):
+        return 'NewUserAspect()'
 
 
 class SenderAspect(Aspect):
