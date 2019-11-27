@@ -105,7 +105,7 @@ class Komidabot(Bot):
 
             if triggers.SenderAspect in trigger:
                 sender = trigger[triggers.SenderAspect].sender
-                campuses = Campus.get_all_active()
+                campuses = Campus.get_all()
 
                 if locale is None:
                     locale = sender.get_locale()
@@ -134,7 +134,7 @@ class Komidabot(Bot):
                     # TODO: Allow users to send more manual commands
                     if split[0] == 'help':
                         msg = localisation.REPLY_INSTRUCTIONS(locale).format(
-                            campuses=', '.join([campus.short_name.lower() for campus in campuses])
+                            campuses=', '.join([campus.short_name.lower() for campus in campuses if campus.active])
                         )
                         sender.send_message(messages.TextMessage(trigger, msg))
                         return
@@ -189,6 +189,11 @@ class Komidabot(Bot):
 
                     if campus is None:  # User has no campus for the specified day
                         campus = Campus.get_by_short_name('cmi')
+
+                if not campus.active:
+                    sender.send_message(messages.TextMessage(trigger, localisation.REPLY_CAMPUS_INACTIVE(locale)
+                                                             .format(campus=campus.short_name.upper())))
+                    return
 
                 # if default_date and default_campus:
                 #     if isinstance(trigger, triggers.TextTrigger):

@@ -120,6 +120,10 @@ class Campus(db.Model):
                                                             autoescape=True)).all()
 
     @staticmethod
+    def get_all() -> 'List[Campus]':
+        return Campus.query.order_by(Campus.id).all()
+
+    @staticmethod
     def get_all_active() -> 'List[Campus]':
         return Campus.query.filter_by(active=True).order_by(Campus.id).all()
 

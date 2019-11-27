@@ -203,6 +203,26 @@ class TestModelsCampus(BaseTestCase):
             self.assertIn(campus2.id, ids)
             self.assertIn(campus3.id, ids)
 
+    def test_get_all(self):
+        # Test getting all campuses
+
+        with self.app.app_context():
+            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'])
+            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'])
+            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'])
+            campus3.active = False
+
+            db.session.commit()
+
+            campuses = models.Campus.get_all()
+            ids = [campus.id for campus in campuses]
+
+            self.assertEqual(len(campuses), 3)
+            self.assertEqual(len(ids), 3)
+            self.assertIn(campus1.id, ids)
+            self.assertIn(campus2.id, ids)
+            self.assertIn(campus3.id, ids)
+
     def test_get_all_active(self):
         # Test getting all campuses marked as active
 
@@ -214,14 +234,14 @@ class TestModelsCampus(BaseTestCase):
 
             db.session.commit()
 
-            active_campuses = models.Campus.get_all_active()
-            active_ids = [campus.id for campus in active_campuses]
+            campuses = models.Campus.get_all_active()
+            ids = [campus.id for campus in campuses]
 
-            self.assertEqual(len(active_campuses), 2)
-            self.assertEqual(len(active_ids), 2)
-            self.assertIn(campus1.id, active_ids)
-            self.assertIn(campus2.id, active_ids)
-            self.assertNotIn(campus3.id, active_ids)
+            self.assertEqual(len(campuses), 2)
+            self.assertEqual(len(ids), 2)
+            self.assertIn(campus1.id, ids)
+            self.assertIn(campus2.id, ids)
+            self.assertNotIn(campus3.id, ids)
 
 
 if __name__ == '__main__':

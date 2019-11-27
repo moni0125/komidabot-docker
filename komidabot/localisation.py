@@ -67,6 +67,11 @@ REPLY_NO_MENU = localisation_definition('REPLY_NO_MENU', {
     'nl': 'Sorry, er is geen menu beschikbaar voor {campus} op {date}',
 })
 
+REPLY_CAMPUS_INACTIVE = localisation_definition('REPLY_CAMPUS_INACTIVE', {
+    'en': 'Sorry, no menu is available for {campus}',
+    'nl': 'Sorry, er is geen menu beschikbaar voor {campus}',
+})
+
 REPLY_WEEKEND = localisation_definition('REPLY_WEEKEND', {
     'en': 'Sorry, there are no menus on Saturdays and Sundays',
     'nl': 'Sorry, er zijn geen menus op zon- en zaterdagen',
