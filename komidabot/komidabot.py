@@ -107,6 +107,13 @@ class Komidabot(Bot):
                 sender = trigger[triggers.SenderAspect].sender
                 campuses = Campus.get_all()
 
+                if triggers.NewUserAspect in trigger:
+                    sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NEW_USER(locale)))
+                    msg = localisation.REPLY_INSTRUCTIONS(locale).format(
+                        campuses=', '.join([campus.short_name.lower() for campus in campuses if campus.active])
+                    )
+                    sender.send_message(messages.TextMessage(trigger, msg))
+
                 if locale is None:
                     locale = sender.get_locale()
 

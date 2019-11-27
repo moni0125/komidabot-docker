@@ -488,6 +488,8 @@ class AppUser(db.Model):
     provider = db.Column(db.String(32), nullable=False)  # String ID of the provider
     internal_id = db.Column(db.String(32), nullable=False)  # ID that is specific to the provider
     language = db.Column(db.String(5), nullable=False)
+    # Flag indicating whether a user has had an introduction to the bot yet
+    onboarding_done = db.Column(db.Boolean(), nullable=False, default=False)
 
     __table_args__ = (
         db.UniqueConstraint('provider', 'internal_id'),

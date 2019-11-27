@@ -15,6 +15,7 @@ from komidabot.komidabot import Bot
 from komidabot.messages import TextMessage
 from komidabot.users import UnifiedUserManager, UserId, User
 from komidabot.facebook.users import User as FacebookUser
+from extensions import db
 
 blueprint = Blueprint('komidabot', __name__)
 pp = pprint.PrettyPrinter(indent=2)
@@ -111,6 +112,14 @@ def _do_handle_message(event, user: User, app):
     with app.app_context():
         trigger = triggers.Trigger(aspects=[triggers.SenderAspect(user)])
 
+        needs_commit = False
+
+        if user.get_db_user() is None:
+            trigger.add_aspect(triggers.NewUserAspect())
+            print('Adding new user to the database {}'.format(user.id), flush=True)
+            user.add_to_db()
+            needs_commit = True
+
         bot: Bot = app.bot
 
         locale = user.get_locale()
@@ -166,6 +175,9 @@ def _do_handle_message(event, user: User, app):
                     # sender_obj.send_text_message('Note: The bot is currently disabled')
 
                 bot.trigger_received(trigger)
+
+                if needs_commit:
+                    db.session.commit()
             elif 'postback' in event:
                 user.send_message(TextMessage(trigger, localisation.ERROR_POSTBACK(locale)))
                 # postback = event['postback']

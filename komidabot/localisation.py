@@ -111,6 +111,11 @@ REPLY_USE_AT_ADMIN = localisation_definition('REPLY_USE_AT_ADMIN', {
           'zal ik je niet storen\n~ 🤖 Komidabot',
 })
 
+REPLY_NEW_USER = localisation_definition('REPLY_NEW_USER', {
+    'en': 'Welcome to the Komidabot!',
+    'nl': 'Welkom bij de Komidabot!',
+})
+
 REPLY_INSTRUCTIONS = localisation_definition('REPLY_INSTRUCTIONS', {
     'en': 'You can request the menu by choosing a campus ({campuses}) and/or '
           'asking for a specific day (Monday - Friday, Today, Tomorrow, etc.)\n\n'

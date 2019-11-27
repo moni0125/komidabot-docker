@@ -22,6 +22,10 @@ class TextTrigger(Trigger):
         return ['TextTrigger', '- Text: ' + repr(self.text)]
 
 
+class NewUserAspect(Aspect):
+    pass
+
+
 class SenderAspect(Aspect):
     def __init__(self, sender: users.User):
         super().__init__()

@@ -42,6 +42,10 @@ class User:  # TODO: This probably needs more methods
         user_id = self.id
         return models.AppUser.find_by_id(user_id.provider, user_id.id)
 
+    def add_to_db(self):
+        user_id = self.id
+        models.AppUser.create(user_id.provider, user_id.id, '')
+
     def get_locale(self) -> 'Optional[str]':  # TODO: Properly look into this
         user = self.get_db_user()
         if user is None:

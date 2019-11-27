@@ -1,4 +1,4 @@
-"""empty message
+"""Remove fields relating to the old menu parsing
 
 Revision ID: 92e4e9f8ff64
 Revises: e18b14ed6b98
