@@ -91,9 +91,9 @@ class BaseTestCase(TestCase):
 
     @with_context
     def create_test_campuses(self) -> List[models.Campus]:
-        campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'])
-        campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'])
-        campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'])
+        campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 0)
+        campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 0)
+        campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 0)
         campus3.active = False
         db.session.commit()
 

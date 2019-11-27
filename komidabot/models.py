@@ -59,8 +59,7 @@ class Campus(db.Model):
     # TODO: Wouldn't it be easier to instead have a new table mapping keywords to campuses, resolving possible conflicts
     keywords = db.Column(db.Text(), default='', nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)
-    page_url = db.Column(db.Text(), nullable=True)  # TODO: No campuses use this anymore in production, can be removed
-    external_id = db.Column(db.Integer(), nullable=True)  # TODO: This can be made NOT NULL
+    external_id = db.Column(db.Integer(), nullable=False)
 
     menus = db.relationship('Menu', backref='campus', passive_deletes=True)
     closing_days = db.relationship('ClosingDays', backref='campus', passive_deletes=True)
@@ -94,8 +93,9 @@ class Campus(db.Model):
         self.keywords = separator + separator.join(set(kw for kw in keywords if kw)) + separator
 
     @staticmethod
-    def create(name: str, short_name: str, keywords: List[str], add_to_db=True) -> 'Campus':
+    def create(name: str, short_name: str, keywords: List[str], external_id: int, add_to_db=True) -> 'Campus':
         result = Campus(name, short_name)
+        result.external_id = external_id
 
         for keyword in keywords:
             result.add_keyword(keyword)
@@ -632,20 +632,14 @@ def recreate_db():
 
 
 def create_standard_values():
-    cst = Campus.create('Stadscampus', 'cst', [])
-    cst.external_id = 1
-    cde = Campus.create('Campus Drie Eiken', 'cde', [])
-    cde.external_id = 2
-    cmi = Campus.create('Campus Middelheim', 'cmi', [])
-    cmi.external_id = 3
-    cgb = Campus.create('Campus Groenenborger', 'cgb', [])
-    cgb.external_id = 4
+    cst = Campus.create('Stadscampus', 'cst', [], 1)
+    cde = Campus.create('Campus Drie Eiken', 'cde', [], 2)
+    cmi = Campus.create('Campus Middelheim', 'cmi', [], 3)
+    cgb = Campus.create('Campus Groenenborger', 'cgb', [], 4)
     cgb.active = False
-    cmu = Campus.create('Campus Mutsaard', 'cmu', [])
-    cmu.external_id = 5
+    cmu = Campus.create('Campus Mutsaard', 'cmu', [], 5)
     cmu.active = False
-    hzs = Campus.create('Hogere Zeevaartschool', 'hzs', [])
-    hzs.external_id = 6
+    hzs = Campus.create('Hogere Zeevaartschool', 'hzs', [], 6)
     hzs.active = False
     db.session.commit()
 
