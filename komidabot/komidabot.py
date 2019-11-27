@@ -107,6 +107,9 @@ class Komidabot(Bot):
                 sender = trigger[triggers.SenderAspect].sender
                 campuses = Campus.get_all()
 
+                if locale is None:
+                    locale = sender.get_locale()
+
                 if triggers.NewUserAspect in trigger:
                     sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NEW_USER(locale)))
                     msg = localisation.REPLY_INSTRUCTIONS(locale).format(
@@ -115,9 +118,6 @@ class Komidabot(Bot):
                     sender.send_message(messages.TextMessage(trigger, msg))
 
                     return
-
-                if locale is None:
-                    locale = sender.get_locale()
 
                 # TODO: Is this really how we want to handle input?
                 if isinstance(trigger, triggers.TextTrigger):
