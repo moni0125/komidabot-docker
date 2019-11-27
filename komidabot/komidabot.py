@@ -114,6 +114,8 @@ class Komidabot(Bot):
                     )
                     sender.send_message(messages.TextMessage(trigger, msg))
 
+                    return
+
                 if locale is None:
                     locale = sender.get_locale()
 
