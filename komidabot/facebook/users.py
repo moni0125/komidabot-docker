@@ -26,14 +26,14 @@ class UserManager(users.UserManager):
 
     def initialise(self):
         app = get_app()
-        if app.config.get('TESTING'):
+        if app.config.get('TESTING') or app.config.get('DISABLED'):
             return
         if app.config.get('PRODUCTION'):
             return  # Temporarily disable this portion of code for production
 
         data = {
             'get_started': {
-                'payload': ''
+                'payload': 'komidabot:get_started'
             },
             'greeting': [
                 {

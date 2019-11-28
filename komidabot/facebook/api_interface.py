@@ -44,6 +44,9 @@ class ApiInterface:
         response = self.session.post(BASE_ENDPOINT + API_VERSION + PROFILE_API, params=self.base_parameters,
                                      headers=self.headers_post, data=json.dumps(data))
 
+        print('Received {} for request {}'.format(response.status_code, response.request.body), flush=True)
+        print(response.content, flush=True)
+
         return response.status_code == 200
 
     @check_exceptions  # TODO: Exception checking needs to be done differently
