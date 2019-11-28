@@ -177,18 +177,20 @@ def _do_handle_message(event, user: User, app):
             elif 'postback' in event:
                 print(pprint.pformat(event, indent=2), flush=True)
 
-                postback = event['postback']
+                postback = event['postback']  # type: dict
 
-                user.send_message(TextMessage(trigger, localisation.ERROR_POSTBACK(locale)))
-                return
+                payload = postback.get('payload')
+
+                if payload == 'komidabot:get_started':
+                    trigger.add_aspect(triggers.NewUserAspect())
+                else:
+                    get_app().bot.message_admins(TextMessage(triggers.Trigger(), 'Unknown postback type received!'))
+                    user.send_message(TextMessage(trigger, localisation.ERROR_POSTBACK(locale)))
+                    return
             else:
-                import komidabot.messages as messages
-
                 print(pprint.pformat(event, indent=2), flush=True)
 
-                get_app().bot.message_admins(messages.TextMessage(triggers.Trigger(),
-                                                                  '⚠️ An internal error occurred, '
-                                                                  'please check the console for more information'))
+                get_app().bot.message_admins(TextMessage(triggers.Trigger(), 'Unknown message type received!'))
 
                 return
 
