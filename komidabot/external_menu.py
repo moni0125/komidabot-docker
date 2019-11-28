@@ -106,27 +106,32 @@ class ExternalMenuItem:
         self.price_staff = None
 
     def get_combined_text(self):
-        head = self.courses[0]
-        tail = self.courses[1:]
+        result = ', '.join(elem.name['nl_BE'] for elem in self.courses)
 
-        if len(tail) > 0:
-            def get_tail(l):
-                front = l[:-1]
-                last = l[-1]
-                if len(front) > 0:
-                    return '{}, en {}'.format(', '.join([elem.name['nl_BE'] for elem in front]), last.name['nl_BE'])
-                else:
-                    return last.name['nl_BE']
+        # Return string with capitalized first letter
+        return result[0].upper() + result[1:]
 
-            if ' met ' in head.name['nl_BE']:
-                if len(tail) == 1:
-                    return '{} en {}'.format(head.name['nl_BE'], tail[0].name['nl_BE'])
-                else:
-                    return '{}, {}'.format(head.name['nl_BE'], get_tail(tail))
-
-            return '{} met {}'.format(head.name['nl_BE'], get_tail(tail))
-        else:
-            return head.name['nl_BE']
+        # head = self.courses[0]
+        # tail = self.courses[1:]
+        #
+        # if len(tail) > 0:
+        #     def get_tail(l):
+        #         front = l[:-1]
+        #         last = l[-1]
+        #         if len(front) > 0:
+        #             return '{}, en {}'.format(', '.join([elem.name['nl_BE'] for elem in front]), last.name['nl_BE'])
+        #         else:
+        #             return last.name['nl_BE']
+        #
+        #     if ' met ' in head.name['nl_BE']:
+        #         if len(tail) == 1:
+        #             return '{} en {}'.format(head.name['nl_BE'], tail[0].name['nl_BE'])
+        #         else:
+        #             return '{}, {}'.format(head.name['nl_BE'], get_tail(tail))
+        #
+        #     return '{} met {}'.format(head.name['nl_BE'], get_tail(tail))
+        # else:
+        #     return head.name['nl_BE']
 
     def get_student_price(self):
         return sum((item.price_students for item in self.courses if item.price_students), Decimal('0.0'))
