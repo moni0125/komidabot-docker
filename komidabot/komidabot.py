@@ -98,6 +98,7 @@ class Komidabot(Bot):
                 return  # Don't process messages targeted at the admin
 
             locale = None
+            message_handled = False
 
             # XXX: Disabled once more because responses aren't reliably in the language the user expects it to be
             # if triggers.LocaleAspect in trigger and trigger[triggers.LocaleAspect].confidence > 0.9:
@@ -117,9 +118,11 @@ class Komidabot(Bot):
                     )
                     sender.send_message(messages.TextMessage(trigger, msg))
 
-                    return
+                    message_handled = True
 
                 # TODO: Is this really how we want to handle input?
+                #       Maybe we can add an IntentAspect, where the intent is the desired action the bot should take
+                #       next? Ex. intents: admin message, get help, get menu, set preference (language, subscriptions)
                 if isinstance(trigger, triggers.TextTrigger):
                     text = trigger.text
                     split = text.lower().split(' ')
@@ -141,7 +144,8 @@ class Komidabot(Bot):
                             return
 
                     # TODO: Allow users to send more manual commands
-                    if split[0] == 'help':
+                    #       See also the note prefacing the containing block
+                    if not message_handled and split[0] == 'help':
                         msg = localisation.REPLY_INSTRUCTIONS(locale).format(
                             campuses=', '.join([campus.short_name.lower() for campus in campuses if campus.active])
                         )
@@ -153,8 +157,8 @@ class Komidabot(Bot):
 
                 if triggers.DatetimeAspect in trigger:
                     date_times = trigger[triggers.DatetimeAspect]
-                    requested_dates, invalid_date = nlp_dates.extract_days(
-                        date_times)  # TODO: Date parsing needs improving
+                    # TODO: Date parsing needs improving
+                    requested_dates, invalid_date = nlp_dates.extract_days(date_times)
 
                     if invalid_date:
                         sender.send_message(messages.TextMessage(trigger, localisation.REPLY_INVALID_DATE(locale)))
@@ -203,6 +207,16 @@ class Komidabot(Bot):
                     sender.send_message(messages.TextMessage(trigger, localisation.REPLY_CAMPUS_INACTIVE(locale)
                                                              .format(campus=campus.short_name.upper())))
                     return
+
+                if message_handled and default_campus and default_date:
+                    if isinstance(trigger, triggers.TextTrigger):
+                        for word in ['menu', 'lunch', 'eten']:
+                            if word in trigger.text:
+                                break
+                        else:
+                            return
+                    else:
+                        return
 
                 # if default_date and default_campus:
                 #     if isinstance(trigger, triggers.TextTrigger):
