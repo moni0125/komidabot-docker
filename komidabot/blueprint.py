@@ -174,15 +174,28 @@ def _do_handle_message(event, user: User, app):
 
                     # sender_obj.send_text_message('Note: The bot is currently disabled')
 
-                bot.trigger_received(trigger)
-
-                if needs_commit:
-                    db.session.commit()
             elif 'postback' in event:
-                user.send_message(TextMessage(trigger, localisation.ERROR_POSTBACK(locale)))
-                # postback = event['postback']
+                print(pprint.pformat(event, indent=2), flush=True)
 
-                # sender_obj.send_text_message(localisation.ERROR_NOT_IMPLEMENTED(locale))
+                postback = event['postback']
+
+                user.send_message(TextMessage(trigger, localisation.ERROR_POSTBACK(locale)))
+                return
+            else:
+                import komidabot.messages as messages
+
+                print(pprint.pformat(event, indent=2), flush=True)
+
+                get_app().bot.message_admins(messages.TextMessage(triggers.Trigger(),
+                                                                  '⚠️ An internal error occurred, '
+                                                                  'please check the console for more information'))
+
+                return
+
+            bot.trigger_received(trigger)
+
+            if needs_commit:
+                db.session.commit()
         except Exception as e:
             try:
                 app.logger.error('Error while handling event:\n{}'.format(pprint.pformat(event, indent=2)))

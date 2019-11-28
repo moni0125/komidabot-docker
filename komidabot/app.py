@@ -37,9 +37,10 @@ class App:
         self.task_executor = PyThreadPoolExecutor(max_workers=5)
         atexit.register(PyThreadPoolExecutor.shutdown, self.task_executor)  # Ensure cleanup of resources
 
-        self.user_manager.initialise()
-
         self.admin_ids = config.get('ADMIN_IDS', [])
+
+        with self.app_context():
+            self.user_manager.initialise()
 
     def app_context(self):
         raise NotImplementedError()

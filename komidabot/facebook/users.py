@@ -25,7 +25,33 @@ class UserManager(users.UserManager):
         return User(self, user.id)
 
     def initialise(self):
-        pass  # TODO: Setup welcome screen and persistent menu
+        app = get_app()
+        if app.config.get('TESTING'):
+            return
+        if app.config.get('PRODUCTION'):
+            return  # Temporarily disable this portion of code for production
+
+        data = {
+            'get_started': {
+                'payload': ''
+            },
+            'greeting': [
+                {
+                    'locale': 'default',
+                    'text': 'Welcome!'
+                },
+                {
+                    'locale': 'nl_BE',
+                    'text': 'Welkom!'
+                },
+                {
+                    'locale': 'nl_NL',
+                    'text': 'Welkom!'
+                },
+            ],
+        }
+        app.bot_interfaces['facebook']['api_interface'].post_profile_api(data)
+        # TODO: Setup persistent menu
 
     def get_identifier(self):
         return PROVIDER_ID

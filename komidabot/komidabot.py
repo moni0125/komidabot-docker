@@ -257,22 +257,25 @@ class Komidabot(Bot):
                 #         sender.send_message(messages.TextMessage(trigger, localisation.REPLY_USE_AT_ADMIN(locale)))
 
     def notify_error(self, error: Exception):
-        with self.lock:
-            if self._handling_error:
-                # Already handling an error, or we failed handling the previous error, so don't try handling more
-                return
-            self._handling_error = True
+        if self._handling_error:
+            # Already handling an error, or we failed handling the previous error, so don't try handling more
+            return
+        self._handling_error = True
 
+        self.message_admins(messages.TextMessage(triggers.Trigger(),
+                                                 '⚠️ An internal error occurred, '
+                                                 'please check the console for more information'))
+
+        self._handling_error = False
+
+    def message_admins(self, message: messages.Message):
+        with self.lock:
             app = get_app()
 
             for admin in app.admin_ids:  # type: users.UserId
                 user = app.user_manager.get_user(admin)
 
-                user.send_message(messages.TextMessage(triggers.Trigger(),
-                                                       '⚠️ An internal error occurred, '
-                                                       'please check the console for more information'))
-
-            self._handling_error = False
+                user.send_message(message)
 
 
 def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):

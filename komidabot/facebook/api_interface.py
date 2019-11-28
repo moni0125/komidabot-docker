@@ -9,6 +9,7 @@ from komidabot.util import check_exceptions
 BASE_ENDPOINT = 'https://graph.facebook.com/'
 API_VERSION = 'v4.0'
 SEND_API = '/me/messages'
+PROFILE_API = '/me/messenger_profile'
 
 
 class ApiInterface:
@@ -35,6 +36,13 @@ class ApiInterface:
 
         # print('Received {} for request {}'.format(response.status_code, response.request.body), flush=True)
         # print(response.content, flush=True)
+
+        return response.status_code == 200
+
+    @check_exceptions  # TODO: Exception checking needs to be done differently
+    def post_profile_api(self, data: dict):
+        response = self.session.post(BASE_ENDPOINT + API_VERSION + PROFILE_API, params=self.base_parameters,
+                                     headers=self.headers_post, data=json.dumps(data))
 
         return response.status_code == 200
 

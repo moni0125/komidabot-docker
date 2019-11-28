@@ -58,3 +58,6 @@ class TestingConfig(BaseConfig):
     DISABLED = False
     TESTING = True
     SQLALCHEMY_DATABASE_URI = _get_postgres_uri(POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, 'komidabot_test')
+    PAGE_ACCESS_TOKEN = None
+    VERIFY_TOKEN = None
+    APP_SECRET = None
