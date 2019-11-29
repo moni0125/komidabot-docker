@@ -182,7 +182,8 @@ def _do_handle_message(event, user: User, app):
                 payload = postback.get('payload')
 
                 if payload == 'komidabot:get_started':
-                    trigger.add_aspect(triggers.NewUserAspect())
+                    if triggers.NewUserAspect not in trigger:
+                        trigger.add_aspect(triggers.NewUserAspect())
                 else:
                     get_app().bot.message_admins(TextMessage(triggers.Trigger(), 'Unknown postback type received!'))
                     user.send_message(TextMessage(trigger, localisation.ERROR_POSTBACK(locale)))
