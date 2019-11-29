@@ -31,23 +31,47 @@ class UserManager(users.UserManager):
 
         data = {
             'get_started': {
-                'payload': 'komidabot:get_started'
+                'payload': 'komidabot:get_started',
             },
             'greeting': [
                 {
                     'locale': 'default',
-                    'text': 'Welcome!'
+                    'text': 'Welcome!',
                 },
                 {
                     'locale': 'nl_BE',
-                    'text': 'Welkom!'
+                    'text': 'Welkom!',
                 },
                 {
                     'locale': 'nl_NL',
-                    'text': 'Welkom!'
+                    'text': 'Welkom!',
+                },
+            ],
+            # TODO: Once per-user persistent menus are available, use them
+            #       https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu/
+            'persistent_menu': [
+                {
+                    'locale': 'default',
+                    'composer_input_disabled': False,
+                    'call_to_actions': [
+                        {
+                            'type': 'postback',
+                            'title': 'Manage subscription',
+                            'payload': 'komidabot:settings_subscriptions',
+                        },
+                        {
+                            'type': 'postback',
+                            'title': 'Change language',
+                            'payload': 'komidabot:settings_language',
+                        },
+                    ],
                 },
             ],
         }
+
+        if app.config.get('PRODUCTION'):
+            del data['persistent_menu']
+
         app.bot_interfaces['facebook']['api_interface'].post_profile_api(data)
         # TODO: Setup persistent menu
 
