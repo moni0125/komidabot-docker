@@ -195,7 +195,7 @@ def _do_handle_facebook_webhook(event, user: User, app):
                 postback_obj = postbacks.lookup_postback(trigger.name)
 
                 if postback_obj:
-                    trigger = postback_obj.call_postback(trigger, trigger.args, trigger.kwargs)
+                    trigger = postback_obj.call_postback(trigger, *trigger.args, **trigger.kwargs)
 
                     if trigger is None:
                         return  # Indicates the trigger was processed
