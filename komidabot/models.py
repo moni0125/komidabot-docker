@@ -522,6 +522,13 @@ class AppUser(db.Model):
             if active is not None:
                 sub.active = active
 
+    def set_day_active(self, day: Day, active: bool):
+        sub = UserSubscription.get_for_user(self, day)
+        if sub is None and active:
+            raise ValueError('Cannot set subscription active if there is no campus set')
+        else:
+            sub.active = active
+
     def get_campus(self, day: Day) -> 'Optional[Campus]':
         sub = UserSubscription.get_for_user(self, day)
         if sub is not None:

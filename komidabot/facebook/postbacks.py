@@ -82,7 +82,7 @@ def settings_subscriptions(trigger: triggers.Trigger):
 
         for i in range(0, len(buttons), 3):
             elements.append({
-                'title': title,
+                'title': title if i == 0 else (title + ' (cont.)'),
                 'image_url': image,
                 'buttons': buttons[i:i + 3]
             })
@@ -103,12 +103,26 @@ def settings_subscriptions(trigger: triggers.Trigger):
 
 
 @postback(name='komidabot:set_subscription')
-def set_subscription(trigger: triggers.Trigger, day: int, campus: str):
+def set_subscription(trigger: triggers.Trigger, day: int, campus: Optional[int]):
     if triggers.SenderAspect not in trigger:
         raise ValueError('Trigger missing SenderAspect')
     sender = trigger[triggers.SenderAspect].sender
 
-    sender.send_message(messages.TextMessage(trigger, 'This feature is currently not supported'))
+    selected_day = models.Day(day)
+    selected_campus = None
+
+    if campus is None:
+        sender.get_db_user().set_day_active(selected_day, False)
+    else:
+        selected_campus = models.Campus.get_by_id(campus)
+        sender.get_db_user().set_campus(selected_day, selected_campus, active=True)
+
+    db.session.commit()
+
+    msg = 'Subscription preference for {} set to {}'.format(selected_day.name.capitalize(),
+                                                            'unsubscribed' if selected_campus is None
+                                                            else selected_campus.name)
+    sender.send_message(messages.TextMessage(trigger, msg))
 
     return None
 
