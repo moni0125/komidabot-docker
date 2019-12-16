@@ -4,6 +4,7 @@ from typing import Callable, Optional
 import komidabot.facebook.triggers as triggers
 import komidabot.facebook.messages as fb_messages
 import komidabot.messages as messages
+import komidabot.models as models
 from extensions import db
 
 postback_mappings = {}
@@ -65,30 +66,38 @@ def settings_subscriptions(trigger: triggers.Trigger):
         raise ValueError('Trigger missing SenderAspect')
     sender = trigger[triggers.SenderAspect].sender
 
-    payload = {
-        'template_type': 'generic',
-        'elements': [
-            {
-                'title': 'Monday',
-                'image_url': 'https://komidabot.heldplayer.blue/images/monday.png',
-                'buttons': [
-                    postback_button("Unsubscribe", set_subscription(1, None)),
-                    postback_button("Campus Middelheim", set_subscription(1, 'cmi')),
-                    postback_button("Campus Drie Eiken", set_subscription(1, 'cde')),
-                ]
-            },
-            {
-                'title': 'Monday (cont.)',
-                'image_url': 'https://komidabot.heldplayer.blue/images/monday.png',
-                'buttons': [
-                    postback_button("Stadscampus", set_subscription(1, 'cst')),
-                    postback_button("Campus Groenenborger", set_subscription(1, 'cgb')),
-                    postback_button("Hogere Zeevaartschool", set_subscription(1, 'hzs')),
-                ]
-            },
-        ],
-    }
-    sender.send_message(fb_messages.TemplateMessage(trigger, payload))
+    elements_list = [[]]
+
+    campuses = models.Campus.get_all_active()
+
+    for day in models.week_days:
+        elements = []
+
+        title = day.name.capitalize()
+        image = 'https://komidabot.heldplayer.blue/images/{}.png'.format(day.name.lower())
+        buttons = [postback_button("Unsubscribe", set_subscription(1, None))]
+
+        for campus in campuses:
+            buttons.append(postback_button(campus.name, set_subscription(day.value, campus.id)))
+
+        for i in range(0, len(buttons), 3):
+            elements.append({
+                'title': title,
+                'image_url': image,
+                'buttons': buttons[i:i + 3]
+            })
+
+        if len(elements_list[-1]) + len(elements) > 10:
+            elements_list.append([])
+
+        elements_list[-1].extend(elements)
+
+    for elements in elements_list:
+        payload = {
+            'template_type': 'generic',
+            'elements': elements,
+        }
+        sender.send_message(fb_messages.TemplateMessage(trigger, payload))
 
     return None
 

@@ -52,6 +52,9 @@ class Day(enum.Enum):
     SUNDAY = 7
 
 
+week_days = [Day.MONDAY, Day.TUESDAY, Day.WEDNESDAY, Day.THURSDAY, Day.FRIDAY]
+
+
 class Campus(db.Model):
     __tablename__ = 'campus'
 
