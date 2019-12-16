@@ -284,9 +284,12 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
     date = trigger.date or datetime.datetime.now().date()
     day = Day(date.isoweekday())
 
-    # print('Sending out subscription for {} ({})'.format(date, day.name), flush=True)
-
     app = get_app()
+
+    verbose = not app.config.get('TESTING') and not app.config.get('PRODUCTION')
+
+    if verbose:
+        print('Sending out subscription for {} ({})'.format(date, day.name), flush=True)
 
     user_manager = app.user_manager  # type: users.UserManager
     subscribed_users = user_manager.get_subscribed_users(day)
@@ -297,7 +300,8 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
             continue
 
         if not user.is_feature_active('menu_subscription'):
-            # print('User {} not eligible for subscription'.format(user.id), flush=True)
+            if verbose:
+                print('User {} not eligible for subscription'.format(user.id), flush=True)
             continue
 
         subscription = user.get_subscription_for_day(date)
@@ -323,7 +327,8 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
 
     for campus, languages in subscriptions.items():
         for language, sub_users in languages.items():
-            # print('Preparing menu for {} in {}'.format(campus.short_name, language), flush=True)
+            if verbose:
+                print('Preparing menu for {} in {}'.format(campus.short_name, language), flush=True)
 
             closed = ClosingDays.find_is_closed(campus, date)
 
@@ -335,8 +340,9 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
                 continue
 
             for user in sub_users:
-                # print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
-                #       flush=True)
+                if verbose:
+                    print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
+                          flush=True)
                 user.send_message(messages.TextMessage(trigger, menu))
 
 
