@@ -88,7 +88,7 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
                     self.create_menu(campus, day, items, has_context=True)
 
                     result = [
-                        'Menu van {date} in {campus}'.format(campus=campus.short_name.upper(), date=str(day)),
+                        'Menu van {date} in {campus}'.format(campus=campus.name, date=str(day)),
                         '',
                     ]
                     for item in items:
