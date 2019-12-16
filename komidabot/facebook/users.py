@@ -25,55 +25,14 @@ class UserManager(users.UserManager):
         return User(self, user.id)
 
     def initialise(self):
+        import komidabot.facebook.postbacks as postbacks
+
         app = get_app()
         if app.config.get('TESTING') or app.config.get('DISABLED'):
             return
 
-        data = {
-            'get_started': {
-                'payload': 'komidabot:get_started',
-            },
-            'greeting': [
-                {
-                    'locale': 'default',
-                    'text': 'Welcome!',
-                },
-                {
-                    'locale': 'nl_BE',
-                    'text': 'Welkom!',
-                },
-                {
-                    'locale': 'nl_NL',
-                    'text': 'Welkom!',
-                },
-            ],
-            # TODO: Once per-user persistent menus are available, use them
-            #       https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu/
-            'persistent_menu': [
-                {
-                    'locale': 'default',
-                    'composer_input_disabled': False,
-                    'call_to_actions': [
-                        {
-                            'type': 'postback',
-                            'title': 'Manage subscription',
-                            'payload': 'komidabot:settings_subscriptions',
-                        },
-                        {
-                            'type': 'postback',
-                            'title': 'Change language',
-                            'payload': 'komidabot:settings_language',
-                        },
-                    ],
-                },
-            ],
-        }
-
-        if app.config.get('PRODUCTION'):
-            del data['persistent_menu']
-
+        data = postbacks.generate_postback_data(not app.config.get('PRODUCTION'))
         app.bot_interfaces['facebook']['api_interface'].post_profile_api(data)
-        # TODO: Setup persistent menu
 
     def get_identifier(self):
         return PROVIDER_ID

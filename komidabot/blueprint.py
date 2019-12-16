@@ -1,28 +1,31 @@
 import hashlib
 import hmac
+import json
 import pprint
 import sys
 import time
 import traceback
 from functools import wraps
+from typing import Dict
 
 from flask import Blueprint, abort, request
 
+import komidabot.facebook.triggers as triggers
 import komidabot.localisation as localisation
-import komidabot.triggers as triggers
+import komidabot.facebook.postbacks as postbacks
+from extensions import db
 from komidabot.app import get_app
+from komidabot.facebook.users import User as FacebookUser
 from komidabot.komidabot import Bot
 from komidabot.messages import TextMessage
 from komidabot.users import UnifiedUserManager, UserId, User
-from komidabot.facebook.users import User as FacebookUser
-from extensions import db
 
 blueprint = Blueprint('komidabot', __name__)
 pp = pprint.PrettyPrinter(indent=2)
 
 
 @blueprint.route('/', methods=['GET'])
-def handle_verification():
+def handle_facebook_verification():
     if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
         if request.args.get('hub.verify_token', '') == get_app().config['VERIFY_TOKEN']:
             print("Verified")
@@ -64,7 +67,7 @@ def validate_signature(func):
 
 @blueprint.route('/', methods=['POST'])
 @validate_signature
-def handle_message():
+def handle_facebook_webhook():
     try:
         app = get_app()
         data = request.get_json()
@@ -87,7 +90,7 @@ def handle_message():
 
                     user.mark_message_seen()
 
-                    app.task_executor.submit(_do_handle_message, event, user, app._get_current_object())
+                    app.task_executor.submit(_do_handle_facebook_webhook, event, user, app._get_current_object())
 
                 return 'ok', 200
 
@@ -106,7 +109,7 @@ def handle_message():
         return 'ok', 200
 
 
-def _do_handle_message(event, user: User, app):
+def _do_handle_facebook_webhook(event, user: User, app):
     time.sleep(0.1)  # Yield
 
     with app.app_context():
@@ -181,9 +184,22 @@ def _do_handle_message(event, user: User, app):
 
                 payload = postback.get('payload')
 
-                if payload == 'komidabot:get_started':
-                    if triggers.NewUserAspect not in trigger:
-                        trigger.add_aspect(triggers.NewUserAspect())
+                try:
+                    data = json.loads(payload)  # type: Dict
+                except json.JSONDecodeError:
+                    raise
+
+                trigger = triggers.PostbackTrigger.extend(trigger, data['name'], data['args'], data['kwargs'])
+
+                # TODO: This will be cleaner if we work with intents (see komidabot.py)
+                postback_obj = postbacks.lookup_postback(trigger.name)
+
+                if postback_obj:
+                    trigger = postback_obj.call_postback(trigger, trigger.args, trigger.kwargs)
+
+                    if trigger is None:
+                        return  # Indicates the trigger was processed
+                        # TODO: Again, this will be cleaner if we work with intents (see komidabot.py)
                 else:
                     get_app().bot.message_admins(TextMessage(triggers.Trigger(), 'Unknown postback type received!'))
                     user.send_message(TextMessage(trigger, localisation.ERROR_POSTBACK(locale)))
