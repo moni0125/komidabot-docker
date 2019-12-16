@@ -1,12 +1,11 @@
 from typing import Optional, Union
 
+import komidabot.facebook.constants as fb_constants
 import komidabot.messages as messages
 import komidabot.models as models
 import komidabot.users as users
 from komidabot.app import get_app
 from komidabot.facebook.messages import MessageHandler as FBMessageHandler
-
-PROVIDER_ID = 'facebook'
 
 
 class UserManager(users.UserManager):
@@ -17,7 +16,7 @@ class UserManager(users.UserManager):
         if isinstance(user, models.AppUser):
             return User(self, user.internal_id)
 
-        if user.provider != PROVIDER_ID:
+        if user.provider != fb_constants.PROVIDER_ID:
             raise ValueError('User id is not for Facebook')
 
         # TODO: This probably could use more checks or something
@@ -35,7 +34,7 @@ class UserManager(users.UserManager):
         app.bot_interfaces['facebook']['api_interface'].post_profile_api(data)
 
     def get_identifier(self):
-        return PROVIDER_ID
+        return fb_constants.PROVIDER_ID
 
 
 class User(users.User):
@@ -52,7 +51,7 @@ class User(users.User):
         return stored_value
 
     def get_provider_name(self) -> 'str':
-        return PROVIDER_ID
+        return fb_constants.PROVIDER_ID
 
     def get_internal_id(self) -> 'str':
         return self._id
