@@ -65,6 +65,40 @@ def settings_subscriptions(trigger: triggers.Trigger):
         raise ValueError('Trigger missing SenderAspect')
     sender = trigger[triggers.SenderAspect].sender
 
+    payload = {
+        'template_type': 'generic',
+        'elements': [
+            {
+                'title': 'Monday',
+                'image_url': 'https://komidabot.heldplayer.blue/images/monday.png',
+                'buttons': [
+                    postback_button("Unsubscribe", set_subscription(1, None)),
+                    postback_button("Campus Middelheim", set_subscription(1, 'cmi')),
+                    postback_button("Campus Drie Eiken", set_subscription(1, 'cde')),
+                ]
+            },
+            {
+                'title': 'Monday (cont.)',
+                'image_url': 'https://komidabot.heldplayer.blue/images/monday.png',
+                'buttons': [
+                    postback_button("Stadscampus", set_subscription(1, 'cst')),
+                    postback_button("Campus Groenenborger", set_subscription(1, 'cgb')),
+                    postback_button("Hogere Zeevaartschool", set_subscription(1, 'hzs')),
+                ]
+            },
+        ],
+    }
+    sender.send_message(fb_messages.TemplateMessage(trigger, payload))
+
+    return None
+
+
+@postback(name='komidabot:set_language')
+def set_subscription(trigger: triggers.Trigger, day: int, campus: str):
+    if triggers.SenderAspect not in trigger:
+        raise ValueError('Trigger missing SenderAspect')
+    sender = trigger[triggers.SenderAspect].sender
+
     sender.send_message(messages.TextMessage(trigger, 'This feature is currently not supported'))
 
     return None
