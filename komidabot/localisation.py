@@ -129,3 +129,61 @@ DOWN_FOR_MAINTENANCE = localisation_definition('DOWN_FOR_MAINTENANCE', {
     'en': 'I am temporarily down for maintenance, please check back later',
     'nl': 'Wegens onderhoud ben ik tijdelijk onbeschikbaar, probeer het later nog eens',
 })
+
+DAYS = {
+    'MONDAY': localisation_definition('DAYS[MONDAY]', {
+        'en': 'Monday',
+        'nl': 'maandag',
+    }),
+    'TUESDAY': localisation_definition('DAYS[TUESDAY]', {
+        'en': 'Tuesday',
+        'nl': 'dinsdag',
+    }),
+    'WEDNESDAY': localisation_definition('DAYS[WEDNESDAY]', {
+        'en': 'Wednesday',
+        'nl': 'woensdag',
+    }),
+    'THURSDAY': localisation_definition('DAYS[THURSDAY]', {
+        'en': 'Thursday',
+        'nl': 'donderdag',
+    }),
+    'FRIDAY': localisation_definition('DAYS[FRIDAY]', {
+        'en': 'Friday',
+        'nl': 'vrijdag',
+    }),
+}
+
+CONTINUATION = localisation_definition('CONTINUATION', {
+    'en': '(cont.)',
+    'nl': '(vervolg)',
+})
+
+UNSUBSCRIBE = localisation_definition('UNSUBSCRIBE', {
+    'en': 'Unsubscribe',
+    'nl': 'Uitschrijven',
+})
+
+UNSUBSCRIBED = localisation_definition('UNSUBSCRIBED', {
+    'en': 'Unsubscribed',
+    'nl': 'Uitgeschreven',
+})
+
+REPLY_EXPERIMENTAL_DISPLAY = localisation_definition('REPLY_EXPERIMENTAL_DISPLAY', {
+    'en': 'This feature display is experimental and will change in the future.',
+    'nl': 'De weergave van deze feature is experimenteel en zal veranderen in de toekomst.',
+})
+
+REPLY_FEATURE_UNAVAILABLE = localisation_definition('REPLY_FEATURE_UNAVAILABLE', {
+    'en': 'This feature is currently unavailable.',
+    'nl': 'Deze feature is momenteel niet beschikbaar.',
+})
+
+REPLY_SET_SUBSCRIPTION = localisation_definition('REPLY_SET_SUBSCRIPTION', {
+    'en': 'Preference for {day} set to: {campus}',
+    'nl': 'Voorkeur voor {day} gezet op: {campus}',
+})
+
+REPLY_SET_LANGUAGE = localisation_definition('REPLY_SET_SUBSCRIPTION', {
+    'en': 'Your language is now set to: {language}',
+    'nl': 'Uw taal staat nu op: {language}',
+})

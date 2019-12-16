@@ -14,13 +14,6 @@ _features = [
         UserId('1441134665935530', 'facebook'),
         UserId('1532346296833228', 'facebook'),
     ]),
-    _feature('user_onboarding', 'The user receives an onboarding message the first time they contact the bot', False, [
-        # Dev user ID
-        UserId('3150885824953769', 'facebook'),
-        # Production user IDs
-        UserId('1441134665935530', 'facebook'),
-        UserId('1532346296833228', 'facebook'),
-    ]),
 ]
 
 

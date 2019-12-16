@@ -5,6 +5,7 @@ import komidabot.facebook.triggers as triggers
 import komidabot.facebook.messages as fb_messages
 import komidabot.messages as messages
 import komidabot.models as models
+import komidabot.localisation as localisation
 from extensions import db
 
 postback_mappings = {}
@@ -65,6 +66,12 @@ def settings_subscriptions(trigger: triggers.Trigger):
     if triggers.SenderAspect not in trigger:
         raise ValueError('Trigger missing SenderAspect')
     sender = trigger[triggers.SenderAspect].sender
+    db_user = sender.get_db_user()
+    locale = sender.get_locale()
+
+    if not db_user.is_feature_active('menu_subscription'):
+        sender.send_message(messages.TextMessage(trigger, localisation.REPLY_FEATURE_UNAVAILABLE(locale)))
+        return None
 
     elements_list = [[]]
 
@@ -73,16 +80,16 @@ def settings_subscriptions(trigger: triggers.Trigger):
     for day in models.week_days:
         elements = []
 
-        title = day.name.capitalize()
+        title = localisation.DAYS[day.name](locale)
         image = 'https://komidabot.heldplayer.blue/images/{}.png'.format(day.name.lower())
-        buttons = [postback_button("Unsubscribe", set_subscription(1, None))]
+        buttons = [postback_button(localisation.UNSUBSCRIBE(locale), set_subscription(1, None))]
 
         for campus in campuses:
             buttons.append(postback_button(campus.name, set_subscription(day.value, campus.id)))
 
         for i in range(0, len(buttons), 3):
             elements.append({
-                'title': title if i == 0 else (title + ' (cont.)'),
+                'title': title if i == 0 else (title + localisation.CONTINUATION(locale)),
                 'image_url': image,
                 'buttons': buttons[i:i + 3]
             })
@@ -107,21 +114,27 @@ def set_subscription(trigger: triggers.Trigger, day: int, campus: Optional[int])
     if triggers.SenderAspect not in trigger:
         raise ValueError('Trigger missing SenderAspect')
     sender = trigger[triggers.SenderAspect].sender
+    db_user = sender.get_db_user()
+    locale = sender.get_locale()
+
+    if not db_user.is_feature_active('menu_subscription'):
+        sender.send_message(messages.TextMessage(trigger, localisation.REPLY_FEATURE_UNAVAILABLE(locale)))
+        return None
 
     selected_day = models.Day(day)
     selected_campus = None
 
     if campus is None:
-        sender.get_db_user().set_day_active(selected_day, False)
+        db_user.set_day_active(selected_day, False)
     else:
         selected_campus = models.Campus.get_by_id(campus)
-        sender.get_db_user().set_campus(selected_day, selected_campus, active=True)
+        db_user.set_campus(selected_day, selected_campus, active=True)
 
     db.session.commit()
 
-    msg = 'Subscription preference for {} set to {}'.format(selected_day.name.capitalize(),
-                                                            'unsubscribed' if selected_campus is None
-                                                            else selected_campus.name)
+    msg = localisation.REPLY_SET_SUBSCRIPTION(locale).format(day=localisation.DAYS[selected_day.name](locale),
+                                                             campus=localisation.UNSUBSCRIBED(locale)
+                                                             if selected_campus is None else selected_campus.name)
     sender.send_message(messages.TextMessage(trigger, msg))
 
     return None
@@ -152,11 +165,13 @@ def set_language(trigger: triggers.Trigger, language: str, display: str):
     if triggers.SenderAspect not in trigger:
         raise ValueError('Trigger missing SenderAspect')
     sender = trigger[triggers.SenderAspect].sender
+    db_user = sender.get_db_user()
+    locale = sender.get_locale()
 
-    sender.get_db_user().set_language(language)
+    db_user.set_language(language)
     db.session.commit()
 
-    sender.send_message(messages.TextMessage(trigger, 'Your language is now set to: {}'.format(display)))
+    sender.send_message(messages.TextMessage(trigger, localisation.REPLY_SET_LANGUAGE(locale).format(language=display)))
 
     return None
 
