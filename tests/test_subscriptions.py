@@ -6,6 +6,7 @@ from typing import Dict, List, Tuple
 import komidabot.models as models
 import komidabot.triggers as triggers
 import komidabot.users as users
+import komidabot.util as util
 import tests.users_stub as users_stub
 import tests.utils as utils
 from app import db
@@ -88,7 +89,8 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
                     self.create_menu(campus, day, items, has_context=True)
 
                     result = [
-                        'Menu van {date} in {campus}'.format(campus=campus.name, date=str(day)),
+                        'Menu van {date} in {campus}'.format(campus=campus.name,
+                                                             date=util.date_to_string('nl_BE', day)),
                         '',
                     ]
                     for item in items:

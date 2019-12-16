@@ -4,6 +4,7 @@ from typing import Optional
 import komidabot.localisation as localisation
 import komidabot.models as models
 import komidabot.translation as translation
+import komidabot.util as util
 
 
 def get_menu_line(menu_item: models.MenuItem, translator: translation.TranslationService, locale: str = None) -> str:
@@ -18,14 +19,16 @@ def get_menu_line(menu_item: models.MenuItem, translator: translation.Translatio
     return '{} {} ({})'.format(models.food_type_icons[menu_item.food_type], translation_obj.translation, price_str)
 
 
-def prepare_menu_text(campus: models.Campus, day: datetime.date, translator: translation.TranslationService,
+def prepare_menu_text(campus: models.Campus, date: datetime.date, translator: translation.TranslationService,
                       locale: str) -> 'Optional[str]':
-    menu = models.Menu.get_menu(campus, day)
+    menu = models.Menu.get_menu(campus, date)
 
     if menu is None:
         return None
 
-    result = [localisation.REPLY_MENU_START(locale).format(campus=campus.name, date=str(day)), '']
+    date_str = util.date_to_string(locale, date)
+
+    result = [localisation.REPLY_MENU_START(locale).format(campus=campus.name, date=date_str), '']
 
     # if len(menu.menu_items) < 6:
     #     result.insert(1, localisation.REPLY_MENU_INCOMPLETE(locale))

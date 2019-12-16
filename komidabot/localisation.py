@@ -130,28 +130,51 @@ DOWN_FOR_MAINTENANCE = localisation_definition('DOWN_FOR_MAINTENANCE', {
     'nl': 'Wegens onderhoud ben ik tijdelijk onbeschikbaar, probeer het later nog eens',
 })
 
-DAYS = {
-    'MONDAY': localisation_definition('DAYS[MONDAY]', {
+DAYS = [
+    localisation_definition('DAYS[0]', {
         'en': 'Monday',
         'nl': 'maandag',
     }),
-    'TUESDAY': localisation_definition('DAYS[TUESDAY]', {
+    localisation_definition('DAYS[1]', {
         'en': 'Tuesday',
         'nl': 'dinsdag',
     }),
-    'WEDNESDAY': localisation_definition('DAYS[WEDNESDAY]', {
+    localisation_definition('DAYS[2]', {
         'en': 'Wednesday',
         'nl': 'woensdag',
     }),
-    'THURSDAY': localisation_definition('DAYS[THURSDAY]', {
+    localisation_definition('DAYS[3]', {
         'en': 'Thursday',
         'nl': 'donderdag',
     }),
-    'FRIDAY': localisation_definition('DAYS[FRIDAY]', {
+    localisation_definition('DAYS[4]', {
         'en': 'Friday',
         'nl': 'vrijdag',
     }),
-}
+    localisation_definition('DAYS[5]', {
+        'en': 'Saturday',
+        'nl': 'zaterdag',
+    }),
+    localisation_definition('DAYS[6]', {
+        'en': 'Sunday',
+        'nl': 'zondag',
+    }),
+]
+
+MONTHS = [
+    localisation_definition('MONTHS[0]', {'en': 'January', 'nl': 'januari', }),
+    localisation_definition('MONTHS[1]', {'en': 'February', 'nl': 'februari', }),
+    localisation_definition('MONTHS[2]', {'en': 'March', 'nl': 'maart', }),
+    localisation_definition('MONTHS[3]', {'en': 'April', 'nl': 'april', }),
+    localisation_definition('MONTHS[4]', {'en': 'May', 'nl': 'mei', }),
+    localisation_definition('MONTHS[5]', {'en': 'June', 'nl': 'Juni', }),
+    localisation_definition('MONTHS[6]', {'en': 'July', 'nl': 'juli', }),
+    localisation_definition('MONTHS[7]', {'en': 'August', 'nl': 'augustus', }),
+    localisation_definition('MONTHS[8]', {'en': 'September', 'nl': 'september', }),
+    localisation_definition('MONTHS[9]', {'en': 'October', 'nl': 'october', }),
+    localisation_definition('MONTHS[10]', {'en': 'November', 'nl': 'november', }),
+    localisation_definition('MONTHS[11]', {'en': 'December', 'nl': 'december', }),
+]
 
 CONTINUATION = localisation_definition('CONTINUATION', {
     'en': '(cont.)',

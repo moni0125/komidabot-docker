@@ -80,7 +80,7 @@ def settings_subscriptions(trigger: triggers.Trigger):
     for day in models.week_days:
         elements = []
 
-        title = localisation.DAYS[day.name](locale)
+        title = localisation.DAYS[day.value - 1](locale)
         image = 'https://komidabot.heldplayer.blue/images/{}.png'.format(day.name.lower())
         buttons = [postback_button(localisation.UNSUBSCRIBE(locale), set_subscription(1, None))]
 
@@ -132,7 +132,7 @@ def set_subscription(trigger: triggers.Trigger, day: int, campus: Optional[int])
 
     db.session.commit()
 
-    msg = localisation.REPLY_SET_SUBSCRIPTION(locale).format(day=localisation.DAYS[selected_day.name](locale),
+    msg = localisation.REPLY_SET_SUBSCRIPTION(locale).format(day=localisation.DAYS[day - 1](locale),
                                                              campus=localisation.UNSUBSCRIBED(locale)
                                                              if selected_campus is None else selected_campus.name)
     sender.send_message(messages.TextMessage(trigger, msg))
