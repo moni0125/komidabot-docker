@@ -93,7 +93,7 @@ def settings_subscriptions(trigger: triggers.Trigger):
     return None
 
 
-@postback(name='komidabot:set_language')
+@postback(name='komidabot:set_subscription')
 def set_subscription(trigger: triggers.Trigger, day: int, campus: str):
     if triggers.SenderAspect not in trigger:
         raise ValueError('Trigger missing SenderAspect')
