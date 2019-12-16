@@ -11,9 +11,20 @@ if __name__ == '__main__':
     elif sys.argv[1] == 'cde':
         campus = Campus('Campus Drie Eiken', 'cde')
         campus.external_id = 2
-    else:
+    elif sys.argv[1] == 'cmi':
         campus = Campus('Campus Middelheim', 'cmi')
         campus.external_id = 3
+    elif sys.argv[1] == 'cgb':
+        campus = Campus('Campus Groenenborger', 'cgb')
+        campus.external_id = 4
+    elif sys.argv[1] == 'cmu':
+        campus = Campus('Campus Mutsaard', 'cmu')
+        campus.external_id = 5
+    elif sys.argv[1] == 'hzs':
+        campus = Campus('Hogere Zeevaartschool', 'hzs')
+        campus.external_id = 6
+    else:
+        raise ValueError('Unknown campus')
 
     if len(sys.argv) > 2:
         dates = [datetime.datetime.strptime(arg, '%Y-%m-%d').date() for arg in sys.argv[2:]]

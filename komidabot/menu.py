@@ -25,10 +25,10 @@ def prepare_menu_text(campus: models.Campus, day: datetime.date, translator: tra
     if menu is None:
         return None
 
-    result = [localisation.REPLY_MENU_START(locale).format(campus=campus.short_name.upper(), date=str(day)), '']
+    result = [localisation.REPLY_MENU_START(locale).format(campus=campus.name, date=str(day)), '']
 
-    if len(menu.menu_items) < 6:
-        result.insert(1, localisation.REPLY_MENU_INCOMPLETE(locale))
+    # if len(menu.menu_items) < 6:
+    #     result.insert(1, localisation.REPLY_MENU_INCOMPLETE(locale))
 
     try:
         for item in menu.menu_items:  # type: models.MenuItem

@@ -681,11 +681,9 @@ def create_standard_values():
     cde = Campus.create('Campus Drie Eiken', 'cde', [], 2)
     cmi = Campus.create('Campus Middelheim', 'cmi', [], 3)
     cgb = Campus.create('Campus Groenenborger', 'cgb', [], 4)
-    cgb.active = False
     cmu = Campus.create('Campus Mutsaard', 'cmu', [], 5)
     cmu.active = False
     hzs = Campus.create('Hogere Zeevaartschool', 'hzs', [], 6)
-    hzs.active = False
     db.session.commit()
 
 
