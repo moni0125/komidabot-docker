@@ -51,10 +51,10 @@ def date_to_string(locale: str, date):
             suffix = 'th'
 
         return '{weekday} {day}{suffix} of {month}'.format(day=date.day, suffix=suffix,
-                                                           month=localisation.MONTHS[date.month](locale),
+                                                           month=localisation.MONTHS[date.month - 1](locale),
                                                            weekday=localisation.DAYS[date.weekday()](locale))
     elif locale[:2] == 'nl':
-        return '{weekday} {day} {month}'.format(day=date.day, month=localisation.MONTHS[date.month](locale),
+        return '{weekday} {day} {month}'.format(day=date.day, month=localisation.MONTHS[date.month - 1](locale),
                                                 weekday=localisation.DAYS[date.weekday()](locale))
     else:
         return str(date)
