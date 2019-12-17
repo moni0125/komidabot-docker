@@ -244,16 +244,17 @@ class ExternalMenu:
                             course_type = models.FoodType.VEGAN if vegan else models.FoodType.MEAT
 
                     # If a sort order is set, use it instead
-                    if sort_order == 1:
-                        course_type = models.FoodType.VEGAN
-                    elif sort_order == 2:
-                        course_type = models.FoodType.MEAT
-                    elif sort_order == 3:
-                        course_type = models.FoodType.PASTA_VEGAN
-                    elif sort_order == 4:
-                        course_type = models.FoodType.PASTA_MEAT
-                    elif sort_order == 5:
-                        course_type = models.FoodType.GRILL
+                    # FIXME: Disabled because campuses without hot foods also use the sort order
+                    # if sort_order == 1:
+                    #     course_type = models.FoodType.VEGAN
+                    # elif sort_order == 2:
+                    #     course_type = models.FoodType.MEAT
+                    # elif sort_order == 3:
+                    #     course_type = models.FoodType.PASTA_VEGAN
+                    # elif sort_order == 4:
+                    #     course_type = models.FoodType.PASTA_MEAT
+                    # elif sort_order == 5:
+                    #     course_type = models.FoodType.GRILL
 
                     menu_item = ExternalMenuItem(sort_order, course_type, menu_contents)
 
