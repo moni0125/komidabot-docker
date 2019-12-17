@@ -66,10 +66,9 @@ def settings_subscriptions(trigger: triggers.Trigger):
     if triggers.SenderAspect not in trigger:
         raise ValueError('Trigger missing SenderAspect')
     sender = trigger[triggers.SenderAspect].sender
-    db_user = sender.get_db_user()
     locale = sender.get_locale()
 
-    if not db_user.is_feature_active('menu_subscription'):
+    if not sender.is_feature_active('menu_subscription'):
         sender.send_message(messages.TextMessage(trigger, localisation.REPLY_FEATURE_UNAVAILABLE(locale)))
         return None
 
@@ -117,7 +116,7 @@ def set_subscription(trigger: triggers.Trigger, day: int, campus: Optional[int])
     db_user = sender.get_db_user()
     locale = sender.get_locale()
 
-    if not db_user.is_feature_active('menu_subscription'):
+    if not sender.is_feature_active('menu_subscription'):
         sender.send_message(messages.TextMessage(trigger, localisation.REPLY_FEATURE_UNAVAILABLE(locale)))
         return None
 
