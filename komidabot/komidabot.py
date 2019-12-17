@@ -358,6 +358,7 @@ def update_menus(trigger: 'Optional[triggers.Trigger]', *campuses: str, dates: '
         if not dates:
             today = datetime.datetime.today().date()
             dates = [
+                today,
                 today + datetime.timedelta(days=1),
                 today + datetime.timedelta(days=2),
                 today + datetime.timedelta(days=3),

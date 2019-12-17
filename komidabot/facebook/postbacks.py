@@ -84,6 +84,7 @@ def settings_subscriptions(trigger: triggers.Trigger):
         buttons = [postback_button(localisation.UNSUBSCRIBE(locale), set_subscription(1, None))]
 
         for campus in campuses:
+            # TODO: Indicate currently active option
             buttons.append(postback_button(campus.name, set_subscription(day.value, campus.id)))
 
         for i in range(0, len(buttons), 3):
