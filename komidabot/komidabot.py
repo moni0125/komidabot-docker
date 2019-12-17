@@ -61,7 +61,7 @@ class Komidabot(Bot):
         #
         #         bot.update_menus(None)
 
-        @self.scheduler.scheduled_job(CronTrigger(hour=1, minute=0, second=0),  # Run every day to find changes
+        @self.scheduler.scheduled_job(CronTrigger(minute=0, second=0),  # Run every hour to find changes
                                       args=(the_app.app_context, self),
                                       id='menu_update', name='Hourly update of the menus')
         def menu_update(context, bot: 'Komidabot'):
