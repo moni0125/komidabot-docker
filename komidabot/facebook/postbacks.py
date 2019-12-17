@@ -98,6 +98,8 @@ def settings_subscriptions(trigger: triggers.Trigger):
 
         elements_list[-1].extend(elements)
 
+    sender.send_message(messages.TextMessage(trigger, localisation.REPLY_EXPERIMENTAL_DISPLAY(locale)))
+
     for elements in elements_list:
         payload = {
             'template_type': 'generic',
