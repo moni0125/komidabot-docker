@@ -524,8 +524,9 @@ class AppUser(db.Model):
 
     def set_day_active(self, day: Day, active: bool):
         sub = UserSubscription.get_for_user(self, day)
-        if sub is None and active:
-            raise ValueError('Cannot set subscription active if there is no campus set')
+        if sub is None:
+            if active:
+                raise ValueError('Cannot set subscription active if there is no campus set')
         else:
             sub.active = active
 
@@ -566,6 +567,15 @@ class AppUser(db.Model):
         return q.join(AppUser.subscriptions).filter(db.and_(UserSubscription.day == day,
                                                             UserSubscription.active == True
                                                             )).order_by(AppUser.provider, AppUser.internal_id).all()
+
+    @staticmethod
+    def find_users_with_no_subscriptions(provider=None) -> 'List[AppUser]':
+        q = AppUser.query
+        if provider:
+            q = q.filter_by(provider=provider)
+
+        return q.filter(~UserSubscription.query.filter(UserSubscription.user_id == AppUser.id).exists()) \
+            .order_by(AppUser.provider, AppUser.internal_id).all()
 
     @staticmethod
     def find_by_id(provider: str, internal_id: str) -> 'Optional[AppUser]':
