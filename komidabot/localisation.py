@@ -1,7 +1,9 @@
 import random
 
+from typing import Callable
 
-def localisation_definition(name, obj, fallback='en'):
+
+def localisation_definition(name, obj, fallback='en') -> Callable[[str], str]:
     for key, value in obj.copy().items():
         if isinstance(key, tuple):
             del obj[key]

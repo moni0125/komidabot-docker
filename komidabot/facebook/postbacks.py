@@ -79,7 +79,7 @@ def settings_subscriptions(trigger: triggers.Trigger):
     for day in models.week_days:
         elements = []
 
-        title = localisation.DAYS[day.value - 1](locale)
+        title = localisation.DAYS[day.value - 1](locale).capitalize()
         image = 'https://komidabot.heldplayer.blue/images/{}.png'.format(day.name.lower())
         buttons = [postback_button(localisation.UNSUBSCRIBE(locale), set_subscription(1, None))]
 
