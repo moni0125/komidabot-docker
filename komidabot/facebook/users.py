@@ -30,7 +30,8 @@ class UserManager(users.UserManager):
         if app.config.get('TESTING') or app.config.get('DISABLED'):
             return
 
-        data = postbacks.generate_postback_data(not app.config.get('PRODUCTION'))
+        # data = postbacks.generate_postback_data(not app.config.get('PRODUCTION'))
+        data = postbacks.generate_postback_data(True)
         app.bot_interfaces['facebook']['api_interface'].post_profile_api(data)
 
     def get_identifier(self):
