@@ -1,7 +1,9 @@
 import atexit
 import datetime
 import threading
+import time
 from typing import Dict, List, Optional
+from collections import deque
 
 from apscheduler.executors.pool import ThreadPoolExecutor
 from apscheduler.jobstores.memory import MemoryJobStore
@@ -279,8 +281,24 @@ class Komidabot(Bot):
 
 
 def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
-    # TODO: Ensure we don't send messages too quickly
-    #       https://developers.facebook.com/docs/messenger-platform/send-messages/high-mps
+    # noinspection PyPep8Naming
+    MAX_MESSAGES_PER_SECOND = 20
+    last_times = deque()
+
+    # Code for ensuring we don't send too many messages per second
+    # See: https://developers.facebook.com/docs/messenger-platform/send-messages/high-mps
+    def wait():
+        if len(last_times) < MAX_MESSAGES_PER_SECOND:
+            last_times.append(datetime.datetime.now())
+            return
+
+        delta = (datetime.datetime.now() - last_times.popleft()).total_seconds()
+
+        if delta < 1:
+            time.sleep(1.0 - delta)
+
+        last_times.append(datetime.datetime.now())
+
     date = trigger.date or datetime.datetime.now().date()
     day = Day(date.isoweekday())
 
@@ -292,6 +310,27 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
         print('Sending out subscription for {} ({})'.format(date, day.name), flush=True)
 
     user_manager = app.user_manager  # type: users.UserManager
+    unsubscribed_users = user_manager.get_users_with_no_subscriptions()
+    changed = False
+
+    # TODO: This should only be a temporary thing
+    for user in unsubscribed_users:
+        if not user.is_feature_active('menu_subscription'):
+            continue
+
+        db_user = user.get_db_user()
+        if db_user.onboarding_done:
+            continue
+
+        wait()  # Ensure we don't send too many messages at once
+        user.send_message(messages.TextMessage(trigger, localisation.MESSAGE_NO_SUBSCRIPTIONS(user.get_locale())))
+        db_user.onboarding_done = True
+        changed = True
+
+    if changed:
+        db.session.commit()
+        changed = False
+
     subscribed_users = user_manager.get_subscribed_users(day)
     subscriptions = dict()  # type: Dict[Campus, Dict[str, List[users.User]]]
 
@@ -315,6 +354,14 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
         if not campus.active:
             continue
 
+        # TODO: This should only be a temporary thing
+        db_user = user.get_db_user()
+        if not db_user.onboarding_done:
+            wait()  # Ensure we don't send too many messages at once
+            user.send_message(messages.TextMessage(trigger, localisation.MESSAGE_FIRST_SUBSCRIPTION(user.get_locale())))
+            db_user.onboarding_done = True
+            changed = True
+
         language = user.get_locale() or 'nl_BE'
 
         if campus not in subscriptions:
@@ -324,6 +371,9 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
             subscriptions[campus][language] = list()
 
         subscriptions[campus][language].append(user)
+
+    if changed:
+        db.session.commit()
 
     for campus, languages in subscriptions.items():
         for language, sub_users in languages.items():
@@ -340,6 +390,8 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
                 continue
 
             for user in sub_users:
+                wait()  # Ensure we don't send too many messages at once
+
                 if verbose:
                     print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
                           flush=True)

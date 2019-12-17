@@ -466,6 +466,10 @@ class UserSubscription(db.Model):
         self.active = active
 
     @staticmethod
+    def get_all_for_user(user: 'AppUser') -> 'List[UserSubscription]':
+        return UserSubscription.query.filter_by(user_id=user.id).all()
+
+    @staticmethod
     def get_for_user(user: 'AppUser', day: Day) -> 'Optional[UserSubscription]':
         return UserSubscription.query.filter_by(user_id=user.id, day=day).first()
 
@@ -568,6 +572,7 @@ class AppUser(db.Model):
                                                             UserSubscription.active == True
                                                             )).order_by(AppUser.provider, AppUser.internal_id).all()
 
+    # TODO: This should only be a temporary thing
     @staticmethod
     def find_users_with_no_subscriptions(provider=None) -> 'List[AppUser]':
         q = AppUser.query

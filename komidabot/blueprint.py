@@ -180,6 +180,13 @@ def _do_handle_facebook_webhook(event, user: User, app):
             elif 'postback' in event:
                 print(pprint.pformat(event, indent=2), flush=True)
 
+                if app.config.get('DISABLED'):
+                    if not user.is_admin():
+                        if triggers.AtAdminAspect not in trigger:
+                            user.send_message(TextMessage(trigger, localisation.DOWN_FOR_MAINTENANCE(locale)))
+
+                        return
+
                 postback = event['postback']  # type: dict
 
                 payload = postback.get('payload')

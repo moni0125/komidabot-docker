@@ -66,11 +66,14 @@ def settings_subscriptions(trigger: triggers.Trigger):
     if triggers.SenderAspect not in trigger:
         raise ValueError('Trigger missing SenderAspect')
     sender = trigger[triggers.SenderAspect].sender
+    db_user = sender.get_db_user()
     locale = sender.get_locale()
 
     if not sender.is_feature_active('menu_subscription'):
         sender.send_message(messages.TextMessage(trigger, localisation.REPLY_FEATURE_UNAVAILABLE(locale)))
         return None
+
+    current_subscriptions = {item.day: item.campus_id for item in models.UserSubscription.get_all_for_user(db_user)}
 
     elements_list = [[]]
 
@@ -78,14 +81,23 @@ def settings_subscriptions(trigger: triggers.Trigger):
 
     for day in models.week_days:
         elements = []
+        current = current_subscriptions.get(day, None)
 
         title = localisation.DAYS[day.value - 1](locale).capitalize()
         image = 'https://komidabot.heldplayer.blue/images/{}.png'.format(day.name.lower())
-        buttons = [postback_button(localisation.UNSUBSCRIBE(locale), set_subscription(1, None))]
+        buttons = []
+        if current is None:
+            buttons.append(postback_button(localisation.UNSUBSCRIBE(locale) +
+                                           localisation.SELECTED(locale), set_subscription(day.value, None)))
+        else:
+            buttons.append(postback_button(localisation.UNSUBSCRIBE(locale), set_subscription(day.value, None)))
 
         for campus in campuses:
-            # TODO: Indicate currently active option
-            buttons.append(postback_button(campus.name, set_subscription(day.value, campus.id)))
+            if current == campus.id:
+                buttons.append(postback_button(campus.name +
+                                               localisation.SELECTED(locale), set_subscription(day.value, campus.id)))
+            else:
+                buttons.append(postback_button(campus.name, set_subscription(day.value, campus.id)))
 
         for i in range(0, len(buttons), 3):
             elements.append({
