@@ -104,7 +104,7 @@ def settings_subscriptions(trigger: triggers.Trigger):
         for i in range(0, len(buttons), 3):
             elements.append({
                 'title': title if i == 0 else (title + localisation.CONTINUATION(locale)),
-                'image_url': image,
+                # 'image_url': image,
                 'buttons': buttons[i:i + 3]
             })
 
