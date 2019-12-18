@@ -87,17 +87,19 @@ def settings_subscriptions(trigger: triggers.Trigger):
         image = 'https://komidabot.heldplayer.blue/images/{}.png'.format(day.name.lower())
         buttons = []
         if current is None:
-            buttons.append(postback_button(localisation.UNSUBSCRIBE(locale) +
-                                           localisation.SELECTED(locale), set_subscription(day.value, None)))
+            buttons.append(postback_button(localisation.UNSUBSCRIBE(locale) + ' (*)',
+                                           set_subscription(day.value, None)))
         else:
-            buttons.append(postback_button(localisation.UNSUBSCRIBE(locale), set_subscription(day.value, None)))
+            buttons.append(postback_button(localisation.UNSUBSCRIBE(locale),
+                                           set_subscription(day.value, None)))
 
         for campus in campuses:
             if current == campus.id:
-                buttons.append(postback_button(campus.name +
-                                               localisation.SELECTED(locale), set_subscription(day.value, campus.id)))
+                buttons.append(postback_button(campus.name + ' (*)',
+                                               set_subscription(day.value, campus.id)))
             else:
-                buttons.append(postback_button(campus.name, set_subscription(day.value, campus.id)))
+                buttons.append(postback_button(campus.name,
+                                               set_subscription(day.value, campus.id)))
 
         for i in range(0, len(buttons), 3):
             elements.append({

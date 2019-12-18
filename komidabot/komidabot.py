@@ -343,6 +343,14 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
                 print('User {} not eligible for subscription'.format(user.id), flush=True)
             continue
 
+        # TODO: This should only be a temporary thing
+        db_user = user.get_db_user()
+        if not db_user.onboarding_done:
+            wait()  # Ensure we don't send too many messages at once
+            user.send_message(messages.TextMessage(trigger, localisation.MESSAGE_FIRST_SUBSCRIPTION(user.get_locale())))
+            db_user.onboarding_done = True
+            changed = True
+
         subscription = user.get_subscription_for_day(date)
         if subscription is None:
             continue
@@ -353,14 +361,6 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
 
         if not campus.active:
             continue
-
-        # TODO: This should only be a temporary thing
-        db_user = user.get_db_user()
-        if not db_user.onboarding_done:
-            wait()  # Ensure we don't send too many messages at once
-            user.send_message(messages.TextMessage(trigger, localisation.MESSAGE_FIRST_SUBSCRIPTION(user.get_locale())))
-            db_user.onboarding_done = True
-            changed = True
 
         language = user.get_locale() or 'nl_BE'
 
