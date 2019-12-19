@@ -1,5 +1,5 @@
 import json
-from typing import Callable, Optional
+from typing import Callable, Dict, Optional
 
 import komidabot.facebook.triggers as triggers
 import komidabot.facebook.messages as fb_messages
@@ -73,7 +73,8 @@ def settings_subscriptions(trigger: triggers.Trigger):
         sender.send_message(messages.TextMessage(trigger, localisation.REPLY_FEATURE_UNAVAILABLE(locale)))
         return None
 
-    current_subscriptions = {item.day: item.campus_id for item in models.UserSubscription.get_all_for_user(db_user)}
+    current_subscriptions = {item.day: (item.campus_id if item.active else None) for item in
+                             models.UserSubscription.get_all_for_user(db_user)}  # type: Dict[models.Day, int]
 
     elements_list = [[]]
 
