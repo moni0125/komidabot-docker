@@ -221,6 +221,10 @@ class ExternalMenu:
                             course_obj.add_name('en_US', name_en.strip())
                         menu_contents.append(course_obj)
 
+                    if not menu_contents:
+                        # If no menu contents (all are disabled), don't add a menu item
+                        continue
+
                     has_pasta = has_pasta or (COURSE_LOGOS['PASTA'] in combined_logos)
 
                     if COURSE_LOGOS['GRILL'] in combined_logos:
