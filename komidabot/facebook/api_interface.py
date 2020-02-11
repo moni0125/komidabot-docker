@@ -1,9 +1,10 @@
 import json
-import requests
 import threading
 
+import requests
 from cachetools import cached, TTLCache
 
+from komidabot.app import get_app
 from komidabot.util import check_exceptions
 
 BASE_ENDPOINT = 'https://graph.facebook.com/'
@@ -34,8 +35,17 @@ class ApiInterface:
         response = self.session.post(BASE_ENDPOINT + API_VERSION + SEND_API, params=self.base_parameters,
                                      headers=self.headers_post, data=json.dumps(data))
 
-        # print('Received {} for request {}'.format(response.status_code, response.request.body), flush=True)
-        # print(response.content, flush=True)
+        app = get_app()
+
+        verbose = not app.config.get('TESTING') and not app.config.get('PRODUCTION')
+
+        if verbose:
+            print('Received {} for request {}'.format(response.status_code, response.request.body), flush=True)
+            print(response.content, flush=True)
+
+        # response.raise_for_status()
+
+        # return True
 
         return response.status_code == 200
 
@@ -44,8 +54,17 @@ class ApiInterface:
         response = self.session.post(BASE_ENDPOINT + API_VERSION + PROFILE_API, params=self.base_parameters,
                                      headers=self.headers_post, data=json.dumps(data))
 
-        print('Received {} for request {}'.format(response.status_code, response.request.body), flush=True)
-        print(response.content, flush=True)
+        app = get_app()
+
+        verbose = not app.config.get('TESTING') and not app.config.get('PRODUCTION')
+
+        if verbose:
+            print('Received {} for request {}'.format(response.status_code, response.request.body), flush=True)
+            print(response.content, flush=True)
+
+        # response.raise_for_status()
+
+        # return True
 
         return response.status_code == 200
 

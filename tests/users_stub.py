@@ -14,7 +14,7 @@ class UserManager(users.UserManager):
 
         self.message_handler = MessageHandler()
 
-    def add_user(self, internal_id: str, locale: str = 'nl_BE') -> 'User':
+    def add_user(self, internal_id: str, locale: str = 'nl_BE', onboarding_done=True) -> 'User':
         user_id = users.UserId(internal_id, PROVIDER_ID)
 
         if user_id in self.users:
@@ -23,7 +23,8 @@ class UserManager(users.UserManager):
         user = User(self, user_id.id, locale)
         self.users[user_id] = user
 
-        AppUser.create(PROVIDER_ID, internal_id, user.get_locale())
+        db_user = AppUser.create(PROVIDER_ID, internal_id, user.get_locale())
+        db_user.onboarding_done = onboarding_done
 
         return user
 
