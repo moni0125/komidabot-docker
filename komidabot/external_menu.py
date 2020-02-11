@@ -105,8 +105,14 @@ class ExternalMenuItem:
 
         self.price_staff = None
 
-    def get_combined_text(self):
-        result = ', '.join(elem.name['nl_BE'] for elem in self.courses)
+    def get_combined_text(self, language='nl_BE'):
+        for elem in self.courses:
+            if language not in elem.name:
+                return None  # No official translation available
+
+        result = ', '.join(elem.name[language] for elem in self.courses)
+
+        print(self.courses)
 
         # Return string with capitalized first letter
         return result[0].upper() + result[1:]
