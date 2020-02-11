@@ -225,9 +225,9 @@ def generate_postback_data(include_persistent_menu: bool, production: bool):
     if include_persistent_menu:
         if production:
             subscription_button = postback_button("Manage subscription", settings_subscriptions())
+            # subscription_button = url_button("Manage subscription", 'https://komidabot.heldplayer.blue/fb-web/prod')
         else:
-            subscription_button = url_button("Manage subscription",
-                                             'https://komidabot.heldplayer.blue/fb-web/?dev=true')
+            subscription_button = url_button("Manage subscription", 'https://komidabot.heldplayer.blue/fb-web/dev')
 
         # TODO: Once per-user persistent menus are available, use them
         #       https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu/

@@ -112,7 +112,7 @@ class ExternalMenuItem:
 
         result = ', '.join(elem.name[language] for elem in self.courses)
 
-        print(self.courses)
+        # print(self.courses)
 
         # Return string with capitalized first letter
         return result[0].upper() + result[1:]
