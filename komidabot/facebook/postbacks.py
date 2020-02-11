@@ -203,7 +203,7 @@ def set_language(trigger: triggers.Trigger, language: str, display: str):
     return None
 
 
-def generate_postback_data(include_persistent_menu: bool, use_subscription_link: bool):
+def generate_postback_data(include_persistent_menu: bool, production: bool):
     result = dict()
     result['get_started'] = {
         'payload': get_started(),
@@ -223,6 +223,12 @@ def generate_postback_data(include_persistent_menu: bool, use_subscription_link:
         },
     ]
     if include_persistent_menu:
+        if production:
+            subscription_button = postback_button("Manage subscription", settings_subscriptions())
+        else:
+            subscription_button = url_button("Manage subscription",
+                                             'https://komidabot.heldplayer.blue/fb-web/?dev=true')
+
         # TODO: Once per-user persistent menus are available, use them
         #       https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu/
         result['persistent_menu'] = [
@@ -231,10 +237,7 @@ def generate_postback_data(include_persistent_menu: bool, use_subscription_link:
                 'composer_input_disabled': False,
                 'call_to_actions': [
                     postback_button("Today's menu", menu_today()),
-                    (url_button("Manage subscription", 'https://komidabot.heldplayer.blue/fb-web/')
-                     if use_subscription_link else
-                     postback_button("Manage subscription", settings_subscriptions())
-                     ),
+                    subscription_button,
                     postback_button("Change language", settings_language()),
                 ],
             },
