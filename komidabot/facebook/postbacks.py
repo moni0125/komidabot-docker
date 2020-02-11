@@ -231,9 +231,9 @@ def generate_postback_data(include_persistent_menu: bool, use_subscription_link:
                 'composer_input_disabled': False,
                 'call_to_actions': [
                     postback_button("Today's menu", menu_today()),
-                    (postback_button("Manage subscription", settings_subscriptions())
+                    (url_button("Manage subscription", 'https://komidabot.heldplayer.blue/fb-web/')
                      if use_subscription_link else
-                     url_button("Manage subscription", 'https://komidabot.heldplayer.blue/fb-web/')
+                     postback_button("Manage subscription", settings_subscriptions())
                      ),
                     postback_button("Change language", settings_language()),
                 ],
