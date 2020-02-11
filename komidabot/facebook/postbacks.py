@@ -1,11 +1,11 @@
 import json
 from typing import Callable, Dict, Optional
 
-import komidabot.facebook.triggers as triggers
 import komidabot.facebook.messages as fb_messages
+import komidabot.facebook.triggers as triggers
+import komidabot.localisation as localisation
 import komidabot.messages as messages
 import komidabot.models as models
-import komidabot.localisation as localisation
 from extensions import db
 
 postback_mappings = {}
@@ -47,6 +47,16 @@ def postback(name: str = None):
 
 def postback_button(title: str, payload: str):
     return {'type': 'postback', 'title': title, 'payload': payload}
+
+
+def url_button(title: str, url: str):
+    return {
+        'type': 'web_url',
+        'url': url,
+        'title': title,
+        'webview_height_ratio': 'full',
+        'messenger_extensions': 'true',
+    }
 
 
 @postback(name='komidabot:get_started')
@@ -193,7 +203,7 @@ def set_language(trigger: triggers.Trigger, language: str, display: str):
     return None
 
 
-def generate_postback_data(include_persistent_menu: bool):
+def generate_postback_data(include_persistent_menu: bool, use_subscription_link: bool):
     result = dict()
     result['get_started'] = {
         'payload': get_started(),
@@ -221,7 +231,10 @@ def generate_postback_data(include_persistent_menu: bool):
                 'composer_input_disabled': False,
                 'call_to_actions': [
                     postback_button("Today's menu", menu_today()),
-                    postback_button("Manage subscription", settings_subscriptions()),
+                    (postback_button("Manage subscription", settings_subscriptions())
+                     if use_subscription_link else
+                     url_button("Manage subscription", 'https://komidabot.heldplayer.blue/fb-web/')
+                     ),
                     postback_button("Change language", settings_language()),
                 ],
             },
