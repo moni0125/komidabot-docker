@@ -69,6 +69,20 @@ class User:  # TODO: This probably needs more methods
 
         return user.get_campus(day)
 
+    def set_campus_for_day(self, campus: models.Campus, date: datetime.date):
+        user = self.get_db_user()
+        if user is None:
+            return
+
+        day = models.Day(date.isoweekday())
+        sub = user.get_subscription(day)
+
+        if sub is None:
+            # Make new subscription and set it to enabled by default
+            user.set_campus(day, campus, True)
+        else:
+            user.set_campus(day, campus)
+
     def get_subscription_for_day(self, date: datetime.date) -> 'Optional[models.UserSubscription]':
         user = self.get_db_user()
         if user is None:

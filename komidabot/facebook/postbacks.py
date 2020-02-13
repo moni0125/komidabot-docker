@@ -224,12 +224,19 @@ def generate_postback_data(include_persistent_menu: bool, production: bool):
     ]
     if include_persistent_menu:
         if production:
-            subscription_button = postback_button("Manage subscription", settings_subscriptions())
-            # subscription_button = url_button("Manage subscription",
-            #                                  'https://komidabot.heldplayer.blue/fb-web/?dev=false')
+            persistent_menu = [
+                postback_button("Today's menu", menu_today()),
+                postback_button("Manage subscription", settings_subscriptions()),
+                # url_button("Manage subscription", 'https://komidabot.heldplayer.blue/fb-web/?dev=false'),
+                postback_button("Change language", settings_language()),
+            ]
         else:
-            subscription_button = url_button("Manage subscription",
-                                             'https://komidabot.heldplayer.blue/fb-web/?dev=true')
+            persistent_menu = [
+                # postback_button("Today's menu", menu_today()),
+                postback_button("Manage subscription", settings_subscriptions()),
+                url_button("Manage subscription", 'https://komidabot.heldplayer.blue/fb-web/?dev=true'),
+                postback_button("Change language", settings_language()),
+            ]
 
         # TODO: Once per-user persistent menus are available, use them
         #       https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu/
@@ -237,11 +244,7 @@ def generate_postback_data(include_persistent_menu: bool, production: bool):
             {
                 'locale': 'default',
                 'composer_input_disabled': False,
-                'call_to_actions': [
-                    postback_button("Today's menu", menu_today()),
-                    subscription_button,
-                    postback_button("Change language", settings_language()),
-                ],
+                'call_to_actions': persistent_menu,
             },
         ]
 

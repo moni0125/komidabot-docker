@@ -2,8 +2,8 @@ import atexit
 import datetime
 import threading
 import time
-from typing import Dict, List, Optional
 from collections import deque
+from typing import Dict, List, Optional
 
 from apscheduler.executors.pool import ThreadPoolExecutor
 from apscheduler.jobstores.memory import MemoryJobStore
@@ -188,10 +188,12 @@ class Komidabot(Bot):
                 default_campus = False
 
                 if isinstance(trigger, triggers.TextTrigger):
+                    text = trigger.text.lower()
                     for campus in campuses:
-                        # FIXME: This should use keywords instead of the short name
-                        if trigger.text.lower().count(campus.short_name) > 0:
-                            requested_campuses.append(campus)
+                        for kw in campus.keywords:
+                            if text.count(kw) > 0:
+                                requested_campuses.append(campus)
+                                break  # Prevent the same campus from being added multiple times
 
                 if len(requested_campuses) > 1:
                     sender.send_message(messages.TextMessage(trigger, localisation.REPLY_TOO_MANY_CAMPUSES(locale)))
@@ -231,6 +233,9 @@ class Komidabot(Bot):
                 #         return
                 #
                 #     # User did not send a text message, so we'll continue anyway
+
+                if not default_campus:
+                    sender.set_campus_for_day(campus, date)
 
                 closed = ClosingDays.find_is_closed(campus, date)
 
