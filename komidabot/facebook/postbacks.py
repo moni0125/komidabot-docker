@@ -227,14 +227,14 @@ def generate_postback_data(include_persistent_menu: bool, production: bool):
             persistent_menu = [
                 postback_button("Today's menu", menu_today()),
                 postback_button("Manage subscription", settings_subscriptions()),
-                # url_button("Manage subscription", 'https://komidabot.heldplayer.blue/fb-web/?dev=false'),
+                # url_button("Manage subscription", 'https://komidabot.heldplayer.blue/?dev=false'),
                 postback_button("Change language", settings_language()),
             ]
         else:
             persistent_menu = [
                 # postback_button("Today's menu", menu_today()),
                 postback_button("Manage subscription", settings_subscriptions()),
-                url_button("Manage subscription", 'https://komidabot.heldplayer.blue/fb-web/?dev=true'),
+                url_button("Manage subscription", 'https://komidabot.heldplayer.blue/?dev=true'),
                 postback_button("Change language", settings_language()),
             ]
 
