@@ -190,7 +190,10 @@ class Komidabot(Bot):
                 if isinstance(trigger, triggers.TextTrigger):
                     text = trigger.text.lower()
                     for campus in campuses:
-                        for kw in campus.keywords:
+                        if not campus.active:
+                            continue
+
+                        for kw in campus.get_keywords():
                             if text.count(kw) > 0:
                                 requested_campuses.append(campus)
                                 break  # Prevent the same campus from being added multiple times
@@ -236,6 +239,7 @@ class Komidabot(Bot):
 
                 if not default_campus:
                     sender.set_campus_for_day(campus, date)
+                    db.session.commit()
 
                 closed = ClosingDays.find_is_closed(campus, date)
 
