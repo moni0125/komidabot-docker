@@ -178,7 +178,7 @@ def _do_handle_facebook_webhook(event, user: User, app):
                     # sender_obj.send_text_message('Note: The bot is currently disabled')
 
             elif 'postback' in event:
-                print(pprint.pformat(event, indent=2), flush=True)
+                # print(pprint.pformat(event, indent=2), flush=True)
 
                 if app.config.get('DISABLED'):
                     if not user.is_admin():
