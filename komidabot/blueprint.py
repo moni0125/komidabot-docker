@@ -10,11 +10,12 @@ from typing import Dict
 
 from flask import Blueprint, abort, request
 
+import komidabot.facebook.postbacks as postbacks
 import komidabot.facebook.triggers as triggers
 import komidabot.localisation as localisation
-import komidabot.facebook.postbacks as postbacks
 from extensions import db
 from komidabot.app import get_app
+from komidabot.debug.state import DebuggableException
 from komidabot.facebook.users import User as FacebookUser
 from komidabot.komidabot import Bot
 from komidabot.messages import TextMessage
@@ -97,6 +98,11 @@ def handle_facebook_webhook():
         print(pprint.pformat(data, indent=2), flush=True)
 
         return abort(400)
+    except DebuggableException as e:
+        app = get_app()
+        app.bot.notify_error(e)
+
+        e.print_info(app.logger)
     except Exception as e:
         try:
             get_app().bot.notify_error(e)
@@ -222,6 +228,11 @@ def _do_handle_facebook_webhook(event, user: User, app):
 
             if needs_commit:
                 db.session.commit()
+        except DebuggableException as e:
+            app = get_app()
+            app.bot.notify_error(e)
+
+            e.print_info(app.logger)
         except Exception as e:
             try:
                 app.logger.error('Error while handling event:\n{}'.format(pprint.pformat(event, indent=2)))

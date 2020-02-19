@@ -20,6 +20,7 @@ import komidabot.users as users
 from extensions import db
 from komidabot.app import get_app
 from komidabot.bot import Bot
+from komidabot.debug.state import DebuggableException, ProgramStateTrace, SimpleProgramState
 from komidabot.models import Campus, ClosingDays, Day, Menu, Translatable
 from komidabot.models import create_standard_values, import_dump, recreate_db
 
@@ -81,6 +82,10 @@ class Komidabot(Bot):
                     ]
 
                     update_menus(None, dates=dates)
+                except DebuggableException as e:
+                    bot.notify_error(e)
+
+                    e.print_info(get_app().logger)
                 except Exception as e:
                     bot.notify_error(e)
 
@@ -408,48 +413,52 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
 
 
 def update_menus(trigger: 'Optional[triggers.Trigger]', *campuses: str, dates: 'List[datetime.date]' = None):
+    debug_state = ProgramStateTrace()
+
     campus_list = Campus.get_all_active()
 
     for campus in campus_list:
         if len(campuses) > 0 and campus.short_name not in campuses:
             continue
 
-        fetcher = external_menu.ExternalMenu()
+        with debug_state.state(SimpleProgramState('Campus menu update', {'campus': campus.short_name})):
+            fetcher = external_menu.ExternalMenu()
 
-        if not dates:
-            today = datetime.datetime.today().date()
-            dates = [
-                today,
-                today + datetime.timedelta(days=1),
-                today + datetime.timedelta(days=2),
-                today + datetime.timedelta(days=3),
-                today + datetime.timedelta(days=4),
-                today + datetime.timedelta(days=5),
-                today + datetime.timedelta(days=6),
-                today + datetime.timedelta(days=7),
-            ]
+            if not dates:
+                today = datetime.datetime.today().date()
+                dates = [
+                    today,
+                    today + datetime.timedelta(days=1),
+                    today + datetime.timedelta(days=2),
+                    today + datetime.timedelta(days=3),
+                    today + datetime.timedelta(days=4),
+                    today + datetime.timedelta(days=5),
+                    today + datetime.timedelta(days=6),
+                    today + datetime.timedelta(days=7),
+                ]
 
-        for date in dates:
-            if date.isoweekday() in [6, 7]:
-                continue
-            fetcher.add_to_lookup(campus, date)
+            for date in dates:
+                if date.isoweekday() in [6, 7]:
+                    continue
+                fetcher.add_to_lookup(campus, date)
 
-        result = fetcher.lookup_menus()
+            result = fetcher.lookup_menus()
 
-        for (_, date), items in result.items():
-            if len(items) > 0:
-                menu = Menu.get_menu(campus, date)
-                new_menu = Menu.create(campus, date, add_to_db=False)
+            for (_, date), items in result.items():
+                with debug_state.state(SimpleProgramState('Day update', {'date': str(date)})):
+                    if len(items) > 0:
+                        menu = Menu.get_menu(campus, date)
+                        new_menu = Menu.create(campus, date, add_to_db=False)
 
-                for item in items:
-                    translatable, translation = Translatable.get_or_create(item.get_combined_text(), 'nl_NL')
+                        for item in items:
+                            translatable, translation = Translatable.get_or_create(item.get_combined_text(), 'nl_NL')
 
-                    new_menu.add_menu_item(translatable, item.food_type, item.get_student_price(),
-                                           item.get_staff_price())
+                            new_menu.add_menu_item(translatable, item.food_type, item.get_student_price(),
+                                                   item.get_staff_price())
 
-                if menu is not None:
-                    menu.update(new_menu)
-                else:
-                    db.session.add(new_menu)
+                        if menu is not None:
+                            menu.update(new_menu)
+                        else:
+                            db.session.add(new_menu)
 
     db.session.commit()

@@ -32,8 +32,12 @@ def get_list_diff(old_list: List[T], new_list: List[T]) -> Tuple[List[T], List[T
     added = [item for item in new_list if item not in unchanged]
     removed = [item for item in old_list if item not in unchanged]
 
-    assert len(unchanged) + len(removed) == len(old_list)
-    assert len(unchanged) + len(added) == len(new_list)
+    assert len(unchanged) + len(removed) == len(old_list), 'List difference incorrect? {} + {} != {}'.format(unchanged,
+                                                                                                             removed,
+                                                                                                             old_list)
+    assert len(unchanged) + len(added) == len(new_list), 'List difference incorrect? {} + {} != {}'.format(unchanged,
+                                                                                                           added,
+                                                                                                           new_list)
 
     return unchanged, added, removed
 

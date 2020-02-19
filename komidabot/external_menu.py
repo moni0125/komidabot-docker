@@ -1,11 +1,12 @@
 import datetime
 import json
 from decimal import Decimal
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 
 import requests
 
 import komidabot.models as models
+from komidabot.debug.state import DebuggableException, ProgramStateTrace, SimpleProgramState
 
 BASE_ENDPOINT = 'https://restickets.uantwerpen.be/'
 MENU_API = '{endpoint}api/GetMenuByDate/{campus}/{date}'
@@ -160,128 +161,127 @@ class ExternalMenu:
         self.lookups.append((campus, date))
 
     def lookup_menus(self) -> 'Dict[Tuple[models.Campus, datetime.date], List[ExternalMenuItem]]':
+        debug_state = ProgramStateTrace()
         result = dict()
 
         for campus, date in self.lookups:
-            try:
+            # Replaced try ... except with context manager
+            # try:
+            with debug_state.state(SimpleProgramState('Lookup menu', {'campus': campus.short_name, 'date': str(date)})):
                 url = MENU_API.format(endpoint=BASE_ENDPOINT, campus=campus.external_id, date=date.strftime('%Y-%m-%d'))
 
                 response = self.session.get(url, headers=API_GET_HEADERS)
-                response.raise_for_status()
+                if 400 <= response.status_code < 500:
+                    raise DebuggableException('Client error on HTTP request')
+                if 500 <= response.status_code < 600:
+                    raise DebuggableException('Server error on HTTP request')
 
                 try:
                     data = json.loads(response.text)
                 except json.decoder.JSONDecodeError:
+                    # If we fail to decode JSON, this probably means we got an empty response back
+                    # This can happen if we try to look up the menu on Sundays or Saturdays
                     continue
 
                 # print(data)
 
                 if data['restaurantId'] != campus.external_id:
-                    raise RuntimeError('Got menu for different restaurant!')
+                    raise DebuggableException('Got menu for different restaurant')
 
                 items = []
 
                 for item in data['menuItems']:
-                    enabled = item['enabled']
-                    sort_order = item['sortorder']
-                    menu_contents = []
+                    with debug_state.state(SimpleProgramState('Menu item', item)):
+                        enabled = item['enabled']
+                        sort_order = item['sortorder']
+                        menu_contents = []
 
-                    if not enabled:
-                        continue
-
-                    combined_logos = []
-                    calculate_multi_price = False
-
-                    has_pasta = False
-
-                    for item_content in item['menuItemContents']:
-                        course = item_content['course']
-                        enabled = course['enabled']
-                        deleted = course['deleted']
-                        course_sort_order = item_content['sortOrder']
-
-                        if not enabled or deleted:
+                        if not enabled:
                             continue
 
-                        name_nl = course['dispNameNl']
-                        name_en = course['dispNameEn']
-                        main_course = course['maincourse']
-                        price = course['price']
-                        calculate_multi_price = calculate_multi_price or course['calculatedMultiplePrices']
-                        fixed_price = course['fixedprice']
-                        fixed_multiple_prices = course['fixedMultiplePrices']
-                        show_first = course['showFirst']
+                        combined_logos = []
+                        calculate_multi_price = False
 
-                        combined_logos += [entry['courseLogoId'] for entry in course['course_CourseLogos']]
+                        has_pasta = False
 
-                        for pasta in ['spaghetti', 'tagliatelle', 'papardelle', 'bucatini', 'cannelloni', 'ravioli',
-                                      'tortellini', 'caramelle', 'penne', 'rigatoni', 'orecchiette', 'farfalle',
-                                      'caserecce', 'fusilli', 'pasta', ]:
-                            if pasta in name_nl.lower():
-                                has_pasta = True
-                                break
+                        for item_content in item['menuItemContents']:
+                            with debug_state.state(SimpleProgramState('Menu item ingredient', item_content)):
+                                course = item_content['course']
+                                enabled = course['enabled']
+                                deleted = course['deleted']
+                                course_sort_order = item_content['sortOrder']
 
-                        course_obj = ExternalCourse(course_sort_order, show_first, main_course, price)
-                        course_obj.add_name('nl_BE', name_nl.strip())
-                        if name_en:
-                            course_obj.add_name('en_US', name_en.strip())
-                        menu_contents.append(course_obj)
+                                if not enabled or deleted:
+                                    continue
 
-                    if not menu_contents:
-                        # If no menu contents (all are disabled), don't add a menu item
-                        continue
+                                name_nl = course['dispNameNl']
+                                name_en = course['dispNameEn']
+                                main_course = course['maincourse']
+                                price = course['price']
+                                calculate_multi_price = calculate_multi_price or course['calculatedMultiplePrices']
+                                fixed_price = course['fixedprice']
+                                fixed_multiple_prices = course['fixedMultiplePrices']
+                                show_first = course['showFirst']
 
-                    has_pasta = has_pasta or (COURSE_LOGOS['PASTA'] in combined_logos)
+                                combined_logos += [entry['courseLogoId'] for entry in course['course_CourseLogos']]
 
-                    if COURSE_LOGOS['GRILL'] in combined_logos:
-                        if COURSE_LOGOS['VEGGIE'] in combined_logos:
-                            # SPECIAL CASE! Sometimes the grill can be vegan, so we'll count this as VEGAN for now
-                            # TODO: Should a new food category "GRILL_VEGAN" be added?
-                            course_type = models.FoodType.VEGAN
+                                for pasta in ['spaghetti', 'tagliatelle', 'papardelle', 'bucatini', 'cannelloni',
+                                              'ravioli',
+                                              'tortellini', 'caramelle', 'penne', 'rigatoni', 'orecchiette', 'farfalle',
+                                              'caserecce', 'fusilli', 'pasta', ]:
+                                    if pasta in name_nl.lower():
+                                        has_pasta = True
+                                        break  # Found pasta in the name!
+
+                                course_obj = ExternalCourse(course_sort_order, show_first, main_course, price)
+                                course_obj.add_name('nl_BE', name_nl.strip())
+                                if name_en:
+                                    course_obj.add_name('en_US', name_en.strip())
+                                menu_contents.append(course_obj)
+
+                        if not menu_contents:
+                            # If no menu contents (all are disabled), don't add a menu item
+                            continue
+
+                        has_pasta = has_pasta or (COURSE_LOGOS['PASTA'] in combined_logos)
+
+                        if COURSE_LOGOS['GRILL'] in combined_logos:
+                            if COURSE_LOGOS['VEGGIE'] in combined_logos:
+                                # SPECIAL CASE! Sometimes the grill can be vegan, so we'll count this as VEGAN for now
+                                # TODO: Should a new food category "GRILL_VEGAN" be added?
+                                course_type = models.FoodType.VEGAN
+                            else:
+                                course_type = models.FoodType.GRILL
+                        elif COURSE_LOGOS['SOUP'] in combined_logos:
+                            course_type = models.FoodType.SOUP
+                        elif COURSE_LOGOS['SNACK'] in combined_logos:
+                            course_type = models.FoodType.SUB
+                        elif COURSE_LOGOS['SALAD'] in combined_logos:
+                            course_type = models.FoodType.SALAD
                         else:
-                            course_type = models.FoodType.GRILL
-                    elif COURSE_LOGOS['SOUP'] in combined_logos:
-                        course_type = models.FoodType.SOUP
-                    elif COURSE_LOGOS['SNACK'] in combined_logos:
-                        course_type = models.FoodType.SUB
-                    elif COURSE_LOGOS['SALAD'] in combined_logos:
-                        course_type = models.FoodType.SALAD
-                    else:
-                        vegan = (COURSE_LOGOS['VEGGIE'] in combined_logos) or (COURSE_LOGOS['VEGAN'] in combined_logos)
-                        if has_pasta:
-                            course_type = models.FoodType.PASTA_VEGAN if vegan else models.FoodType.PASTA_MEAT
-                        else:
-                            course_type = models.FoodType.VEGAN if vegan else models.FoodType.MEAT
+                            vegan = (COURSE_LOGOS['VEGGIE'] in combined_logos) or (
+                                    COURSE_LOGOS['VEGAN'] in combined_logos)
+                            if has_pasta:
+                                course_type = models.FoodType.PASTA_VEGAN if vegan else models.FoodType.PASTA_MEAT
+                            else:
+                                course_type = models.FoodType.VEGAN if vegan else models.FoodType.MEAT
 
-                    # If a sort order is set, use it instead
-                    # FIXME: Disabled because campuses without hot foods also use the sort order
-                    # if sort_order == 1:
-                    #     course_type = models.FoodType.VEGAN
-                    # elif sort_order == 2:
-                    #     course_type = models.FoodType.MEAT
-                    # elif sort_order == 3:
-                    #     course_type = models.FoodType.PASTA_VEGAN
-                    # elif sort_order == 4:
-                    #     course_type = models.FoodType.PASTA_MEAT
-                    # elif sort_order == 5:
-                    #     course_type = models.FoodType.GRILL
+                        menu_item = ExternalMenuItem(sort_order, course_type, menu_contents)
 
-                    menu_item = ExternalMenuItem(sort_order, course_type, menu_contents)
+                        if calculate_multi_price:
+                            url = PRICE_API.format(endpoint=BASE_ENDPOINT, price=menu_item.get_student_price())
+                            price_response = self.session.get(url, headers=API_GET_HEADERS)
+                            price_data = json.loads(price_response.text)
 
-                    if calculate_multi_price:
-                        url = PRICE_API.format(endpoint=BASE_ENDPOINT, price=menu_item.get_student_price())
-                        price_response = self.session.get(url, headers=API_GET_HEADERS)
-                        price_data = json.loads(price_response.text)
+                            menu_item.price_staff = round(Decimal(price_data['staffprice']), 2)
 
-                        menu_item.price_staff = round(Decimal(price_data['staffprice']), 2)
-
-                    items.append(menu_item)
+                        items.append(menu_item)
 
                 items.sort(key=lambda i: i.food_type.value)
 
                 if len(items) > 0:
                     result[(campus, date)] = items
-            except Exception as e:
-                raise Exception('Failed retrieving menu data for ({}, {})'.format(campus.short_name, date)) from e
+            # except Exception as e:
+            #     raise Exception('Failed retrieving menu data for ({}, {})'.format(campus.short_name, date)) from e
 
         return result
