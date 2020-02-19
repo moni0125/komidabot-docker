@@ -90,8 +90,8 @@ class DebuggableException(Exception):
         return self._trace.get_state()
 
     def print_info(self, logger: Logger):
-        logger.error('Error trace: {}', self.get_trace())
-        logger.error('Error last state: {}', self.get_state())
+        logger.error('Error trace: {}'.format(self.get_trace()))
+        logger.error('Error last state: {}'.format(self.get_state()))
         logger.exception(self)
 
 
