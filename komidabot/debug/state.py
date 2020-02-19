@@ -39,6 +39,18 @@ class ProgramStateTrace:
     def get_state(self) -> 'ProgramState':
         return self._current
 
+    def get_repr_text(self):
+        return ['Trigger']
+
+    def __repr__(self):
+        result = []
+        current = self._current
+        while current is not None:
+            result.insert(0, '- ' + repr(current))
+            current = current.parent
+
+        return '\n'.join(['Program state trace:'] + result)
+
 
 class ProgramState:
     def __init__(self):
@@ -78,8 +90,8 @@ class DebuggableException(Exception):
         return self._trace.get_state()
 
     def print_info(self, logger: Logger):
-        logger.error('Error trace:', self.get_trace())
-        logger.error('Error last state:', self.get_state())
+        logger.error('Error trace: {}', self.get_trace())
+        logger.error('Error last state: {}', self.get_state())
         logger.exception(self)
 
 
