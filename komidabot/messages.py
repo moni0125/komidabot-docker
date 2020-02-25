@@ -95,7 +95,6 @@ class MessageSendResult(enum.Enum):
 
 
 class MessageHandler:
-    # TODO: Make users of this method check the result
     # NOTE: There are some cases where the result of this method is important
     #       For example: When sending subscription messages, we cannot be certain the message will arrive, or the user
     #       may have unsubscribed and we need to remove their entry from the database.

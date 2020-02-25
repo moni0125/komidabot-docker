@@ -81,7 +81,7 @@ class Komidabot(Bot):
                         today + datetime.timedelta(days=5),
                     ]
 
-                    update_menus(None, dates=dates)
+                    update_menus(dates=dates)
                 except DebuggableException as e:
                     bot.notify_error(e)
 
@@ -150,7 +150,7 @@ class Komidabot(Bot):
                             return
                         elif split[0] == 'update':
                             sender.send_message(messages.TextMessage(trigger, 'Updating menus...'))
-                            update_menus(trigger, *split[1:])
+                            update_menus(*split[1:])
                             sender.send_message(messages.TextMessage(trigger, 'Done updating menus...'))
                             return
                         elif split[0] == 'psid':  # TODO: Deprecated?
@@ -371,7 +371,8 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
         # db_user = user.get_db_user()
         # if not db_user.onboarding_done:
         #     wait()  # Ensure we don't send too many messages at once
-        #     user.send_message(messages.TextMessage(trigger, localisation.MESSAGE_FIRST_SUBSCRIPTION(user.get_locale())))
+        #     user.send_message(messages.TextMessage(trigger,
+        #                                            localisation.MESSAGE_FIRST_SUBSCRIPTION(user.get_locale())))
         #     db_user.onboarding_done = True
         #     changed = True
 
@@ -447,56 +448,57 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
         db.session.commit()
 
 
-def update_menus(trigger: 'Optional[triggers.Trigger]', *campuses: str, dates: 'List[datetime.date]' = None):
+def update_menus(*campuses: str, dates: 'List[datetime.date]' = None):
     debug_state = ProgramStateTrace()
 
     campus_list = Campus.get_all_active()
 
+    if len(campuses) > 0:
+        campus_list = [campus for campus in campus_list if campus.short_name not in campuses]
+
+    if not dates:
+        today = datetime.datetime.today().date()
+        dates = [
+            today,
+            today + datetime.timedelta(days=1),
+            today + datetime.timedelta(days=2),
+            today + datetime.timedelta(days=3),
+            today + datetime.timedelta(days=4),
+            today + datetime.timedelta(days=5),
+            today + datetime.timedelta(days=6),
+            today + datetime.timedelta(days=7),
+        ]
+
+    fetcher = external_menu.ExternalMenu()
+
     for campus in campus_list:
-        if len(campuses) > 0 and campus.short_name not in campuses:
-            continue
+        for date in dates:
+            if date.isoweekday() in [6, 7]:
+                continue
+            fetcher.add_to_lookup(campus, date)
 
-        with debug_state.state(SimpleProgramState('Campus menu update', {'campus': campus.short_name})):
-            fetcher = external_menu.ExternalMenu()
+    with debug_state.state(SimpleProgramState('Fetch updates')):
+        result = fetcher.lookup_menus()
 
-            if not dates:
-                today = datetime.datetime.today().date()
-                dates = [
-                    today,
-                    today + datetime.timedelta(days=1),
-                    today + datetime.timedelta(days=2),
-                    today + datetime.timedelta(days=3),
-                    today + datetime.timedelta(days=4),
-                    today + datetime.timedelta(days=5),
-                    today + datetime.timedelta(days=6),
-                    today + datetime.timedelta(days=7),
-                ]
+    for (campus, date), items in result.items():
+        with debug_state.state(SimpleProgramState('Campus menu update', {'campus': campus.short_name,
+                                                                         'date': str(date)})):
+            if len(items) > 0:
+                menu = Menu.get_menu(campus, date)
+                new_menu = Menu.create(campus, date, add_to_db=False)
 
-            for date in dates:
-                if date.isoweekday() in [6, 7]:
-                    continue
-                fetcher.add_to_lookup(campus, date)
+                for item in items:
+                    translatable, translation = Translatable.get_or_create(item.get_combined_text(), 'nl_NL')
 
-            result = fetcher.lookup_menus()
+                    new_menu.add_menu_item(translatable, item.food_type, item.get_student_price(),
+                                           item.get_staff_price())
 
-            for (_, date), items in result.items():
-                with debug_state.state(SimpleProgramState('Day update', {'date': str(date)})):
-                    if len(items) > 0:
-                        menu = Menu.get_menu(campus, date)
-                        new_menu = Menu.create(campus, date, add_to_db=False)
+                # FIXME: Should check for duplicate menu entries as apparently they can be entered in the
+                #        external service
 
-                        for item in items:
-                            translatable, translation = Translatable.get_or_create(item.get_combined_text(), 'nl_NL')
-
-                            new_menu.add_menu_item(translatable, item.food_type, item.get_student_price(),
-                                                   item.get_staff_price())
-
-                        # FIXME: Should check for duplicate menu entries as apparently they can be entered in the
-                        #        external service
-
-                        if menu is not None:
-                            menu.update(new_menu)
-                        else:
-                            db.session.add(new_menu)
+                if menu is not None:
+                    menu.update(new_menu)
+                else:
+                    db.session.add(new_menu)
 
     db.session.commit()

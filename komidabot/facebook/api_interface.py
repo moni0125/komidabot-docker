@@ -27,9 +27,8 @@ class ApiInterface:
         self.locale_parameters['access_token'] = page_access_token
         self.locale_parameters['fields'] = 'locale'
 
-    @check_exceptions(messages.MessageSendResult.ERROR)  # TODO: Exception checking needs to be done differently
+    @check_exceptions(messages.MessageSendResult.ERROR)  # Handles exceptions raised in this method
     def post_send_api(self, data: dict) -> messages.MessageSendResult:
-        # FIXME: These 2 statements can still raise
         response = self.session.post(BASE_ENDPOINT + API_VERSION + SEND_API, params=self.base_parameters,
                                      headers=self.headers_post, data=json.dumps(data))
         data = json.loads(response.content)

@@ -25,7 +25,7 @@ class UserManager(users.UserManager):
             raise ValueError('User id is not for Facebook')
 
         # TODO: This probably could use more checks or something
-        # TODO: For example, check if there is a subscription
+        #       For example: check if there is a subscription
         return User(self, user.id)
 
     def initialise(self):

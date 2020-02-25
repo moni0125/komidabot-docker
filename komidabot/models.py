@@ -708,6 +708,7 @@ def recreate_db():
     db.session.commit()
 
 
+# noinspection PyUnusedLocal
 def create_standard_values():
     cst = Campus.create('Stadscampus', 'cst stad stadscampus', [], 1)
     cde = Campus.create('Campus Drie Eiken', 'cde drie eiken', [], 2)

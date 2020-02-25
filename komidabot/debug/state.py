@@ -39,9 +39,6 @@ class ProgramStateTrace:
     def get_state(self) -> 'ProgramState':
         return self._current
 
-    def get_repr_text(self):
-        return ['Trigger']
-
     def __repr__(self):
         result = []
         current = self._current
@@ -64,7 +61,7 @@ class InitialProgramState(ProgramState):
 
 
 class SimpleProgramState(ProgramState):
-    def __init__(self, name: str, data: Any):
+    def __init__(self, name: str, data: Any = None):
         super().__init__()
         self.name = name
         self.data = data
