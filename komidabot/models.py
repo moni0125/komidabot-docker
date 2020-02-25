@@ -5,6 +5,7 @@ from decimal import Decimal
 from typing import Collection, Dict, List, Optional, Tuple
 
 from sqlalchemy import inspect as sqlalchemy_inspect
+from sqlalchemy.sql import expression
 from sqlalchemy.orm.session import make_transient, make_transient_to_detached
 
 import komidabot.util as util
@@ -496,7 +497,8 @@ class AppUser(db.Model):
     internal_id = db.Column(db.String(32), nullable=False)  # ID that is specific to the provider
     language = db.Column(db.String(5), nullable=False)
     # Flag indicating whether a user has had an introduction to the bot yet
-    onboarding_done = db.Column(db.Boolean(), nullable=False, default=False)
+    # onboarding_done = db.Column(db.Boolean(), nullable=False, default=False, server_default=expression.false())
+    enabled = db.Column(db.Boolean(), nullable=False, default=True, server_default=expression.true())
 
     __table_args__ = (
         db.UniqueConstraint('provider', 'internal_id'),

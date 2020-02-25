@@ -91,7 +91,8 @@ class DebuggableException(Exception):
 
     def print_info(self, logger: Logger):
         logger.error('Error trace: {}'.format(self.get_trace()))
-        logger.error('Error last state: {}'.format(self.get_state()))
+        # Redundant log statement:
+        # logger.error('Error last state: {}'.format(self.get_state()))
         logger.exception(self)
 
 

@@ -328,18 +328,18 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
     changed = False
 
     # TODO: This should only be a temporary thing
-    for user in unsubscribed_users:
-        if not user.is_feature_active('menu_subscription'):
-            continue
-
-        db_user = user.get_db_user()
-        if db_user.onboarding_done:
-            continue
-
-        wait()  # Ensure we don't send too many messages at once
-        user.send_message(messages.TextMessage(trigger, localisation.MESSAGE_NO_SUBSCRIPTIONS(user.get_locale())))
-        db_user.onboarding_done = True
-        changed = True
+    # for user in unsubscribed_users:
+    #     if not user.is_feature_active('menu_subscription'):
+    #         continue
+    #
+    #     db_user = user.get_db_user()
+    #     if db_user.onboarding_done:
+    #         continue
+    #
+    #     wait()  # Ensure we don't send too many messages at once
+    #     user.send_message(messages.TextMessage(trigger, localisation.MESSAGE_NO_SUBSCRIPTIONS(user.get_locale())))
+    #     db_user.onboarding_done = True
+    #     changed = True
 
     if changed:
         db.session.commit()
@@ -358,12 +358,12 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
             continue
 
         # TODO: This should only be a temporary thing
-        db_user = user.get_db_user()
-        if not db_user.onboarding_done:
-            wait()  # Ensure we don't send too many messages at once
-            user.send_message(messages.TextMessage(trigger, localisation.MESSAGE_FIRST_SUBSCRIPTION(user.get_locale())))
-            db_user.onboarding_done = True
-            changed = True
+        # db_user = user.get_db_user()
+        # if not db_user.onboarding_done:
+        #     wait()  # Ensure we don't send too many messages at once
+        #     user.send_message(messages.TextMessage(trigger, localisation.MESSAGE_FIRST_SUBSCRIPTION(user.get_locale())))
+        #     db_user.onboarding_done = True
+        #     changed = True
 
         subscription = user.get_subscription_for_day(date)
         if subscription is None:
@@ -455,6 +455,9 @@ def update_menus(trigger: 'Optional[triggers.Trigger]', *campuses: str, dates: '
 
                             new_menu.add_menu_item(translatable, item.food_type, item.get_student_price(),
                                                    item.get_staff_price())
+
+                        # FIXME: Should check for duplicate menu entries as apparently they can be entered in the
+                        #        external service
 
                         if menu is not None:
                             menu.update(new_menu)

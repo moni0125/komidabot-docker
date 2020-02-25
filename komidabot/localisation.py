@@ -218,20 +218,20 @@ REPLY_SET_LANGUAGE = localisation_definition('REPLY_SET_SUBSCRIPTION', {
     'nl': 'Uw taal staat nu op: {language}',
 })
 
-MESSAGE_NO_SUBSCRIPTIONS = localisation_definition('REPLY_SET_SUBSCRIPTION', {
-    'en': 'Dear user, from now on you can once again request the bot to send a daily menu at 10am.\n\n'
-          'You can set this up by clicking on the "Manage subscription" button in the menu.\n\n'
-          'Your preferences for this are per-day and can be changed at any moment.',
-    'nl': 'Beste gebruiker, vanaf nu kan je de bot terug vragen om dagelijks het menu naar je te sturen.\n\n'
-          'Je kan dit instellen door in het menu op "Manage subscription" te drukken.\n\n'
-          'Uw voorkeuren hiervoor zijn per dag en kunnen op ieder moment aangepast worden.',
-})
-
-MESSAGE_FIRST_SUBSCRIPTION = localisation_definition('REPLY_SET_SUBSCRIPTION', {
-    'en': 'Dear user, from now on the bot will send you the daily menu at 10am once again.\n\n'
-          'You can change your preferences by clicking on the "Manage subscription" button in the menu.\n\n'
-          'Your preferences are per-day and can be changed at any moment.',
-    'nl': 'Beste gebruiker, vanaf nu zal de bot terug automatisch het menu doorsturen om 10 uur.\n\n'
-          'Je kan je voorkeuren aanpassen door in het menu op "Manage subscription" te drukken.\n\n'
-          'Uw voorkeuren zijn per dag en kunnen op ieder moment aangepast worden.',
-})
+# MESSAGE_NO_SUBSCRIPTIONS = localisation_definition('REPLY_SET_SUBSCRIPTION', {
+#     'en': 'Dear user, from now on you can once again request the bot to send a daily menu at 10am.\n\n'
+#           'You can set this up by clicking on the "Manage subscription" button in the menu.\n\n'
+#           'Your preferences for this are per-day and can be changed at any moment.',
+#     'nl': 'Beste gebruiker, vanaf nu kan je de bot terug vragen om dagelijks het menu naar je te sturen.\n\n'
+#           'Je kan dit instellen door in het menu op "Manage subscription" te drukken.\n\n'
+#           'Uw voorkeuren hiervoor zijn per dag en kunnen op ieder moment aangepast worden.',
+# })
+#
+# MESSAGE_FIRST_SUBSCRIPTION = localisation_definition('REPLY_SET_SUBSCRIPTION', {
+#     'en': 'Dear user, from now on the bot will send you the daily menu at 10am once again.\n\n'
+#           'You can change your preferences by clicking on the "Manage subscription" button in the menu.\n\n'
+#           'Your preferences are per-day and can be changed at any moment.',
+#     'nl': 'Beste gebruiker, vanaf nu zal de bot terug automatisch het menu doorsturen om 10 uur.\n\n'
+#           'Je kan je voorkeuren aanpassen door in het menu op "Manage subscription" te drukken.\n\n'
+#           'Uw voorkeuren zijn per dag en kunnen op ieder moment aangepast worden.',
+# })
