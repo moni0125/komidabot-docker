@@ -203,7 +203,7 @@ def set_language(trigger: triggers.Trigger, language: str, display: str):
     return None
 
 
-def generate_postback_data(include_persistent_menu: bool, production: bool):
+def generate_postback_data(include_persistent_menu: bool, subscriptions: bool, production: bool):
     result = dict()
     result['get_started'] = {
         'payload': get_started(),
@@ -223,20 +223,15 @@ def generate_postback_data(include_persistent_menu: bool, production: bool):
         },
     ]
     if include_persistent_menu:
-        if production:
-            persistent_menu = [
-                postback_button("Today's menu", menu_today()),
-                postback_button("Manage subscription", settings_subscriptions()),
-                # url_button("Manage subscription", 'https://komidabot.heldplayer.blue/?dev=false'),
-                postback_button("Change language", settings_language()),
-            ]
-        else:
-            persistent_menu = [
-                # postback_button("Today's menu", menu_today()),
-                postback_button("Manage subscription", settings_subscriptions()),
-                url_button("Manage subscription", 'https://komidabot.heldplayer.blue/?dev=true'),
-                postback_button("Change language", settings_language()),
-            ]
+        menu = [postback_button("Today's menu", menu_today())]
+        if subscriptions:
+            if production:
+                menu.append(postback_button("Manage subscription", settings_subscriptions()))
+                menu.append(url_button("Manage subscription", 'https://komidabot.heldplayer.blue/?dev=false'))
+            else:
+                menu.append(
+                    url_button("Manage subscription", 'https://komidabot.heldplayer.blue/?dev=true'))
+        menu.append(postback_button("Change language", settings_language()))
 
         # TODO: Once per-user persistent menus are available, use them
         #       https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu/
@@ -244,7 +239,7 @@ def generate_postback_data(include_persistent_menu: bool, production: bool):
             {
                 'locale': 'default',
                 'composer_input_disabled': False,
-                'call_to_actions': persistent_menu,
+                'call_to_actions': menu,
             },
         ]
 
