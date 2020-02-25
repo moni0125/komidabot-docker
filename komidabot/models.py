@@ -571,7 +571,8 @@ class AppUser(db.Model):
             q = q.filter_by(provider=provider)
 
         return q.join(AppUser.subscriptions).filter(db.and_(UserSubscription.day == day,
-                                                            UserSubscription.active == True
+                                                            UserSubscription.active == expression.true(),
+                                                            AppUser.enabled == expression.true()
                                                             )).order_by(AppUser.provider, AppUser.internal_id).all()
 
     # TODO: REMOVE
@@ -705,13 +706,13 @@ def recreate_db():
 
 
 def create_standard_values():
-    cst = Campus.create('Stadscampus', 'cst', [], 1)
-    cde = Campus.create('Campus Drie Eiken', 'cde', [], 2)
-    cmi = Campus.create('Campus Middelheim', 'cmi', [], 3)
-    cgb = Campus.create('Campus Groenenborger', 'cgb', [], 4)
-    cmu = Campus.create('Campus Mutsaard', 'cmu', [], 5)
-    cmu.active = False
-    hzs = Campus.create('Hogere Zeevaartschool', 'hzs', [], 6)
+    cst = Campus.create('Stadscampus', 'cst stad stadscampus', [], 1)
+    cde = Campus.create('Campus Drie Eiken', 'cde drie eiken', [], 2)
+    cmi = Campus.create('Campus Middelheim', 'cmi middelheim', [], 3)
+    cgb = Campus.create('Campus Groenenborger', 'cgb groenenborger', [], 4)
+    cmu = Campus.create('Campus Mutsaard', 'cmu mutsaard', [], 5)
+    hzs = Campus.create('Hogere Zeevaartschool', 'hzs hogere zeevaartschool', [], 6)
+    hzs.active = False
     db.session.commit()
 
 

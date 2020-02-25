@@ -143,7 +143,7 @@ def _do_handle_facebook_webhook(event, user: User, app):
                 # print(pprint.pformat(message, indent=2), flush=True)
 
                 # TODO: Is this the preferred way to differentiate inputs?
-                # TODO: What about messages that include attachments or other things?
+                #       What about messages that include attachments or other things?
                 # TODO: This now works with aspects rather than inheritance, so in theory this could be done
                 if 'text' in message:
                     message_text = message['text']
