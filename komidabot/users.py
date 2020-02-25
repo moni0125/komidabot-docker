@@ -20,12 +20,13 @@ class UserManager:  # TODO: This probably could use more methods
 
         return [self.get_user(UserId(user.internal_id, identifier)) for user in users]
 
+    # TODO: REMOVE
     # TODO: This should only be a temporary thing
-    def get_users_with_no_subscriptions(self) -> 'List[User]':
-        identifier = self.get_identifier()
-        users = models.AppUser.find_users_with_no_subscriptions(provider=identifier)
-
-        return [self.get_user(UserId(user.internal_id, identifier)) for user in users]
+    # def get_users_with_no_subscriptions(self) -> 'List[User]':
+    #     identifier = self.get_identifier()
+    #     users = models.AppUser.find_users_with_no_subscriptions(provider=identifier)
+    #
+    #     return [self.get_user(UserId(user.internal_id, identifier)) for user in users]
 
     def initialise(self):
         raise NotImplementedError()
@@ -139,10 +140,11 @@ class UnifiedUserManager(UserManager):
         return functools.reduce(list.__add__,
                                 [manager.get_subscribed_users(day) for manager in self._managers.values()])
 
+    # TODO: REMOVE
     # TODO: This should only be a temporary thing
-    def get_users_with_no_subscriptions(self) -> 'List[User]':
-        return functools.reduce(list.__add__,
-                                [manager.get_users_with_no_subscriptions() for manager in self._managers.values()])
+    # def get_users_with_no_subscriptions(self) -> 'List[User]':
+    #     return functools.reduce(list.__add__,
+    #                             [manager.get_users_with_no_subscriptions() for manager in self._managers.values()])
 
     def initialise(self):
         for manager in self._managers.values():

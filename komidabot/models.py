@@ -574,15 +574,16 @@ class AppUser(db.Model):
                                                             UserSubscription.active == True
                                                             )).order_by(AppUser.provider, AppUser.internal_id).all()
 
+    # TODO: REMOVE
     # TODO: This should only be a temporary thing
-    @staticmethod
-    def find_users_with_no_subscriptions(provider=None) -> 'List[AppUser]':
-        q = AppUser.query
-        if provider:
-            q = q.filter_by(provider=provider)
-
-        return q.filter(~UserSubscription.query.filter(UserSubscription.user_id == AppUser.id).exists()) \
-            .order_by(AppUser.provider, AppUser.internal_id).all()
+    # @staticmethod
+    # def find_users_with_no_subscriptions(provider=None) -> 'List[AppUser]':
+    #     q = AppUser.query
+    #     if provider:
+    #         q = q.filter_by(provider=provider)
+    #
+    #     return q.filter(~UserSubscription.query.filter(UserSubscription.user_id == AppUser.id).exists()) \
+    #         .order_by(AppUser.provider, AppUser.internal_id).all()
 
     @staticmethod
     def find_by_id(provider: str, internal_id: str) -> 'Optional[AppUser]':

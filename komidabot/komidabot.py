@@ -324,9 +324,10 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
         print('Sending out subscription for {} ({})'.format(date, day.name), flush=True)
 
     user_manager = app.user_manager  # type: users.UserManager
-    unsubscribed_users = user_manager.get_users_with_no_subscriptions()
-    changed = False
+    # unsubscribed_users = user_manager.get_users_with_no_subscriptions()
+    # changed = False
 
+    # TODO: REMOVE
     # TODO: This should only be a temporary thing
     # for user in unsubscribed_users:
     #     if not user.is_feature_active('menu_subscription'):
@@ -341,9 +342,9 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
     #     db_user.onboarding_done = True
     #     changed = True
 
-    if changed:
-        db.session.commit()
-        changed = False
+    # if changed:
+    #     db.session.commit()
+    #     changed = False
 
     subscribed_users = user_manager.get_subscribed_users(day)
     subscriptions = dict()  # type: Dict[Campus, Dict[str, List[users.User]]]
@@ -357,6 +358,7 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
                 print('User {} not eligible for subscription'.format(user.id), flush=True)
             continue
 
+        # TODO: REMOVE
         # TODO: This should only be a temporary thing
         # db_user = user.get_db_user()
         # if not db_user.onboarding_done:
@@ -386,8 +388,8 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
 
         subscriptions[campus][language].append(user)
 
-    if changed:
-        db.session.commit()
+    # if changed:
+    #     db.session.commit()
 
     for campus, languages in subscriptions.items():
         for language, sub_users in languages.items():
