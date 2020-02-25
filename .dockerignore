@@ -3,6 +3,7 @@
 .gitignore
 .idea
 venv
+web
 
 config.env
 docker-compose.yml
