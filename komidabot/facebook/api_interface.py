@@ -4,6 +4,7 @@ import threading
 import requests
 from cachetools import cached, TTLCache
 
+import komidabot.messages as messages
 from komidabot.app import get_app
 from komidabot.util import check_exceptions
 
@@ -26,14 +27,12 @@ class ApiInterface:
         self.locale_parameters['access_token'] = page_access_token
         self.locale_parameters['fields'] = 'locale'
 
-    @check_exceptions  # TODO: Exception checking needs to be done differently
-    def post_send_api(self, data: dict):
-        # TODO: Batching is an option, but not beneficial
-
-        # TODO: Futures or Promises???
-
+    @check_exceptions(messages.MessageSendResult.ERROR)  # TODO: Exception checking needs to be done differently
+    def post_send_api(self, data: dict) -> messages.MessageSendResult:
+        # FIXME: These 2 statements can still raise
         response = self.session.post(BASE_ENDPOINT + API_VERSION + SEND_API, params=self.base_parameters,
                                      headers=self.headers_post, data=json.dumps(data))
+        data = json.loads(response.content)
 
         app = get_app()
 
@@ -43,13 +42,39 @@ class ApiInterface:
             print('Received {} for request {}'.format(response.status_code, response.request.body), flush=True)
             print(response.content, flush=True)
 
-        # response.raise_for_status()
+        if response.status_code == 200:
+            return messages.MessageSendResult.SUCCESS
 
-        # return True
+        if 500 <= response.status_code < 600:
+            return messages.MessageSendResult.EXTERNAL_ERROR
 
-        return response.status_code == 200
+        if response.status_code == 400:
+            code = data['error']['code']
+            subcode = data['error']['error_subcode']
 
-    @check_exceptions  # TODO: Exception checking needs to be done differently
+            # https://developers.facebook.com/docs/messenger-platform/reference/send-api/error-codes
+            if code == 1200:
+                # Temporary send message failure. Please try again later.
+                return messages.MessageSendResult.EXTERNAL_ERROR
+            if code == 100:
+                if subcode == 2018001:
+                    # No matching user found
+                    return messages.MessageSendResult.GONE
+            if code == 10:
+                if subcode == 2018065:
+                    # This message is sent outside of allowed window.
+                    return messages.MessageSendResult.UNREACHABLE
+                if subcode == 2018108:
+                    # This Person Cannot Receive Messages: This person isn't receiving messages from you right now.
+                    return messages.MessageSendResult.UNREACHABLE
+            if code == 551:
+                if subcode == 1545041:
+                    # This person isn't available right now.
+                    return messages.MessageSendResult.UNREACHABLE
+
+        return messages.MessageSendResult.ERROR  # TODO: Further specify
+
+    @check_exceptions(False)  # TODO: Exception checking needs to be done differently
     def post_profile_api(self, data: dict):
         response = self.session.post(BASE_ENDPOINT + API_VERSION + PROFILE_API, params=self.base_parameters,
                                      headers=self.headers_post, data=json.dumps(data))
@@ -68,7 +93,7 @@ class ApiInterface:
 
         return response.status_code == 200
 
-    @check_exceptions  # TODO: Exception checking needs to be done differently
+    @check_exceptions()  # TODO: Exception checking needs to be done differently
     @cached(cache=TTLCache(maxsize=64, ttl=300), lock=threading.Lock())
     def lookup_locale(self, user_id):
         # TODO: Futures or Promises???

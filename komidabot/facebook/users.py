@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import List, Optional, Union
 
 import komidabot.facebook.constants as fb_constants
 import komidabot.messages as messages
@@ -11,6 +11,11 @@ from komidabot.facebook.messages import MessageHandler as FBMessageHandler
 class UserManager(users.UserManager):
     def __init__(self):
         self.message_handler = FBMessageHandler()
+
+    def get_subscribed_users(self, day: models.Day) -> 'List[users.User]':
+        # TODO: Starting March 4th 2020, facebook subscriptions will no longer be available
+        #       https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/
+        return super().get_subscribed_users(day)
 
     def get_user(self, user: 'Union[users.UserId, models.AppUser]', **kwargs) -> 'User':
         if isinstance(user, models.AppUser):

@@ -1,3 +1,4 @@
+import enum
 from typing import Dict, List, Type, TypeVar, Union
 
 
@@ -78,6 +79,27 @@ class TextMessage(Message):
         self.text = text
 
 
+class MessageSendResult(enum.Enum):
+    # Indicates successful message sending
+    SUCCESS = 'Success'
+    # Indicates an internal error when sending
+    ERROR = 'Error'
+    # Indicates an external error when sending
+    EXTERNAL_ERROR = 'External error'
+    # Indicates the message could not be sent because the user does not support receiving it
+    UNSUPPORTED = 'Unsupported'
+    # Indicates the user could not be reached, but could potentially be reached in the future
+    UNREACHABLE = 'Unreachable'
+    # Indicates the user no longer exists, the user should be removed from the database
+    GONE = 'Gone'
+
+
 class MessageHandler:
-    def send_message(self, user, message: 'Message'):
+    # TODO: Make users of this method check the result
+    # NOTE: There are some cases where the result of this method is important
+    #       For example: When sending subscription messages, we cannot be certain the message will arrive, or the user
+    #       may have unsubscribed and we need to remove their entry from the database.
+    #       For cases where the message is a direct result of the user sending a message to us, we assume the message
+    #       will be delivered without problems.
+    def send_message(self, user, message: 'Message') -> 'MessageSendResult':
         raise NotImplementedError()

@@ -24,6 +24,7 @@ class UserManager(users.UserManager):
         self.users[user_id] = user
 
         db_user = AppUser.create(PROVIDER_ID, internal_id, user.get_locale())
+        # FIXME: Onboarding is removed, update tests once associated code is removed
         db_user.onboarding_done = onboarding_done
 
         return user
@@ -88,13 +89,16 @@ class MessageHandler(messages.MessageHandler):
     def reset(self):
         self.message_log = dict()
 
-    def send_message(self, user, message: 'messages.Message'):
+    def send_message(self, user, message: messages.Message) -> messages.MessageSendResult:
         if user.id.provider != PROVIDER_ID:
-            raise ValueError('User id is not for Facebook')
+            raise ValueError('User id is not for Stub Provider')
 
         if isinstance(message, messages.TextMessage):
             if user.id not in self.message_log:
                 self.message_log[user.id] = []
             self.message_log[user.id].append(message.text)
+
+            return messages.MessageSendResult.SUCCESS
         else:
-            raise NotImplementedError()
+            return messages.MessageSendResult.UNSUPPORTED
+            # raise NotImplementedError()

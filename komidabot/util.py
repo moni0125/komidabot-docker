@@ -5,16 +5,21 @@ from typing import List, Tuple, TypeVar
 import komidabot.localisation as localisation
 
 
-def check_exceptions(func):
-    @wraps(func)
-    def decorated_func(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception as e:
-            print('Exception raised while calling {}: {}'.format(func.__name__, e))
-            traceback.print_tb(e.__traceback__)
+def check_exceptions(fallback=None):
+    def decorator(func):
+        @wraps(func)
+        def decorated_func(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                print('Exception raised while calling {}: {}'.format(func.__name__, e))
+                traceback.print_tb(e.__traceback__)
 
-    return decorated_func
+                return fallback
+
+        return decorated_func
+
+    return decorator
 
 
 T = TypeVar('T')

@@ -115,6 +115,10 @@ class Komidabot(Bot):
                 sender = trigger[triggers.SenderAspect].sender
                 campuses = Campus.get_all()
 
+                # This ensures that when a user is marked as reachable in case they were unreachable at some point
+                if sender.mark_reachable():
+                    db.session.commit()
+
                 if locale is None:
                     locale = sender.get_locale()
 
@@ -136,6 +140,9 @@ class Komidabot(Bot):
 
                     if sender.is_admin():
                         if split[0] == 'setup':
+                            if app.config.get('PRODUCTION'):
+                                sender.send_message(messages.TextMessage(trigger, 'Not running setup on production'))
+                                return
                             recreate_db()
                             create_standard_values()
                             import_dump(app.config['DUMP_FILE'])
@@ -251,9 +258,9 @@ class Komidabot(Bot):
                 if closed:
                     translation = closed.translatable.get_translation(locale, app.translator)
 
-                    sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NO_MENU(locale)
-                                                             .format(campus=campus.short_name.upper(), date=str(date))))
-                    sender.send_message(messages.TextMessage(trigger, translation.translation))
+                    sender.send_message(messages.TextMessage(trigger, localisation.REPLY_CAMPUS_CLOSED(locale)
+                                                             .format(campus=campus.short_name.upper(), date=str(date),
+                                                                     reason=translation.translation)))
                     return
 
                 menu = komidabot.menu.prepare_menu_text(campus, date, app.translator, locale)
@@ -291,6 +298,7 @@ class Komidabot(Bot):
             for admin in app.admin_ids:  # type: users.UserId
                 user = app.user_manager.get_user(admin)
 
+                # FIXME: We should technically check if we can contact the admins, however we'll ignore this for now
                 user.send_message(message)
 
 
@@ -325,7 +333,7 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
 
     user_manager = app.user_manager  # type: users.UserManager
     # unsubscribed_users = user_manager.get_users_with_no_subscriptions()
-    # changed = False
+    changed = False
 
     # TODO: REMOVE
     # TODO: This should only be a temporary thing
@@ -390,6 +398,7 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
 
     # if changed:
     #     db.session.commit()
+    #     changed = False
 
     for campus, languages in subscriptions.items():
         for language, sub_users in languages.items():
@@ -401,6 +410,7 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
             if closed:
                 continue  # Campus closed, no daily menu
 
+            # TODO: Change menus from TextMessage to a custom message type to support different formatting per platform
             menu = komidabot.menu.prepare_menu_text(campus, date, app.translator, language)
             if menu is None:
                 continue
@@ -411,7 +421,30 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
                 if verbose:
                     print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
                           flush=True)
-                user.send_message(messages.TextMessage(trigger, menu))
+                message_result = user.send_message(messages.TextMessage(trigger, menu))
+
+                if message_result == messages.MessageSendResult.UNSUPPORTED:
+                    # Text messages unsupported? Disable subscription then
+                    print('User {} does not support messages, removing from subscription list'.format(user.id),
+                          flush=True)
+
+                    user.mark_unreachable()
+                    changed = True
+                if message_result == messages.MessageSendResult.UNREACHABLE:
+                    # Unreachable = Facebook is blocking us from sending, stop trying to send in the future
+                    print('User {} is unreachable, removing from subscription list'.format(user.id), flush=True)
+
+                    user.mark_unreachable()
+                    changed = True
+                if message_result == messages.MessageSendResult.GONE:
+                    # Gone = User no longer exists, delete from database
+                    print('User {} is gone, removing from database'.format(user.id), flush=True)
+
+                    user.delete()
+                    changed = True
+
+    if changed:
+        db.session.commit()
 
 
 def update_menus(trigger: 'Optional[triggers.Trigger]', *campuses: str, dates: 'List[datetime.date]' = None):

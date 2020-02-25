@@ -69,6 +69,11 @@ REPLY_NO_MENU = localisation_definition('REPLY_NO_MENU', {
     'nl': 'Sorry, er is geen menu beschikbaar voor {campus} op {date}',
 })
 
+REPLY_CAMPUS_CLOSED = localisation_definition('REPLY_NO_MENU', {
+    'en': 'Sorry, no menu is available for {campus} on {date}: {reason}',
+    'nl': 'Sorry, er is geen menu beschikbaar voor {campus} op {date}: {reason}',
+})
+
 REPLY_CAMPUS_INACTIVE = localisation_definition('REPLY_CAMPUS_INACTIVE', {
     'en': 'Sorry, no menus are available for {campus}',
     'nl': 'Sorry, er zijn geen menus beschikbaar voor {campus}',

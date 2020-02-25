@@ -564,6 +564,9 @@ class AppUser(db.Model):
 
         return user
 
+    def delete(self):
+        db.session.delete(self)
+
     @staticmethod
     def find_subscribed_users_by_day(day: Day, provider=None) -> 'List[AppUser]':
         q = AppUser.query

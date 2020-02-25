@@ -93,6 +93,41 @@ class User:  # TODO: This probably needs more methods
 
         return user.get_subscription(day)
 
+    def mark_reachable(self) -> bool:
+        """
+        Ensures the user is marked as being reachable.
+        :return: True if the user was marked unreachable before, False otherwise.
+        """
+        user = self.get_db_user()
+        if user is None:
+            return False
+
+        if not user.enabled:
+            user.enabled = True
+            return True
+
+        return False
+
+    def mark_unreachable(self):
+        """
+        Marks the user as being unreachable, effectively disabling subscription messages from going through.
+        """
+        user = self.get_db_user()
+        if user is None:
+            return
+
+        user.enabled = False
+
+    def delete(self):
+        """
+        Deletes the user from the database.
+        """
+        user = self.get_db_user()
+        if user is None:
+            return
+
+        user.delete()
+
     def is_admin(self):
         user_id = self.id
         return user_id in get_app().admin_ids
@@ -110,7 +145,7 @@ class User:  # TODO: This probably needs more methods
     def get_message_handler(self) -> messages.MessageHandler:
         raise NotImplementedError()
 
-    def send_message(self, message: 'messages.Message'):
+    def send_message(self, message: 'messages.Message') -> 'messages.MessageSendResult':
         return self.get_message_handler().send_message(self, message)
 
     def __repr__(self):

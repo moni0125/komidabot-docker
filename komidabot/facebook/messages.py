@@ -9,18 +9,19 @@ TYPE_SUBSCRIPTION = 'NON_PROMOTIONAL_SUBSCRIPTION'
 
 
 class MessageHandler(messages.MessageHandler):
-    def send_message(self, user: users.User, message: messages.Message):
+    def send_message(self, user: users.User, message: messages.Message) -> messages.MessageSendResult:
         if user.id.provider != fb_constants.PROVIDER_ID:
             raise ValueError('User id is not for Facebook')
 
         if isinstance(message, messages.TextMessage):
-            self._send_text_message(user.id, message)
+            return self._send_text_message(user.id, message)
         elif isinstance(message, TemplateMessage):
-            self._send_template_message(user.id, message)
+            return self._send_template_message(user.id, message)
         else:
-            raise NotImplementedError()
+            return messages.MessageSendResult.UNSUPPORTED
 
-    def _send_text_message(self, user_id: users.UserId, message: messages.TextMessage):
+    @staticmethod
+    def _send_text_message(user_id: users.UserId, message: messages.TextMessage) -> messages.MessageSendResult:
         data = {
             'recipient': {
                 'id': user_id.id
@@ -33,7 +34,8 @@ class MessageHandler(messages.MessageHandler):
 
         return get_app().bot_interfaces['facebook']['api_interface'].post_send_api(data)
 
-    def _send_template_message(self, user_id: users.UserId, message: 'TemplateMessage'):
+    @staticmethod
+    def _send_template_message(user_id: users.UserId, message: 'TemplateMessage') -> messages.MessageSendResult:
         data = {
             'recipient': {
                 'id': user_id.id
