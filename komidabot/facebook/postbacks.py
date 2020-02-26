@@ -235,6 +235,7 @@ def generate_postback_data(include_persistent_menu: bool, subscriptions: bool, p
 
         # TODO: Once per-user persistent menus are available, use them
         #       https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu/
+        #       Followup: What for?
         result['persistent_menu'] = [
             {
                 'locale': 'default',

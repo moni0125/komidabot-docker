@@ -1,10 +1,12 @@
-from collections import namedtuple
 import os
+from collections import namedtuple
 
 POSTGRES_HOST = os.getenv('POSTGRES_HOST', 'localhost')
 POSTGRES_USER = os.getenv('POSTGRES_USER', 'postgres')
 POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD', '')
 
+# NOTE: While this is a different namedtuple from UserId, this will still properly handle equality checks between other
+#       named tuples (including typing.NamedTuple)
 _UserId = namedtuple('_UserId', ['id', 'provider'])
 
 

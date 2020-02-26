@@ -13,7 +13,10 @@ class App:
         from concurrent.futures import ThreadPoolExecutor as PyThreadPoolExecutor
 
         from komidabot.facebook.api_interface import ApiInterface
-        from komidabot.facebook.users import UserManager as FacebookUserManager
+        from komidabot.facebook.constants import PROVIDER_ID as FB_PROVIDER_ID
+        from komidabot.facebook.users import UserManager as FBUserManager
+        from komidabot.web.constants import PROVIDER_ID as WEB_PROVIDER_ID
+        from komidabot.web.users import UserManager as WebUserManager
         from komidabot.komidabot import Komidabot
         from komidabot.translation import GoogleTranslationService, TranslationService
         from komidabot.users import UnifiedUserManager
@@ -23,11 +26,12 @@ class App:
         self.bot_interfaces = dict()  # TODO: Deprecate?
         self.bot_interfaces['facebook'] = {
             'api_interface': ApiInterface(config.get('PAGE_ACCESS_TOKEN')),
-            'users': FacebookUserManager()
+            'users': FBUserManager()
         }
 
         self.user_manager = UnifiedUserManager()
-        self.user_manager.register_manager('facebook', self.bot_interfaces['facebook']['users'])
+        self.user_manager.register_manager(FB_PROVIDER_ID, self.bot_interfaces['facebook']['users'])
+        self.user_manager.register_manager(WEB_PROVIDER_ID, WebUserManager())
 
         self.bot = Komidabot(self)
 

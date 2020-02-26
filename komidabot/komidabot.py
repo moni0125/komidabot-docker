@@ -3,7 +3,7 @@ import datetime
 import threading
 import time
 from collections import deque
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 from apscheduler.executors.pool import ThreadPoolExecutor
 from apscheduler.jobstores.memory import MemoryJobStore
@@ -31,7 +31,8 @@ class Komidabot(Bot):
 
         self.scheduler = BackgroundScheduler(
             jobstores={'default': MemoryJobStore()},
-            executors={'default': ThreadPoolExecutor(max_workers=1)}
+            executors={'default': ThreadPoolExecutor(max_workers=4)},
+            job_defaults={'misfire_grace_time': 60}
         )
 
         self._handling_error = False
@@ -50,17 +51,6 @@ class Komidabot(Bot):
                     return
 
                 bot.trigger_received(triggers.SubscriptionTrigger())
-
-        # FIXME: This is disabled for now
-        # @self.scheduler.scheduled_job(CronTrigger(hour=1, minute=0, second=0),  # Run every day to find changes
-        #                               args=(the_app.app_context, self),
-        #                               id='menu_update', name='Daily late-night update of the menus')
-        # def menu_update(context, bot: 'Komidabot'):
-        #     with context():
-        #         if get_app().config.get('DISABLED'):
-        #             return
-        #
-        #         bot.update_menus(None)
 
         @self.scheduler.scheduled_job(CronTrigger(minute=0, second=0),  # Run every hour to find changes
                                       args=(the_app.app_context, self),
@@ -332,27 +322,7 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
         print('Sending out subscription for {} ({})'.format(date, day.name), flush=True)
 
     user_manager = app.user_manager  # type: users.UserManager
-    # unsubscribed_users = user_manager.get_users_with_no_subscriptions()
     changed = False
-
-    # TODO: REMOVE
-    # TODO: This should only be a temporary thing
-    # for user in unsubscribed_users:
-    #     if not user.is_feature_active('menu_subscription'):
-    #         continue
-    #
-    #     db_user = user.get_db_user()
-    #     if db_user.onboarding_done:
-    #         continue
-    #
-    #     wait()  # Ensure we don't send too many messages at once
-    #     user.send_message(messages.TextMessage(trigger, localisation.MESSAGE_NO_SUBSCRIPTIONS(user.get_locale())))
-    #     db_user.onboarding_done = True
-    #     changed = True
-
-    # if changed:
-    #     db.session.commit()
-    #     changed = False
 
     subscribed_users = user_manager.get_subscribed_users(day)
     subscriptions = dict()  # type: Dict[Campus, Dict[str, List[users.User]]]
@@ -365,16 +335,6 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
             if verbose:
                 print('User {} not eligible for subscription'.format(user.id), flush=True)
             continue
-
-        # TODO: REMOVE
-        # TODO: This should only be a temporary thing
-        # db_user = user.get_db_user()
-        # if not db_user.onboarding_done:
-        #     wait()  # Ensure we don't send too many messages at once
-        #     user.send_message(messages.TextMessage(trigger,
-        #                                            localisation.MESSAGE_FIRST_SUBSCRIPTION(user.get_locale())))
-        #     db_user.onboarding_done = True
-        #     changed = True
 
         subscription = user.get_subscription_for_day(date)
         if subscription is None:
@@ -396,10 +356,6 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
             subscriptions[campus][language] = list()
 
         subscriptions[campus][language].append(user)
-
-    # if changed:
-    #     db.session.commit()
-    #     changed = False
 
     for campus, languages in subscriptions.items():
         for language, sub_users in languages.items():

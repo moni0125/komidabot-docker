@@ -10,6 +10,7 @@ from typing import Dict
 
 from flask import Blueprint, abort, request
 
+import komidabot.facebook.constants as fb_constants
 import komidabot.facebook.postbacks as postbacks
 import komidabot.facebook.triggers as triggers
 import komidabot.localisation as localisation
@@ -83,7 +84,8 @@ def handle_facebook_webhook():
                     # recipient = event["recipient"]["id"]
 
                     user_manager = app.user_manager  # type: UnifiedUserManager
-                    user = user_manager.get_user(UserId(sender, 'facebook'), event=event)  # type: FacebookUser
+                    user = user_manager.get_user(UserId(sender, fb_constants.PROVIDER_ID),
+                                                 event=event)  # type: FacebookUser
 
                     if not isinstance(user, FacebookUser):
                         # FIXME: Rather have a check that when the user supports "read" markers, we mark as read
