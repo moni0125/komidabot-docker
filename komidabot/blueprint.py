@@ -249,7 +249,7 @@ def _do_handle_facebook_webhook(event, user: User, app):
 
 
 @blueprint.route('/subscription', methods=['POST'])
-def handle_facebook_verification():
+def handle_web_push_subscription():
     try:
         app = get_app()
         data = request.get_json()
