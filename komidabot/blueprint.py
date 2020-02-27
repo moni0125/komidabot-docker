@@ -284,7 +284,7 @@ def handle_web_push_subscription():
             if needs_commit:
                 db.session.commit()
 
-            return 'ok', 200
+            return '{}', 200
 
         return abort(400)
     except DebuggableException as e:
