@@ -53,7 +53,8 @@ class MessageHandler(messages.MessageHandler):
             verbose = not app.config.get('TESTING') and not app.config.get('PRODUCTION')
 
             if verbose:
-                print('Received {} for request {}'.format(response.status_code, response.request.body), flush=True)
+                print('Received {} for push {}'.format(response.status_code, subscription_information['endpoint']),
+                      flush=True)
                 print(response.content, flush=True)
 
             return messages.MessageSendResult.SUCCESS
@@ -63,7 +64,8 @@ class MessageHandler(messages.MessageHandler):
             verbose = not app.config.get('TESTING') and not app.config.get('PRODUCTION')
 
             if verbose:
-                print('Received {} for request {}'.format(response.status_code, response.request.body), flush=True)
+                print('Received {} for push {}'.format(response.status_code, subscription_information['endpoint']),
+                      flush=True)
                 print(response.content, flush=True)
 
             if response.status_code == 429:  # Too many requests, rate limited
