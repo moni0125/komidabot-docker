@@ -33,7 +33,7 @@ class MessageHandler(messages.MessageHandler):
         data = {
             'notification': {
                 # 'lang': 'NL',
-                # 'badge': 'URL',
+                'badge': 'https://komidabot.heldplayer.blue/assets/icons/notification-badge-android-72x72.png',
                 'title': 'Komidabot message',
                 'body': message.text,
                 'vibrate': [],
@@ -43,6 +43,7 @@ class MessageHandler(messages.MessageHandler):
                 'silent': False,
             }
         }
+
         try:
             response = webpush(
                 subscription_info=subscription_information,
