@@ -14,6 +14,7 @@ import komidabot.facebook.constants as fb_constants
 import komidabot.facebook.postbacks as postbacks
 import komidabot.facebook.triggers as triggers
 import komidabot.localisation as localisation
+import komidabot.web.constants as web_constants
 from extensions import db
 from komidabot.app import get_app
 from komidabot.debug.state import DebuggableException
@@ -21,6 +22,7 @@ from komidabot.facebook.users import User as FacebookUser
 from komidabot.komidabot import Bot
 from komidabot.messages import TextMessage
 from komidabot.users import UnifiedUserManager, UserId, User
+from komidabot.web.users import User as WebUser
 
 blueprint = Blueprint('komidabot', __name__)
 pp = pprint.PrettyPrinter(indent=2)
@@ -95,7 +97,7 @@ def handle_facebook_webhook():
 
                     app.task_executor.submit(_do_handle_facebook_webhook, event, user, app._get_current_object())
 
-                return 'ok', 200
+            return 'ok', 200
 
         print(pprint.pformat(data, indent=2), flush=True)
 
@@ -245,15 +247,60 @@ def _do_handle_facebook_webhook(event, user: User, app):
             user.send_message(TextMessage(trigger, localisation.INTERNAL_ERROR(locale)))
             app.logger.exception(e)
 
-# komidabot_1     | { 'message': { 'attachments': [ { 'payload': { 'sticker_id': 369239263222822,
-# komidabot_1     |                                                'url': 'https://scontent.xx.fbcdn.net/v/t39.1997-6/39
-# 178562_1505197616293642_5411344281094848512_n.png?_nc_cat=1&_nc_oc=AQm57VHu6KQauDTkvWGzNJE91vLieGwdA9u0sTl2KhZy8gUqm3z
-# VoJvQ5knybEoLjpw5VVichzB1EhmnJn1E4Zk9&_nc_ad=z-m&_nc_cid=0&_nc_zor=9&_nc_ht=scontent.xx&oh=61f57a8ed4a3af09213c822d72f
-# 31b1b&oe=5DF3C875'},
-# komidabot_1     |                                   'type': 'image'}],
-# komidabot_1     |                'mid': 'OirMBeRGhQyTecBQ8BlIBbe3mqAMHtRIwdiwiPtxsjmrNKAH5-s8dwxob_2KszvHRbSdApenwZfud
-# 6VGt9IKwA',
-# komidabot_1     |                'sticker_id': 369239263222822},
-# komidabot_1     |   'recipient': {'id': '1502601723123151'},
-# komidabot_1     |   'sender': {'id': '1468689523250850'},
-# komidabot_1     |   'timestamp': 1570008603230}
+
+@blueprint.route('/subscription', methods=['POST'])
+def handle_facebook_verification():
+    try:
+        app = get_app()
+        data = request.get_json()
+
+        print(pprint.pformat(data, indent=2), flush=True)
+
+        if data and 'subscription' in data:
+            subscription = data['subscription']
+
+            if 'endpoint' not in subscription:
+                return abort(400)
+
+            if 'keys' not in subscription:
+                return abort(400)
+
+            endpoint = subscription['endpoint']
+            keys = subscription['keys']
+
+            needs_commit = False
+
+            user_manager = app.user_manager  # type: UnifiedUserManager
+            user = user_manager.get_user(UserId(endpoint, web_constants.PROVIDER_ID))  # type: WebUser
+
+            if user.get_db_user() is None:
+                print('Adding new subscription to the database {}'.format(user.id), flush=True)
+                user.add_to_db()
+                user.set_data({
+                    'keys': keys
+                })
+                needs_commit = True
+
+            if needs_commit:
+                db.session.commit()
+
+            return 'ok', 200
+
+        return abort(400)
+    except DebuggableException as e:
+        app = get_app()
+        app.bot.notify_error(e)
+
+        e.print_info(app.logger)
+
+        return abort(500)
+    except Exception as e:
+        try:
+            get_app().bot.notify_error(e)
+        except Exception:
+            pass
+
+        traceback.print_tb(e.__traceback__)
+        print(e, flush=True, file=sys.stderr)
+
+        return abort(500)

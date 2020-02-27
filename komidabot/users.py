@@ -149,6 +149,16 @@ class User:  # TODO: This probably needs more methods
         except json.JSONDecodeError:
             return None
 
+    def set_data(self, data: Optional[Dict]):
+        user = self.get_db_user()
+        if user is None:
+            return
+
+        if data is None:
+            user.data = None
+        else:
+            user.data = json.dumps(data)
+
     @property
     def manager(self) -> UserManager:
         return self.get_manager()
