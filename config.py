@@ -41,6 +41,9 @@ class BaseConfig:
     ADMIN_IDS = [_get_user(split) for split in os.getenv('ADMIN_IDS', '').split(':')]
     ADMIN_IDS_LEGACY = [user.id for user in ADMIN_IDS]
 
+    VAPID_PRIVATE_KEY = os.getenv('VAPID_PRIVATE_KEY', '')
+    VAPID_PUBLIC_KEY = os.getenv('VAPID_PUBLIC_KEY', '')
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
