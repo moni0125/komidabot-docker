@@ -60,21 +60,32 @@ class User:  # TODO: This probably needs more methods
 
         return user.language
 
-    def get_campus_for_day(self, date: datetime.date) -> 'Optional[models.Campus]':
+    def get_campus_for_day(self, date: Union[models.Day, datetime.date]) -> 'Optional[models.Campus]':
         user = self.get_db_user()
         if user is None:
             return None
 
-        day = models.Day(date.isoweekday())
+        if isinstance(date, datetime.date):
+            day = models.Day(date.isoweekday())
+        elif isinstance(date, models.Day):
+            day = date
+        else:
+            raise ValueError('date')
 
         return user.get_campus(day)
 
-    def set_campus_for_day(self, campus: models.Campus, date: datetime.date):
+    def set_campus_for_day(self, campus: models.Campus, date: Union[models.Day, datetime.date]):
         user = self.get_db_user()
         if user is None:
             return
 
-        day = models.Day(date.isoweekday())
+        if isinstance(date, datetime.date):
+            day = models.Day(date.isoweekday())
+        elif isinstance(date, models.Day):
+            day = date
+        else:
+            raise ValueError('date')
+
         sub = user.get_subscription(day)
 
         if sub is None:
@@ -83,12 +94,36 @@ class User:  # TODO: This probably needs more methods
         else:
             user.set_campus(day, campus)
 
-    def get_subscription_for_day(self, date: datetime.date) -> 'Optional[models.UserSubscription]':
+    def disable_subscription_for_day(self, date: Union[models.Day, datetime.date]) -> bool:
+        user = self.get_db_user()
+        if user is None:
+            return False
+
+        if isinstance(date, datetime.date):
+            day = models.Day(date.isoweekday())
+        elif isinstance(date, models.Day):
+            day = date
+        else:
+            raise ValueError('date')
+
+        sub = user.get_subscription(day)
+
+        if sub is not None and sub.active:
+            sub.active = False
+            return True
+        return False
+
+    def get_subscription_for_day(self, date: Union[models.Day, datetime.date]) -> 'Optional[models.UserSubscription]':
         user = self.get_db_user()
         if user is None:
             return None
 
-        day = models.Day(date.isoweekday())
+        if isinstance(date, datetime.date):
+            day = models.Day(date.isoweekday())
+        elif isinstance(date, models.Day):
+            day = date
+        else:
+            raise ValueError('date')
 
         return user.get_subscription(day)
 

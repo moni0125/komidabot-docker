@@ -15,6 +15,7 @@ import komidabot.facebook.postbacks as postbacks
 import komidabot.facebook.triggers as triggers
 import komidabot.localisation as localisation
 import komidabot.web.constants as web_constants
+import komidabot.models as models
 from extensions import db
 from komidabot.app import get_app
 from komidabot.debug.state import DebuggableException
@@ -280,6 +281,31 @@ def handle_web_push_subscription():
                     'keys': keys
                 })
                 needs_commit = True
+
+            if 'days' in subscription:
+                days = subscription['days']
+
+                if len(days) != 5:
+                    return abort(400)
+
+                for i in range(5):
+                    if i >= 5:
+                        break
+
+                    day = models.week_days[i]
+                    campus_id = days[i]
+
+                    campus = user.get_campus_for_day(day)
+
+                    if campus_id is None:
+                        if user.disable_subscription_for_day(day):
+                            needs_commit = True
+                    elif campus is None or campus.id != campus_id:
+                        campus = models.Campus.get_by_id(campus_id)
+                        if campus is None:
+                            continue
+                        user.set_campus_for_day(campus, day)
+                        needs_commit = True
 
             if needs_commit:
                 db.session.commit()
