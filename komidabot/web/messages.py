@@ -43,26 +43,38 @@ class MessageHandler(messages.MessageHandler):
         }
 
         try:
-            webpush(
+            response = webpush(
                 subscription_info=subscription_information,
                 data=json.dumps(data),
                 vapid_private_key=app.config['VAPID_PRIVATE_KEY'],
                 vapid_claims=copy.deepcopy(VAPID_CLAIMS)
             )
 
+            verbose = not app.config.get('TESTING') and not app.config.get('PRODUCTION')
+
+            if verbose:
+                print('Received {} for request {}'.format(response.status_code, response.request.body), flush=True)
+                print(response.content, flush=True)
+
             return messages.MessageSendResult.SUCCESS
         except WebPushException as e:
-            status_code = e.response.status_code
+            response = e.response
 
-            if status_code == 429:  # Too many requests, rate limited
+            verbose = not app.config.get('TESTING') and not app.config.get('PRODUCTION')
+
+            if verbose:
+                print('Received {} for request {}'.format(response.status_code, response.request.body), flush=True)
+                print(response.content, flush=True)
+
+            if response.status_code == 429:  # Too many requests, rate limited
                 pass  # TODO: Handle rate-limiting
-            if status_code == 400:  # Invalid request
+            if response.status_code == 400:  # Invalid request
                 return messages.MessageSendResult.ERROR
-            if status_code == 404:  # Subscription not found
+            if response.status_code == 404:  # Subscription not found
                 return messages.MessageSendResult.GONE
-            if status_code == 410:  # Subscription has been removed
+            if response.status_code == 410:  # Subscription has been removed
                 return messages.MessageSendResult.GONE
-            if status_code == 413:  # Payload too large
+            if response.status_code == 413:  # Payload too large
                 return messages.MessageSendResult.ERROR
 
             return messages.MessageSendResult.ERROR
