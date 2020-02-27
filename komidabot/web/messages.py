@@ -31,17 +31,18 @@ class MessageHandler(messages.MessageHandler):
         subscription_information['endpoint'] = user.get_internal_id()
 
         data = {
-            # 'lang': 'NL',
-            # 'badge': 'URL',
-            'title': 'Komidabot message',
-            'body': message.text,
-            'vibrate': [],
-            'renotify': False,
-            'requireInteraction': False,
-            'actions': [],
-            'silent': False,
+            'notification': {
+                # 'lang': 'NL',
+                # 'badge': 'URL',
+                'title': 'Komidabot message',
+                'body': message.text,
+                'vibrate': [],
+                'renotify': False,
+                'requireInteraction': False,
+                'actions': [],
+                'silent': False,
+            }
         }
-
         try:
             response = webpush(
                 subscription_info=subscription_information,
