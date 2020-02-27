@@ -1,5 +1,6 @@
 import datetime
 import functools
+import json
 from typing import Dict, List, Optional, Union
 from typing import NamedTuple
 
@@ -132,6 +133,21 @@ class User:  # TODO: This probably needs more methods
 
     def is_feature_active(self, feature_id: str) -> bool:
         return models.Feature.is_user_participating(self.get_db_user(), feature_id)
+
+    def get_data(self) -> Optional[Dict]:
+        user = self.get_db_user()
+        if user is None:
+            return None
+
+        data = user.data
+
+        if data is None:
+            return None
+
+        try:
+            return json.loads(data)
+        except json.JSONDecodeError:
+            return None
 
     @property
     def manager(self) -> UserManager:

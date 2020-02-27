@@ -1,3 +1,4 @@
+import functools
 import logging
 
 from flask import current_app as _current_app
@@ -12,6 +13,7 @@ class App:
         import atexit
         from concurrent.futures import ThreadPoolExecutor as PyThreadPoolExecutor
 
+        import komidabot.ipc as ipc
         from komidabot.facebook.api_interface import ApiInterface
         from komidabot.facebook.constants import PROVIDER_ID as FB_PROVIDER_ID
         from komidabot.facebook.users import UserManager as FBUserManager
@@ -45,6 +47,13 @@ class App:
 
         with self.app_context():
             self.user_manager.initialise()
+
+        if not config['TESTING']:
+            def ipc_callback(bot, app_context, data):
+                with app_context():
+                    bot.handle_ipc(data)
+
+            ipc.start_server(functools.partial(ipc_callback, self.bot, self.app_context))
 
     def app_context(self):
         raise NotImplementedError()

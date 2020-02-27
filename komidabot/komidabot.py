@@ -291,6 +291,18 @@ class Komidabot(Bot):
                 # FIXME: We should technically check if we can contact the admins, however we'll ignore this for now
                 user.send_message(message)
 
+    def handle_ipc(self, data):
+        print('Received IPC message:', data, flush=True)
+        if not isinstance(data, dict):
+            raise ValueError('Expected dictionary')
+        if 'action' not in data:
+            raise ValueError('Missing action')
+
+        action = data['action']
+
+        if action == 'sub':
+            self.trigger_received(triggers.SubscriptionTrigger())
+
 
 def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
     # noinspection PyPep8Naming

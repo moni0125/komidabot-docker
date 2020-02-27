@@ -1,11 +1,13 @@
-import signal, os
+import os
+import signal
 import unittest
 
 from flask import current_app
 from flask.cli import FlaskGroup
 
-from app import create_app
+import komidabot.ipc as ipc
 import komidabot.models as models
+from app import create_app
 
 cli = FlaskGroup(create_app=create_app)
 
@@ -19,6 +21,11 @@ def recreate_db():
 def seed_db():
     models.create_standard_values()
     models.import_dump(current_app.config['DUMP_FILE'])
+
+
+@cli.command('run_subscription')
+def run_subscription():
+    ipc.send_message({'action': 'sub'})
 
 
 @cli.command(with_appcontext=False)
