@@ -499,6 +499,7 @@ class AppUser(db.Model):
     # Flag indicating whether a user has had an introduction to the bot yet
     # onboarding_done = db.Column(db.Boolean(), nullable=False, default=False, server_default=expression.false())
     enabled = db.Column(db.Boolean(), nullable=False, default=True, server_default=expression.true())
+    data = db.Column(db.Text(), nullable=True)  # Stores data specific to the provider
 
     __table_args__ = (
         db.UniqueConstraint('provider', 'internal_id'),
