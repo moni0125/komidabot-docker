@@ -1,5 +1,6 @@
 *.env
 dump*.txt
+*.pem
 
 .idea/
 __pycache__/
