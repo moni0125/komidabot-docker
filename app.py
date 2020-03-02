@@ -34,10 +34,12 @@ def create_app(script_info: ScriptInfo = None):
     from komidabot.blueprint import blueprint as webhook_blueprint
     from komidabot.blueprint_api import blueprint as api_blueprint
 
-    app.register_blueprint(webhook_blueprint, url_prefix='/webhook')
-    app.register_blueprint(webhook_blueprint, url_prefix='/webhook-dev')
-    app.register_blueprint(api_blueprint, url_prefix='/api')
-    app.register_blueprint(api_blueprint, url_prefix='/api-dev')
+    if app.config['PRODUCTION']:
+        app.register_blueprint(webhook_blueprint, url_prefix='/webhook')
+        app.register_blueprint(api_blueprint, url_prefix='/api')
+    else:
+        app.register_blueprint(webhook_blueprint, url_prefix='/webhook-dev')
+        app.register_blueprint(api_blueprint, url_prefix='/api-dev')
 
     # shell context for flask cli
     @app.shell_context_processor
