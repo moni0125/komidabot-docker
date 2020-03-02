@@ -182,6 +182,15 @@ class ClosingDays(db.Model):
                                                 ClosingDays.last_day >= day
                                                 )).first()
 
+    @staticmethod
+    def find_closing_days_including(campus: Campus,
+                                    start_date: datetime.date,
+                                    end_date: datetime.date) -> 'List[ClosingDays]':
+        return ClosingDays.query.filter(db.and_(ClosingDays.campus_id == campus.id,
+                                                ClosingDays.first_day <= end_date,
+                                                ClosingDays.last_day >= start_date
+                                                )).all()
+
 
 class Translatable(db.Model):
     __tablename__ = 'translatable'
@@ -700,12 +709,12 @@ def recreate_db():
 
 # noinspection PyUnusedLocal
 def create_standard_values():
-    cst = Campus.create('Stadscampus', 'cst stad stadscampus', [], 1)
-    cde = Campus.create('Campus Drie Eiken', 'cde drie eiken', [], 2)
-    cmi = Campus.create('Campus Middelheim', 'cmi middelheim', [], 3)
-    cgb = Campus.create('Campus Groenenborger', 'cgb groenenborger', [], 4)
-    cmu = Campus.create('Campus Mutsaard', 'cmu mutsaard', [], 5)
-    hzs = Campus.create('Hogere Zeevaartschool', 'hzs hogere zeevaartschool', [], 6)
+    cst = Campus.create('Stadscampus', 'cst', ['stad', 'stadscampus'], 1)
+    cde = Campus.create('Campus Drie Eiken', 'cde', ['drie', 'eiken'], 2)
+    cmi = Campus.create('Campus Middelheim', 'cmi', ['middelheim'], 3)
+    cgb = Campus.create('Campus Groenenborger', 'cgb', ['groenenborger'], 4)
+    cmu = Campus.create('Campus Mutsaard', 'cmu', ['mutsaard'], 5)
+    hzs = Campus.create('Hogere Zeevaartschool', 'hzs', ['hogere', 'zeevaartschool'], 6)
     hzs.active = False
     db.session.commit()
 

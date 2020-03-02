@@ -28,6 +28,11 @@ def run_subscription():
     ipc.send_message({'action': 'sub'})
 
 
+@cli.command('update_menus')
+def update_menus():
+    ipc.send_message({'action': 'update_menu'})
+
+
 @cli.command(with_appcontext=False)
 def test():
     """Runs the tests without code coverage"""

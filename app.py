@@ -31,9 +31,13 @@ def create_app(script_info: ScriptInfo = None):
     migrate.init_app(app)
 
     # register blueprints
-    from komidabot.blueprint import blueprint
-    app.register_blueprint(blueprint, url_prefix='/webhook')
-    app.register_blueprint(blueprint, url_prefix='/webhook-dev')
+    from komidabot.blueprint import blueprint as webhook_blueprint
+    from komidabot.blueprint_api import blueprint as api_blueprint
+
+    app.register_blueprint(webhook_blueprint, url_prefix='/webhook')
+    app.register_blueprint(webhook_blueprint, url_prefix='/webhook-dev')
+    app.register_blueprint(api_blueprint, url_prefix='/api')
+    app.register_blueprint(api_blueprint, url_prefix='/api-dev')
 
     # shell context for flask cli
     @app.shell_context_processor

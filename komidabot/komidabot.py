@@ -302,6 +302,8 @@ class Komidabot(Bot):
 
         if action == 'sub':
             self.trigger_received(triggers.SubscriptionTrigger())
+        if action == 'update_menu':
+            update_menus()
 
 
 def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
