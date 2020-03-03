@@ -67,7 +67,7 @@ def get_active_closing_days(short_name: str, day_str: str):
             result[campus.short_name] = {
                 'first_day': closed_data.first_day.isoformat(),
                 'last_day': closed_data.last_day.isoformat(),
-                'reason': str(translatable_to_object(closed_data.translatable)),
+                'reason': translatable_to_object(closed_data.translatable),
             }
 
     return jsonify({'closing_days': result})
@@ -107,7 +107,7 @@ def get_closing_days(short_name: str, from_str: str, to_str: str):
             while first_day <= last_day:
                 closing_days.append({
                     'date': first_day.isoformat(),
-                    'reason': str(translatable_to_object(closed_data.translatable)),
+                    'reason': translatable_to_object(closed_data.translatable),
                 })
 
                 first_day += timedelta(1)
