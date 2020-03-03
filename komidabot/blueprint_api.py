@@ -147,9 +147,9 @@ def get_menu(short_name: str, day_str: str):
             'translation': translatable_to_object(menu_item.translatable),
         }
         if menu_item.price_students:
-            value['price_students'] = str(menu_item.price_students)
+            value['price_students'] = str(models.MenuItem.format_price(menu_item.price_students))
         if menu_item.price_staff:
-            value['price_staff'] = str(menu_item.price_staff)
+            value['price_staff'] = str(models.MenuItem.format_price(menu_item.price_staff))
         result.append(value)
 
     return jsonify({'menu': result})
