@@ -15,3 +15,4 @@ httpretty==0.9.7
 cryptography==2.8
 pywebpush==1.10.1
 py-vapid==1.7.0
+Werkzeug==0.16.1

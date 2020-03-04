@@ -1,12 +1,13 @@
 import datetime
 import json
 from decimal import Decimal
-from typing import Dict, List, Tuple
+from typing import Dict, List, Set, Tuple
 
 import requests
 
 import komidabot.models as models
 from komidabot.debug.state import DebuggableException, ProgramStateTrace, SimpleProgramState
+from komidabot.translation import LANGUAGE_DUTCH, LANGUAGE_ENGLISH
 
 BASE_ENDPOINT = 'https://restickets.uantwerpen.be/'
 MENU_API = '{endpoint}api/GetMenuByDate/{campus}/{date}'
@@ -57,7 +58,7 @@ COURSE_LOGOS = {
     'VEAL': 208,  # Contains veal
     'PIG': 212,  # Contains pig
     'FISH': 215,  # Contains fish
-    'BIO': 201,  # ???
+    'BIO': 201,  # Biological course (???)
     'VEGAN': 213,  # Does not contain meats???
     'VEGGIE': 214,  # Vegetarian course
 }
@@ -106,7 +107,17 @@ class ExternalMenuItem:
 
         self.price_staff = None
 
-    def get_combined_text(self, language='nl_BE'):
+    def get_supported_languages(self) -> 'Set[str]':
+        result = None
+        for elem in self.courses:
+            if result is None:
+                result = set(elem.name.keys())
+            else:
+                result = result.intersection(set(elem.name.keys()))
+
+        return result
+
+    def get_combined_text(self, language=LANGUAGE_DUTCH):
         for elem in self.courses:
             if language not in elem.name:
                 return None  # No official translation available
@@ -126,19 +137,19 @@ class ExternalMenuItem:
         #         front = l[:-1]
         #         last = l[-1]
         #         if len(front) > 0:
-        #             return '{}, en {}'.format(', '.join([elem.name['nl_BE'] for elem in front]), last.name['nl_BE'])
+        #             return '{}, en {}'.format(', '.join([elem.name[LANGUAGE_DUTCH] for elem in front]), last.name[LANGUAGE_DUTCH])
         #         else:
-        #             return last.name['nl_BE']
+        #             return last.name[LANGUAGE_DUTCH]
         #
-        #     if ' met ' in head.name['nl_BE']:
+        #     if ' met ' in head.name[LANGUAGE_DUTCH]:
         #         if len(tail) == 1:
-        #             return '{} en {}'.format(head.name['nl_BE'], tail[0].name['nl_BE'])
+        #             return '{} en {}'.format(head.name[LANGUAGE_DUTCH], tail[0].name[LANGUAGE_DUTCH])
         #         else:
-        #             return '{}, {}'.format(head.name['nl_BE'], get_tail(tail))
+        #             return '{}, {}'.format(head.name[LANGUAGE_DUTCH], get_tail(tail))
         #
-        #     return '{} met {}'.format(head.name['nl_BE'], get_tail(tail))
+        #     return '{} met {}'.format(head.name[LANGUAGE_DUTCH], get_tail(tail))
         # else:
-        #     return head.name['nl_BE']
+        #     return head.name[LANGUAGE_DUTCH]
 
     def get_student_price(self):
         return sum((item.price_students for item in self.courses if item.price_students), Decimal('0.0'))
@@ -234,9 +245,9 @@ class ExternalMenu:
                                         break  # Found pasta in the name!
 
                                 course_obj = ExternalCourse(course_sort_order, show_first, main_course, price)
-                                course_obj.add_name('nl_BE', name_nl.strip())
+                                course_obj.add_name(LANGUAGE_DUTCH, name_nl.strip())
                                 if name_en:
-                                    course_obj.add_name('en_US', name_en.strip())
+                                    course_obj.add_name(LANGUAGE_ENGLISH, name_en.strip())
                                 menu_contents.append(course_obj)
 
                         if not menu_contents:

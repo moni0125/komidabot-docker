@@ -3,11 +3,11 @@ import unittest
 from sqlalchemy import inspect
 
 import komidabot.models as models
-import tests.utils as utils
 from app import db
 from tests.base import BaseTestCase
 
 
+# TODO: Add provider tests
 class TestModelsTranslations(BaseTestCase):
     def test_simple_constructors(self):
         # Test constructor of Translatable and Translation models
@@ -98,6 +98,28 @@ class TestModelsTranslations(BaseTestCase):
             self.assertIn(translation2b, translations2)
             self.assertIn(translation3a, translations3)
             self.assertIn(translation3b, translations3)
+
+    def test_has_translation(self):
+        # Test usage of Translatable.add_translation
+
+        with self.app.app_context():
+            translatable1, translation1a = models.Translatable.get_or_create('Translation 1: en_US', 'en_US')
+            translatable2, translation2a = models.Translatable.get_or_create('Translation 2: nl_BE', 'nl_BE')
+
+            translatable1.add_translation('nl_BE', 'Translation 1: nl_BE')
+
+            db.session.flush()
+
+            translatable2.add_translation('en_US', 'Translation 2: en_US')
+
+            db.session.commit()
+
+            self.assertTrue(translatable1.has_translation('en_US'))
+            self.assertTrue(translatable2.has_translation('en_US'))
+            self.assertTrue(translatable1.has_translation('nl_BE'))
+            self.assertTrue(translatable2.has_translation('nl_BE'))
+            self.assertFalse(translatable1.has_translation('fr_FR'))
+            self.assertFalse(translatable2.has_translation('fr_FR'))
 
     # TODO: Test get_translation
     def test_get_translation(self):

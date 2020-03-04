@@ -2,6 +2,10 @@ from googletrans import Translator
 
 Language = str
 
+LANGUAGE_DUTCH = 'nl'
+LANGUAGE_ENGLISH = 'en'
+LANGUAGE_FRENCH = 'fr'
+
 
 def _fix_language(language: Language):
     if language == 'zh_CN' or language == 'zh_SG':
@@ -14,6 +18,13 @@ def _fix_language(language: Language):
 
 class TranslationService:
     def translate(self, text: str, from_language: Language, to_language: Language):
+        """
+        Submit a string to be translated.
+        :param text: The string to translate
+        :param from_language: A 2 letter string defining the language to translate from
+        :param to_language: A 2 letter string defining the language to translate to
+        :return: The translated string
+        """
         raise NotImplementedError()
 
     @property
@@ -23,6 +34,19 @@ class TranslationService:
     @property
     def pretty_name(self):
         raise NotImplementedError()
+
+
+class KomidaTranslationService(TranslationService):
+    def translate(self, text: str, from_language: Language, to_language: Language):
+        raise Exception('Komida translator service is a placeholder and cannot translate')
+
+    @property
+    def identifier(self):
+        return 'komida'
+
+    @property
+    def pretty_name(self):
+        return 'Komida'
 
 
 class GoogleTranslationService(TranslationService):

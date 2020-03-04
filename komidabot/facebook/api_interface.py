@@ -6,6 +6,7 @@ from cachetools import cached, TTLCache
 
 import komidabot.messages as messages
 from komidabot.app import get_app
+from komidabot.translation import LANGUAGE_DUTCH
 from komidabot.util import check_exceptions
 
 BASE_ENDPOINT = 'https://graph.facebook.com/'
@@ -104,4 +105,4 @@ class ApiInterface:
 
         data = json.loads(response.content)
 
-        return data.get('locale', 'nl_BE')
+        return data.get('locale', LANGUAGE_DUTCH)

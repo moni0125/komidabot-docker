@@ -7,6 +7,7 @@ import komidabot.localisation as localisation
 import komidabot.messages as messages
 import komidabot.models as models
 from extensions import db
+from komidabot.translation import LANGUAGE_DUTCH, LANGUAGE_ENGLISH
 
 postback_mappings = {}
 
@@ -177,8 +178,8 @@ def settings_language(trigger: triggers.Trigger):
         'template_type': 'button',
         'text': 'Chose your desired language',
         'buttons': [
-            postback_button("Nederlands", set_language('nl_BE', 'Nederlands')),
-            postback_button("English", set_language('en_US', 'English')),
+            postback_button("Nederlands", set_language(LANGUAGE_DUTCH, 'Nederlands')),
+            postback_button("English", set_language(LANGUAGE_ENGLISH, 'English')),
             postback_button("From Facebook", set_language('', 'From Facebook')),
         ],
     }

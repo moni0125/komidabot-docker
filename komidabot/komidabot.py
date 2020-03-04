@@ -23,6 +23,7 @@ from komidabot.bot import Bot
 from komidabot.debug.state import DebuggableException, ProgramStateTrace, SimpleProgramState
 from komidabot.models import Campus, ClosingDays, Day, Menu, Translatable
 from komidabot.models import create_standard_values, import_dump, recreate_db
+from komidabot.translation import LANGUAGE_DUTCH
 
 
 class Komidabot(Bot):
@@ -361,7 +362,7 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
         if not campus.active:
             continue
 
-        language = user.get_locale() or 'nl_BE'
+        language = user.get_locale() or LANGUAGE_DUTCH
 
         if campus not in subscriptions:
             subscriptions[campus] = dict()
@@ -458,7 +459,22 @@ def update_menus(*campuses: str, dates: 'List[datetime.date]' = None):
                 new_menu = Menu.create(campus, date, add_to_db=False)
 
                 for item in items:
-                    translatable, translation = Translatable.get_or_create(item.get_combined_text(), 'nl_NL')
+                    translatable, translation = Translatable.get_or_create(item.get_combined_text(), LANGUAGE_DUTCH)
+
+                    for language in item.get_supported_languages().difference([LANGUAGE_DUTCH]):
+                        if translatable.has_translation(language):
+                            translation = translatable.get_translation(language)
+                            if translation.provider is None or translation.provider == 'komida':
+                                # Don't replace translation if provider is Komida, as this is the official translation
+                                # Likewise, if the provider is not defined, this means it is most likely manually added
+                                # Otherwise it's done by Google or some other provider, which is sub-optimal
+                                continue
+
+                            # Update translation and provider to new values
+                            translation.translation = item.get_combined_text(language)
+                            translation.provider = 'komida'
+                        else:
+                            translatable.add_translation(language, item.get_combined_text(language), 'komida')
 
                     new_menu.add_menu_item(translatable, item.food_type, item.get_student_price(),
                                            item.get_staff_price())

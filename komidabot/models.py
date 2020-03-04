@@ -212,7 +212,7 @@ class Translatable(db.Model):
         self.original_language = language
         self.original_text = text
 
-    def add_translation(self, language: str, text: str) -> 'Translation':
+    def add_translation(self, language: str, text: str, provider: str = None) -> 'Translation':
         if sqlalchemy_inspect(self).transient:
             raise ValueError('Translatable is transient and cannot have translations')
 
@@ -222,12 +222,12 @@ class Translatable(db.Model):
         translation = Translation.query.filter_by(translatable_id=self.id, language=language).first()
 
         if translation is None:
-            translation = Translation(self.id, language, text)
+            translation = Translation(self.id, language, text, provider)
             db.session.add(translation)
 
         return translation
 
-    def get_translation(self, language: str, translator: 'Optional[TranslationService]') -> 'Translation':
+    def get_translation(self, language: str, translator: 'TranslationService' = None) -> 'Translation':
         if not language:
             raise ValueError('language')
         if translator is not None and not isinstance(translator, TranslationService):
@@ -247,9 +247,22 @@ class Translatable(db.Model):
 
             translation_text = translator.translate(self.original_text, self.original_language, language)
 
-            translation = self.add_translation(language, translation_text)
+            translation = self.add_translation(language, translation_text, translator.identifier)
 
         return translation
+
+    def has_translation(self, language: str) -> 'bool':
+        if not language:
+            raise ValueError('language')
+
+        if sqlalchemy_inspect(self).transient:
+            raise ValueError('Translatable is transient and cannot have translations')
+
+        if language == self.original_language:
+            return True
+
+        return db.session.query(Translation.query.filter_by(translatable_id=self.id,
+                                                            language=language).exists()).scalar()
 
     @property
     def translations(self) -> 'Collection[Translation]':
@@ -291,18 +304,22 @@ class Translation(db.Model):
                                 primary_key=True)
     language = db.Column(db.String(5), primary_key=True)
     translation = db.Column(db.String(256), nullable=False)
+    provider = db.Column(db.String(16))
 
-    def __init__(self, translatable_id: int, language: str, translation: str):
+    def __init__(self, translatable_id: int, language: str, translation: str, provider: str = None):
         if not isinstance(translatable_id, int):
             raise ValueError('translatable_id')
         if not isinstance(language, str):
             raise ValueError('language')
         if not isinstance(translation, str):
             raise ValueError('translation')
+        if provider is not None and not isinstance(provider, str):
+            raise ValueError('provider')
 
         self.translatable_id = translatable_id
         self.language = language
         self.translation = translation
+        self.provider = provider
 
     def __eq__(self, other: 'Translation'):
         if self.translatable_id != other.translatable_id:
