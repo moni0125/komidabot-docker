@@ -36,9 +36,7 @@ class ApiInterface:
 
         app = get_app()
 
-        verbose = not app.config.get('TESTING') and not app.config.get('PRODUCTION')
-
-        if verbose:
+        if app.config.get('VERBOSE'):
             print('Received {} for request {}'.format(response.status_code, response.request.body), flush=True)
             print(response.content, flush=True)
 
@@ -81,9 +79,7 @@ class ApiInterface:
 
         app = get_app()
 
-        verbose = not app.config.get('TESTING') and not app.config.get('PRODUCTION')
-
-        if verbose:
+        if app.config.get('VERBOSE'):
             print('Received {} for request {}'.format(response.status_code, response.request.body), flush=True)
             print(response.content, flush=True)
 

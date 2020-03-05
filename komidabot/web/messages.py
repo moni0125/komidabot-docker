@@ -52,9 +52,7 @@ class MessageHandler(messages.MessageHandler):
                 vapid_claims=copy.deepcopy(VAPID_CLAIMS)
             )
 
-            verbose = not app.config.get('TESTING') and not app.config.get('PRODUCTION')
-
-            if verbose:
+            if app.config.get('VERBOSE'):
                 print('Received {} for push {}'.format(response.status_code, subscription_information['endpoint']),
                       flush=True)
                 print(response.content, flush=True)
@@ -63,9 +61,7 @@ class MessageHandler(messages.MessageHandler):
         except WebPushException as e:
             response = e.response
 
-            verbose = not app.config.get('TESTING') and not app.config.get('PRODUCTION')
-
-            if verbose:
+            if app.config.get('VERBOSE'):
                 print('Received {} for push {}'.format(response.status_code, subscription_information['endpoint']),
                       flush=True)
                 print(response.content, flush=True)

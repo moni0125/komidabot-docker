@@ -32,6 +32,7 @@ class BaseConfig:
     TESTING = False
     PRODUCTION = False
     DISABLED = int(os.getenv('DISABLED', '0')) != 0
+    VERBOSE = int(os.getenv('VERBOSE', '0')) != 0
     DUMP_FILE = os.getenv('DUMP_FILE')
 
     PAGE_ACCESS_TOKEN = os.getenv('PAGE_ACCESS_TOKEN')
@@ -50,17 +51,20 @@ class BaseConfig:
 class ProductionConfig(BaseConfig):
     """Production configuration"""
     PRODUCTION = True
+    VERBOSE = int(os.getenv('VERBOSE', '1')) != 0
     SQLALCHEMY_DATABASE_URI = _get_postgres_uri(POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, 'komidabot_prod')
 
 
 class DevelopmentConfig(BaseConfig):
     """Development configuration"""
+    VERBOSE = True
     SQLALCHEMY_DATABASE_URI = _get_postgres_uri(POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, 'komidabot_dev')
 
 
 class TestingConfig(BaseConfig):
     """Testing configuration"""
     DISABLED = False
+    VERBOSE = False
     TESTING = True
     SQLALCHEMY_DATABASE_URI = _get_postgres_uri(POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, 'komidabot_test')
     PAGE_ACCESS_TOKEN = None

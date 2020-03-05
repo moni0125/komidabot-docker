@@ -331,7 +331,7 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
 
     app = get_app()
 
-    verbose = not app.config.get('TESTING') and not app.config.get('PRODUCTION')
+    verbose = app.config.get('VERBOSE')
 
     if verbose:
         print('Sending out subscription for {} ({})'.format(date, day.name), flush=True)
