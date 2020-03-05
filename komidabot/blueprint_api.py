@@ -33,12 +33,12 @@ def get_campus_list():
             # TODO: Needs opening hours
         })
 
-    return jsonify({'campuses': result})
+    return jsonify(result)
 
 
-@blueprint.route('/campus/closing_days/<day_str>', methods=['GET'], defaults={'short_name': None})
-@blueprint.route('/campus/<short_name>/closing_days/<day_str>', methods=['GET'])
-def get_active_closing_days(short_name: str, day_str: str):
+@blueprint.route('/campus/closing_days/<week_str>', methods=['GET'], defaults={'short_name': None})
+@blueprint.route('/campus/<short_name>/closing_days/<week_str>', methods=['GET'])
+def get_active_closing_days(short_name: str, week_str: str):
     """
     Gets all currently active closures.
     """
@@ -53,70 +53,31 @@ def get_active_closing_days(short_name: str, day_str: str):
 
         campuses = [models.Campus.get_by_short_name(short_name)]
 
-    result = {}
-
     try:
-        day_date = date.fromisoformat(day_str)
+        week_day = date.fromisoformat(week_str)
     except ValueError:
         return abort(400)
 
-    for campus in campuses:
-        closed_data = models.ClosingDays.find_is_closed(campus, day_date)
-
-        if closed_data is not None:
-            result[campus.short_name] = {
-                'first_day': closed_data.first_day.isoformat(),
-                'last_day': closed_data.last_day.isoformat(),
-                'reason': translatable_to_object(closed_data.translatable),
-            }
-
-    return jsonify({'closing_days': result})
-
-
-@blueprint.route('/campus/closing_days/<from_str>/<to_str>', methods=['GET'], defaults={'short_name': None})
-@blueprint.route('/campus/<short_name>/closing_days/<from_str>/<to_str>', methods=['GET'])
-def get_closing_days(short_name: str, from_str: str, to_str: str):
-    """
-    Gets all closing days encompassing a date range for one or all campuses.
-    """
-
-    if short_name is None:
-        campuses = models.Campus.get_all_active()
-    else:
-        campus = models.Campus.get_by_short_name(short_name)
-
-        if campus is None:
-            return abort(400)
-
-        campuses = [models.Campus.get_by_short_name(short_name)]
+    week_start = week_day + timedelta(days=-week_day.weekday())  # Start on Monday
 
     result = {}
 
-    try:
-        from_date = date.fromisoformat(from_str)
-        to_date = date.fromisoformat(to_str)
-    except ValueError:
-        return abort(400)
-
     for campus in campuses:
-        closing_days = []
+        current_campus = result[campus.short_name] = []
 
-        for closed_data in models.ClosingDays.find_closing_days_including(campus, from_date, to_date):
-            first_day = max(from_date, closed_data.first_day)
-            last_day = min(to_date, closed_data.last_day)
-            while first_day <= last_day:
-                closing_days.append({
-                    'date': first_day.isoformat(),
+        for i in range(5):
+            closed_data = models.ClosingDays.find_is_closed(campus, week_start + timedelta(days=i))
+
+            if closed_data is not None:
+                current_campus.append({
+                    'first_day': closed_data.first_day.isoformat(),
+                    'last_day': closed_data.last_day.isoformat(),
                     'reason': translatable_to_object(closed_data.translatable),
                 })
+            else:
+                current_campus.append(None)
 
-                first_day += timedelta(1)
-
-        closing_days.sort(key=lambda v: v['date'])
-
-        result[campus.short_name] = closing_days
-
-    return jsonify({'closing_days': result})
+    return jsonify(result)
 
 
 @blueprint.route('/campus/<short_name>/menu/<day_str>', methods=['GET'])
@@ -139,7 +100,7 @@ def get_menu(short_name: str, day_str: str):
     result = []
 
     if menu is None:
-        return jsonify({'menu': result})
+        return jsonify(result)
 
     for menu_item in menu.menu_items:  # type: models.MenuItem
         value = {
@@ -152,4 +113,4 @@ def get_menu(short_name: str, day_str: str):
             value['price_staff'] = str(models.MenuItem.format_price(menu_item.price_staff))
         result.append(value)
 
-    return jsonify({'menu': result})
+    return jsonify(result)
