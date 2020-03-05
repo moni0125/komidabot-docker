@@ -15,7 +15,8 @@ class UserManager(users.UserManager):
     def get_subscribed_users(self, day: models.Day) -> 'List[users.User]':
         # TODO: Starting March 4th 2020, facebook subscriptions will no longer be available
         #       https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/
-        return super().get_subscribed_users(day)
+        # return super().get_subscribed_users(day)
+        return []
 
     def get_user(self, user: 'Union[users.UserId, models.AppUser]', **kwargs) -> 'User':
         if isinstance(user, models.AppUser):
