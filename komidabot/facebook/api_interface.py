@@ -65,6 +65,10 @@ class ApiInterface:
                 if subcode == 2018108:
                     # This Person Cannot Receive Messages: This person isn't receiving messages from you right now.
                     return messages.MessageSendResult.UNREACHABLE
+                if subcode == 2018278:
+                    # TODO: Get official description from FB once available
+                    # Sent after March 4th to indicate the subscription message was denied
+                    return messages.MessageSendResult.UNREACHABLE
             if code == 551:
                 if subcode == 1545041:
                     # This person isn't available right now.
