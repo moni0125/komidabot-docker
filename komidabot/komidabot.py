@@ -63,14 +63,11 @@ class Komidabot(Bot):
 
                 try:
                     today = datetime.datetime.today().date()
-                    dates = [
-                        today,
-                        today + datetime.timedelta(days=1),
-                        today + datetime.timedelta(days=2),
-                        today + datetime.timedelta(days=3),
-                        today + datetime.timedelta(days=4),
-                        today + datetime.timedelta(days=5),
-                    ]
+                    week_start = today + datetime.timedelta(days=-today.weekday())
+
+                    dates = [week_start + datetime.timedelta(days=i) for i in range(today.weekday(), 5)]
+                    if today.weekday() >= 3:
+                        dates += [week_start + datetime.timedelta(days=7 + i) for i in range(5)]
 
                     update_menus(dates=dates)
                 except DebuggableException as e:
