@@ -51,13 +51,12 @@ class BaseConfig:
 class ProductionConfig(BaseConfig):
     """Production configuration"""
     PRODUCTION = True
-    VERBOSE = int(os.getenv('VERBOSE', '1')) != 0
     SQLALCHEMY_DATABASE_URI = _get_postgres_uri(POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, 'komidabot_prod')
 
 
 class DevelopmentConfig(BaseConfig):
     """Development configuration"""
-    VERBOSE = True
+    VERBOSE = int(os.getenv('VERBOSE', '1')) != 0
     SQLALCHEMY_DATABASE_URI = _get_postgres_uri(POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, 'komidabot_dev')
 
 

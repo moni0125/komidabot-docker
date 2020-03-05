@@ -107,8 +107,9 @@ class Komidabot(Bot):
                 campuses = Campus.get_all()
 
                 # This ensures that when a user is marked as reachable in case they were unreachable at some point
-                if sender.mark_reachable():
-                    db.session.commit()
+                # TODO: We no longer mark users as reachable, need to think over the proper course of action
+                # if sender.mark_reachable():
+                #     db.session.commit()
 
                 if locale is None:
                     locale = sender.get_locale()
