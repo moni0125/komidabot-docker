@@ -462,7 +462,7 @@ def update_menus(*campuses: str, dates: 'List[datetime.date]' = None):
                     for language in item.get_supported_languages().difference([LANGUAGE_DUTCH]):
                         if translatable.has_translation(language):
                             translation = translatable.get_translation(language)
-                            if translation.provider is None or translation.provider == 'komida':
+                            if translation.provider in [None, 'komida', 'manual']:
                                 # Don't replace translation if provider is Komida, as this is the official translation
                                 # Likewise, if the provider is not defined, this means it is most likely manually added
                                 # Otherwise it's done by Google or some other provider, which is sub-optimal
