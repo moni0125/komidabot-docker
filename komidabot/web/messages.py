@@ -92,14 +92,14 @@ class MessageHandler(messages.MessageHandler):
 
     @staticmethod
     def _send_menu_message(user: users.User, message: messages.MenuMessage) -> messages.MessageSendResult:
-        locale = user.get_locale()
+        locale = user.get_locale() or translation.LANGUAGE_DUTCH
         menu = message.menu
 
         date_str = util.date_to_string(locale, menu.menu_day)
 
         title = localisation.REPLY_MENU_START(locale).format(campus=menu.campus.name, date=date_str)
         text = komidabot.menu.get_short_menu_text(menu, message.translator,
-                                                  locale or translation.LANGUAGE_DUTCH,
+                                                  locale,
                                                   FoodType.MEAT, FoodType.VEGAN,
                                                   FoodType.PASTA_MEAT, FoodType.PASTA_VEGAN,
                                                   FoodType.GRILL)
