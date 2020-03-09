@@ -21,14 +21,17 @@ def get_menu_line(menu_item: models.MenuItem, translator: translation.Translatio
 
 def prepare_menu_text(campus: models.Campus, date: datetime.date, translator: translation.TranslationService,
                       locale: str) -> 'Optional[str]':
-    menu = models.Menu.get_menu(campus, date)
+    return get_menu_text(models.Menu.get_menu(campus, date), translator, locale)
 
+
+def get_menu_text(menu: Optional[models.Menu], translator: translation.TranslationService,
+                  locale: str) -> 'Optional[str]':
     if menu is None:
         return None
 
-    date_str = util.date_to_string(locale, date)
+    date_str = util.date_to_string(locale, menu.menu_day)
 
-    result = [localisation.REPLY_MENU_START(locale).format(campus=campus.name, date=date_str), '']
+    result = [localisation.REPLY_MENU_START(locale).format(campus=menu.campus.name, date=date_str), '']
 
     # if len(menu.menu_items) < 6:
     #     result.insert(1, localisation.REPLY_MENU_INCOMPLETE(locale))

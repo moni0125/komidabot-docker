@@ -13,7 +13,6 @@ from apscheduler.triggers.cron import CronTrigger
 import komidabot.external_menu as external_menu
 import komidabot.facebook.nlp_dates as nlp_dates
 import komidabot.localisation as localisation
-import komidabot.menu
 import komidabot.messages as messages
 import komidabot.triggers as triggers
 import komidabot.users as users
@@ -252,13 +251,15 @@ class Komidabot(Bot):
                                                                      reason=translation.translation)))
                     return
 
-                menu = komidabot.menu.prepare_menu_text(campus, date, app.translator, locale)
+                # menu = komidabot.menu.prepare_menu_text(campus, date, app.translator, locale)
+                menu = Menu.get_menu(campus, date)
 
                 if menu is None:
                     sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NO_MENU(locale)
                                                              .format(campus=campus.short_name.upper(), date=str(date))))
                 else:
-                    sender.send_message(messages.TextMessage(trigger, menu))
+                    # sender.send_message(messages.TextMessage(trigger, menu))
+                    sender.send_message(messages.MenuMessage(trigger, menu, app.translator))
 
                 # XXX: Disabled experiment
                 # if default_date and default_campus and isinstance(trigger, triggers.TextTrigger):
@@ -381,7 +382,7 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
                 continue  # Campus closed, no daily menu
 
             # TODO: Change menus from TextMessage to a custom message type to support different formatting per platform
-            menu = komidabot.menu.prepare_menu_text(campus, date, app.translator, language)
+            menu = Menu.get_menu(campus, date)
             if menu is None:
                 continue
 
@@ -391,7 +392,7 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
                 if verbose:
                     print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
                           flush=True)
-                message_result = user.send_message(messages.TextMessage(trigger, menu))
+                message_result = user.send_message(messages.MenuMessage(trigger, menu, app.translator))
 
                 if message_result == messages.MessageSendResult.UNSUPPORTED:
                     # Text messages unsupported? Disable subscription then

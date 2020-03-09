@@ -1,6 +1,9 @@
 import enum
 from typing import Dict, List, Type, TypeVar, Union
 
+import komidabot.translation as translation
+from komidabot.models import Menu
+
 
 class Aspect:
     allows_multiple = False
@@ -77,6 +80,13 @@ class TextMessage(Message):
     def __init__(self, trigger: Trigger, text: str):
         super().__init__(trigger)
         self.text = text
+
+
+class MenuMessage(Message):
+    def __init__(self, trigger: Trigger, menu: Menu, translator: translation.TranslationService):
+        super().__init__(trigger)
+        self.menu = menu
+        self.translator = translator
 
 
 class MessageSendResult(enum.Enum):
