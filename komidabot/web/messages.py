@@ -5,6 +5,7 @@ from pywebpush import webpush, WebPushException
 
 import komidabot.menu
 import komidabot.messages as messages
+import komidabot.translation as translation
 import komidabot.users as users
 import komidabot.web.constants as web_constants
 from komidabot.app import get_app
@@ -89,7 +90,8 @@ class MessageHandler(messages.MessageHandler):
 
     @staticmethod
     def _send_menu_message(user: users.User, message: messages.MenuMessage) -> messages.MessageSendResult:
-        text = komidabot.menu.get_short_menu_text(message.menu, message.translator, user.get_locale(),
+        text = komidabot.menu.get_short_menu_text(message.menu, message.translator,
+                                                  user.get_locale() or translation.LANGUAGE_DUTCH,
                                                   FoodType.MEAT, FoodType.VEGAN,
                                                   FoodType.PASTA_MEAT, FoodType.PASTA_VEGAN,
                                                   FoodType.GRILL)
