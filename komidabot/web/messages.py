@@ -3,10 +3,12 @@ import json
 
 from pywebpush import webpush, WebPushException
 
+import komidabot.menu
 import komidabot.messages as messages
 import komidabot.users as users
 import komidabot.web.constants as web_constants
 from komidabot.app import get_app
+from komidabot.models import FoodType
 
 VAPID_CLAIMS = {
     'sub': 'mailto:komidabot@gmail.com'
@@ -72,7 +74,7 @@ class MessageHandler(messages.MessageHandler):
         data = {
             'notification': {
                 # 'lang': 'NL',
-                'badge': 'https://komidabot.heldplayer.blue/assets/icons/notification-badge-android-72x72.png',
+                'badge': 'https://komidabot.xyz/assets/icons/notification-badge-android-72x72.png',
                 'title': 'Komidabot message',
                 'body': message.text,
                 'vibrate': [],
@@ -86,21 +88,29 @@ class MessageHandler(messages.MessageHandler):
         return MessageHandler._send_notification(subscription_information, data)
 
     @staticmethod
-    def _send_menu_message(user: users.User, message: messages.TextMessage) -> messages.MessageSendResult:
+    def _send_menu_message(user: users.User, message: messages.MenuMessage) -> messages.MessageSendResult:
+        text = komidabot.menu.get_short_menu_text(message.menu, message.translator, user.get_locale(),
+                                                  FoodType.MEAT, FoodType.VEGAN,
+                                                  FoodType.PASTA_MEAT, FoodType.PASTA_VEGAN,
+                                                  FoodType.GRILL)
+
+        if text is None or text == '':
+            return messages.MessageSendResult.ERROR
+
         subscription_information = copy.deepcopy(user.get_data())
         subscription_information['endpoint'] = user.get_internal_id()
 
         data = {
             'notification': {
-                # 'lang': 'NL',
-                'badge': 'https://komidabot.heldplayer.blue/assets/icons/notification-badge-android-72x72.png',
-                'title': 'Komidabot message',
+                'lang': user.get_locale(),
+                'badge': 'https://komidabot.xyz/assets/icons/notification-badge-android-72x72.png',
+                'title': "Today's Menu",
                 'body': 'New menu available, FIXME',
                 'vibrate': [],
                 'renotify': False,
                 'requireInteraction': False,
                 'actions': [],
-                'silent': False,
+                'silent': True,
             }
         }
 

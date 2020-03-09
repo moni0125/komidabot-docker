@@ -1,5 +1,5 @@
 import datetime
-from typing import Optional
+from typing import List, Optional
 
 import komidabot.localisation as localisation
 import komidabot.models as models
@@ -39,6 +39,24 @@ def get_menu_text(menu: Optional[models.Menu], translator: translation.Translati
     try:
         for item in menu.menu_items:  # type: models.MenuItem
             result.append(get_menu_line(item, translator, locale))
+    except Exception:
+        print('Failed translating to {}'.format(locale), flush=True)
+        raise
+
+    return '\n'.join(result)
+
+
+def get_short_menu_text(menu: Optional[models.Menu], translator: translation.TranslationService,
+                        locale: str, *food_types: models.FoodType) -> 'Optional[str]':
+    if menu is None:
+        return None
+
+    result = []
+
+    try:
+        for item in menu.menu_items:  # type: models.MenuItem
+            if item.food_type in food_types:
+                result.append(get_menu_line(item, translator, locale))
     except Exception:
         print('Failed translating to {}'.format(locale), flush=True)
         raise
