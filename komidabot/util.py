@@ -3,6 +3,7 @@ from functools import wraps
 from typing import List, Tuple, TypeVar
 
 import komidabot.localisation as localisation
+import komidabot.translation as translation
 
 
 def check_exceptions(fallback=None):
@@ -48,7 +49,7 @@ def get_list_diff(old_list: List[T], new_list: List[T]) -> Tuple[List[T], List[T
 
 
 def date_to_string(locale: str, date):
-    if locale[:2] == 'en':
+    if locale == translation.LANGUAGE_ENGLISH:
         day_number = date.day
         if day_number == 1 or day_number == 21 or day_number == 31:
             suffix = 'st'
@@ -62,7 +63,7 @@ def date_to_string(locale: str, date):
         return '{weekday} {day}{suffix} of {month}'.format(day=date.day, suffix=suffix,
                                                            month=localisation.MONTHS[date.month - 1](locale),
                                                            weekday=localisation.DAYS[date.weekday()](locale))
-    elif locale[:2] == 'nl':
+    elif locale == translation.LANGUAGE_DUTCH:
         return '{weekday} {day} {month}'.format(day=date.day, month=localisation.MONTHS[date.month - 1](locale),
                                                 weekday=localisation.DAYS[date.weekday()](locale))
     else:
