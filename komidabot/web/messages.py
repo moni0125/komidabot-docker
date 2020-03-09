@@ -3,10 +3,12 @@ import json
 
 from pywebpush import webpush, WebPushException
 
+import komidabot.localisation as localisation
 import komidabot.menu
 import komidabot.messages as messages
 import komidabot.translation as translation
 import komidabot.users as users
+import komidabot.util as util
 import komidabot.web.constants as web_constants
 from komidabot.app import get_app
 from komidabot.models import FoodType
@@ -90,8 +92,14 @@ class MessageHandler(messages.MessageHandler):
 
     @staticmethod
     def _send_menu_message(user: users.User, message: messages.MenuMessage) -> messages.MessageSendResult:
-        text = komidabot.menu.get_short_menu_text(message.menu, message.translator,
-                                                  user.get_locale() or translation.LANGUAGE_DUTCH,
+        locale = user.get_locale()
+        menu = message.menu
+
+        date_str = util.date_to_string(locale, menu.menu_day)
+
+        title = localisation.REPLY_MENU_START(locale).format(campus=menu.campus.name, date=date_str)
+        text = komidabot.menu.get_short_menu_text(menu, message.translator,
+                                                  locale or translation.LANGUAGE_DUTCH,
                                                   FoodType.MEAT, FoodType.VEGAN,
                                                   FoodType.PASTA_MEAT, FoodType.PASTA_VEGAN,
                                                   FoodType.GRILL)
@@ -104,9 +112,9 @@ class MessageHandler(messages.MessageHandler):
 
         data = {
             'notification': {
-                'lang': user.get_locale(),
+                'lang': locale,
                 'badge': 'https://komidabot.xyz/assets/icons/notification-badge-android-72x72.png',
-                'title': "Today's Menu",
+                'title': title,
                 'body': text,
                 'renotify': False,
                 'requireInteraction': False,

@@ -1,5 +1,5 @@
 import datetime
-from typing import List, Optional
+from typing import Optional
 
 import komidabot.localisation as localisation
 import komidabot.models as models
