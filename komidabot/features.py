@@ -7,7 +7,7 @@ from komidabot.users import UserId
 
 _feature = namedtuple('_feature', ['string_id', 'description', 'globally_available', 'active_users'])
 _features = [
-    _feature('menu_subscription', 'The user can receive a daily menu message automatically', False, [
+    _feature('menu_subscription', 'The user can receive a daily menu message automatically', True, [
         # Dev user ID
         UserId('3150885824953769', 'facebook'),
         # Production user IDs

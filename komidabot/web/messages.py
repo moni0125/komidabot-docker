@@ -20,29 +20,14 @@ class MessageHandler(messages.MessageHandler):
 
         if isinstance(message, messages.TextMessage):
             return self._send_text_message(user, message)
+        elif isinstance(message, messages.MenuMessage):
+            return self._send_menu_message(user, message)
         else:
             return messages.MessageSendResult.UNSUPPORTED
 
     @staticmethod
-    def _send_text_message(user: users.User, message: messages.TextMessage) -> messages.MessageSendResult:
+    def _send_notification(subscription_information, data) -> messages.MessageSendResult:
         app = get_app()
-
-        subscription_information = copy.deepcopy(user.get_data())
-        subscription_information['endpoint'] = user.get_internal_id()
-
-        data = {
-            'notification': {
-                # 'lang': 'NL',
-                'badge': 'https://komidabot.heldplayer.blue/assets/icons/notification-badge-android-72x72.png',
-                'title': 'Komidabot message',
-                'body': message.text,
-                'vibrate': [],
-                'renotify': False,
-                'requireInteraction': False,
-                'actions': [],
-                'silent': False,
-            }
-        }
 
         try:
             response = webpush(
@@ -78,3 +63,45 @@ class MessageHandler(messages.MessageHandler):
                 return messages.MessageSendResult.ERROR
 
             return messages.MessageSendResult.ERROR
+
+    @staticmethod
+    def _send_text_message(user: users.User, message: messages.TextMessage) -> messages.MessageSendResult:
+        subscription_information = copy.deepcopy(user.get_data())
+        subscription_information['endpoint'] = user.get_internal_id()
+
+        data = {
+            'notification': {
+                # 'lang': 'NL',
+                'badge': 'https://komidabot.heldplayer.blue/assets/icons/notification-badge-android-72x72.png',
+                'title': 'Komidabot message',
+                'body': message.text,
+                'vibrate': [],
+                'renotify': False,
+                'requireInteraction': False,
+                'actions': [],
+                'silent': False,
+            }
+        }
+
+        return MessageHandler._send_notification(subscription_information, data)
+
+    @staticmethod
+    def _send_menu_message(user: users.User, message: messages.TextMessage) -> messages.MessageSendResult:
+        subscription_information = copy.deepcopy(user.get_data())
+        subscription_information['endpoint'] = user.get_internal_id()
+
+        data = {
+            'notification': {
+                # 'lang': 'NL',
+                'badge': 'https://komidabot.heldplayer.blue/assets/icons/notification-badge-android-72x72.png',
+                'title': 'Komidabot message',
+                'body': 'New menu available, FIXME',
+                'vibrate': [],
+                'renotify': False,
+                'requireInteraction': False,
+                'actions': [],
+                'silent': False,
+            }
+        }
+
+        return MessageHandler._send_notification(subscription_information, data)
