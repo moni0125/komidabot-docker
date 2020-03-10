@@ -35,6 +35,11 @@ def update_menus():
     ipc.send_message({'action': 'update_menu'})
 
 
+@cli.command('synchronize_menus')
+def update_menus():
+    ipc.send_message({'action': 'synchronize_menus'})
+
+
 @cli.command(with_appcontext=False)
 @click.option('--case')
 def test(case: Optional[str]):

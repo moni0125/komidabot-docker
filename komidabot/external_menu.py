@@ -7,6 +7,7 @@ import requests
 
 import komidabot.models as models
 from komidabot.debug.state import DebuggableException, ProgramStateTrace, SimpleProgramState
+from komidabot.rate_limit import Limiter
 from komidabot.translation import LANGUAGE_DUTCH, LANGUAGE_ENGLISH
 
 BASE_ENDPOINT = 'https://restickets.uantwerpen.be/'
@@ -146,6 +147,8 @@ class ExternalMenu:
         self.lookups.append((campus, date))
 
     def lookup_menus(self) -> 'Dict[Tuple[models.Campus, datetime.date], List[ExternalMenuItem]]':
+        limiter = Limiter(5)  # Limit to 5 lookups per second
+
         debug_state = ProgramStateTrace()
         result = dict()
 
@@ -153,6 +156,10 @@ class ExternalMenu:
             # Replaced try ... except with context manager
             # try:
             with debug_state.state(SimpleProgramState('Lookup menu', {'campus': campus.short_name, 'date': str(date)})):
+                limiter()
+
+                print('Getting menu for {} on {}'.format(campus.short_name, date.isoformat()), flush=True)
+
                 url = MENU_API.format(endpoint=BASE_ENDPOINT, campus=campus.external_id, date=date.strftime('%Y-%m-%d'))
 
                 response = self.session.get(url, headers=API_GET_HEADERS)

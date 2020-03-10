@@ -1,8 +1,6 @@
 import atexit
 import datetime
 import threading
-import time
-from collections import deque
 from typing import Dict, List
 
 from apscheduler.executors.pool import ThreadPoolExecutor
@@ -22,6 +20,7 @@ from komidabot.bot import Bot
 from komidabot.debug.state import DebuggableException, ProgramStateTrace, SimpleProgramState
 from komidabot.models import Campus, ClosingDays, Day, Menu, Translatable
 from komidabot.models import create_standard_values, import_dump, recreate_db
+from komidabot.rate_limit import Limiter
 from komidabot.translation import LANGUAGE_DUTCH
 
 
@@ -302,28 +301,24 @@ class Komidabot(Bot):
 
         if action == 'sub':
             self.trigger_received(triggers.SubscriptionTrigger())
-        if action == 'update_menu':
+        elif action == 'update_menu':
             update_menus()
+        elif action == 'synchronize_menus':
+            today = datetime.date.today() - datetime.timedelta(days=-7)
+
+            start = datetime.date(2019, 11, 18)
+            start = start + datetime.timedelta(days=-start.weekday())
+
+            dates = []  # type: List[datetime.datetime]
+            while start < today:
+                dates += [start + datetime.timedelta(days=i) for i in range(5)]
+                start = start + datetime.timedelta(days=7)
+
+            update_menus(dates=dates)
 
 
 def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
-    # noinspection PyPep8Naming
-    MAX_MESSAGES_PER_SECOND = 20
-    last_times = deque()
-
-    # Code for ensuring we don't send too many messages per second
-    # See: https://developers.facebook.com/docs/messenger-platform/send-messages/high-mps
-    def wait():
-        if len(last_times) < MAX_MESSAGES_PER_SECOND:
-            last_times.append(datetime.datetime.now())
-            return
-
-        delta = (datetime.datetime.now() - last_times.popleft()).total_seconds()
-
-        if delta < 1:
-            time.sleep(1.0 - delta)
-
-        last_times.append(datetime.datetime.now())
+    limiter = Limiter(20)  # Limit to 20 messages per second
 
     date = trigger.date or datetime.datetime.now().date()
     day = Day(date.isoweekday())
@@ -387,7 +382,7 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
                 continue
 
             for user in sub_users:
-                wait()  # Ensure we don't send too many messages at once
+                limiter()  # Ensure we don't send too many messages at once
 
                 if verbose:
                     print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
@@ -445,6 +440,12 @@ def update_menus(*campuses: str, dates: 'List[datetime.date]' = None):
         for date in dates:
             if date.isoweekday() in [6, 7]:
                 continue
+
+            closed = ClosingDays.find_is_closed(campus, date)
+
+            if closed:
+                continue  # Campus closed, don't try to find a menu
+
             fetcher.add_to_lookup(campus, date)
 
     with debug_state.state(SimpleProgramState('Fetch updates')):
