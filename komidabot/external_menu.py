@@ -158,8 +158,6 @@ class ExternalMenu:
             with debug_state.state(SimpleProgramState('Lookup menu', {'campus': campus.short_name, 'date': str(date)})):
                 limiter()
 
-                print('Getting menu for {} on {}'.format(campus.short_name, date.isoformat()), flush=True)
-
                 url = MENU_API.format(endpoint=BASE_ENDPOINT, campus=campus.external_id, date=date.strftime('%Y-%m-%d'))
 
                 response = self.session.get(url, headers=API_GET_HEADERS)
