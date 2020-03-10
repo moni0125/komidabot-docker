@@ -305,6 +305,8 @@ class Komidabot(Bot):
             update_menus()
         elif action == 'cleanup':
             Menu.remove_menus_on_closing_days()
+
+            db.session.commit()
         elif action == 'synchronize_menus':
             today = datetime.date.today() - datetime.timedelta(days=-7)
 

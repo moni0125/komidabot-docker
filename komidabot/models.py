@@ -506,16 +506,16 @@ class Menu(db.Model):
 
     @staticmethod
     def remove_menus_on_closing_days():
-        query = Menu.query.filter(
+        rows = Menu.query.filter(
             ClosingDays.query.filter(
                 Menu.campus_id == ClosingDays.campus_id,
                 Menu.menu_day >= ClosingDays.first_day,
                 Menu.menu_day <= ClosingDays.last_day
             ).exists()
-        )
+        ).all()
 
-        print(str(query))
-        print(query.all())
+        for row in rows:
+            db.session.delete(row)
 
     def __hash__(self):
         return hash(self.id)
