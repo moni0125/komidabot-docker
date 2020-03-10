@@ -210,9 +210,17 @@ class ExternalMenu:
 
                                 combined_logos += [entry['courseLogoId'] for entry in course['course_CourseLogos']]
 
-                                for pasta in ['spaghetti', 'tagliatelle', 'papardelle', 'bucatini', 'cannelloni',
-                                              'ravioli', 'tortellini', 'caramelle', 'penne', 'rigatoni', 'orecchiette',
-                                              'farfalle', 'caserecce', 'fusilli', 'pasta', ]:
+                                pasta_names = ['spaghetti', 'tagliatelle', 'papardelle', 'bucatini', 'cannelloni',
+                                               'ravioli', 'tortellini', 'caramelle', 'penne', 'rigatoni', 'orecchiette',
+                                               'farfalle', 'caserecce', 'fusilli', 'pasta', ]
+                                # Pasta names for those who don't speak Italian
+                                broken_italian_names = ['spagheti', 'tagliatele', 'papardele', 'bucatinni',
+                                                        'cannellonni', 'canneloni', 'cannellonni', 'raviolli',
+                                                        'tortellinni', 'tortelini', 'tortelinni', 'caramele', 'pene',
+                                                        'rigatonni', 'orecchiete', 'orechiette', 'orechiete', 'farfale',
+                                                        'caserece', 'fusili', ]
+
+                                for pasta in pasta_names + broken_italian_names:
                                     if pasta in name_nl.lower():
                                         has_pasta = True
                                         break  # Found pasta in the name!
