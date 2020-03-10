@@ -303,6 +303,8 @@ class Komidabot(Bot):
             self.trigger_received(triggers.SubscriptionTrigger())
         elif action == 'update_menu':
             update_menus()
+        elif action == 'cleanup':
+            Menu.remove_menus_on_closing_days()
         elif action == 'synchronize_menus':
             today = datetime.date.today() - datetime.timedelta(days=-7)
 

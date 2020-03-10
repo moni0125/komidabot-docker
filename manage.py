@@ -35,6 +35,11 @@ def update_menus():
     ipc.send_message({'action': 'update_menu'})
 
 
+@cli.command('cleanup')
+def update_menus():
+    ipc.send_message({'action': 'cleanup'})
+
+
 @cli.command('synchronize_menus')
 def update_menus():
     ipc.send_message({'action': 'synchronize_menus'})

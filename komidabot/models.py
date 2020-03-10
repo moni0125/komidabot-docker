@@ -504,6 +504,19 @@ class Menu(db.Model):
     def get_menu(campus: Campus, day: datetime.date) -> 'Optional[Menu]':
         return Menu.query.filter_by(campus_id=campus.id, menu_day=day).first()
 
+    @staticmethod
+    def remove_menus_on_closing_days():
+        query = Menu.query.filter(
+            ClosingDays.query.filter(
+                Menu.campus_id == ClosingDays.campus_id,
+                Menu.menu_day >= ClosingDays.first_day,
+                Menu.menu_day <= ClosingDays.last_day
+            ).exists()
+        )
+
+        print(str(query))
+        print(query.all())
+
     def __hash__(self):
         return hash(self.id)
 
