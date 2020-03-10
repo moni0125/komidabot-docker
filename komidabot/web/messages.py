@@ -11,7 +11,7 @@ import komidabot.users as users
 import komidabot.util as util
 import komidabot.web.constants as web_constants
 from komidabot.app import get_app
-from komidabot.models import FoodType
+from komidabot.models import CourseType
 
 VAPID_CLAIMS = {
     'sub': 'mailto:komidabot@gmail.com'
@@ -98,11 +98,8 @@ class MessageHandler(messages.MessageHandler):
         date_str = util.date_to_string(locale, menu.menu_day)
 
         title = localisation.REPLY_MENU_START(locale).format(campus=menu.campus.name, date=date_str)
-        text = komidabot.menu.get_short_menu_text(menu, message.translator,
-                                                  locale,
-                                                  FoodType.MEAT, FoodType.VEGAN,
-                                                  FoodType.PASTA_MEAT, FoodType.PASTA_VEGAN,
-                                                  FoodType.GRILL)
+        text = komidabot.menu.get_short_menu_text(menu, message.translator, locale,
+                                                  CourseType.DAILY, CourseType.PASTA, CourseType.GRILL)
 
         if text is None or text == '':
             return messages.MessageSendResult.ERROR

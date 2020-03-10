@@ -1,7 +1,7 @@
 import unittest
 from decimal import Decimal
 
-import komidabot.models as models
+from komidabot.models import Menu, MenuItem, CourseType, CourseSubType, CourseAttributes
 import tests.utils as utils
 from app import db
 from tests.base import BaseTestCase
@@ -23,14 +23,17 @@ class TestModelsMenuItem(BaseTestCase):
             translatable2, _ = self.create_translation({'en_US': 'Translation 2: en_US'}, 'en_US', has_context=True)
             translatable3, _ = self.create_translation({'en_US': 'Translation 3: en_US'}, 'en_US', has_context=True)
 
-            menu = models.Menu.create(self.campuses[0], utils.DAYS['MON'])
+            menu = Menu.create(self.campuses[0], utils.DAYS['MON'])
 
             db.session.flush()
 
             # XXX: Use constructor here to test, rather than the appropriate method
-            models.MenuItem(menu.id, translatable1.id, models.FoodType.SUB, Decimal('1.0'), None)
-            models.MenuItem(menu.id, translatable2.id, models.FoodType.PASTA_MEAT, Decimal('1.0'), Decimal('4.0'))
-            models.MenuItem(menu.id, translatable3.id, models.FoodType.SOUP, Decimal('1.0'), Decimal('2.0'))
+            MenuItem(menu.id, translatable1.id, CourseType.SUB, CourseSubType.NORMAL,
+                     Decimal('1.0'), None)
+            MenuItem(menu.id, translatable2.id, CourseType.PASTA, CourseSubType.NORMAL,
+                     Decimal('1.0'), Decimal('4.0'))
+            MenuItem(menu.id, translatable3.id, CourseType.SOUP, CourseSubType.VEGAN,
+                     Decimal('1.0'), Decimal('2.0'))
 
             db.session.commit()
 
@@ -45,13 +48,16 @@ class TestModelsMenuItem(BaseTestCase):
             translatable2, _ = self.create_translation({'en_US': 'Translation 2: en_US'}, 'en_US', has_context=True)
             translatable3, _ = self.create_translation({'en_US': 'Translation 3: en_US'}, 'en_US', has_context=True)
 
-            menu = models.Menu.create(self.campuses[0], utils.DAYS['MON'])
+            menu = Menu.create(self.campuses[0], utils.DAYS['MON'])
 
             db.session.flush()
 
-            menu_item1 = menu.add_menu_item(translatable1, models.FoodType.SUB, Decimal('1.0'), None)
-            menu_item2 = menu.add_menu_item(translatable2, models.FoodType.PASTA_MEAT, Decimal('1.0'), Decimal('4.0'))
-            menu_item3 = menu.add_menu_item(translatable3, models.FoodType.SOUP, Decimal('1.0'), Decimal('2.0'))
+            menu_item1 = menu.add_menu_item(translatable1, CourseType.SUB, CourseSubType.NORMAL,
+                                            [CourseAttributes.SNACK], Decimal('1.0'), None)
+            menu_item2 = menu.add_menu_item(translatable2, CourseType.PASTA, CourseSubType.NORMAL,
+                                            [CourseAttributes.PASTA], Decimal('1.0'), Decimal('4.0'))
+            menu_item3 = menu.add_menu_item(translatable3, CourseType.SOUP, CourseSubType.VEGAN,
+                                            [CourseAttributes.SOUP], Decimal('1.0'), Decimal('2.0'))
 
             db.session.commit()
 
@@ -71,13 +77,14 @@ class TestModelsMenuItem(BaseTestCase):
 
             translatable1, _ = self.create_translation({'en_US': 'Translation 1: en_US'}, 'en_US', has_context=True)
 
-            menu1 = models.Menu.create(self.campuses[0], utils.DAYS['MON'])
-            menu2 = models.Menu.create(self.campuses[1], utils.DAYS['MON'])
-            menu3 = models.Menu.create(self.campuses[2], utils.DAYS['MON'])
+            menu1 = Menu.create(self.campuses[0], utils.DAYS['MON'])
+            menu2 = Menu.create(self.campuses[1], utils.DAYS['MON'])
+            menu3 = Menu.create(self.campuses[2], utils.DAYS['MON'])
 
             db.session.flush()
 
-            menu_item1 = menu1.add_menu_item(translatable1, models.FoodType.SUB, Decimal('1.0'), None)
+            menu_item1 = menu1.add_menu_item(translatable1, CourseType.SUB, CourseSubType.NORMAL,
+                                             [CourseAttributes.SNACK], Decimal('1.0'), None)
             menu_item2 = menu_item1.copy(menu2)
             menu_item3 = menu_item2.copy(menu3)
 
@@ -88,8 +95,10 @@ class TestModelsMenuItem(BaseTestCase):
             self.assertEqual(menu_item2, menu_item3)
             self.assertEqual(menu_item1.translatable_id, menu_item2.translatable_id)
             self.assertEqual(menu_item1.translatable_id, menu_item3.translatable_id)
-            self.assertEqual(menu_item1.food_type, menu_item2.food_type)
-            self.assertEqual(menu_item1.food_type, menu_item3.food_type)
+            self.assertEqual(menu_item1.course_type, menu_item2.course_type)
+            self.assertEqual(menu_item1.course_type, menu_item3.course_type)
+            self.assertEqual(menu_item1.course_sub_type, menu_item2.course_sub_type)
+            self.assertEqual(menu_item1.course_sub_type, menu_item3.course_sub_type)
             self.assertEqual(menu_item1.price_students, menu_item2.price_students)
             self.assertEqual(menu_item1.price_students, menu_item3.price_students)
             self.assertEqual(menu_item1.price_staff, menu_item2.price_staff)
@@ -104,18 +113,23 @@ class TestModelsMenuItem(BaseTestCase):
             translatable1, _ = self.create_translation({'en_US': 'Translation 1: en_US'}, 'en_US', has_context=True)
             translatable2, _ = self.create_translation({'en_US': 'Translation 2: en_US'}, 'en_US', has_context=True)
 
-            menu1 = models.Menu.create(self.campuses[0], utils.DAYS['MON'])
-            menu2 = models.Menu.create(self.campuses[1], utils.DAYS['MON'])
+            menu1 = Menu.create(self.campuses[0], utils.DAYS['MON'])
+            menu2 = Menu.create(self.campuses[1], utils.DAYS['MON'])
 
             db.session.flush()
 
-            menu_item1 = menu1.add_menu_item(translatable1, models.FoodType.SUB, Decimal('1.0'), None)
+            menu_item1 = menu1.add_menu_item(translatable1, CourseType.SUB, CourseSubType.NORMAL,
+                                             [CourseAttributes.SNACK], Decimal('1.0'), None)
             menu_item2 = menu_item1.copy(menu2)
 
-            menu_item3 = menu1.add_menu_item(translatable2, models.FoodType.SUB, Decimal('1.0'), None)
-            menu_item4 = menu1.add_menu_item(translatable1, models.FoodType.PASTA_MEAT, Decimal('1.0'), None)
-            menu_item5 = menu1.add_menu_item(translatable1, models.FoodType.SUB, Decimal('2.0'), None)
-            menu_item6 = menu1.add_menu_item(translatable1, models.FoodType.SUB, Decimal('1.0'), Decimal('2.0'))
+            menu_item3 = menu1.add_menu_item(translatable2, CourseType.SUB, CourseSubType.NORMAL,
+                                             [CourseAttributes.SNACK], Decimal('1.0'), None)
+            menu_item4 = menu1.add_menu_item(translatable1, CourseType.PASTA, CourseSubType.NORMAL,
+                                             [CourseAttributes.PASTA], Decimal('1.0'), None)
+            menu_item5 = menu1.add_menu_item(translatable1, CourseType.SUB, CourseSubType.NORMAL,
+                                             [CourseAttributes.SNACK], Decimal('2.0'), None)
+            menu_item6 = menu1.add_menu_item(translatable1, CourseType.SUB, CourseSubType.NORMAL,
+                                             [CourseAttributes.SNACK], Decimal('1.0'), Decimal('2.0'))
 
             # db.session.add(menu1)
             # db.session.add(menu2)
@@ -181,24 +195,29 @@ class TestModelsMenuItem(BaseTestCase):
             translatable1, _ = self.create_translation({'en_US': 'Translation 1: en_US'}, 'en_US', has_context=True)
             translatable2, _ = self.create_translation({'en_US': 'Translation 2: en_US'}, 'en_US', has_context=True)
 
-            menu1 = models.Menu.create(self.campuses[0], utils.DAYS['MON'])
+            menu1 = Menu.create(self.campuses[0], utils.DAYS['MON'])
 
             db.session.flush()
 
-            menu_item1 = menu1.add_menu_item(translatable1, models.FoodType.SUB, Decimal('1.0'), None)
+            menu_item1 = menu1.add_menu_item(translatable1, CourseType.SUB, CourseSubType.NORMAL,
+                                             [CourseAttributes.SNACK], Decimal('1.0'), None)
 
             db.session.add(menu_item1)
             db.session.commit()
 
-            menu2 = models.Menu.create(self.campuses[1], utils.DAYS['MON'])
+            menu2 = Menu.create(self.campuses[1], utils.DAYS['MON'])
 
             db.session.flush()
 
             menu_item2 = menu_item1.copy(menu2)
-            menu_item3 = menu2.add_menu_item(translatable2, models.FoodType.SUB, Decimal('1.0'), None)
-            menu_item4 = menu2.add_menu_item(translatable1, models.FoodType.PASTA_MEAT, Decimal('1.0'), None)
-            menu_item5 = menu2.add_menu_item(translatable1, models.FoodType.SUB, Decimal('2.0'), None)
-            menu_item6 = menu2.add_menu_item(translatable1, models.FoodType.SUB, Decimal('1.0'), Decimal('2.0'))
+            menu_item3 = menu2.add_menu_item(translatable2, CourseType.SUB, CourseSubType.NORMAL,
+                                             [CourseAttributes.SNACK], Decimal('1.0'), None)
+            menu_item4 = menu2.add_menu_item(translatable1, CourseType.PASTA, CourseSubType.NORMAL,
+                                             [CourseAttributes.PASTA], Decimal('1.0'), None)
+            menu_item5 = menu2.add_menu_item(translatable1, CourseType.SUB, CourseSubType.NORMAL,
+                                             [CourseAttributes.SNACK], Decimal('2.0'), None)
+            menu_item6 = menu2.add_menu_item(translatable1, CourseType.SUB, CourseSubType.NORMAL,
+                                             [CourseAttributes.SNACK], Decimal('1.0'), Decimal('2.0'))
 
             # db.session.add(menu1)
             # db.session.add(menu2)
@@ -241,14 +260,17 @@ class TestModelsMenuItem(BaseTestCase):
             translatable3, _ = self.create_translation({'en_US': 'Translation 3: en_US',
                                                         'nl_BE': 'Translation 3: nl_BE'}, 'en_US', has_context=True)
 
-            menu = models.Menu.create(self.campuses[0], utils.DAYS['MON'])
+            menu = Menu.create(self.campuses[0], utils.DAYS['MON'])
 
             db.session.add(menu)
             db.session.flush()
 
-            menu_item1 = menu.add_menu_item(translatable1, models.FoodType.SUB, Decimal('1.0'), None)
-            menu_item2 = menu.add_menu_item(translatable2, models.FoodType.PASTA_MEAT, Decimal('1.0'), Decimal('4.0'))
-            menu_item3 = menu.add_menu_item(translatable3, models.FoodType.SOUP, Decimal('1.0'), Decimal('2.0'))
+            menu_item1 = menu.add_menu_item(translatable1, CourseType.SUB, CourseSubType.NORMAL,
+                                            [CourseAttributes.SNACK], Decimal('1.0'), None)
+            menu_item2 = menu.add_menu_item(translatable2, CourseType.PASTA, CourseSubType.NORMAL,
+                                            [CourseAttributes.PASTA], Decimal('1.0'), Decimal('4.0'))
+            menu_item3 = menu.add_menu_item(translatable3, CourseType.SOUP, CourseSubType.VEGAN,
+                                            [CourseAttributes.SOUP], Decimal('1.0'), Decimal('2.0'))
 
             db.session.commit()
 

@@ -104,7 +104,8 @@ def get_menu(short_name: str, day_str: str):
 
     for menu_item in menu.menu_items:  # type: models.MenuItem
         value = {
-            'food_type': menu_item.food_type.value,
+            'course_type': menu_item.course_type.value,
+            'course_sub_type': menu_item.course_sub_type.value,
             'translation': translatable_to_object(menu_item.translatable),
         }
         if menu_item.price_students:

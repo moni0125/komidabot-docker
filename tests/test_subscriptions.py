@@ -10,7 +10,7 @@ import komidabot.util as util
 import tests.users_stub as users_stub
 import tests.utils as utils
 from app import db
-from komidabot.models import AppUser, Day, FoodType, UserSubscription, food_type_icons
+from komidabot.models import AppUser, Day, CourseType, CourseSubType, UserSubscription, course_icons_matrix
 from tests.base import BaseTestCase, HttpCapture, menu_item
 
 
@@ -76,7 +76,8 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
 
     def setup_menu(self):
         self.expected_menus = dict()  # type: Dict[Tuple[str, datetime.date], str]
-        food_types = FoodType
+        course_types = CourseType
+        sub_types = CourseSubType
 
         with self.app.app_context():
             db.session.add_all(self.campuses)
@@ -84,8 +85,15 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
             for campus in self.campuses:
                 for day in utils.DAYS_LIST:
                     day_name = Day(day.isoweekday()).name
-                    items = [menu_item(food_type, '{} at {} for {}'.format(food_type.name, campus.short_name, day_name),
-                                       'nl_BE', Decimal('1.0'), Decimal('2.0')) for food_type in food_types]
+                    items = [menu_item(course_type,
+                                       sub_type,
+                                       [],
+                                       '{} at {} for {}'.format(course_type.name, campus.short_name, day_name),
+                                       'nl_BE',
+                                       Decimal('1.0'),
+                                       Decimal('2.0'))
+                             for course_type in course_types
+                             for sub_type in sub_types]
                     self.create_menu(campus, day, items, has_context=True)
 
                     result = [
@@ -94,7 +102,7 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
                         '',
                     ]
                     for item in items:
-                        result.append('{} {} ({} / {})'.format(food_type_icons[item.type], item.text,
+                        result.append('{} {} ({} / {})'.format(course_icons_matrix[item.type][item.sub_type], item.text,
                                                                models.MenuItem.format_price(item.price_students),
                                                                models.MenuItem.format_price(item.price_staff)))
 

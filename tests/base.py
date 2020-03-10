@@ -13,7 +13,9 @@ from app import create_app, db
 from komidabot.app import App
 from tests.utils import StubTranslator
 
-menu_item = NamedTuple('menu_item', [('type', models.FoodType),
+menu_item = NamedTuple('menu_item', [('type', models.CourseType),
+                                     ('sub_type', models.CourseSubType),
+                                     ('attributes', List[models.CourseAttributes]),
                                      ('text', str),
                                      ('language', str),
                                      ('price_students', Decimal),
@@ -139,7 +141,8 @@ class BaseTestCase(TestCase):
 
         for item in items:
             translatable, _ = models.Translatable.get_or_create(item.text, item.language)
-            menu.add_menu_item(translatable, item.type, item.price_students, item.price_staff)
+            menu.add_menu_item(translatable, item.type, item.sub_type, item.attributes,
+                               item.price_students, item.price_staff)
 
         db.session.commit()
         return menu

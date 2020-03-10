@@ -1,6 +1,7 @@
 from typing import Dict, List
 from typing import Optional, Union
 
+import komidabot.menu
 import komidabot.messages as messages
 import komidabot.users as users
 from komidabot.models import AppUser
@@ -94,7 +95,19 @@ class MessageHandler(messages.MessageHandler):
         if isinstance(message, messages.TextMessage):
             if user.id not in self.message_log:
                 self.message_log[user.id] = []
-            self.message_log[user.id].append(message.text)
+
+            text = message.text
+
+            self.message_log[user.id].append(text)
+
+            return messages.MessageSendResult.SUCCESS
+        elif isinstance(message, messages.MenuMessage):
+            if user.id not in self.message_log:
+                self.message_log[user.id] = []
+
+            text = komidabot.menu.get_menu_text(message.menu, message.translator, user.get_locale())
+
+            self.message_log[user.id].append(text)
 
             return messages.MessageSendResult.SUCCESS
         else:

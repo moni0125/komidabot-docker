@@ -475,8 +475,8 @@ def update_menus(*campuses: str, dates: 'List[datetime.date]' = None):
                         else:
                             translatable.add_translation(language, item.get_combined_text(language), 'komida')
 
-                    new_menu.add_menu_item(translatable, item.food_type, item.get_student_price(),
-                                           item.get_staff_price())
+                    new_menu.add_menu_item(translatable, item.course_type, item.course_sub_type, item.course_attributes,
+                                           item.get_student_price(), item.get_staff_price())
 
                 # FIXME: Should check for duplicate menu entries as apparently they can be entered in the
                 #        external service

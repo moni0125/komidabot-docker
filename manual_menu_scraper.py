@@ -1,6 +1,7 @@
 import datetime
 import sys
 
+from komidabot.debug.state import DebuggableException
 from komidabot.external_menu import ExternalMenu
 from komidabot.models import Campus
 
@@ -40,10 +41,13 @@ if __name__ == '__main__':
     for date in dates:
         menu.add_to_lookup(campus, date)
 
-    result = menu.lookup_menus()
+    try:
+        result = menu.lookup_menus()
 
-    for (campus, date), items in result.items():
-        print('{} @ {}'.format(campus.short_name, date.strftime('%Y-%m-%d')), flush=True)
+        for (campus, date), items in result.items():
+            print('{} @ {}'.format(campus.short_name, date.strftime('%Y-%m-%d')), flush=True)
 
-        for item in items:
-            print(item)
+            for item in items:
+                print(item)
+    except DebuggableException as e:
+        print(e.get_trace())

@@ -1,7 +1,9 @@
 import os
 import signal
 import unittest
+from typing import Optional
 
+import click
 from flask import current_app
 from flask.cli import FlaskGroup
 
@@ -34,9 +36,13 @@ def update_menus():
 
 
 @cli.command(with_appcontext=False)
-def test():
+@click.option('--case')
+def test(case: Optional[str]):
     """Runs the tests without code coverage"""
-    tests = unittest.TestLoader().discover('tests', pattern='test_*.py')
+    if case:
+        tests = unittest.TestLoader().loadTestsFromName('tests.' + case)
+    else:
+        tests = unittest.TestLoader().discover('tests', pattern='test_*.py')
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():
         return 0

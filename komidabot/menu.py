@@ -16,7 +16,8 @@ def get_menu_line(menu_item: models.MenuItem, translator: translation.Translatio
         price_str = '{} / {}'.format(models.MenuItem.format_price(menu_item.price_students),
                                      models.MenuItem.format_price(menu_item.price_staff))
 
-    return '{} {} ({})'.format(models.food_type_icons[menu_item.food_type], translation_obj.translation, price_str)
+    return '{} {} ({})'.format(models.course_icons_matrix[menu_item.course_type][menu_item.course_sub_type],
+                               translation_obj.translation, price_str)
 
 
 def prepare_menu_text(campus: models.Campus, date: datetime.date, translator: translation.TranslationService,
@@ -47,7 +48,7 @@ def get_menu_text(menu: Optional[models.Menu], translator: translation.Translati
 
 
 def get_short_menu_text(menu: Optional[models.Menu], translator: translation.TranslationService,
-                        locale: str, *food_types: models.FoodType) -> 'Optional[str]':
+                        locale: str, *course_types: models.CourseType) -> 'Optional[str]':
     if menu is None:
         return None
 
@@ -55,7 +56,7 @@ def get_short_menu_text(menu: Optional[models.Menu], translator: translation.Tra
 
     try:
         for item in menu.menu_items:  # type: models.MenuItem
-            if item.food_type in food_types:
+            if course_types and item.course_type in course_types:
                 result.append(get_menu_line(item, translator, locale))
     except Exception:
         print('Failed translating to {}'.format(locale), flush=True)

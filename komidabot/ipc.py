@@ -4,7 +4,10 @@ import os
 import socket
 import struct
 import threading
+import traceback
+import sys
 from typing import Dict, Optional
+from komidabot.debug.state import DebuggableException, ProgramStateTrace, SimpleProgramState
 
 SOCKET_PATH = '/tmp/komidabot_socket'
 
@@ -43,25 +46,35 @@ def start_server(callback):
                 raise
 
     def client_communication_thread(thread_id, connection: socket.socket):
-        with connection:
-            print('New client thread', thread_id, flush=True)
+        try:
+            with connection:
+                print('New client thread', thread_id, flush=True)
 
-            while running:
-                data = connection.recv(4)
-                if len(data) < 4:
-                    break
-                length, = struct.unpack('>I', data)
+                while running:
+                    data = connection.recv(4)
+                    if len(data) < 4:
+                        break
+                    length, = struct.unpack('>I', data)
 
-                data = connection.recv(length)
-                msg = data.decode('utf-8')
-                obj = json.loads(msg)
+                    data = connection.recv(length)
+                    msg = data.decode('utf-8')
+                    obj = json.loads(msg)
 
-                callback(obj)
+                    callback(obj)
 
-        print('Client thread stopped', thread_id, flush=True)
+        except DebuggableException as e:
+            print('Exception raised in client thread', thread_id, file=sys.stderr)
+            traceback.print_exc(file=sys.stderr)
+            print(e.get_trace(), file=sys.stderr, flush=True)
+        except Exception:
+            print('Exception raised in client thread', thread_id, file=sys.stderr)
+            traceback.print_exc(file=sys.stderr)
+            sys.stderr.flush()
+        finally:
+            print('Client thread stopped', thread_id, flush=True)
 
-        if running:
-            del client_threads[thread_id]
+            if running:
+                del client_threads[thread_id]
 
     def server_thread():
         nonlocal next_thread_id, running, sock

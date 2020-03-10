@@ -1,12 +1,13 @@
 import datetime
 import enum
+import json
 import locale
 from decimal import Decimal
 from typing import Collection, Dict, List, Optional, Tuple
 
 from sqlalchemy import inspect as sqlalchemy_inspect
-from sqlalchemy.sql import expression
 from sqlalchemy.orm.session import make_transient, make_transient_to_detached
+from sqlalchemy.sql import expression
 
 import komidabot.util as util
 from extensions import db
@@ -18,18 +19,58 @@ make_transient_to_detached = make_transient_to_detached
 _KEYWORDS_SEPARATOR = ' '
 
 
+# TODO: Convert FoodType to be a CourseType and CourseSubType
 class FoodType(enum.Enum):
+    SOUP = 1  # -> (SOUP, NORMAL)
+    MEAT = 2  # -> (DAILY, NORMAL)
+    VEGAN = 3  # -> (DAILY, VEGAN)
+    GRILL = 4  # -> (GRILL, NORMAL)
+    PASTA_MEAT = 5  # -> (PASTA, NORMAL)
+    PASTA_VEGAN = 6  # -> (PASTA, VEGAN)
+    SALAD = 7  # -> (SALAD, NORMAL)
+    SUB = 8  # -> (SUB, NORMAL)
+
+
+# Main course type
+class CourseType(enum.Enum):
     SOUP = 1
-    MEAT = 2
-    VEGAN = 3
+    DAILY = 2
+    PASTA = 3
     GRILL = 4
-    PASTA_MEAT = 5
-    PASTA_VEGAN = 6
-    SALAD = 7
-    SUB = 8
+    SALAD = 5
+    SUB = 6
 
 
-# TODO: Onboarding: User should get information on what each icon means
+# Course sub-type
+class CourseSubType(enum.Enum):
+    NORMAL = 1
+    VEGAN = 2
+
+
+# Course attributes from external menu
+class CourseAttributes(enum.Enum):
+    BIO = 201
+    CHICKEN = 202
+    GRILL = 203
+    CHEESE = 204
+    RABBIT = 205
+    LAMB = 206
+    PASTA = 207
+    VEAL = 208
+    SALAD = 209
+    SNACK = 210
+    SOUP = 211
+    PIG = 212
+    VEGAN = 213
+    VEGGIE = 214
+    FISH = 215
+    LESS_MEAT = 216
+
+    @classmethod
+    def has_value(cls, value):
+        return value in cls._value2member_map_
+
+
 food_type_icons = {
     FoodType.SOUP: '🍵',
     FoodType.MEAT: '🥩',
@@ -39,6 +80,71 @@ food_type_icons = {
     FoodType.PASTA_VEGAN: '🍝',
     FoodType.SALAD: '🥗',
     FoodType.SUB: '🥖',
+}
+
+course_icons_matrix = {
+    CourseType.SOUP: {
+        CourseSubType.NORMAL: '🍵',
+        CourseSubType.VEGAN: '🍵',
+    },
+    CourseType.DAILY: {
+        CourseSubType.NORMAL: '🥩',
+        CourseSubType.VEGAN: '🥬',
+    },
+    CourseType.PASTA: {
+        CourseSubType.NORMAL: '🍝',
+        CourseSubType.VEGAN: '🍝',
+    },
+    CourseType.GRILL: {
+        CourseSubType.NORMAL: '🍖',
+        CourseSubType.VEGAN: '🍖',
+    },
+    CourseType.SALAD: {
+        CourseSubType.NORMAL: '🥗',
+        CourseSubType.VEGAN: '🥗',
+    },
+    CourseType.SUB: {
+        CourseSubType.NORMAL: '🥖',
+        CourseSubType.VEGAN: '🥖',
+    },
+}
+
+food_to_course_type_mapping = {
+    FoodType.SOUP: (CourseType.SOUP, CourseSubType.NORMAL),
+    FoodType.MEAT: (CourseType.DAILY, CourseSubType.NORMAL),
+    FoodType.VEGAN: (CourseType.DAILY, CourseSubType.VEGAN),
+    FoodType.GRILL: (CourseType.GRILL, CourseSubType.NORMAL),
+    FoodType.PASTA_MEAT: (CourseType.PASTA, CourseSubType.NORMAL),
+    FoodType.PASTA_VEGAN: (CourseType.PASTA, CourseSubType.VEGAN),
+    FoodType.SALAD: (CourseType.SALAD, CourseSubType.NORMAL),
+    FoodType.SUB: (CourseType.SUB, CourseSubType.NORMAL),
+}
+
+course_to_food_type_mapping = {
+    CourseType.SOUP: {
+        CourseSubType.NORMAL: FoodType.SOUP,
+        CourseSubType.VEGAN: FoodType.SOUP,
+    },
+    CourseType.DAILY: {
+        CourseSubType.NORMAL: FoodType.MEAT,
+        CourseSubType.VEGAN: FoodType.VEGAN,
+    },
+    CourseType.PASTA: {
+        CourseSubType.NORMAL: FoodType.PASTA_MEAT,
+        CourseSubType.VEGAN: FoodType.PASTA_VEGAN,
+    },
+    CourseType.GRILL: {
+        CourseSubType.NORMAL: FoodType.GRILL,
+        CourseSubType.VEGAN: FoodType.GRILL,
+    },
+    CourseType.SALAD: {
+        CourseSubType.NORMAL: FoodType.SALAD,
+        CourseSubType.VEGAN: FoodType.SALAD,
+    },
+    CourseType.SUB: {
+        CourseSubType.NORMAL: FoodType.SUB,
+        CourseSubType.VEGAN: FoodType.SUB,
+    },
 }
 
 
@@ -341,7 +447,8 @@ class Menu(db.Model):
     campus_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
     menu_day = db.Column(db.Date(), nullable=False)
 
-    menu_items = db.relationship('MenuItem', backref='menu', passive_deletes=True, order_by='MenuItem.food_type')
+    menu_items = db.relationship('MenuItem', backref='menu', passive_deletes=True,
+                                 order_by='[MenuItem.course_type, MenuItem.course_sub_type]')
 
     def __init__(self, campus_id: int, day: datetime.date):
         if not isinstance(campus_id, int):
@@ -373,9 +480,11 @@ class Menu(db.Model):
         for item in items:
             db.session.delete(item)
 
-    def add_menu_item(self, translatable: Translatable, food_type: FoodType, price_students: Decimal,
-                      price_staff: Optional[Decimal]):
-        menu_item = MenuItem(self.id, translatable.id, food_type, price_students, price_staff)
+    def add_menu_item(self, translatable: Translatable, course_type: CourseType, course_sub_type: CourseSubType,
+                      course_attributes: List[CourseAttributes], price_students: Decimal,
+                      price_staff: Optional[Decimal]) -> 'MenuItem':
+        menu_item = MenuItem(self.id, translatable.id, course_type, course_sub_type, price_students, price_staff)
+        menu_item.set_attributes(course_attributes)
 
         # FIXME: Is this safe?
         self.menu_items.append(menu_item)
@@ -383,7 +492,7 @@ class Menu(db.Model):
         return menu_item
 
     @staticmethod
-    def create(campus: Campus, day: datetime.date, add_to_db=True):
+    def create(campus: Campus, day: datetime.date, add_to_db=True) -> 'Menu':
         menu = Menu(campus.id, day)
 
         if add_to_db:
@@ -408,17 +517,22 @@ class MenuItem(db.Model):
     translatable_id = db.Column(db.Integer(), db.ForeignKey('translatable.id', onupdate='CASCADE', ondelete='RESTRICT'),
                                 nullable=False)
     food_type = db.Column(db.Enum(FoodType), nullable=False)
+    course_type = db.Column(db.Enum(CourseType), nullable=False)
+    course_sub_type = db.Column(db.Enum(CourseSubType), nullable=False)
+    course_attributes = db.Column(db.Text(), nullable=False, default='[]', server_default='[]')
     price_students = db.Column(db.Numeric(4, 2), nullable=False)
     price_staff = db.Column(db.Numeric(4, 2), nullable=True)
 
-    def __init__(self, menu_id: int, translatable_id: int, food_type: FoodType, price_students: Decimal,
-                 price_staff: Optional[Decimal]):
+    def __init__(self, menu_id: int, translatable_id: int, course_type: CourseType, course_sub_type: CourseSubType,
+                 price_students: Decimal, price_staff: Optional[Decimal]):
         if menu_id is not None and not isinstance(menu_id, int):  # FIXME: Allowing a null ID is a dirty hack
             raise ValueError('menu_id')
         if not isinstance(translatable_id, int):
             raise ValueError('translatable_id')
-        if not isinstance(food_type, FoodType):
-            raise ValueError('food_type')
+        if not isinstance(course_type, CourseType):
+            raise ValueError('course_type')
+        if not isinstance(course_sub_type, CourseSubType):
+            raise ValueError('course_sub_type')
         if not isinstance(price_students, Decimal):
             raise ValueError('price_students')
         if price_staff is not None and not isinstance(price_staff, Decimal):
@@ -426,12 +540,17 @@ class MenuItem(db.Model):
 
         self.menu_id = menu_id
         self.translatable_id = translatable_id
-        self.food_type = food_type
+        self.food_type = course_to_food_type_mapping[course_type][course_sub_type]
+        self.course_type = course_type
+        self.course_sub_type = course_sub_type
         self.price_students = price_students
         self.price_staff = price_staff
 
     def copy(self, menu: Menu):
-        return MenuItem(menu.id, self.translatable_id, self.food_type, self.price_students, self.price_staff)
+        result = MenuItem(menu.id, self.translatable_id, self.course_type, self.course_sub_type, self.price_students,
+                          self.price_staff)
+        result.set_attributes(self.get_attributes())
+        return result
 
     def get_translation(self, language: str, translator: 'TranslationService') -> 'Translation':
         return self.translatable.get_translation(language, translator)
@@ -442,12 +561,15 @@ class MenuItem(db.Model):
             return ''
         return locale.currency(price).replace(' ', '')
 
+    def get_attributes(self) -> List[CourseAttributes]:
+        return [CourseAttributes(v) for v in json.loads(self.course_attributes)]
+
+    def set_attributes(self, attributes: List[CourseAttributes]):
+        self.course_attributes = json.dumps([v.value for v in attributes])
+
     def __lt__(self, other: 'MenuItem') -> bool:
-        if self.food_type == other.food_type:
-            if self.translatable_id == other.translatable_id:
-                return self.id < other.id
-            return self.translatable_id < other.translatable_id
-        return self.food_type < other.food_type
+        return (self.course_type, self.course_sub_type, self.translatable_id, self.id) < \
+               (other.course_type, other.course_sub_type, other.translatable_id, other.id)
 
     def __eq__(self, other: 'MenuItem') -> bool:
         if self is other or (self.id is not None and self.id == other.id):  # FIXME: Allowing a null ID is a dirty hack
@@ -455,7 +577,11 @@ class MenuItem(db.Model):
             # menu_id is ignored
         if self.translatable_id != other.translatable_id:
             return False
-        if self.food_type != other.food_type:
+        if self.course_type != other.course_type:
+            return False
+        if self.course_sub_type != other.course_sub_type:
+            return False
+        if self.course_attributes != other.course_attributes:
             return False
         if self.price_students != other.price_students:
             return False
