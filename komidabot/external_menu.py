@@ -270,6 +270,9 @@ class ExternalMenu:
 
                             menu_item.price_staff = round(Decimal(price_data['staffprice']), 2)
 
+                        if not menu_item.get_student_price() and not menu_item.get_staff_price():
+                            continue
+
                         items.append(menu_item)
 
                 items.sort(key=lambda i: (i.course_type.value, i.course_sub_type.value))
