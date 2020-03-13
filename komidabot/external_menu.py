@@ -210,7 +210,7 @@ class ExternalMenu:
                                 price = course['price']
                                 calculate_multi_price = calculate_multi_price or course['calculatedMultiplePrices']
                                 fixed_price = course['fixedprice']
-                                fixed_multiple_prices = course['fixedMultiplePrices']
+                                calculate_multi_price = calculate_multi_price or course['fixedMultiplePrices']
                                 show_first = course['showFirst']
 
                                 combined_logos += [entry['courseLogoId'] for entry in course['course_CourseLogos']]

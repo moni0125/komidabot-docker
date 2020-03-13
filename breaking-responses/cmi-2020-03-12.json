@@ -1,0 +1,889 @@
+{
+  "COMMENT": "Purple Bowl menu item displays 2 prices on the official site, but the bot only finds 1 price. Probably fixedMultiplePrices vs calculatedMultiplePrices",
+  "id": 599,
+  "menuDate": "2020-03-12T00:00:00",
+  "restaurantId": 3,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 3657,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 599,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 5066,
+          "menuItemId": 3657,
+          "courseId": 2523,
+          "sortOrder": 0,
+          "course": {
+            "id": 2523,
+            "dispNameNl": "Bio-bloemkoolsoep",
+            "dispNameEn": "Organic cauliflower soup",
+            "nameNl": "bio-bloemkoolsoep",
+            "nameEn": "",
+            "weight": "500ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": "water aan de kook brengen. - 20 kg bloemkool, aardappel en ajuin toevoegen. - bouillon peper zout toevoegen en laten koken. - als groenten gaar.+ 5 kg bloemkoolroosjes op laatste moment toevoegen.",
+            "price": 0.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [
+              {
+                "courseId": 2523,
+                "courseLogoId": 201
+              },
+              {
+                "courseId": 2523,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 2523,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3658,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 599,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 5068,
+          "menuItemId": 3658,
+          "courseId": 980,
+          "sortOrder": 0,
+          "course": {
+            "id": 980,
+            "dispNameNl": "frieten",
+            "dispNameEn": "fries",
+            "nameNl": "frieten",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": "afbakken in het frituur op 170 graden",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 980,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 5067,
+          "menuItemId": 3658,
+          "courseId": 1312,
+          "sortOrder": 0,
+          "course": {
+            "id": 1312,
+            "dispNameNl": "Veggie koninginnehapje",
+            "dispNameEn": "Vegetarian vol-au-vent",
+            "nameNl": "koninginnehapje veggie dd",
+            "nameEn": "",
+            "weight": "450g pp",
+            "extra": null,
+            "preparation": "( zo kort mogelijk voor service bereiden ! ) quornsstuks en opwarmen, samen met de gebakken ajuin en champignons mengen in diepe bak. - warme witte saus + groentenbouillon erover gieten en mengen tot juiste consistentie. - volledig afsmaken en afwerken met peterselie - + pasteitjes 5 min. opwarmen in oven",
+            "price": 5.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1312,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1312,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1312,
+                "allergenId": 202
+              },
+              {
+                "courseId": 1312,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1312,
+                "allergenId": 205
+              },
+              {
+                "courseId": 1312,
+                "allergenId": 209
+              },
+              {
+                "courseId": 1312,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1312,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 5069,
+          "menuItemId": 3658,
+          "courseId": 1623,
+          "sortOrder": 0,
+          "course": {
+            "id": 1623,
+            "dispNameNl": "witloofsla met noten, w",
+            "dispNameEn": "Belgian endive salad with nuts, w",
+            "nameNl": "witloofsla met noten, w",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": null,
+            "price": 0.4,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1623,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1623,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1623,
+                "allergenId": 205
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3659,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 599,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 5072,
+          "menuItemId": 3659,
+          "courseId": 980,
+          "sortOrder": 0,
+          "course": {
+            "id": 980,
+            "dispNameNl": "frieten",
+            "dispNameEn": "fries",
+            "nameNl": "frieten",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": "afbakken in het frituur op 170 graden",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 980,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 5070,
+          "menuItemId": 3659,
+          "courseId": 1378,
+          "sortOrder": 0,
+          "course": {
+            "id": 1378,
+            "dispNameNl": "Koninginnehapje",
+            "dispNameEn": "Chicken vol-au-vent",
+            "nameNl": "koninginnehapje dd",
+            "nameEn": "",
+            "weight": "200g",
+            "extra": null,
+            "preparation": "( zo kort mogelijk voor service bereiden ! ) kippenreepjes en balletjes opwarmen en samen met de gebakken ajuin en champignons mengen in diepe bak warme witte saus + bouillon van kip erover gieten en mengen tot juiste consistentie. - volledig afsmaken en afwerken met peterselie - + pasteitjes 5 min. opwarmen in oven",
+            "price": 5.4,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1378,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1378,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1378,
+                "allergenId": 202
+              },
+              {
+                "courseId": 1378,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1378,
+                "allergenId": 204
+              },
+              {
+                "courseId": 1378,
+                "allergenId": 205
+              },
+              {
+                "courseId": 1378,
+                "allergenId": 208
+              },
+              {
+                "courseId": 1378,
+                "allergenId": 209
+              },
+              {
+                "courseId": 1378,
+                "allergenId": 210
+              },
+              {
+                "courseId": 1378,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1378,
+                "courseLogoId": 202
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 5073,
+          "menuItemId": 3659,
+          "courseId": 5514,
+          "sortOrder": 0,
+          "course": {
+            "id": 5514,
+            "dispNameNl": "Rauwkostslaatje",
+            "dispNameEn": "crudités",
+            "nameNl": "rauwkostslaatje",
+            "nameEn": "",
+            "weight": "",
+            "extra": "Dit is een slaatje om bij een gerecht toe te voegen, waarbij de salade al in de prijs gerekend is.",
+            "preparation": "",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5514,
+                "allergenId": 200
+              },
+              {
+                "courseId": 5514,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5514,
+                "allergenId": 202
+              },
+              {
+                "courseId": 5514,
+                "allergenId": 203
+              },
+              {
+                "courseId": 5514,
+                "allergenId": 204
+              },
+              {
+                "courseId": 5514,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5514,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5514,
+                "allergenId": 207
+              },
+              {
+                "courseId": 5514,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5514,
+                "allergenId": 209
+              },
+              {
+                "courseId": 5514,
+                "allergenId": 210
+              },
+              {
+                "courseId": 5514,
+                "allergenId": 211
+              },
+              {
+                "courseId": 5514,
+                "allergenId": 212
+              },
+              {
+                "courseId": 5514,
+                "allergenId": 213
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5505,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 599,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 7527,
+          "menuItemId": 5505,
+          "courseId": 1425,
+          "sortOrder": 0,
+          "course": {
+            "id": 1425,
+            "dispNameNl": "pasta met paprikaroom & waterkers",
+            "dispNameEn": "paprika cream with garden cress",
+            "nameNl": "00 paprikaroom met waterkers, zvv, dd, z & w (vegan)",
+            "nameEn": "",
+            "weight": "200g",
+            "extra": "vegan",
+            "preparation": "tomatensaus maken: ajuin aanstoven - bestrooien met paprika, look, bloem en tomatenpuree - drogen - water toevoegen + tomatenblokjes - 1 uur laten koken op klein vuur - mixen en afbinden met blanke roux afsmaken met pezo en provençaalse kruiden. - rode paprika gaar steamen en samen met room bij tomatensaus doen - mixen en eventueel verdunnen/aandikken serveer met een vegan pasta ( volkoren spaghetti speciality anco/ fusili volkoren bio)",
+            "price": 3.4,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1425,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1425,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1425,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 1425,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5510,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 599,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 7531,
+          "menuItemId": 5510,
+          "courseId": 5650,
+          "sortOrder": 0,
+          "course": {
+            "id": 5650,
+            "dispNameNl": "Pasta met schorseneren in lookboter, met ei, olijven, peultjes & spekjes",
+            "dispNameEn": "Pasta with salsify in garlic butter, with egg, olives, snow peas & cubed bacons",
+            "nameNl": "Pasta met schorseneren in lookboter, met ei, olijven, peultjes & spekjes",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "beetgare pasta voorzichtig mengen met voorgesteamde peultjes en schorseneren, grof gesneden eitjes, look, olijven, peterselie en gesmolten boter -  gebakken spekblokjes toevoegen - afkruiden met pezo. - in gn van 6 diep verdelen en opwarmen in combi-steamer. ",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5650,
+                "allergenId": 200
+              },
+              {
+                "courseId": 5650,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5650,
+                "allergenId": 203
+              },
+              {
+                "courseId": 5650,
+                "allergenId": 204
+              },
+              {
+                "courseId": 5650,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5650,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5650,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5650,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5650,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 5650,
+                "courseLogoId": 212
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": 5398,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 599,
+      "sortorder": 5,
+      "menuItemContents": [
+        {
+          "id": 7383,
+          "menuItemId": 5398,
+          "courseId": 5573,
+          "sortOrder": 0,
+          "course": {
+            "id": 5573,
+            "dispNameNl": "Purple bowl",
+            "dispNameEn": "purple bowl",
+            "nameNl": "Purple bowl,w",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "Maak de parelcouscous klaar volgens de bereidingswijze op de verpakking & laat afkoelen . - Maak de budhabowl als volgt: vul het kommetje met de parelcouscous, vervolgens de bonen, rode bietblokjes, geraspte knolselder en een paar stukjes witloof aan de zijkant. Werk de budha bowl af met kippenreepjes, gecrunshte pindanoten, gebakken uitjes & peterselie. Serveer hierbij de vinaigrette sjalot & ui. Zet het deksel op de weckpot en plak het etiket aan de zijkant.",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5573,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5573,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5573,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5573,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5573,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5573,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 5573,
+                "courseLogoId": 209
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5539,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 599,
+      "sortorder": 5,
+      "menuItemContents": [
+        {
+          "id": 7561,
+          "menuItemId": 5539,
+          "courseId": 4269,
+          "sortOrder": 0,
+          "course": {
+            "id": 4269,
+            "dispNameNl": "New Orleans pepper burger",
+            "dispNameEn": "New Orleans pepper burger",
+            "nameNl": "new orleans pepper burger (grill), dd, w",
+            "nameEn": "",
+            "weight": "200g",
+            "extra": "veggie",
+            "preparation": "saus maken met dressing maison - mayo - mosterd (keuze uit 1 liter of 3 liter) - bbq verstegen saus - groentenmengeling maken met witte kool, geraspte wortel, postelein, bieslook en peterselie. - hamburger broodje grillen langs beide kanten - burger op voorhand in oven garen - burger à la minute grillen - saus op broodje doen - burger erop en afwerken met de groentjes en gebakken ajuintjes - serveren met: frietjes - steakhouse frieten - kroketten - aardappelwafeltjes - gebakken krieltjes - parelcouscous met borlotti bonen - wedges - aardappel in de schil",
+            "price": 5.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4269,
+                "allergenId": 200
+              },
+              {
+                "courseId": 4269,
+                "allergenId": 201
+              },
+              {
+                "courseId": 4269,
+                "allergenId": 204
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4269,
+                "courseLogoId": 203
+              },
+              {
+                "courseId": 4269,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5391,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 599,
+      "sortorder": 6,
+      "menuItemContents": [
+        {
+          "id": 7376,
+          "menuItemId": 5391,
+          "courseId": 1890,
+          "sortOrder": 0,
+          "course": {
+            "id": 1890,
+            "dispNameNl": "Salade zonder sla",
+            "dispNameEn": "Salad without lettuce",
+            "nameNl": "salade slaatje zonder sla (aardappel, appel, raapjes), dd, w",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "scharrelei gekookt rico 75st of scharrelei gekookt rico 6x12st karton appel besprenkelen met citroensap",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1890,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 205
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 206
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 208
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 209
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 212
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1890,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 1890,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5396,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 599,
+      "sortorder": 7,
+      "menuItemContents": [
+        {
+          "id": 7381,
+          "menuItemId": 5396,
+          "courseId": 3104,
+          "sortOrder": 0,
+          "course": {
+            "id": 3104,
+            "dispNameNl": "Broodje sjeik",
+            "dispNameEn": "Sjeik sandwich",
+            "nameNl": "broodje sjeik,w (vegan)",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "koel bewaren - vegan",
+            "preparation": "conceptbroodje winter eerst tomatade - dan augurken - mozzarisella - postelein",
+            "price": 3.6,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3104,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3104,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3104,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 3104,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ]
+}
