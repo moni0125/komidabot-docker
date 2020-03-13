@@ -37,7 +37,7 @@ class UserManager(users.UserManager):
             return
 
         # data = postbacks.generate_postback_data(not app.config.get('PRODUCTION'))
-        data = postbacks.generate_postback_data(True, not app.config.get('PRODUCTION'), app.config.get('PRODUCTION'))
+        data = postbacks.generate_postback_data(True, False, app.config.get('PRODUCTION'))
         app.bot_interfaces['facebook']['api_interface'].post_profile_api(data)
 
     def get_identifier(self):

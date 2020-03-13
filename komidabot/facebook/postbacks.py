@@ -228,7 +228,7 @@ def generate_postback_data(include_persistent_menu: bool, subscriptions: bool, p
         if subscriptions:
             if production:
                 menu.append(postback_button("Manage subscription", settings_subscriptions()))
-                menu.append(url_button("Manage subscription", 'https://komidabot.heldplayer.blue/?dev=false'))
+                # menu.append(url_button("Manage subscription", 'https://komidabot.heldplayer.blue/?dev=false'))
             else:
                 menu.append(
                     url_button("Manage subscription", 'https://komidabot.heldplayer.blue/?dev=true'))
