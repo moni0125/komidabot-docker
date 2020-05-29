@@ -45,6 +45,8 @@ class BaseConfig:
     VAPID_PRIVATE_KEY = os.getenv('VAPID_PRIVATE_KEY', '')
     VAPID_PUBLIC_KEY = os.getenv('VAPID_PUBLIC_KEY', '')
 
+    COVID19_DISABLED = int(os.getenv('COVID19_DISABLED', '0')) != 0
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 

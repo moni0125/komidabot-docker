@@ -223,6 +223,15 @@ REPLY_SET_LANGUAGE = localisation_definition('REPLY_SET_SUBSCRIPTION', {
     'nl': 'Uw taal staat nu op: {language}',
 })
 
+COVID19_UNAVAILABLE = localisation_definition('COVID19_UNAVAILABLE', {
+    'en': 'Dear user, Komidabot is temporarily unable to display the menus for the Komida restaurants.\n'
+          'For now, you can check out the menus and order online by following this link:'
+          'https://www.uantwerpen.be/en/life-in-antwerp/catering/about-komida/online-ordering/',
+    'nl': "Beste gebruiker, de Komidabot kan tijdelijk geen menu's tonen voor de Komida.\n"
+          "U kunt de menu's bekijken en bestellen door op deze link te klikken: "
+          "https://uantwerpen.be/nl/studentenleven/eten/over-komida/online-bestellen/",
+})
+
 # MESSAGE_NO_SUBSCRIPTIONS = localisation_definition('REPLY_SET_SUBSCRIPTION', {
 #     'en': 'Dear user, from now on you can once again request the bot to send a daily menu at 10am.\n\n'
 #           'You can set this up by clicking on the "Manage subscription" button in the menu.\n\n'

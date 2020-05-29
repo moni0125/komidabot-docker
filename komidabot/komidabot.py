@@ -153,6 +153,9 @@ class Komidabot(Bot):
                         sender.send_message(messages.TextMessage(trigger, msg))
                         return
 
+                if app.config.get('COVID19_DISABLED'):
+                    sender.send_message(messages.TextMessage(trigger, localisation.COVID19_UNAVAILABLE(locale)))
+
                 requested_dates = []
                 default_date = False
 
