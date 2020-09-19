@@ -215,7 +215,7 @@ class Komidabot(Bot):
 
                 if not campus.active:
                     sender.send_message(messages.TextMessage(trigger, localisation.REPLY_CAMPUS_INACTIVE(locale)
-                                                             .format(campus=campus.short_name.upper())))
+                                                             .format(campus=campus.name)))
                     return
 
                 if message_handled and default_campus and default_date:
@@ -256,7 +256,7 @@ class Komidabot(Bot):
                     translation = closed.translatable.get_translation(locale, app.translator)
 
                     sender.send_message(messages.TextMessage(trigger, localisation.REPLY_CAMPUS_CLOSED(locale)
-                                                             .format(campus=campus.short_name.upper(), date=str(date),
+                                                             .format(campus=campus.name, date=str(date),
                                                                      reason=translation.translation)))
                     return
 
@@ -265,7 +265,7 @@ class Komidabot(Bot):
 
                 if menu is None:
                     sender.send_message(messages.TextMessage(trigger, localisation.REPLY_NO_MENU(locale)
-                                                             .format(campus=campus.short_name.upper(), date=str(date))))
+                                                             .format(campus=campus.name, date=str(date))))
                 else:
                     # sender.send_message(messages.TextMessage(trigger, menu))
                     sender.send_message(messages.MenuMessage(trigger, menu, app.translator))
