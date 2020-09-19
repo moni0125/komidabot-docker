@@ -248,6 +248,7 @@ class Komidabot(Bot):
                     if sender.send_message(messages.TextMessage(trigger, localisation.MESSAGE_NEW_SITE(locale))) \
                             == messages.MessageSendResult.SUCCESS:
                         sender.set_is_notified_new_site(True)
+                        db.session.commit()
 
                 closed = ClosingDays.find_is_closed(campus, date)
 

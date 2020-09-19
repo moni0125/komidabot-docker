@@ -219,7 +219,14 @@ class User:  # TODO: This probably needs more methods
         raise NotImplementedError()
 
     def send_message(self, message: 'messages.Message') -> 'messages.MessageSendResult':
-        return self.get_message_handler().send_message(self, message)
+        result = self.get_message_handler().send_message(self, message)
+
+        app = get_app()
+        if app.config.get('VERBOSE'):
+            print('Sending message to user {}/{} got result {}'.format(self.id.provider, self.id.id, result),
+                  flush=True)
+
+        return result
 
     def __repr__(self):
         user_id = self.id
