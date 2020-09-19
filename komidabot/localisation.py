@@ -223,6 +223,19 @@ REPLY_SET_LANGUAGE = localisation_definition('REPLY_SET_SUBSCRIPTION', {
     'nl': 'Uw taal staat nu op: {language}',
 })
 
+MESSAGE_NEW_SITE = localisation_definition('MESSAGE_NEW_SITE', {
+    'en': "Dear user, a new simplified way of viewing the Komida menus is now available by browsing to "
+          "https://komidabot.xyz/\n\n"
+          "To get an extended overview of the menus, including allergens and ingredients, you can always check the "
+          "official Komida website at https://restickets.uantwerpen.be/calendar\n\n"
+          "Of course the bot will always remain available to get the daily menu as well ;)",
+    'nl': "Beste gebruiker, vanaf nu kan u de menu's van de Komida op een simpele manier bekijken door naar "
+          "https://komidabot.xyz/ te surfen.\n\n"
+          "Voor een uitgebreider menu met informatie, inclusief allergenen en ingrediënten, kan u altijd de officiële "
+          "website van de Komida raadplegen op https://restickets.uantwerpen.be/kalender\n\n"
+          "Uiteraard blijft de bot hier altijd beschikbaar om de menu's op te vragen ;)",
+})
+
 COVID19_UNAVAILABLE = localisation_definition('COVID19_UNAVAILABLE', {
     'en': 'Dear user, Komidabot is temporarily unable to display the menus for the Komida restaurants.\n'
           'For now, you can check out the menus and order online by following this link:'

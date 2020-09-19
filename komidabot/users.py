@@ -60,6 +60,20 @@ class User:  # TODO: This probably needs more methods
 
         return user.language
 
+    def get_is_notified_new_site(self) -> 'Optional[bool]':
+        user = self.get_db_user()
+        if user is None:
+            return None
+
+        return user.notified_new_site
+
+    def set_is_notified_new_site(self, value: bool):
+        user = self.get_db_user()
+        if user is None:
+            return
+
+        user.notified_new_site = value
+
     def get_campus_for_day(self, date: Union[models.Day, datetime.date]) -> 'Optional[models.Campus]':
         user = self.get_db_user()
         if user is None:

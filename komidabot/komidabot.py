@@ -244,6 +244,11 @@ class Komidabot(Bot):
                     sender.set_campus_for_day(campus, date)
                     db.session.commit()
 
+                if sender.get_is_notified_new_site() is False and sender.is_feature_active('menu_subscription'):
+                    if sender.send_message(messages.TextMessage(trigger, localisation.MESSAGE_NEW_SITE(locale))) \
+                            == messages.MessageSendResult.SUCCESS:
+                        sender.set_is_notified_new_site(True)
+
                 closed = ClosingDays.find_is_closed(campus, date)
 
                 if closed:
