@@ -30,4 +30,8 @@ wait $PID
 trap - TERM INT
 wait $PID
 
-exec python3 manage.py run -h 0.0.0.0
+if [[ "$FLASK_ENV" = "production" ]]; then
+    exec gunicorn --bind 0.0.0.0:5000 --log-level debug --workers 1 "app:create_app()"
+else
+    exec python3 manage.py run -h 0.0.0.0
+fi
