@@ -14,7 +14,7 @@ _features = [
         UserId('1441134665935530', 'facebook'),
         UserId('1532346296833228', 'facebook'),
     ]),
-    _feature('new_site_notifications', 'The user can receive a notification about the new site', False, [
+    _feature('new_site_notifications', 'The user can receive a notification about the new site', True, [
         # Dev user ID
         UserId('3150885824953769', 'facebook'),
         # Production user IDs
