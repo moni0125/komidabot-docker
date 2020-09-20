@@ -94,8 +94,6 @@ def handle_facebook_webhook():
                         # FIXME: Rather have a check that when the user supports "read" markers, we mark as read
                         raise RuntimeError('Expected Facebook User')
 
-                    user.mark_message_seen()
-
                     app.task_executor.submit(_do_handle_facebook_webhook, event, user, app._get_current_object())
 
             return 'ok', 200
@@ -120,7 +118,7 @@ def handle_facebook_webhook():
         return 'ok', 200
 
 
-def _do_handle_facebook_webhook(event, user: User, app):
+def _do_handle_facebook_webhook(event, user: FacebookUser, app):
     time.sleep(0.1)  # Yield
 
     with app.app_context():
@@ -144,6 +142,8 @@ def _do_handle_facebook_webhook(event, user: User, app):
 
             if 'message' in event:
                 message = event['message']
+
+                user.mark_message_seen()
 
                 # print(pprint.pformat(message, indent=2), flush=True)
 
@@ -191,6 +191,8 @@ def _do_handle_facebook_webhook(event, user: User, app):
             elif 'postback' in event:
                 # print(pprint.pformat(event, indent=2), flush=True)
 
+                user.mark_message_seen()
+
                 if app.config.get('DISABLED'):
                     if not user.is_admin():
                         if triggers.AtAdminAspect not in trigger:
@@ -227,7 +229,7 @@ def _do_handle_facebook_webhook(event, user: User, app):
 
                 requested_owner_app_id = request_thread_control['requested_owner_app_id']
                 metadata = request_thread_control['metadata']
-                if requested_owner_app_id == '263902037430900':
+                if requested_owner_app_id == 263902037430900:
                     # We'll allow the request
                     app.bot_interfaces['facebook']['api_interface'].post_pass_thread_control({
                         'recipient': {'id': user.id.id},
