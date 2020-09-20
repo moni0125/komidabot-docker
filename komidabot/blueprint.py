@@ -229,7 +229,7 @@ def _do_handle_facebook_webhook(event, user: FacebookUser, app):
 
                 requested_owner_app_id = request_thread_control['requested_owner_app_id']
                 metadata = request_thread_control['metadata']
-                if requested_owner_app_id == 263902037430900:
+                if requested_owner_app_id == 263902037430900:  # Page Inbox app id
                     # We'll allow the request
                     app.bot_interfaces['facebook']['api_interface'].post_pass_thread_control({
                         'recipient': {'id': user.id.id},
@@ -238,6 +238,8 @@ def _do_handle_facebook_webhook(event, user: FacebookUser, app):
                     })
 
                 return
+            elif 'pass_thread_control' in event:
+                return  # Right now we don't need to handle this one
             else:
                 print(pprint.pformat(event, indent=2), flush=True)
 
