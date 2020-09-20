@@ -223,14 +223,14 @@ class User:  # TODO: This probably needs more methods
 
         app = get_app()
         if app.config.get('VERBOSE'):
-            print('Sending message to user {}/{} got result {}'.format(self.id.provider, self.id.id, result),
+            print('Sending message to user {} got result {}'.format(self.id, result),
                   flush=True)
 
         return result
 
     def __repr__(self):
         user_id = self.id
-        return 'User: {}/{}'.format(user_id.provider, user_id.id)
+        return 'User: {}'.format(user_id)
 
 
 class UnifiedUserManager(UserManager):

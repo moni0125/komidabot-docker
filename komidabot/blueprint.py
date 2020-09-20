@@ -222,6 +222,20 @@ def _do_handle_facebook_webhook(event, user: User, app):
                     get_app().bot.message_admins(TextMessage(triggers.Trigger(), 'Unknown postback type received!'))
                     user.send_message(TextMessage(trigger, localisation.ERROR_POSTBACK(locale)))
                     return
+            elif 'request_thread_control' in event:
+                request_thread_control = event['request_thread_control']  # type: dict
+
+                requested_owner_app_id = request_thread_control['requested_owner_app_id']
+                metadata = request_thread_control['metadata']
+                if requested_owner_app_id == '263902037430900':
+                    # We'll allow the request
+                    app.bot_interfaces['facebook']['api_interface'].post_pass_thread_control({
+                        'recipient': {'id': user.id.id},
+                        'target_app_id': requested_owner_app_id,
+                        'metadata': metadata
+                    })
+
+                return
             else:
                 print(pprint.pformat(event, indent=2), flush=True)
 

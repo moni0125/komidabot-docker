@@ -13,6 +13,7 @@ BASE_ENDPOINT = 'https://graph.facebook.com/'
 API_VERSION = 'v4.0'
 SEND_API = '/me/messages'
 PROFILE_API = '/me/messenger_profile'
+PASS_THREAD_CONTROL_API = '/me/messenger_profile'
 
 
 class ApiInterface:
@@ -79,6 +80,23 @@ class ApiInterface:
     @check_exceptions(False)  # TODO: Exception checking needs to be done differently
     def post_profile_api(self, data: dict):
         response = self.session.post(BASE_ENDPOINT + API_VERSION + PROFILE_API, params=self.base_parameters,
+                                     headers=self.headers_post, data=json.dumps(data))
+
+        app = get_app()
+
+        if app.config.get('VERBOSE'):
+            print('Received {} for request {}'.format(response.status_code, response.request.body), flush=True)
+            print(response.content, flush=True)
+
+        # response.raise_for_status()
+
+        # return True
+
+        return response.status_code == 200
+
+    @check_exceptions(False)  # TODO: Exception checking needs to be done differently
+    def post_pass_thread_control(self, data: dict):
+        response = self.session.post(BASE_ENDPOINT + API_VERSION + PASS_THREAD_CONTROL_API, params=self.base_parameters,
                                      headers=self.headers_post, data=json.dumps(data))
 
         app = get_app()

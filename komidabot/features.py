@@ -67,10 +67,10 @@ def update_active_features():
         for user_id in feature.active_users:  # type: UserId
             user = models.AppUser.find_by_id(user_id.provider, user_id.id)
             if user is None:
-                print('Skipping user {}/{} for feature {}'.format(user_id.provider, user_id.id, feature.string_id),
+                print('Skipping user {} for feature {}'.format(user_id, feature.string_id),
                       flush=True)
                 continue
-            print('Adding user {}/{} to new feature {}'.format(user_id.provider, user_id.id, feature.string_id),
+            print('Adding user {} to new feature {}'.format(user_id, feature.string_id),
                   flush=True)
             models.Feature.set_user_participating(user, feature.string_id, True)
 
