@@ -13,7 +13,7 @@ BASE_ENDPOINT = 'https://graph.facebook.com/'
 API_VERSION = 'v4.0'
 SEND_API = '/me/messages'
 PROFILE_API = '/me/messenger_profile'
-PASS_THREAD_CONTROL_API = '/me/messenger_profile'
+PASS_THREAD_CONTROL_API = '/me/pass_thread_control'
 
 
 class ApiInterface:
