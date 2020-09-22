@@ -89,9 +89,9 @@ class TestModelsClosingDays(BaseTestCase):
         with self.app.app_context():
             db.session.add_all(self.campuses)
 
-            closed1 = models.ClosingDays.create(self.campuses[0], utils.DAYS['MON'], utils.DAYS['MON'],
+            closed1 = models.ClosingDays.create(self.campuses[0], utils.DAYS['TUE'], utils.DAYS['TUE'],
                                                 'Translation 1: en_US', 'en_US')
-            closed2 = models.ClosingDays.create(self.campuses[1], utils.DAYS['TUE'], utils.DAYS['FRI'],
+            closed2 = models.ClosingDays.create(self.campuses[1], utils.DAYS['TUE'], utils.DAYS['THU'],
                                                 'Translation 2: en_US', 'en_US')
             closed3 = models.ClosingDays.create(self.campuses[2], utils.DAYS['WED'], None,
                                                 'Translation 3: en_US', 'en_US')
@@ -99,8 +99,8 @@ class TestModelsClosingDays(BaseTestCase):
             db.session.commit()
 
             # Campus 1
-            self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[0], utils.DAYS['MON']), closed1)
-            self.assertIsNone(models.ClosingDays.find_is_closed(self.campuses[0], utils.DAYS['TUE']))
+            self.assertIsNone(models.ClosingDays.find_is_closed(self.campuses[0], utils.DAYS['MON']))
+            self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[0], utils.DAYS['TUE']), closed1)
             self.assertIsNone(models.ClosingDays.find_is_closed(self.campuses[0], utils.DAYS['WED']))
             self.assertIsNone(models.ClosingDays.find_is_closed(self.campuses[0], utils.DAYS['THU']))
             self.assertIsNone(models.ClosingDays.find_is_closed(self.campuses[0], utils.DAYS['FRI']))
@@ -109,7 +109,7 @@ class TestModelsClosingDays(BaseTestCase):
             self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[1], utils.DAYS['TUE']), closed2)
             self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[1], utils.DAYS['WED']), closed2)
             self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[1], utils.DAYS['THU']), closed2)
-            self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[1], utils.DAYS['FRI']), closed2)
+            self.assertIsNone(models.ClosingDays.find_is_closed(self.campuses[1], utils.DAYS['FRI']))
             # Campus 3
             self.assertIsNone(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['MON']))
             self.assertIsNone(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['TUE']))
