@@ -249,7 +249,7 @@ class ClosingDays(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     campus_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
     first_day = db.Column(db.Date(), nullable=False)
-    last_day = db.Column(db.Date(), nullable=False)
+    last_day = db.Column(db.Date(), nullable=True, server_default=None)
     translatable_id = db.Column(db.Integer(), db.ForeignKey('translatable.id', onupdate='CASCADE', ondelete='RESTRICT'),
                                 nullable=False)
 
@@ -259,7 +259,7 @@ class ClosingDays(db.Model):
             raise ValueError('campus_id')
         if not isinstance(first_day, datetime.date):
             raise ValueError('first_day')
-        if not isinstance(last_day, datetime.date):
+        if last_day is not None and not isinstance(last_day, datetime.date):
             raise ValueError('last_day')
         if not isinstance(translatable_id, int):
             raise ValueError('translatable_id')
@@ -270,7 +270,7 @@ class ClosingDays(db.Model):
         self.translatable_id = translatable_id
 
     @staticmethod
-    def create(campus: Campus, first_day: datetime.date, last_day: datetime.date, reason: str, language: str,
+    def create(campus: Campus, first_day: datetime.date, last_day: Optional[datetime.date], reason: str, language: str,
                add_to_db=True) -> 'ClosingDays':
         translatable, translation = Translatable.get_or_create(reason, language)
 
@@ -285,7 +285,10 @@ class ClosingDays(db.Model):
     def find_is_closed(campus: Campus, day: datetime.date) -> 'Optional[ClosingDays]':
         return ClosingDays.query.filter(db.and_(ClosingDays.campus_id == campus.id,
                                                 ClosingDays.first_day <= day,
-                                                ClosingDays.last_day >= day
+                                                db.or_(
+                                                    ClosingDays.last_day == None,
+                                                    ClosingDays.last_day >= day
+                                                )
                                                 )).first()
 
     @staticmethod
@@ -294,7 +297,10 @@ class ClosingDays(db.Model):
                                     end_date: datetime.date) -> 'List[ClosingDays]':
         return ClosingDays.query.filter(db.and_(ClosingDays.campus_id == campus.id,
                                                 ClosingDays.first_day <= end_date,
-                                                ClosingDays.last_day >= start_date
+                                                db.or_(
+                                                    ClosingDays.last_day == None,
+                                                    ClosingDays.last_day >= start_date
+                                                )
                                                 )).all()
 
 

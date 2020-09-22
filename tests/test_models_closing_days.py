@@ -93,7 +93,7 @@ class TestModelsClosingDays(BaseTestCase):
                                                 'Translation 1: en_US', 'en_US')
             closed2 = models.ClosingDays.create(self.campuses[1], utils.DAYS['TUE'], utils.DAYS['FRI'],
                                                 'Translation 2: en_US', 'en_US')
-            closed3 = models.ClosingDays.create(self.campuses[2], utils.DAYS['THU'], utils.DAYS['THU'],
+            closed3 = models.ClosingDays.create(self.campuses[2], utils.DAYS['WED'], None,
                                                 'Translation 3: en_US', 'en_US')
 
             db.session.commit()
@@ -113,9 +113,9 @@ class TestModelsClosingDays(BaseTestCase):
             # Campus 3
             self.assertIsNone(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['MON']))
             self.assertIsNone(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['TUE']))
-            self.assertIsNone(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['WED']))
+            self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['WED']), closed3)
             self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['THU']), closed3)
-            self.assertIsNone(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['FRI']))
+            self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['FRI']), closed3)
 
 
 if __name__ == '__main__':

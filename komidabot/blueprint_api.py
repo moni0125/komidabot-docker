@@ -71,7 +71,7 @@ def get_active_closing_days(short_name: str, week_str: str):
             if closed_data is not None:
                 current_campus.append({
                     'first_day': closed_data.first_day.isoformat(),
-                    'last_day': closed_data.last_day.isoformat(),
+                    'last_day': closed_data.last_day.isoformat() if closed_data.last_day is not None else None,
                     'reason': translatable_to_object(closed_data.translatable),
                 })
             else:
