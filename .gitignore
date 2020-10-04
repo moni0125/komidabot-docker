@@ -6,9 +6,7 @@ dump*.txt
 __pycache__/
 venv/
 
-node_modules/
-
 out.png
 page.xml
 
-scratch*
+scratches/
