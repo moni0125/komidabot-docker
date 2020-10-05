@@ -23,23 +23,12 @@ jobs:
     - name: Start supporting services
       run: docker-compose up -d komidabot-db
 
-    - name: Debug task information
-      run: |
-        sleep 5
-        docker logs komidabot-docker_komidabot-db_1
-        docker ps
-        docker network ls
-        docker image ls
-        docker container inspect komidabot-docker_komidabot-db_1
-        docker network inspect komidabot-docker_default
-        docker-compose exec -T komidabot-db cat /etc/resolv.conf
-
     - name: Wait for database ready
       run: docker-compose run --rm --entrypoint=./wait-postgres.sh komidabot-dev
       timeout-minutes: 1
 
     - name: Run the tests
-      run: docker-compose run --rm --entrypoint=python komidabot-dev manage.py test || exit 1
+      run: docker-compose run --rm --entrypoint=python komidabot-dev manage.py test
 
     - name: Cleanup
       run: docker-compose stop

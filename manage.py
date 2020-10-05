@@ -56,7 +56,8 @@ def test(case: Optional[str]):
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():
         return 0
-    return 1
+    # This makes Flash return an exit code of 1, otherwise it defaults to 0 even if returning 0
+    raise click.exceptions.Exit(1)
 
 
 def handler(signum: int, _):
