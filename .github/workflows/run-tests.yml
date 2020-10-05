@@ -1,0 +1,45 @@
+name: Run tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare
+      run: touch config-prod.env config-dev.env
+
+    - name: Build the Docker image
+      run: |
+        docker network prune -f
+        docker-compose build komidabot-dev komidabot-db
+
+    - name: Start supporting services
+      run: docker-compose up -d komidabot-db
+
+    - name: Debug task information
+      run: |
+        sleep 5
+        docker logs komidabot-docker_komidabot-db_1
+        docker ps
+        docker network ls
+        docker image ls
+        docker container inspect komidabot-docker_komidabot-db_1
+        docker network inspect komidabot-docker_default
+        docker-compose exec -T komidabot-db cat /etc/resolv.conf
+
+    - name: Wait for database ready
+      run: docker-compose run --rm --entrypoint=./wait-postgres.sh komidabot-dev
+      timeout-minutes: 1
+
+    - name: Run the tests
+      run: docker-compose run --rm --entrypoint=python komidabot-dev manage.py test || exit 1
+
+    - name: Cleanup
+      run: docker-compose stop

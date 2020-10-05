@@ -1,7 +1,8 @@
-.PHONY: test
+.PHONY: test run-prod run-dev stop
 
 test:
-	docker-compose exec komidabot-dev python manage.py test
+	docker-compose build komidabot-test && \
+	docker-compose run komidabot-test
 
 run-prod:
 	docker-compose up --build komidabot-prod
