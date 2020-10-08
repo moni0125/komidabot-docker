@@ -6,7 +6,6 @@ Create Date: 2019-10-28 19:54:52.943891
 
 """
 from alembic import op
-import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '4fafafd2400f'
@@ -28,4 +27,4 @@ def upgrade():
 
 
 def downgrade():
-    pass  # Cannot remove values
+    raise NotImplementedError()

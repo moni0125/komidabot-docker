@@ -44,7 +44,8 @@ class CourseType(enum.Enum):
 # Course sub-type
 class CourseSubType(enum.Enum):
     NORMAL = 1
-    VEGAN = 2
+    VEGETARIAN = 2
+    VEGAN = 3
 
 
 # Course attributes from external menu
@@ -85,26 +86,32 @@ food_type_icons = {
 course_icons_matrix = {
     CourseType.SOUP: {
         CourseSubType.NORMAL: '🍵',
+        CourseSubType.VEGETARIAN: '🍵',
         CourseSubType.VEGAN: '🍵',
     },
     CourseType.DAILY: {
         CourseSubType.NORMAL: '🥩',
+        CourseSubType.VEGETARIAN: '🥬',
         CourseSubType.VEGAN: '🥬',
     },
     CourseType.PASTA: {
         CourseSubType.NORMAL: '🍝',
+        CourseSubType.VEGETARIAN: '🍝',
         CourseSubType.VEGAN: '🍝',
     },
     CourseType.GRILL: {
         CourseSubType.NORMAL: '🍖',
+        CourseSubType.VEGETARIAN: '🍖',
         CourseSubType.VEGAN: '🍖',
     },
     CourseType.SALAD: {
         CourseSubType.NORMAL: '🥗',
+        CourseSubType.VEGETARIAN: '🥗',
         CourseSubType.VEGAN: '🥗',
     },
     CourseType.SUB: {
         CourseSubType.NORMAL: '🥖',
+        CourseSubType.VEGETARIAN: '🥖',
         CourseSubType.VEGAN: '🥖',
     },
 }

@@ -50,7 +50,7 @@ COURSE_LOGOS = {
     'SNACK': 210,  # Sub course
     'SOUP': 211,  # Soup course
     'PIG': 212,  # Contains pig
-    'VEGAN': 213,  # Does not contain meats???
+    'VEGAN': 213,  # Vegan course
     'VEGGIE': 214,  # Vegetarian course
     'FISH': 215,  # Contains fish
     'LESS_MEAT': 216,  # Contains less meat
@@ -245,8 +245,10 @@ class ExternalMenu:
                         course_type = models.CourseType.DAILY
                         course_sub_type = models.CourseSubType.NORMAL
 
-                        if COURSE_LOGOS['VEGGIE'] in combined_logos or COURSE_LOGOS['VEGAN'] in combined_logos:
+                        if COURSE_LOGOS['VEGAN'] in combined_logos:
                             course_sub_type = models.CourseSubType.VEGAN
+                        elif COURSE_LOGOS['VEGGIE'] in combined_logos:
+                            course_sub_type = models.CourseSubType.VEGETARIAN
 
                         if COURSE_LOGOS['SOUP'] in combined_logos:
                             course_type = models.CourseType.SOUP
