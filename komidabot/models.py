@@ -119,10 +119,10 @@ course_icons_matrix = {
 food_to_course_type_mapping = {
     FoodType.SOUP: (CourseType.SOUP, CourseSubType.NORMAL),
     FoodType.MEAT: (CourseType.DAILY, CourseSubType.NORMAL),
-    FoodType.VEGAN: (CourseType.DAILY, CourseSubType.VEGAN),
+    FoodType.VEGAN: (CourseType.DAILY, CourseSubType.VEGETARIAN),
     FoodType.GRILL: (CourseType.GRILL, CourseSubType.NORMAL),
     FoodType.PASTA_MEAT: (CourseType.PASTA, CourseSubType.NORMAL),
-    FoodType.PASTA_VEGAN: (CourseType.PASTA, CourseSubType.VEGAN),
+    FoodType.PASTA_VEGAN: (CourseType.PASTA, CourseSubType.VEGETARIAN),
     FoodType.SALAD: (CourseType.SALAD, CourseSubType.NORMAL),
     FoodType.SUB: (CourseType.SUB, CourseSubType.NORMAL),
 }
@@ -130,26 +130,32 @@ food_to_course_type_mapping = {
 course_to_food_type_mapping = {
     CourseType.SOUP: {
         CourseSubType.NORMAL: FoodType.SOUP,
+        CourseSubType.VEGETARIAN: FoodType.SOUP,
         CourseSubType.VEGAN: FoodType.SOUP,
     },
     CourseType.DAILY: {
         CourseSubType.NORMAL: FoodType.MEAT,
+        CourseSubType.VEGETARIAN: FoodType.VEGAN,
         CourseSubType.VEGAN: FoodType.VEGAN,
     },
     CourseType.PASTA: {
         CourseSubType.NORMAL: FoodType.PASTA_MEAT,
+        CourseSubType.VEGETARIAN: FoodType.PASTA_VEGAN,
         CourseSubType.VEGAN: FoodType.PASTA_VEGAN,
     },
     CourseType.GRILL: {
         CourseSubType.NORMAL: FoodType.GRILL,
+        CourseSubType.VEGETARIAN: FoodType.GRILL,
         CourseSubType.VEGAN: FoodType.GRILL,
     },
     CourseType.SALAD: {
         CourseSubType.NORMAL: FoodType.SALAD,
+        CourseSubType.VEGETARIAN: FoodType.SALAD,
         CourseSubType.VEGAN: FoodType.SALAD,
     },
     CourseType.SUB: {
         CourseSubType.NORMAL: FoodType.SUB,
+        CourseSubType.VEGETARIAN: FoodType.SUB,
         CourseSubType.VEGAN: FoodType.SUB,
     },
 }
