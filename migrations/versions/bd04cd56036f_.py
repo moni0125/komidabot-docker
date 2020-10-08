@@ -22,7 +22,7 @@ def upgrade():
     ALTER TYPE coursesubtype RENAME VALUE 'VEGAN' TO 'VEGETARIAN'
     """)
     op.execute("""
-    ALTER TYPE coursesubtype ADD VALUE IF NOT EXISTS 'VEGAN' BEFORE 'VEGETARIAN'
+    ALTER TYPE coursesubtype ADD VALUE IF NOT EXISTS 'VEGAN' AFTER 'VEGETARIAN'
     """)
 
 
