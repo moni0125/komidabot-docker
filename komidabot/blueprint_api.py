@@ -16,7 +16,7 @@ def translatable_to_object(translatable: models.Translatable):
     return result
 
 
-@blueprint.route('/subscribe', methods=['GET'])
+@blueprint.route('/subscribe', methods=['POST'])
 def handle_subscribe():
     return jsonify({'status': 501, 'message': HTTP_STATUS_CODES[501]}), 200
 

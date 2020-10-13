@@ -27,7 +27,7 @@ def handle_authorized():
     return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200]}), 200
 
 
-@blueprint.route('/subscribe', methods=['GET'])
+@blueprint.route('/subscribe', methods=['POST'])
 @auth.login_required
 def handle_subscribe():
     return jsonify({'status': 501, 'message': HTTP_STATUS_CODES[501]}), 200
