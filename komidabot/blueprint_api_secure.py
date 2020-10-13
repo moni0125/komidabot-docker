@@ -18,10 +18,16 @@ def get_pw(username):
 
 @auth.error_handler
 def not_authenticated():
-    return jsonify({'status': 401, 'message': HTTP_STATUS_CODES[401]}), 401
+    return jsonify({'status': 401, 'message': HTTP_STATUS_CODES[401]}), 200
 
 
 @blueprint.route('/authorized', methods=['GET'])
 @auth.login_required
-def path_authorized():
+def handle_authorized():
     return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200]}), 200
+
+
+@blueprint.route('/subscribe', methods=['GET'])
+@auth.login_required
+def handle_subscribe():
+    return jsonify({'status': 501, 'message': HTTP_STATUS_CODES[501]}), 200

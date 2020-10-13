@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 
 from flask import Blueprint, abort, jsonify
+from werkzeug.http import HTTP_STATUS_CODES
 
 import komidabot.models as models
 
@@ -13,6 +14,11 @@ def translatable_to_object(translatable: models.Translatable):
         result[translation.language] = translation.translation
 
     return result
+
+
+@blueprint.route('/subscribe', methods=['GET'])
+def handle_subscribe():
+    return jsonify({'status': 501, 'message': HTTP_STATUS_CODES[501]}), 200
 
 
 @blueprint.route('/campus', methods=['GET'])
