@@ -48,6 +48,8 @@ services:
       FLASK_ENV: development
     volumes:
       - .:/usr/src/app
+      - dev_sessions:/usr/src/app/flask_session
+      - /usr/src/app/__pycache__/
     env_file:
       - config-dev.env
     ports:
@@ -57,4 +59,6 @@ services:
 
 volumes:
   pgdata:
+    driver: local
+  dev_sessions:
     driver: local

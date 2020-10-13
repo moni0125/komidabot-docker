@@ -4,6 +4,7 @@ import os
 
 from flask import Flask
 from flask.cli import ScriptInfo
+from flask_session import Session
 
 from extensions import db, migrate
 from komidabot.app import App as KomidabotApp
@@ -29,6 +30,7 @@ def create_app(script_info: ScriptInfo = None):
     # set up extensions
     db.init_app(app)
     migrate.init_app(app)
+    Session(app)
 
     # register blueprints
     from komidabot.blueprint import blueprint as webhook_blueprint

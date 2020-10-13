@@ -45,15 +45,23 @@ class BaseConfig:
     VAPID_PRIVATE_KEY = os.getenv('VAPID_PRIVATE_KEY', '')
     VAPID_PUBLIC_KEY = os.getenv('VAPID_PUBLIC_KEY', '')
 
+    HTTP_AUTHENTICATION_PASSWORD = os.getenv('HTTP_AUTHENTICATION_PASSWORD', None)
+
     COVID19_DISABLED = int(os.getenv('COVID19_DISABLED', '0')) != 0
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # Flask-Session options
+    SESSION_TYPE = 'filesystem'
 
 
 class ProductionConfig(BaseConfig):
     """Production configuration"""
     PRODUCTION = True
     SQLALCHEMY_DATABASE_URI = _get_postgres_uri(POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, 'komidabot_prod')
+
+    # Flask-Session options
+    SESSION_COOKIE_SECURE = True
 
 
 class DevelopmentConfig(BaseConfig):
