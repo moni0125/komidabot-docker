@@ -14,15 +14,15 @@ import komidabot.facebook.constants as fb_constants
 import komidabot.facebook.postbacks as postbacks
 import komidabot.facebook.triggers as triggers
 import komidabot.localisation as localisation
-import komidabot.web.constants as web_constants
 import komidabot.models as models
+import komidabot.web.constants as web_constants
 from extensions import db
 from komidabot.app import get_app
 from komidabot.debug.state import DebuggableException
 from komidabot.facebook.users import User as FacebookUser
 from komidabot.komidabot import Bot
 from komidabot.messages import TextMessage
-from komidabot.users import UnifiedUserManager, UserId, User
+from komidabot.users import UserManager, UserId
 from komidabot.web.users import User as WebUser
 
 blueprint = Blueprint('komidabot', __name__)
@@ -86,7 +86,7 @@ def handle_facebook_webhook():
                     sender = event["sender"]["id"]
                     # recipient = event["recipient"]["id"]
 
-                    user_manager = app.user_manager  # type: UnifiedUserManager
+                    user_manager = app.user_manager  # type: UserManager
                     user = user_manager.get_user(UserId(sender, fb_constants.PROVIDER_ID),
                                                  event=event)  # type: FacebookUser
 
@@ -289,7 +289,7 @@ def handle_web_push_subscription():
 
             needs_commit = False
 
-            user_manager = app.user_manager  # type: UnifiedUserManager
+            user_manager = app.user_manager  # type: UserManager
             user = user_manager.get_user(UserId(endpoint, web_constants.PROVIDER_ID))  # type: WebUser
 
             if user.get_db_user() is None:

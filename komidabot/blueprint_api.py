@@ -1,11 +1,47 @@
 from datetime import date, timedelta
+from functools import wraps
+from typing import Any, Dict, Optional, TypedDict
 
-from flask import Blueprint, abort, jsonify
+from flask import Blueprint, abort, jsonify, request, session
 from werkzeug.http import HTTP_STATUS_CODES
 
 import komidabot.models as models
+import komidabot.web.constants as web_constants
+from extensions import db
+from komidabot.app import get_app
+from komidabot.users import UserManager, UserId
+from komidabot.web.users import User as WebUser
 
 blueprint = Blueprint('komidabot api', __name__)
+
+
+class SubscriptionMessage(TypedDict):
+    endpoint: str
+    keys: Dict[str, str]
+    action: Optional[str]
+    channel: Optional['SubscriptionMessageChannel']
+
+
+class SubscriptionMessageChannel(TypedDict):
+    channel: str
+    action: str
+    data: Optional[Any]
+
+
+def is_logged_in():
+    return session.get('logged_in') is not None
+
+
+# FIXME: In the future, this should ideally be a proper login system, with a database et al connected to it
+def check_logged_in(func):
+    @wraps(func)
+    def decorated_func(*args, **kwargs):
+        if not is_logged_in:
+            return jsonify({'status': 401, 'message': HTTP_STATUS_CODES[401]}), 200
+
+        return func(*args, **kwargs)
+
+    return decorated_func
 
 
 def translatable_to_object(translatable: models.Translatable):
@@ -16,9 +52,108 @@ def translatable_to_object(translatable: models.Translatable):
     return result
 
 
+@blueprint.route('/login', methods=['POST'])
+def handle_login():
+    post_data = request.get_json()
+
+    if not post_data:
+        return jsonify({'status': 400, 'message': HTTP_STATUS_CODES[400]}), 200
+
+    if 'username' not in post_data or 'password' not in post_data:
+        return jsonify({'status': 400, 'message': HTTP_STATUS_CODES[400]}), 200
+
+    username = post_data['username']
+    password = post_data['password']
+
+    if not isinstance(username, str) or not isinstance(password, str):
+        return jsonify({'status': 400, 'message': HTTP_STATUS_CODES[400]}), 200
+
+    app = get_app()
+
+    if username == 'komidabot' and password == app.config['HTTP_AUTHENTICATION_PASSWORD']:
+        session.clear()
+        session['logged_in'] = True
+        return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200]}), 200
+
+    return jsonify({'status': 401, 'message': HTTP_STATUS_CODES[401]}), 200
+
+
+@blueprint.route('/authorized', methods=['GET'])
+@check_logged_in
+def handle_authorized():
+    return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200]}), 200
+
+
 @blueprint.route('/subscribe', methods=['POST'])
 def handle_subscribe():
-    return jsonify({'status': 501, 'message': HTTP_STATUS_CODES[501]}), 200
+    bad_request = jsonify({'status': 400, 'message': HTTP_STATUS_CODES[400]})
+
+    post_data = request.get_json()  # type: SubscriptionMessage
+    app = get_app()
+
+    if not post_data:
+        return bad_request, 200
+
+    if 'endpoint' not in post_data or 'keys' not in post_data or ('action' in post_data) == ('channel' in post_data):
+        return bad_request, 200
+
+    endpoint = post_data['endpoint']
+    keys = post_data['keys']
+
+    if not isinstance(endpoint, str) or not isinstance(keys, dict):
+        return bad_request, 200
+
+    needs_commit = False
+
+    user_manager = app.user_manager  # type: UserManager
+    user = user_manager.get_user(UserId(endpoint, web_constants.PROVIDER_ID))  # type: WebUser
+
+    action = post_data['action']
+    channel = post_data['channel']
+
+    if isinstance(action, str):
+        if action == 'add':
+            if user.get_db_user() is None:
+                user.add_to_db()
+                user.set_data({
+                    'keys': keys
+                })
+                needs_commit = True
+        elif action == 'remove':
+            user.delete()
+        else:
+            return bad_request, 200
+    elif channel is not None:
+        if 'channel' not in post_data or 'action' not in post_data:
+            return bad_request, 200
+
+        if user.get_db_user() is None:
+            # No DB user, so deny request
+            return bad_request, 200
+
+        channel_name = channel['channel']
+        channel_action = channel['action']
+        data = channel['data']
+
+        if not isinstance(channel_action, str) or not isinstance(channel_name, str):
+            return bad_request, 200
+
+        # TODO: Implement a reusable channel system which lets these actions fall through
+        if channel_action == 'add':
+            pass
+        elif channel_action == 'remove':
+            pass
+        elif channel_action == 'modify':
+            pass
+        else:
+            return bad_request, 200
+    else:
+        return bad_request, 200
+
+    if needs_commit:
+        db.session.commit()
+
+    return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200]}), 200
 
 
 @blueprint.route('/campus', methods=['GET'])
