@@ -108,8 +108,8 @@ def handle_subscribe():
     user_manager = app.user_manager  # type: UserManager
     user = user_manager.get_user(UserId(endpoint, web_constants.PROVIDER_ID))  # type: WebUser
 
-    action = post_data['action']
-    channel = post_data['channel']
+    action = post_data['action'] if 'action' in post_data else None
+    channel = post_data['channel'] if 'channel' in post_data else None
 
     if isinstance(action, str):
         if action == 'add':
@@ -124,7 +124,7 @@ def handle_subscribe():
         else:
             return bad_request, 200
     elif channel is not None:
-        if 'channel' not in post_data or 'action' not in post_data:
+        if 'channel' not in channel or 'action' not in channel:
             return bad_request, 200
 
         if user.get_db_user() is None:
@@ -133,7 +133,7 @@ def handle_subscribe():
 
         channel_name = channel['channel']
         channel_action = channel['action']
-        data = channel['data']
+        data = channel['data'] if 'data' in channel else None
 
         if not isinstance(channel_action, str) or not isinstance(channel_name, str):
             return bad_request, 200
