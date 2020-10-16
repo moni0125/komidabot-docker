@@ -49,15 +49,21 @@ class BaseConfig:
 
     COVID19_DISABLED = int(os.getenv('COVID19_DISABLED', '0')) != 0
 
+    # Flask-SQLAlchemy options
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Flask-Session options
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_PERMANENT = False
+    SESSION_REFRESH_EACH_REQUEST = False
     SESSION_TYPE = 'filesystem'
 
 
 class ProductionConfig(BaseConfig):
     """Production configuration"""
     PRODUCTION = True
+
+    # Flask-SQLAlchemy options
     SQLALCHEMY_DATABASE_URI = _get_postgres_uri(POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, 'komidabot_prod')
 
     # Flask-Session options
@@ -67,6 +73,8 @@ class ProductionConfig(BaseConfig):
 class DevelopmentConfig(BaseConfig):
     """Development configuration"""
     VERBOSE = int(os.getenv('VERBOSE', '1')) != 0
+
+    # Flask-SQLAlchemy options
     SQLALCHEMY_DATABASE_URI = _get_postgres_uri(POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, 'komidabot_dev')
 
 
@@ -75,7 +83,9 @@ class TestingConfig(BaseConfig):
     DISABLED = False
     VERBOSE = False
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = _get_postgres_uri(POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, 'komidabot_test')
     PAGE_ACCESS_TOKEN = None
     VERIFY_TOKEN = None
     APP_SECRET = None
+
+    # Flask-SQLAlchemy options
+    SQLALCHEMY_DATABASE_URI = _get_postgres_uri(POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, 'komidabot_test')

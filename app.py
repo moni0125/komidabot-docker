@@ -4,9 +4,8 @@ import os
 
 from flask import Flask
 from flask.cli import ScriptInfo
-from flask_session import Session
 
-from extensions import db, migrate
+from extensions import db, migrate, session
 from komidabot.app import App as KomidabotApp
 from komidabot.features import update_active_features
 
@@ -28,9 +27,9 @@ def create_app(script_info: ScriptInfo = None):
     # print("The database URI is", app.config.get('SQLALCHEMY_DATABASE_URI'), flush=True)
 
     # set up extensions
+    session.init_app(app)
     db.init_app(app)
     migrate.init_app(app)
-    Session(app)
 
     # register blueprints
     from komidabot.blueprint import blueprint as webhook_blueprint
