@@ -204,7 +204,7 @@ def set_language(trigger: triggers.Trigger, language: str, display: str):
     return None
 
 
-def generate_postback_data(include_persistent_menu: bool, subscriptions: bool, production: bool):
+def generate_postback_data(include_persistent_menu: bool, production: bool):
     result = dict()
     result['get_started'] = {
         'payload': get_started(),
@@ -224,15 +224,13 @@ def generate_postback_data(include_persistent_menu: bool, subscriptions: bool, p
         },
     ]
     if include_persistent_menu:
-        menu = [postback_button("Today's menu", menu_today())]
-        if subscriptions:
-            if production:
-                menu.append(postback_button("Manage subscription", settings_subscriptions()))
-                # menu.append(url_button("Manage subscription", 'https://komidabot.heldplayer.blue/?dev=false'))
-            else:
-                menu.append(
-                    url_button("Manage subscription", 'https://komidabot.heldplayer.blue/?dev=true'))
-        menu.append(postback_button("Change language", settings_language()))
+        menu = [
+            postback_button("Today's menu", menu_today()),
+            postback_button("Change language", settings_language())
+        ]
+
+        if not production:
+            menu.append(url_button("Open Komidabot.xyz", 'https://komidabot.heldplayer.blue/'))
 
         # TODO: Once per-user persistent menus are available, use them
         #       https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu/
