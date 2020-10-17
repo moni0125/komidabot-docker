@@ -27,6 +27,11 @@ class UserManager:  # TODO: This probably could use more methods
 
         return [self.get_user(UserId(user.internal_id, identifier)) for user in users]
 
+    def get_administrators(self) -> 'List[User]':
+        identifier = self.get_identifier()
+
+        return [self.get_user(user) for user in get_app().admin_ids if user.provider == identifier]
+
     def initialise(self):
         raise NotImplementedError()
 
@@ -254,6 +259,9 @@ class UnifiedUserManager(UserManager):
     def get_subscribed_users(self, day: models.Day):
         return functools.reduce(list.__add__,
                                 [manager.get_subscribed_users(day) for manager in self._managers.values()])
+
+    def get_administrators(self):
+        return functools.reduce(list.__add__, [manager.get_administrators() for manager in self._managers.values()])
 
     def initialise(self):
         for manager in self._managers.values():

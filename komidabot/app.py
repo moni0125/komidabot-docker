@@ -21,7 +21,7 @@ class App:
         from komidabot.web.users import UserManager as WebUserManager
         from komidabot.komidabot import Komidabot
         from komidabot.translation import GoogleTranslationService, TranslationService
-        from komidabot.users import UnifiedUserManager
+        from komidabot.users import UnifiedUserManager, UserId
 
         self.logger = self.logger  # type: logging.Logger
 
@@ -43,7 +43,8 @@ class App:
         self.task_executor = PyThreadPoolExecutor(max_workers=5)
         atexit.register(PyThreadPoolExecutor.shutdown, self.task_executor)  # Ensure cleanup of resources
 
-        self.admin_ids = config.get('ADMIN_IDS', [])
+        # XXX: Convert from _UserId type in config to the actually used UserId
+        self.admin_ids = [UserId(user.id, user.provider) for user in config.get('ADMIN_IDS', [])]
 
         with self.app_context():
             self.user_manager.initialise()

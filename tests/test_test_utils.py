@@ -5,6 +5,10 @@ from tests.base import BaseTestCase
 
 
 class TestConstants(BaseTestCase):
+    """
+    Sanity tests for all other tests.
+    """
+
     def test_days(self):
         self.assertEqual(utils.DAYS['MON'].isoweekday(), 1, 'Date is not a Monday')
         self.assertEqual(utils.DAYS['TUE'].isoweekday(), 2, 'Date is not a Tuesday')

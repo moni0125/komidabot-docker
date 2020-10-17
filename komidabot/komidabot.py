@@ -80,8 +80,11 @@ class Komidabot(Bot):
     def trigger_received(self, trigger: triggers.Trigger):
         with self.lock:  # TODO: Maybe only lock on critical sections?
             app = get_app()
-            print('Komidabot received a trigger: {}'.format(type(trigger).__name__), flush=True)
-            print(repr(trigger), flush=True)
+            verbose = app.config.get('VERBOSE')
+
+            if verbose:
+                print('Komidabot received a trigger: {}'.format(type(trigger).__name__), flush=True)
+                print(repr(trigger), flush=True)
 
             if isinstance(trigger, triggers.SubscriptionTrigger):
                 dispatch_daily_menus(trigger)
@@ -294,11 +297,11 @@ class Komidabot(Bot):
         with self.lock:
             app = get_app()
 
-            for admin in app.admin_ids:  # type: users.UserId
-                user = app.user_manager.get_user(admin)
+            user_manager = app.user_manager
 
+            for admin in user_manager.get_administrators():
                 # FIXME: We should technically check if we can contact the admins, however we'll ignore this for now
-                user.send_message(message)
+                admin.send_message(message)
 
     def handle_ipc(self, data):
         print('Received IPC message:', data, flush=True)
