@@ -1,3 +1,5 @@
+import sys
+import traceback
 from datetime import date, timedelta
 from functools import wraps
 from typing import Any, Dict, Optional, TypedDict
@@ -9,6 +11,7 @@ import komidabot.models as models
 import komidabot.web.constants as web_constants
 from extensions import db
 from komidabot.app import get_app
+from komidabot.debug.state import DebuggableException
 from komidabot.users import UserManager, UserId
 from komidabot.web.users import User as WebUser
 
@@ -44,6 +47,33 @@ def check_logged_in(func):
     return decorated_func
 
 
+def wrap_exceptions(func):
+    @wraps(func)
+    def decorated_func(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except DebuggableException as e:
+            app = get_app()
+            app.bot.notify_error(e)
+
+            e.print_info(app.logger)
+
+            return jsonify({'status': 500, 'message': HTTP_STATUS_CODES[500]}), 500
+        except Exception as e:
+            # noinspection PyBroadException
+            try:
+                get_app().bot.notify_error(e)
+            except Exception:
+                pass
+
+            traceback.print_tb(e.__traceback__)
+            print(e, flush=True, file=sys.stderr)
+
+            return jsonify({'status': 500, 'message': HTTP_STATUS_CODES[500]}), 500
+
+    return decorated_func
+
+
 def translatable_to_object(translatable: models.Translatable):
     result = {}
     for translation in translatable.translations:
@@ -53,6 +83,7 @@ def translatable_to_object(translatable: models.Translatable):
 
 
 @blueprint.route('/login', methods=['POST'])
+@wrap_exceptions
 def handle_login():
     post_data = request.get_json()
 
@@ -79,12 +110,14 @@ def handle_login():
 
 
 @blueprint.route('/authorized', methods=['GET'])
+@wrap_exceptions
 @check_logged_in
 def handle_authorized():
     return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200]}), 200
 
 
 @blueprint.route('/subscribe', methods=['POST'])
+@wrap_exceptions
 def handle_subscribe():
     bad_request = jsonify({'status': 400, 'message': HTTP_STATUS_CODES[400]})
 
@@ -157,6 +190,7 @@ def handle_subscribe():
 
 
 @blueprint.route('/campus', methods=['GET'])
+# TODO: @wrap_exceptions
 def get_campus_list():
     """
     Gets a list of all available campuses.
@@ -179,6 +213,7 @@ def get_campus_list():
 
 @blueprint.route('/campus/closing_days/<week_str>', methods=['GET'], defaults={'short_name': None})
 @blueprint.route('/campus/<short_name>/closing_days/<week_str>', methods=['GET'])
+# TODO: @wrap_exceptions
 def get_active_closing_days(short_name: str, week_str: str):
     """
     Gets all currently active closures.
@@ -222,6 +257,7 @@ def get_active_closing_days(short_name: str, week_str: str):
 
 
 @blueprint.route('/campus/<short_name>/menu/<day_str>', methods=['GET'])
+# TODO: @wrap_exceptions
 def get_menu(short_name: str, day_str: str):
     """
     Gets the menu for a specific campus on a day.
