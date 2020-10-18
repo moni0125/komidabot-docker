@@ -39,7 +39,7 @@ def is_logged_in():
 def check_logged_in(func):
     @wraps(func)
     def decorated_func(*args, **kwargs):
-        if not is_logged_in:
+        if not is_logged_in():
             return jsonify({'status': 401, 'message': HTTP_STATUS_CODES[401]}), 200
 
         return func(*args, **kwargs)
