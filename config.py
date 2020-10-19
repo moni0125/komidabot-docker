@@ -22,9 +22,9 @@ def _get_postgres_uri(host, user, password, db):
     if not db:
         raise ValueError('Invalid database')
     if password:
-        return f'postgres://{user}:{password}@{host}:5432/{db}'
+        return f'postgresql://{user}:{password}@{host}:5432/{db}'
     else:
-        return f'postgres://{user}@{host}:5432/{db}'
+        return f'postgresql://{user}@{host}:5432/{db}'
 
 
 class BaseConfig:
@@ -53,6 +53,7 @@ class BaseConfig:
 
     # Flask-Session options
     SESSION_COOKIE_HTTPONLY = True
+    SESSION_FILE_DIR = '/var/flask_session'
     SESSION_PERMANENT = False
     SESSION_REFRESH_EACH_REQUEST = False
     SESSION_TYPE = 'filesystem'
