@@ -1,9 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "allOf": [
-    {
-      "$ref": "api_response_base.json"
-    }
-  ],
+  "$ref": "api_response_base.json",
   "additionalProperties": false
 }

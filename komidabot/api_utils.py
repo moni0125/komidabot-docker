@@ -5,7 +5,7 @@ import traceback
 from functools import wraps
 
 from flask import jsonify, session, request
-from jsonschema import validate, ValidationError
+from jsonschema import ValidationError, Draft7Validator, RefResolver
 from werkzeug.http import HTTP_STATUS_CODES
 
 from komidabot.app import get_app
@@ -60,13 +60,23 @@ def wrap_exceptions(func):
 def expects_schema(input_schema: str = None, output_schema: str = None):
     in_schema = None
     if input_schema is not None:
-        with open(os.path.join(os.getcwd(), 'schemas', input_schema + '.json')) as f:
+        input_schema = os.path.join(os.getcwd(), 'schemas', input_schema + '.json')
+        with open(input_schema) as f:
             in_schema = json.load(f)
+
+        Draft7Validator.check_schema(in_schema)
+        in_resolver = RefResolver(base_uri='file:{}'.format(input_schema), referrer=in_schema)
+        in_validator = Draft7Validator(in_schema, resolver=in_resolver)
 
     out_schema = None
     if output_schema is not None:
-        with open(os.path.join(os.getcwd(), 'schemas', output_schema + '.json')) as f:
+        output_schema = os.path.join(os.getcwd(), 'schemas', output_schema + '.json')
+        with open(output_schema) as f:
             out_schema = json.load(f)
+
+        Draft7Validator.check_schema(out_schema)
+        out_resolver = RefResolver(base_uri='file:{}'.format(output_schema), referrer=out_schema)
+        out_validator = Draft7Validator(out_schema, resolver=out_resolver)
 
     def decorator(func):
         @wraps(func)
@@ -78,7 +88,7 @@ def expects_schema(input_schema: str = None, output_schema: str = None):
                     return jsonify({'status': 400, 'message': HTTP_STATUS_CODES[400]}), 200
 
                 try:
-                    validate(data, in_schema)
+                    in_validator.validate(data)
                 except ValidationError:
                     return jsonify({'status': 400, 'message': HTTP_STATUS_CODES[400]}), 200
 
@@ -92,7 +102,7 @@ def expects_schema(input_schema: str = None, output_schema: str = None):
                 out_data = response.get_data()
 
                 try:
-                    validate(json.loads(out_data), out_schema)
+                    out_validator.validate(json.loads(out_data))
                 except ValidationError as e:
                     raise DebuggableException('Schema validation failed') from e
 

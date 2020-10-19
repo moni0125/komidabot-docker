@@ -23,7 +23,7 @@ def translatable_to_object(translatable: models.Translatable):
 
 @blueprint.route('/login', methods=['POST'])
 @wrap_exceptions
-@expects_schema('POST_api_login', 'api_response_strict')
+@expects_schema(input_schema='POST_api_login', output_schema='api_response_strict')
 def post_login():
     post_data = request.get_json()
     username = post_data['username']
@@ -49,7 +49,7 @@ def get_authorized():
 
 @blueprint.route('/subscribe', methods=['POST'])
 @wrap_exceptions
-@expects_schema('POST_api_subscribe', 'api_response_strict')
+@expects_schema(input_schema='POST_api_subscribe', output_schema='api_response_strict')
 def post_subscribe():
     post_data = request.get_json()
     endpoint = post_data['endpoint']
@@ -75,7 +75,7 @@ def post_subscribe():
 
 @blueprint.route('/subscribe', methods=['DELETE'])
 @wrap_exceptions
-@expects_schema('DELETE_api_subscribe', 'api_response_strict')
+@expects_schema(input_schema='DELETE_api_subscribe', output_schema='api_response_strict')
 def delete_subscribe():
     post_data = request.get_json()
     endpoint = post_data['endpoint']
@@ -96,7 +96,7 @@ def delete_subscribe():
 
 @blueprint.route('/subscribe', methods=['PUT'])
 @wrap_exceptions
-@expects_schema('PUT_api_subscribe', 'api_response_strict')
+@expects_schema(input_schema='PUT_api_subscribe', output_schema='api_response_strict')
 def put_subscribe():
     post_data = request.get_json()
     old_endpoint = post_data['old_endpoint']
