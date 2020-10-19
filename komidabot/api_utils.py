@@ -86,7 +86,7 @@ def expects_schema(input_schema: str = None, output_schema: str = None):
 
             if out_schema is not None:
                 response = output[0] if isinstance(output, tuple) else output
-                if response is None or 'get_data' not in response:
+                if response is None or not callable(getattr(response, 'get_data', None)):
                     raise DebuggableException('Response is probably not a response object')
 
                 out_data = response.get_data()
