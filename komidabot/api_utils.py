@@ -85,12 +85,16 @@ def expects_schema(input_schema: str = None, output_schema: str = None):
             output = func(*args, **kwargs)
 
             if out_schema is not None:
-                out_data = output.get_data()
+                response = output[0] if isinstance(output, tuple) else output
+                if response is None or 'get_data' not in response:
+                    raise DebuggableException('Response is probably not a response object')
+
+                out_data = response.get_data()
 
                 try:
                     validate(json.loads(out_data), out_schema)
-                except ValidationError:
-                    return jsonify({'status': 500, 'message': HTTP_STATUS_CODES[500]}), 200
+                except ValidationError as e:
+                    raise DebuggableException('Schema validation failed') from e
 
             return output
 
