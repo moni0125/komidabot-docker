@@ -1,5 +1,3 @@
-import unittest
-
 from sqlalchemy import inspect
 
 import komidabot.models as models
@@ -245,7 +243,3 @@ class TestModelsCampus(BaseTestCase):
             self.assertIn(campus1.id, ids)
             self.assertIn(campus2.id, ids)
             self.assertNotIn(campus3.id, ids)
-
-
-if __name__ == '__main__':
-    unittest.main()

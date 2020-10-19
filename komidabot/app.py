@@ -15,10 +15,11 @@ class App:
 
         import komidabot.ipc as ipc
         from komidabot.facebook.api_interface import ApiInterface
-        from komidabot.facebook.constants import PROVIDER_ID as FB_PROVIDER_ID
         from komidabot.facebook.users import UserManager as FBUserManager
-        from komidabot.web.constants import PROVIDER_ID as WEB_PROVIDER_ID
         from komidabot.web.users import UserManager as WebUserManager
+        from komidabot.subscriptions.administration import Channel as AdministrationChannel
+        from komidabot.subscriptions.daily_menu import Channel as DailyMenuChannel
+        from komidabot.subscriptions import SubscriptionManager
         from komidabot.komidabot import Komidabot
         from komidabot.translation import GoogleTranslationService, TranslationService
         from komidabot.users import UnifiedUserManager, UserId
@@ -27,17 +28,20 @@ class App:
 
         self.bot_interfaces = dict()  # TODO: Deprecate?
         self.bot_interfaces['facebook'] = {
-            'api_interface': ApiInterface(config.get('PAGE_ACCESS_TOKEN')),
-            'users': FBUserManager()
+            'api_interface': ApiInterface(config.get('PAGE_ACCESS_TOKEN'))
         }
 
         self.user_manager = UnifiedUserManager()
-        self.user_manager.register_manager(FB_PROVIDER_ID, self.bot_interfaces['facebook']['users'])
-        self.user_manager.register_manager(WEB_PROVIDER_ID, WebUserManager())
+        self.user_manager.register_manager(FBUserManager())
+        self.user_manager.register_manager(WebUserManager())
 
-        self.bot = Komidabot(self)
+        self.subscription_manager = SubscriptionManager()
+        self.subscription_manager.register_channel(AdministrationChannel())
+        self.subscription_manager.register_channel(DailyMenuChannel())
 
         self.translator = GoogleTranslationService()  # type: TranslationService
+
+        self.bot = Komidabot(self)
 
         # TODO: This could probably also be moved to the Komidabot class
         self.task_executor = PyThreadPoolExecutor(max_workers=5)

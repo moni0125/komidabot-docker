@@ -1,7 +1,7 @@
 import atexit
 import datetime
 import threading
-from typing import Dict, List
+from typing import List
 
 from apscheduler.executors.pool import ThreadPoolExecutor
 from apscheduler.jobstores.memory import MemoryJobStore
@@ -13,14 +13,12 @@ import komidabot.facebook.nlp_dates as nlp_dates
 import komidabot.localisation as localisation
 import komidabot.messages as messages
 import komidabot.triggers as triggers
-import komidabot.users as users
 from extensions import db
 from komidabot.app import get_app
 from komidabot.bot import Bot
 from komidabot.debug.state import DebuggableException, ProgramStateTrace, SimpleProgramState
 from komidabot.models import Campus, ClosingDays, Day, Menu, Translatable
 from komidabot.models import create_standard_values, import_dump, recreate_db
-from komidabot.rate_limit import Limiter
 from komidabot.translation import LANGUAGE_DUTCH
 
 
@@ -294,14 +292,15 @@ class Komidabot(Bot):
         self._handling_error = False
 
     def message_admins(self, message: messages.Message):
-        with self.lock:
-            app = get_app()
+        from komidabot.subscriptions.administration import CHANNEL_ID as ADMINISTRATION_ID
 
-            user_manager = app.user_manager
+        debug_state = ProgramStateTrace()
 
-            for admin in user_manager.get_administrators():
-                # FIXME: We should technically check if we can contact the admins, however we'll ignore this for now
-                admin.send_message(message)
+        with debug_state.state(SimpleProgramState('Message admins')):
+            with self.lock:
+                app = get_app()
+
+                app.subscription_manager.deliver_message(ADMINISTRATION_ID, message)
 
     def handle_ipc(self, data):
         print('Received IPC message:', data, flush=True)
@@ -335,7 +334,9 @@ class Komidabot(Bot):
 
 
 def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
-    limiter = Limiter(20)  # Limit to 20 messages per second
+    from komidabot.subscriptions.daily_menu import CHANNEL_ID as DAILY_MENU_ID
+
+    # limiter = Limiter(20)  # Limit to 20 messages per second
 
     date = trigger.date or datetime.datetime.now().date()
     day = Day(date.isoweekday())
@@ -347,87 +348,83 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
     if verbose:
         print('Sending out subscription for {} ({})'.format(date, day.name), flush=True)
 
-    user_manager = app.user_manager  # type: users.UserManager
-    changed = False
+    message = messages.SubscriptionMenuMessage(trigger, date, app.translator)
+    app.subscription_manager.deliver_message(DAILY_MENU_ID, message)
 
-    subscribed_users = user_manager.get_subscribed_users(day)
-    subscriptions = dict()  # type: Dict[Campus, Dict[str, List[users.User]]]
-
-    for user in subscribed_users:
-        if app.config.get('DISABLED') and not user.is_admin():
-            continue
-
-        if not user.is_feature_active('menu_subscription'):
-            if verbose:
-                print('User {} not eligible for subscription'.format(user.id), flush=True)
-            continue
-
-        subscription = user.get_subscription_for_day(date)
-        if subscription is None:
-            continue
-        if not subscription.active:
-            continue
-
-        campus = subscription.campus
-
-        if not campus.active:
-            continue
-
-        language = user.get_locale() or LANGUAGE_DUTCH
-
-        if campus not in subscriptions:
-            subscriptions[campus] = dict()
-
-        if language not in subscriptions[campus]:
-            subscriptions[campus][language] = list()
-
-        subscriptions[campus][language].append(user)
-
-    for campus, languages in subscriptions.items():
-        for language, sub_users in languages.items():
-            if verbose:
-                print('Preparing menu for {} in {}'.format(campus.short_name, language), flush=True)
-
-            closed = ClosingDays.find_is_closed(campus, date)
-
-            if closed:
-                continue  # Campus closed, no daily menu
-
-            # TODO: Change menus from TextMessage to a custom message type to support different formatting per platform
-            menu = Menu.get_menu(campus, date)
-            if menu is None:
-                continue
-
-            for user in sub_users:
-                limiter()  # Ensure we don't send too many messages at once
-
-                if verbose:
-                    print('Sending menu for {} in {} to {}'.format(campus.short_name, language, user.id),
-                          flush=True)
-                message_result = user.send_message(messages.MenuMessage(trigger, menu, app.translator))
-
-                if message_result == messages.MessageSendResult.UNSUPPORTED:
-                    # Text messages unsupported? Disable subscription then
-                    print('User {} does not support messages, removing from subscription list'.format(user.id),
-                          flush=True)
-
-                    user.mark_unreachable()
-                    changed = True
-                if message_result == messages.MessageSendResult.UNREACHABLE:
-                    # Unreachable = Facebook is blocking us from sending, stop trying to send in the future
-                    print('User {} is unreachable, removing from subscription list'.format(user.id), flush=True)
-
-                    user.mark_unreachable()
-                    changed = True
-                if message_result == messages.MessageSendResult.GONE:
-                    # Gone = User no longer exists, delete from database
-                    print('User {} is gone, removing from database'.format(user.id), flush=True)
-
-                    user.delete()
-                    changed = True
-
-    if changed:
-        db.session.commit()
+    # user_manager = app.user_manager  # type: users.UserManager
+    # changed = False
+    #
+    # subscribed_users = user_manager.get_subscribed_users(day)
+    # subscriptions = dict()  # type: Dict[Campus, List[users.User]]
+    #
+    # for user in subscribed_users:
+    #     if app.config.get('DISABLED') and not user.is_admin():
+    #         continue
+    #
+    #     if not user.is_feature_active('menu_subscription'):
+    #         if verbose:
+    #             print('User {} not eligible for subscription'.format(user.id), flush=True)
+    #         continue
+    #
+    #     subscription = user.get_subscription_for_day(date)
+    #     if subscription is None:
+    #         continue
+    #     if not subscription.active:
+    #         continue
+    #
+    #     campus = subscription.campus
+    #
+    #     if not campus.active:
+    #         continue
+    #
+    #     if campus not in subscriptions:
+    #         subscriptions[campus] = []
+    #
+    #     subscriptions[campus].append(user)
+    #
+    # for campus, sub_users in subscriptions.items():
+    #     if verbose:
+    #         print('Preparing menu for {}'.format(campus.short_name), flush=True)
+    #
+    #     closed = ClosingDays.find_is_closed(campus, date)
+    #
+    #     if closed:
+    #         continue  # Campus closed, no daily menu
+    #
+    #     # TODO: Change menus from TextMessage to a custom message type to support different formatting per platform
+    #     menu = Menu.get_menu(campus, date)
+    #     if menu is None:
+    #         continue
+    #
+    #     for user in sub_users:
+    #         limiter()  # Ensure we don't send too many messages at once
+    #
+    #         if verbose:
+    #             print('Sending menu for {} to {}'.format(campus.short_name, user.id), flush=True)
+    #         message_result = user.send_message(messages.MenuMessage(trigger, menu, app.translator))
+    #
+    #         if message_result == messages.MessageSendResult.UNSUPPORTED:
+    #             # Text messages unsupported? Disable subscription then
+    #             print('User {} does not support messages, removing from subscription list'.format(user.id),
+    #                   flush=True)
+    #
+    #             user.mark_unreachable()
+    #             changed = True
+    #         if message_result == messages.MessageSendResult.UNREACHABLE:
+    #             # Unreachable = Facebook is blocking us from sending, stop trying to send in the future
+    #             print('User {} is unreachable, removing from subscription list'.format(user.id), flush=True)
+    #
+    #             user.mark_unreachable()
+    #             changed = True
+    #         if message_result == messages.MessageSendResult.GONE:
+    #             # Gone = User no longer exists, delete from database
+    #             print('User {} is gone, removing from database'.format(user.id), flush=True)
+    #
+    #             user.delete()
+    #             changed = True
+    #
+    # if changed:
+    #     db.session.commit()
 
 
 def update_menus(*campuses: str, dates: 'List[datetime.date]' = None):

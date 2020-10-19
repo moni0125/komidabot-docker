@@ -117,7 +117,3 @@ class TestTriggers(BaseTestCase):
                             continue  # This is the type we're testing in this instance
 
                         self.assertNotIn(AspectType3, trigger)
-
-
-if __name__ == '__main__':
-    unittest.main()

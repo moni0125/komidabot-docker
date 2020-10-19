@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ReplaceSubscriptionMessage",
+  "type": "object",
+  "properties": {
+    "old_endpoint": {
+      "type": "string"
+    },
+    "endpoint": {
+      "type": "string"
+    },
+    "keys": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "old_endpoint",
+    "endpoint",
+    "keys"
+  ],
+  "additionalProperties": false
+}

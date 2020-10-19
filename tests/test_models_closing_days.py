@@ -116,7 +116,3 @@ class TestModelsClosingDays(BaseTestCase):
             self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['WED']), closed3)
             self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['THU']), closed3)
             self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['FRI']), closed3)
-
-
-if __name__ == '__main__':
-    unittest.main()

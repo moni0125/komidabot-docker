@@ -11,7 +11,7 @@ import komidabot.users as users
 import komidabot.util as util
 import komidabot.web.constants as web_constants
 from komidabot.app import get_app
-from komidabot.models import CourseType
+from komidabot.models import CourseType, Menu
 
 VAPID_CLAIMS = {
     'sub': 'mailto:komidabot@gmail.com'
@@ -27,6 +27,8 @@ class MessageHandler(messages.MessageHandler):
             return self._send_text_message(user, message)
         elif isinstance(message, messages.MenuMessage):
             return self._send_menu_message(user, message)
+        elif isinstance(message, messages.SubscriptionMenuMessage):
+            return self._send_subscription_menu_message(user, message)
         else:
             return messages.MessageSendResult.UNSUPPORTED
 
@@ -121,3 +123,47 @@ class MessageHandler(messages.MessageHandler):
         }
 
         return MessageHandler._send_notification(subscription_information, data)
+
+    @staticmethod
+    def _send_subscription_menu_message(user: users.User,
+                                        message: messages.SubscriptionMenuMessage) -> messages.MessageSendResult:
+        campus = user.get_campus_for_day(message.date)
+        if campus is None:
+            # If no campus for selected day, just success it
+            return messages.MessageSendResult.SUCCESS
+
+        locale = user.get_locale() or translation.LANGUAGE_DUTCH
+
+        data = message.get_prepared(campus, locale, user.get_provider_name())
+
+        if data is None:
+            menu = Menu.get_menu(campus, message.date)
+
+            date_str = util.date_to_string(locale, menu.menu_day)
+
+            title = localisation.REPLY_MENU_START(locale).format(campus=campus.name, date=date_str)
+            text = komidabot.menu.get_short_menu_text(menu, message.translator, locale,
+                                                      CourseType.DAILY, CourseType.PASTA, CourseType.GRILL)
+
+            if text is None or text == '':
+                return messages.MessageSendResult.ERROR
+
+            data = {
+                'notification': {
+                    'lang': locale,
+                    'badge': 'https://komidabot.xyz/assets/icons/notification-badge-android-72x72.png',
+                    'title': title,
+                    'body': text,
+                    'renotify': False,
+                    'requireInteraction': False,
+                    'actions': [],
+                    'silent': True,
+                }
+            }
+
+            message.set_prepared(campus, locale, user.get_provider_name(), data)
+
+        subscription_information = copy.deepcopy(user.get_data())
+        subscription_information['endpoint'] = user.get_internal_id()
+
+        return MessageHandler._send_notification(subscription_information, copy.deepcopy(data))

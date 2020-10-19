@@ -4,7 +4,10 @@ import komidabot.messages as messages
 import komidabot.models as models
 import komidabot.users as users
 import komidabot.web.constants as web_constants
+from komidabot.subscriptions.administration import CHANNEL_ID as ADMINISTRATION_ID
 from komidabot.web.messages import MessageHandler as WebMessageHandler
+
+__all__ = ['User', 'UserManager']
 
 
 class UserManager(users.UserManager):
@@ -39,6 +42,9 @@ class User(users.User):
 
     def get_internal_id(self) -> 'str':
         return self._id
+
+    def supports_subscription_channel(self, channel: str) -> bool:
+        return channel in [ADMINISTRATION_ID]
 
     def get_manager(self) -> UserManager:
         return self._manager

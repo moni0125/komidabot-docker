@@ -155,7 +155,3 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
 #                 response = requests.get('https://google.be')
 #
 #                 assert response.text == 'test'
-
-
-if __name__ == '__main__':
-    unittest.main()

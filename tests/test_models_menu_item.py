@@ -283,7 +283,3 @@ class TestModelsMenuItem(BaseTestCase):
             self.assertEqual(menu_item3.get_translation('en_US', trans), translatable3.get_translation('en_US', trans))
             self.assertEqual(menu_item3.get_translation('nl_BE', trans), translatable3.get_translation('nl_BE', trans))
             self.assertEqual(menu_item3.get_translation('fr_BE', trans), translatable3.get_translation('fr_BE', trans))
-
-
-if __name__ == '__main__':
-    unittest.main()

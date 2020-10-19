@@ -181,7 +181,3 @@ class TestModelsMenu(BaseTestCase):
             self.assertNotIn(menu_item2, items)
             self.assertIn(menu_item3, items)  # Equals item1
             self.assertIn(menu_item4, items)
-
-
-if __name__ == '__main__':
-    unittest.main()

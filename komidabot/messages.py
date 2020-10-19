@@ -1,8 +1,9 @@
+import datetime
 import enum
-from typing import Dict, List, Type, TypeVar, Union
+from typing import Any, Dict, List, Optional, Type, TypeVar, Union
 
+import komidabot.models as models
 import komidabot.translation as translation
-from komidabot.models import Menu
 
 
 class Aspect:
@@ -83,10 +84,38 @@ class TextMessage(Message):
 
 
 class MenuMessage(Message):
-    def __init__(self, trigger: Trigger, menu: Menu, translator: translation.TranslationService):
+    def __init__(self, trigger: Trigger, menu: models.Menu, translator: translation.TranslationService):
         super().__init__(trigger)
         self.menu = menu
         self.translator = translator
+
+
+class SubscriptionMenuMessage(Message):
+    def __init__(self, trigger: Trigger, date: datetime.date, translator: translation.TranslationService):
+        super().__init__(trigger)
+        self.date = date
+        self.translator = translator
+        # campus id -> {language -> {user manager -> prepared message}}
+        self.prepared_cache = dict()  # type: Dict[int, Dict[str, Dict[str, Any]]]
+
+    def get_prepared(self, campus: models.Campus, lang: str, user_manager: str) -> Optional[Any]:
+        if campus.id in self.prepared_cache:
+            for_campus = self.prepared_cache[campus.id]
+            if lang in for_campus:
+                for_lang = for_campus[lang]
+                if user_manager in for_lang:
+                    return for_lang[user_manager]
+        return None
+
+    def set_prepared(self, campus: models.Campus, lang: str, user_manager: str, prepared: Any):
+        if campus.id not in self.prepared_cache:
+            self.prepared_cache[campus.id] = {}
+
+        for_campus = self.prepared_cache[campus.id]
+        if lang not in for_campus:
+            for_campus[lang] = {}
+
+        for_campus[lang][user_manager] = prepared
 
 
 class MessageSendResult(enum.Enum):

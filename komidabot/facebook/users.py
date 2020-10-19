@@ -7,16 +7,18 @@ import komidabot.users as users
 from komidabot.app import get_app
 from komidabot.facebook.messages import MessageHandler as FBMessageHandler
 
+__all__ = ['User', 'UserManager']
+
 
 class UserManager(users.UserManager):
     def __init__(self):
         self.message_handler = FBMessageHandler()
 
-    def get_subscribed_users(self, day: models.Day) -> 'List[users.User]':
-        # TODO: Starting March 4th 2020, facebook subscriptions will no longer be available
-        #       https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/
-        # return super().get_subscribed_users(day)
-        return []
+    # def get_subscribed_users(self, day: models.Day) -> 'List[users.User]':
+    #     # TODO: Starting March 4th 2020, facebook subscriptions will no longer be available
+    #     #       https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/
+    #     # return super().get_subscribed_users(day)
+    #     return []
 
     def get_user(self, user: 'Union[users.UserId, models.AppUser]', **kwargs) -> 'User':
         if isinstance(user, models.AppUser):
@@ -61,6 +63,12 @@ class User(users.User):
 
     def get_internal_id(self) -> 'str':
         return self._id
+
+    def supports_subscription_channel(self, channel: str) -> bool:
+        # Facebook users cannot receive subscriptions anymore
+        # This used to work by sending a message with "messaging_type" set to "NON_PROMOTIONAL_SUBSCRIPTION"
+        # See https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/
+        return False
 
     def get_manager(self) -> UserManager:
         return self._manager

@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AddSubscriptionMessage",
+  "type": "object",
+  "properties": {
+    "endpoint": {
+      "type": "string"
+    },
+    "keys": {
+      "type": "object"
+    },
+    "channel": {
+      "type": "string"
+    },
+    "data": true
+  },
+  "required": [
+    "endpoint",
+    "keys",
+    "channel"
+  ],
+  "additionalProperties": false
+}

@@ -4,7 +4,9 @@ from typing import Optional, Union
 import komidabot.menu
 import komidabot.messages as messages
 import komidabot.users as users
-from komidabot.models import AppUser
+from komidabot.models import AppUser, Menu
+from komidabot.subscriptions.administration import CHANNEL_ID as ADMINISTRATION_ID
+from komidabot.subscriptions.daily_menu import CHANNEL_ID as DAILY_MENU_ID
 
 PROVIDER_ID = 'stub'
 
@@ -70,6 +72,9 @@ class User(users.User):
     def get_internal_id(self) -> 'str':
         return self._id
 
+    def supports_subscription_channel(self, channel: str) -> bool:
+        return channel in [ADMINISTRATION_ID, DAILY_MENU_ID]
+
     def get_manager(self) -> UserManager:
         return self._manager
 
@@ -110,6 +115,17 @@ class MessageHandler(messages.MessageHandler):
             self.message_log[user.id].append(text)
 
             return messages.MessageSendResult.SUCCESS
+        elif isinstance(message, messages.SubscriptionMenuMessage):
+            if user.id not in self.message_log:
+                self.message_log[user.id] = []
+
+            campus = user.get_campus_for_day(message.date)
+            menu = Menu.get_menu(campus, message.date)
+
+            text = komidabot.menu.get_menu_text(menu, message.translator, user.get_locale())
+
+            self.message_log[user.id].append(text)
+
+            return messages.MessageSendResult.SUCCESS
         else:
             return messages.MessageSendResult.UNSUPPORTED
-            # raise NotImplementedError()

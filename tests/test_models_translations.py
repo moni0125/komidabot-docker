@@ -176,7 +176,3 @@ class TestModelsTranslations(BaseTestCase):
             self.assertEqual(translatable1, models.Translatable.get_by_id(translatable1.id))
             self.assertEqual(translatable2, models.Translatable.get_by_id(translatable2.id))
             self.assertEqual(translatable3, models.Translatable.get_by_id(translatable3.id))
-
-
-if __name__ == '__main__':
-    unittest.main()

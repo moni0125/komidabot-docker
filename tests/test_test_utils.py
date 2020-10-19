@@ -26,7 +26,3 @@ class TestConstants(BaseTestCase):
         self.assertEqual(utils.DAYS_LIST[4].isoweekday(), 5, 'Date is not a Friday')
         self.assertEqual(utils.DAYS_LIST[5].isoweekday(), 6, 'Date is not a Saturday')
         self.assertEqual(utils.DAYS_LIST[6].isoweekday(), 7, 'Date is not a Sunday')
-
-
-if __name__ == '__main__':
-    unittest.main()
