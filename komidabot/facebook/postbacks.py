@@ -56,7 +56,7 @@ def url_button(title: str, url: str):
         'url': url,
         'title': title,
         'webview_height_ratio': 'full',
-        'messenger_extensions': 'true',
+        'messenger_extensions': 'false',
     }
 
 
@@ -97,7 +97,6 @@ def settings_subscriptions(trigger: triggers.Trigger):
         current = current_subscriptions.get(day, None)
 
         title = localisation.DAYS[day.value - 1](locale).capitalize()
-        # image = 'https://komidabot.heldplayer.blue/images/{}.png'.format(day.name.lower())
         buttons = []
         if current is None:
             buttons.append(postback_button('✔️ ' + localisation.UNSUBSCRIBED(locale),
