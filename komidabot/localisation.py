@@ -126,10 +126,12 @@ REPLY_NEW_USER = localisation_definition('REPLY_NEW_USER', {
 REPLY_INSTRUCTIONS = localisation_definition('REPLY_INSTRUCTIONS', {
     'en': 'You can request the menu by choosing a campus ({campuses}) and/or '
           'asking for a specific day (Monday - Friday, Today, Tomorrow, etc.)\n\n'
-          'To reach the admin, you can use @admin.',
+          'To reach the admin, you can use @admin.\n\n'
+          'You can also check out the menu at https://komidabot.xyz/',
     'nl': 'Je kan het menu opvragen door een campus te kiezen ({campuses}) en/of '
           'een specifieke dag te vragen (maandag - vrijdag, vandaag, morgen, etc.)\n\n'
-          'Om de admin te bereiken, kan je @admin gebruiken.',
+          'Om de admin te bereiken, kan je @admin gebruiken.\n\n'
+          'Verder kan je het menu ook raadplegen op https://komidabot.xyz/',
 })
 
 DOWN_FOR_MAINTENANCE = localisation_definition('DOWN_FOR_MAINTENANCE', {

@@ -116,6 +116,8 @@ class Komidabot(Bot):
                         campuses=', '.join([campus.short_name.lower() for campus in campuses if campus.active])
                     )
                     sender.send_message(messages.TextMessage(trigger, msg))
+                    sender.set_is_notified_new_site(True)
+                    db.session.commit()
 
                     message_handled = True
 
@@ -245,7 +247,7 @@ class Komidabot(Bot):
                     sender.set_campus_for_day(campus, date)
                     db.session.commit()
 
-                if sender.get_is_notified_new_site() is False and sender.is_feature_active('menu_subscription'):
+                if sender.get_is_notified_new_site() is False and sender.is_feature_active('new_site_notifications'):
                     if sender.send_message(messages.TextMessage(trigger, localisation.MESSAGE_NEW_SITE(locale))) \
                             == messages.MessageSendResult.SUCCESS:
                         sender.set_is_notified_new_site(True)
