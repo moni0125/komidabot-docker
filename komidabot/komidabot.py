@@ -327,7 +327,7 @@ class Komidabot(Bot):
             start = datetime.date(2019, 11, 18)
             start = start + datetime.timedelta(days=-start.weekday())
 
-            dates = []  # type: List[datetime.datetime]
+            dates: List[datetime.datetime] = []
             while start < today:
                 dates += [start + datetime.timedelta(days=i) for i in range(5)]
                 start = start + datetime.timedelta(days=7)
@@ -353,11 +353,11 @@ def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
     message = messages.SubscriptionMenuMessage(trigger, date, app.translator)
     app.subscription_manager.deliver_message(DAILY_MENU_ID, message)
 
-    # user_manager = app.user_manager  # type: users.UserManager
+    # user_manager = app.user_manager
     # changed = False
     #
     # subscribed_users = user_manager.get_subscribed_users(day)
-    # subscriptions = dict()  # type: Dict[Campus, List[users.User]]
+    # subscriptions: Dict[Campus, List[users.User]] = dict()
     #
     # for user in subscribed_users:
     #     if app.config.get('DISABLED') and not user.is_admin():

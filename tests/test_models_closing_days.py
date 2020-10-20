@@ -1,5 +1,3 @@
-import unittest
-
 from sqlalchemy import inspect
 
 import komidabot.models as models
@@ -9,6 +7,10 @@ from tests.base import BaseTestCase
 
 
 class TestModelsClosingDays(BaseTestCase):
+    """
+    Test models.ClosingDays
+    """
+
     def setUp(self):
         super().setUp()
 
@@ -20,9 +22,9 @@ class TestModelsClosingDays(BaseTestCase):
         with self.app.app_context():
             db.session.add_all(self.campuses)
 
-            translatable1, _ = self.create_translation({'en_US': 'Translation 1: en_US'}, 'en_US', has_context=True)
-            translatable2, _ = self.create_translation({'en_US': 'Translation 2: en_US'}, 'en_US', has_context=True)
-            translatable3, _ = self.create_translation({'en_US': 'Translation 3: en_US'}, 'en_US', has_context=True)
+            translatable1, _ = self.create_translation({'en': 'Translation 1: en'}, 'en', has_context=True)
+            translatable2, _ = self.create_translation({'en': 'Translation 2: en'}, 'en', has_context=True)
+            translatable3, _ = self.create_translation({'en': 'Translation 3: en'}, 'en', has_context=True)
 
             closed1 = models.ClosingDays(self.campuses[0].id, utils.DAYS['MON'], utils.DAYS['MON'], translatable1.id)
             closed2 = models.ClosingDays(self.campuses[1].id, utils.DAYS['TUE'], utils.DAYS['FRI'], translatable2.id)
@@ -39,6 +41,35 @@ class TestModelsClosingDays(BaseTestCase):
 
             db.session.commit()
 
+    def test_invalid_constructors(self):
+        # Test constructor of Campus model
+
+        with self.app.app_context():
+            db.session.add_all(self.campuses)
+
+            translatable1, _ = self.create_translation({'en': 'Translation 1: en'}, 'en', has_context=True)
+
+            with self.assertRaises(ValueError):
+                models.ClosingDays(None, utils.DAYS['MON'], utils.DAYS['MON'], translatable1.id)
+
+            with self.assertRaises(ValueError):
+                models.ClosingDays('id', utils.DAYS['MON'], utils.DAYS['MON'], translatable1.id)
+
+            with self.assertRaises(ValueError):
+                models.ClosingDays(self.campuses[0].id, None, utils.DAYS['MON'], translatable1.id)
+
+            with self.assertRaises(ValueError):
+                models.ClosingDays(self.campuses[0].id, '2002-02-20', utils.DAYS['MON'], translatable1.id)
+
+            with self.assertRaises(ValueError):
+                models.ClosingDays(self.campuses[0].id, utils.DAYS['MON'], '2002-02-20', translatable1.id)
+
+            with self.assertRaises(ValueError):
+                models.ClosingDays(self.campuses[0].id, utils.DAYS['MON'], utils.DAYS['MON'], None)
+
+            with self.assertRaises(ValueError):
+                models.ClosingDays(self.campuses[0].id, utils.DAYS['MON'], utils.DAYS['MON'], 'translatable')
+
     def test_create(self):
         # Test usage of ClosingDays.create with add_to_db set to True
 
@@ -46,11 +77,11 @@ class TestModelsClosingDays(BaseTestCase):
             db.session.add_all(self.campuses)
 
             closed1 = models.ClosingDays.create(self.campuses[0], utils.DAYS['MON'], utils.DAYS['MON'],
-                                                'Translation 1: en_US', 'en_US', add_to_db=True)
+                                                'Translation 1: en', 'en', add_to_db=True)
             closed2 = models.ClosingDays.create(self.campuses[1], utils.DAYS['TUE'], utils.DAYS['FRI'],
-                                                'Translation 2: en_US', 'en_US', add_to_db=True)
+                                                'Translation 2: en', 'en', add_to_db=True)
             closed3 = models.ClosingDays.create(self.campuses[2], utils.DAYS['THU'], utils.DAYS['THU'],
-                                                'Translation 3: en_US', 'en_US', add_to_db=True)
+                                                'Translation 3: en', 'en', add_to_db=True)
 
             # Ensure that the create method adds the entities to the database
             self.assertFalse(inspect(closed1).transient)
@@ -66,11 +97,11 @@ class TestModelsClosingDays(BaseTestCase):
             db.session.add_all(self.campuses)
 
             closed1 = models.ClosingDays.create(self.campuses[0], utils.DAYS['MON'], utils.DAYS['MON'],
-                                                'Translation 1: en_US', 'en_US', add_to_db=False)
+                                                'Translation 1: en', 'en', add_to_db=False)
             closed2 = models.ClosingDays.create(self.campuses[1], utils.DAYS['TUE'], utils.DAYS['FRI'],
-                                                'Translation 2: en_US', 'en_US', add_to_db=False)
+                                                'Translation 2: en', 'en', add_to_db=False)
             closed3 = models.ClosingDays.create(self.campuses[2], utils.DAYS['THU'], utils.DAYS['THU'],
-                                                'Translation 3: en_US', 'en_US', add_to_db=False)
+                                                'Translation 3: en', 'en', add_to_db=False)
 
             # Ensure that the create method does not add the entities to the database
             self.assertTrue(inspect(closed1).transient)
@@ -90,11 +121,11 @@ class TestModelsClosingDays(BaseTestCase):
             db.session.add_all(self.campuses)
 
             closed1 = models.ClosingDays.create(self.campuses[0], utils.DAYS['TUE'], utils.DAYS['TUE'],
-                                                'Translation 1: en_US', 'en_US')
+                                                'Translation 1: en', 'en')
             closed2 = models.ClosingDays.create(self.campuses[1], utils.DAYS['TUE'], utils.DAYS['THU'],
-                                                'Translation 2: en_US', 'en_US')
+                                                'Translation 2: en', 'en')
             closed3 = models.ClosingDays.create(self.campuses[2], utils.DAYS['WED'], None,
-                                                'Translation 3: en_US', 'en_US')
+                                                'Translation 3: en', 'en')
 
             db.session.commit()
 
@@ -116,3 +147,6 @@ class TestModelsClosingDays(BaseTestCase):
             self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['WED']), closed3)
             self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['THU']), closed3)
             self.assertEqual(models.ClosingDays.find_is_closed(self.campuses[2], utils.DAYS['FRI']), closed3)
+
+    def test_find_closing_days_including(self):
+        pass  # TODO

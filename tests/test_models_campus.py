@@ -6,6 +6,10 @@ from tests.base import BaseTestCase
 
 
 class TestModelsCampus(BaseTestCase):
+    """
+    Test models.Campus
+    """
+
     def test_simple_constructors(self):
         # Test constructor of Campus model
 
@@ -27,6 +31,22 @@ class TestModelsCampus(BaseTestCase):
             db.session.add(campus3)
 
             db.session.commit()
+
+    def test_invalid_constructors(self):
+        # Test constructor of Campus model
+
+        with self.app.app_context():
+            with self.assertRaises(ValueError):
+                models.Campus(None, 'ctst')
+
+            with self.assertRaises(ValueError):
+                models.Campus(13, 'ctst')
+
+            with self.assertRaises(ValueError):
+                models.Campus('Testcampus', None)
+
+            with self.assertRaises(ValueError):
+                models.Campus('Testcampus', 42)
 
     def test_create(self):
         # Test usage of Campus.create with add_to_db set to True
@@ -147,6 +167,9 @@ class TestModelsCampus(BaseTestCase):
             self.assertIn('keyword3', kw3)
             self.assertIn('shared_keyword', kw3)
             self.assertIn('extra_keyword', kw3)
+
+            with self.assertRaises(ValueError):
+                campus1.add_keyword('keyword with spaces')
 
     def test_get_by_id(self):
         # Test getting a Campus object by its ID

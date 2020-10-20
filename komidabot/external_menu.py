@@ -60,13 +60,13 @@ COURSE_LOGOS = {
 class ExternalCourse:
     def __init__(self, sort_order: int, show_first: bool, main_course: bool,
                  price_students: float):
-        self.name = dict()  # type: Dict[str, str]
+        self.name: Dict[str, str] = dict()
         self.sort_order = sort_order
         self.show_first = show_first
         self.main_course = main_course
 
         price_students = Decimal(price_students)
-        self.price_students = round(price_students, 2)  # type: Decimal
+        self.price_students: Decimal = round(price_students, 2)
 
     def add_name(self, locale, name):
         if locale in self.name:
@@ -141,7 +141,7 @@ class ExternalMenu:
     def __init__(self):
         self.session = requests.Session()
 
-        self.lookups = []  # type: List[Tuple[models.Campus, datetime.date]]
+        self.lookups: List[Tuple[models.Campus, datetime.date]] = []
 
     def add_to_lookup(self, campus: models.Campus, date: datetime.date):
         self.lookups.append((campus, date))

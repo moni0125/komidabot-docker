@@ -1,13 +1,16 @@
-import unittest
 from decimal import Decimal
 
-from komidabot.models import Menu, MenuItem, CourseType, CourseSubType, CourseAttributes
 import tests.utils as utils
 from app import db
+from komidabot.models import Menu, MenuItem, CourseType, CourseSubType, CourseAttributes
 from tests.base import BaseTestCase
 
 
 class TestModelsMenuItem(BaseTestCase):
+    """
+    Test models.MenuItem
+    """
+
     def setUp(self):
         super().setUp()
 
@@ -19,21 +22,18 @@ class TestModelsMenuItem(BaseTestCase):
         with self.app.app_context():
             db.session.add_all(self.campuses)
 
-            translatable1, _ = self.create_translation({'en_US': 'Translation 1: en_US'}, 'en_US', has_context=True)
-            translatable2, _ = self.create_translation({'en_US': 'Translation 2: en_US'}, 'en_US', has_context=True)
-            translatable3, _ = self.create_translation({'en_US': 'Translation 3: en_US'}, 'en_US', has_context=True)
+            translatable1, _ = self.create_translation({'en': 'Translation 1: en'}, 'en', has_context=True)
+            translatable2, _ = self.create_translation({'en': 'Translation 2: en'}, 'en', has_context=True)
+            translatable3, _ = self.create_translation({'en': 'Translation 3: en'}, 'en', has_context=True)
 
             menu = Menu.create(self.campuses[0], utils.DAYS['MON'])
 
             db.session.flush()
 
             # XXX: Use constructor here to test, rather than the appropriate method
-            MenuItem(menu.id, translatable1.id, CourseType.SUB, CourseSubType.NORMAL,
-                     Decimal('1.0'), None)
-            MenuItem(menu.id, translatable2.id, CourseType.PASTA, CourseSubType.NORMAL,
-                     Decimal('1.0'), Decimal('4.0'))
-            MenuItem(menu.id, translatable3.id, CourseType.SOUP, CourseSubType.VEGAN,
-                     Decimal('1.0'), Decimal('2.0'))
+            MenuItem(menu.id, translatable1.id, CourseType.SUB, CourseSubType.NORMAL, Decimal('1.0'), None)
+            MenuItem(menu.id, translatable2.id, CourseType.PASTA, CourseSubType.NORMAL, Decimal('1.0'), Decimal('4.0'))
+            MenuItem(menu.id, translatable3.id, CourseType.SOUP, CourseSubType.VEGAN, Decimal('1.0'), Decimal('2.0'))
 
             db.session.commit()
 
@@ -44,9 +44,9 @@ class TestModelsMenuItem(BaseTestCase):
         with self.app.app_context():
             db.session.add_all(self.campuses)
 
-            translatable1, _ = self.create_translation({'en_US': 'Translation 1: en_US'}, 'en_US', has_context=True)
-            translatable2, _ = self.create_translation({'en_US': 'Translation 2: en_US'}, 'en_US', has_context=True)
-            translatable3, _ = self.create_translation({'en_US': 'Translation 3: en_US'}, 'en_US', has_context=True)
+            translatable1, _ = self.create_translation({'en': 'Translation 1: en'}, 'en', has_context=True)
+            translatable2, _ = self.create_translation({'en': 'Translation 2: en'}, 'en', has_context=True)
+            translatable3, _ = self.create_translation({'en': 'Translation 3: en'}, 'en', has_context=True)
 
             menu = Menu.create(self.campuses[0], utils.DAYS['MON'])
 
@@ -75,7 +75,7 @@ class TestModelsMenuItem(BaseTestCase):
         with self.app.app_context():
             db.session.add_all(self.campuses)
 
-            translatable1, _ = self.create_translation({'en_US': 'Translation 1: en_US'}, 'en_US', has_context=True)
+            translatable1, _ = self.create_translation({'en': 'Translation 1: en'}, 'en', has_context=True)
 
             menu1 = Menu.create(self.campuses[0], utils.DAYS['MON'])
             menu2 = Menu.create(self.campuses[1], utils.DAYS['MON'])
@@ -110,8 +110,8 @@ class TestModelsMenuItem(BaseTestCase):
         with self.app.app_context():
             db.session.add_all(self.campuses)
 
-            translatable1, _ = self.create_translation({'en_US': 'Translation 1: en_US'}, 'en_US', has_context=True)
-            translatable2, _ = self.create_translation({'en_US': 'Translation 2: en_US'}, 'en_US', has_context=True)
+            translatable1, _ = self.create_translation({'en': 'Translation 1: en'}, 'en', has_context=True)
+            translatable2, _ = self.create_translation({'en': 'Translation 2: en'}, 'en', has_context=True)
 
             menu1 = Menu.create(self.campuses[0], utils.DAYS['MON'])
             menu2 = Menu.create(self.campuses[1], utils.DAYS['MON'])
@@ -192,8 +192,8 @@ class TestModelsMenuItem(BaseTestCase):
         with self.app.app_context():
             db.session.add_all(self.campuses)
 
-            translatable1, _ = self.create_translation({'en_US': 'Translation 1: en_US'}, 'en_US', has_context=True)
-            translatable2, _ = self.create_translation({'en_US': 'Translation 2: en_US'}, 'en_US', has_context=True)
+            translatable1, _ = self.create_translation({'en': 'Translation 1: en'}, 'en', has_context=True)
+            translatable2, _ = self.create_translation({'en': 'Translation 2: en'}, 'en', has_context=True)
 
             menu1 = Menu.create(self.campuses[0], utils.DAYS['MON'])
 
@@ -253,12 +253,12 @@ class TestModelsMenuItem(BaseTestCase):
 
             db.session.add_all(self.campuses)
 
-            translatable1, _ = self.create_translation({'en_US': 'Translation 1: en_US',
-                                                        'nl_BE': 'Translation 1: nl_BE'}, 'en_US', has_context=True)
-            translatable2, _ = self.create_translation({'en_US': 'Translation 2: en_US',
-                                                        'nl_BE': 'Translation 2: nl_BE'}, 'en_US', has_context=True)
-            translatable3, _ = self.create_translation({'en_US': 'Translation 3: en_US',
-                                                        'nl_BE': 'Translation 3: nl_BE'}, 'en_US', has_context=True)
+            translatable1, _ = self.create_translation({'en': 'Translation 1: en',
+                                                        'nl': 'Translation 1: nl'}, 'en', has_context=True)
+            translatable2, _ = self.create_translation({'en': 'Translation 2: en',
+                                                        'nl': 'Translation 2: nl'}, 'en', has_context=True)
+            translatable3, _ = self.create_translation({'en': 'Translation 3: en',
+                                                        'nl': 'Translation 3: nl'}, 'en', has_context=True)
 
             menu = Menu.create(self.campuses[0], utils.DAYS['MON'])
 
@@ -274,12 +274,12 @@ class TestModelsMenuItem(BaseTestCase):
 
             db.session.commit()
 
-            self.assertEqual(menu_item1.get_translation('en_US', trans), translatable1.get_translation('en_US', trans))
-            self.assertEqual(menu_item1.get_translation('nl_BE', trans), translatable1.get_translation('nl_BE', trans))
-            self.assertEqual(menu_item1.get_translation('fr_BE', trans), translatable1.get_translation('fr_BE', trans))
-            self.assertEqual(menu_item2.get_translation('en_US', trans), translatable2.get_translation('en_US', trans))
-            self.assertEqual(menu_item2.get_translation('nl_BE', trans), translatable2.get_translation('nl_BE', trans))
-            self.assertEqual(menu_item2.get_translation('fr_BE', trans), translatable2.get_translation('fr_BE', trans))
-            self.assertEqual(menu_item3.get_translation('en_US', trans), translatable3.get_translation('en_US', trans))
-            self.assertEqual(menu_item3.get_translation('nl_BE', trans), translatable3.get_translation('nl_BE', trans))
-            self.assertEqual(menu_item3.get_translation('fr_BE', trans), translatable3.get_translation('fr_BE', trans))
+            self.assertEqual(menu_item1.get_translation('en', trans), translatable1.get_translation('en', trans))
+            self.assertEqual(menu_item1.get_translation('nl', trans), translatable1.get_translation('nl', trans))
+            self.assertEqual(menu_item1.get_translation('fr', trans), translatable1.get_translation('fr', trans))
+            self.assertEqual(menu_item2.get_translation('en', trans), translatable2.get_translation('en', trans))
+            self.assertEqual(menu_item2.get_translation('nl', trans), translatable2.get_translation('nl', trans))
+            self.assertEqual(menu_item2.get_translation('fr', trans), translatable2.get_translation('fr', trans))
+            self.assertEqual(menu_item3.get_translation('en', trans), translatable3.get_translation('en', trans))
+            self.assertEqual(menu_item3.get_translation('nl', trans), translatable3.get_translation('nl', trans))
+            self.assertEqual(menu_item3.get_translation('fr', trans), translatable3.get_translation('fr', trans))

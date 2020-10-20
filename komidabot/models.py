@@ -188,7 +188,7 @@ class Campus(db.Model):
 
     menus = db.relationship('Menu', backref='campus', passive_deletes=True)
     closing_days = db.relationship('ClosingDays', backref='campus', passive_deletes=True)
-    subscriptions = db.relationship('UserSubscription', backref='campus', passive_deletes=True)
+    subscriptions = db.relationship('UserDayCampusPreference', backref='campus', passive_deletes=True)
 
     def __init__(self, name: str, short_name: str):
         if not isinstance(name, str):
@@ -482,8 +482,8 @@ class Menu(db.Model):
         db.session.delete(self)
 
     def update(self, new_menu: 'Menu'):
-        old = self.menu_items  # type: List[MenuItem]
-        new = new_menu.menu_items  # type: List[MenuItem]
+        old: List[MenuItem] = self.menu_items
+        new: List[MenuItem] = new_menu.menu_items
 
         _, added, removed = util.get_list_diff(old, new)
 
@@ -625,14 +625,16 @@ class MenuItem(db.Model):
         return hash(self.id)
 
 
-class UserSubscription(db.Model):
-    __tablename__ = 'user_subscription'
+class UserDayCampusPreference(db.Model):
+    __tablename__ = 'user_day_campus_preference'
 
     user_id = db.Column(db.Integer(), db.ForeignKey('app_user.id', onupdate='CASCADE', ondelete='CASCADE'),
                         primary_key=True)
     day = db.Column(db.Enum(Day), primary_key=True)
     campus_id = db.Column(db.Integer(), db.ForeignKey('campus.id', onupdate='CASCADE', ondelete='CASCADE'),
                           nullable=False)
+
+    # FIXME: Move this out of this table and instead store this in some subscription info table for daily_menu channel
     active = db.Column(db.Boolean(), default=True, nullable=False)
 
     def __init__(self, user_id: int, day: Day, campus_id: int, active=True) -> None:
@@ -651,19 +653,19 @@ class UserSubscription(db.Model):
         self.active = active
 
     @staticmethod
-    def get_all_for_user(user: 'AppUser') -> 'List[UserSubscription]':
-        return UserSubscription.query.filter_by(user_id=user.id).all()
+    def get_all_for_user(user: 'AppUser') -> 'List[UserDayCampusPreference]':
+        return UserDayCampusPreference.query.filter_by(user_id=user.id).all()
 
     @staticmethod
-    def get_for_user(user: 'AppUser', day: Day) -> 'Optional[UserSubscription]':
-        return UserSubscription.query.filter_by(user_id=user.id, day=day).first()
+    def get_for_user(user: 'AppUser', day: Day) -> 'Optional[UserDayCampusPreference]':
+        return UserDayCampusPreference.query.filter_by(user_id=user.id, day=day).first()
 
     @staticmethod
-    def create(user: 'AppUser', day: Day, campus: Campus, active=True) -> 'Optional[UserSubscription]':
+    def create(user: 'AppUser', day: Day, campus: Campus, active=True) -> 'Optional[UserDayCampusPreference]':
         if day in [Day.SATURDAY, Day.SUNDAY]:
             raise ValueError('Day cannot be SATURDAY or SUNDAY')
 
-        subscription = UserSubscription(user.id, day, campus.id, active)
+        subscription = UserDayCampusPreference(user.id, day, campus.id, active)
 
         db.session.add(subscription)
 
@@ -689,7 +691,7 @@ class AppUser(db.Model):
         db.UniqueConstraint('provider', 'internal_id'),
     )
 
-    subscriptions = db.relationship('UserSubscription', backref='user', passive_deletes=True)
+    subscriptions = db.relationship('UserDayCampusPreference', backref='user', passive_deletes=True)
     feature_participations = db.relationship('FeatureParticipation', backref='user', passive_deletes=True)
 
     def __init__(self, provider: str, internal_id: str, language: str):
@@ -705,16 +707,16 @@ class AppUser(db.Model):
         self.language = language
 
     def set_campus(self, day: Day, campus: Campus, active=None):
-        sub = UserSubscription.get_for_user(self, day)
+        sub = UserDayCampusPreference.get_for_user(self, day)
         if sub is None:
-            UserSubscription.create(self, day, campus, active=True if active is None else active)
+            UserDayCampusPreference.create(self, day, campus, active=True if active is None else active)
         else:
             sub.campus = campus
             if active is not None:
                 sub.active = active
 
     def set_day_active(self, day: Day, active: bool):
-        sub = UserSubscription.get_for_user(self, day)
+        sub = UserDayCampusPreference.get_for_user(self, day)
         if sub is None:
             if active:
                 raise ValueError('Cannot set subscription active if there is no campus set')
@@ -722,20 +724,20 @@ class AppUser(db.Model):
             sub.active = active
 
     def get_campus(self, day: Day) -> 'Optional[Campus]':
-        sub = UserSubscription.get_for_user(self, day)
+        sub = UserDayCampusPreference.get_for_user(self, day)
         if sub is not None:
             return sub.campus
         else:
             return None
 
-    def get_subscription(self, day: Day) -> 'Optional[UserSubscription]':
-        return UserSubscription.get_for_user(self, day)
+    def get_subscription(self, day: Day) -> 'Optional[UserDayCampusPreference]':
+        return UserDayCampusPreference.get_for_user(self, day)
 
     def set_language(self, language: str):
         self.language = language
 
     def set_active(self, day: Day, active: bool):
-        sub = UserSubscription.get_for_user(self, day)
+        sub = UserDayCampusPreference.get_for_user(self, day)
         if sub is None:
             raise ValueError('User does not have a subscription on day {}'.format(day.name))
 
@@ -758,8 +760,8 @@ class AppUser(db.Model):
         if provider:
             q = q.filter_by(provider=provider)
 
-        return q.join(AppUser.subscriptions).filter(db.and_(UserSubscription.day == day,
-                                                            UserSubscription.active == expression.true(),
+        return q.join(AppUser.subscriptions).filter(db.and_(UserDayCampusPreference.day == day,
+                                                            UserDayCampusPreference.active == expression.true(),
                                                             AppUser.enabled == expression.true()
                                                             )).order_by(AppUser.provider, AppUser.internal_id).all()
 
@@ -895,7 +897,7 @@ def create_standard_values():
 
 
 def import_dump(dump_file):
-    campus_dict = dict()  # type: Dict[str, Campus]
+    campus_dict: Dict[str, Campus] = dict()
 
     def get_campus(short_name) -> Campus:
         if short_name not in campus_dict:

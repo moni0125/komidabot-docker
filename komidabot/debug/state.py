@@ -4,8 +4,8 @@ from typing import Any, List, Optional
 
 class ProgramStateTrace:
     def __init__(self):
-        self._root = InitialProgramState()  # type: ProgramState
-        self._current = self._root  # type: ProgramState
+        self._root: 'ProgramState' = InitialProgramState()
+        self._current: 'ProgramState' = self._root
 
     def state(self, state: 'ProgramState'):
         return WithProgramState(self, state)
@@ -51,8 +51,8 @@ class ProgramStateTrace:
 
 class ProgramState:
     def __init__(self):
-        self.parent = None  # type: Optional[ProgramState]
-        self.children = []  # type: List[ProgramState]
+        self.parent: 'Optional[ProgramState]' = None
+        self.children: 'List[ProgramState]' = []
 
 
 class InitialProgramState(ProgramState):

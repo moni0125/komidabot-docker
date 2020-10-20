@@ -23,13 +23,6 @@ class UserManager:  # TODO: This probably could use more methods
     def get_user(self, user: 'Union[UserId, models.AppUser]', **kwargs) -> 'User':
         raise NotImplementedError()
 
-    # def get_subscribed_users(self, day: models.Day) -> 'List[User]':
-    #     warnings.warn('get_subscribed_users is deprecated', DeprecationWarning)
-    #     identifier = self.get_identifier()
-    #     users = models.AppUser.find_subscribed_users_by_day(day, provider=identifier)
-    #
-    #     return [self.get_user(UserId(user.internal_id, identifier)) for user in users]
-
     def get_administrators(self) -> 'List[User]':
         identifier = self.get_identifier()
 
@@ -42,12 +35,19 @@ class UserManager:  # TODO: This probably could use more methods
         raise NotImplementedError()
 
 
-class User:  # TODO: This probably needs more methods
+class User:
     @property
     def id(self) -> UserId:
         return UserId(self.get_internal_id(), self.get_provider_name())
 
     def get_provider_name(self) -> 'str':
+        raise NotImplementedError()
+
+    @property
+    def manager(self) -> UserManager:
+        return self.get_manager()
+
+    def get_manager(self) -> UserManager:
         raise NotImplementedError()
 
     def get_internal_id(self) -> 'str':
@@ -60,6 +60,16 @@ class User:  # TODO: This probably needs more methods
     def add_to_db(self):
         user_id = self.id
         models.AppUser.create(user_id.provider, user_id.id, '')
+
+    def remove_from_db(self):
+        """
+        Deletes the user from the database.
+        """
+        user = self.get_db_user()
+        if user is None:
+            return
+
+        user.delete()
 
     def get_locale(self) -> 'Optional[str]':  # TODO: Properly look into this
         user = self.get_db_user()
@@ -135,7 +145,8 @@ class User:  # TODO: This probably needs more methods
             return True
         return False
 
-    def get_subscription_for_day(self, date: Union[models.Day, datetime.date]) -> 'Optional[models.UserSubscription]':
+    def get_subscription_for_day(self, date: Union[models.Day, datetime.date]) \
+            -> 'Optional[models.UserDayCampusPreference]':
         user = self.get_db_user()
         if user is None:
             return None
@@ -188,16 +199,6 @@ class User:  # TODO: This probably needs more methods
     def supports_subscription_channel(self, channel: str) -> bool:
         raise NotImplementedError()
 
-    def delete(self):
-        """
-        Deletes the user from the database.
-        """
-        user = self.get_db_user()
-        if user is None:
-            return
-
-        user.delete()
-
     def is_admin(self):
         user_id = self.id
         return user_id in get_app().admin_ids
@@ -230,13 +231,6 @@ class User:  # TODO: This probably needs more methods
         else:
             user.data = json.dumps(data)
 
-    @property
-    def manager(self) -> UserManager:
-        return self.get_manager()
-
-    def get_manager(self) -> UserManager:
-        raise NotImplementedError()
-
     def get_message_handler(self) -> messages.MessageHandler:
         raise NotImplementedError()
 
@@ -255,22 +249,22 @@ class User:  # TODO: This probably needs more methods
 
         if message_result == messages.MessageSendResult.UNSUPPORTED:
             # Messages unsupported? Disable subscription then
-            print('User {} does not support messages, removing from subscription list'.format(user.id), flush=True)
+            print('User {} does not support messages, removing from subscription list'.format(self.id), flush=True)
 
             # FIXME: For unsupported messages, we should mark the user unreachable for this specific channel instead
             self.mark_unreachable()
             return True
         if message_result == messages.MessageSendResult.UNREACHABLE:
             # Unreachable = Facebook is blocking us from sending, stop trying to send in the future
-            print('User {} is unreachable, removing from subscription list'.format(user.id), flush=True)
+            print('User {} is unreachable, removing from subscription list'.format(self.id), flush=True)
 
             self.mark_unreachable()
             return True
         if message_result == messages.MessageSendResult.GONE:
             # Gone = User no longer exists, delete from database
-            print('User {} is gone, removing from database'.format(user.id), flush=True)
+            print('User {} is gone, removing from database'.format(self.id), flush=True)
 
-            self.delete()
+            self.remove_from_db()
             return True
 
         return False
@@ -282,7 +276,7 @@ class User:  # TODO: This probably needs more methods
 
 class UnifiedUserManager(UserManager):
     def __init__(self):
-        self._managers = dict()  # type: Dict[str, UserManager]
+        self._managers: Dict[str, UserManager] = dict()
 
     def register_manager(self, manager: UserManager):
         if manager.get_identifier() in self._managers:
@@ -297,11 +291,6 @@ class UnifiedUserManager(UserManager):
             raise ValueError('Unknown user provider')
 
         return self._managers[user.provider].get_user(user, **kwargs)
-
-    # def get_subscribed_users(self, day: models.Day):
-    #     warnings.warn('get_subscribed_users is deprecated', DeprecationWarning)
-    #     return functools.reduce(list.__add__,
-    #                             [manager.get_subscribed_users(day) for manager in self._managers.values()])
 
     def get_administrators(self):
         return functools.reduce(list.__add__, [manager.get_administrators() for manager in self._managers.values()])

@@ -1,5 +1,3 @@
-import unittest
-
 import tests.users_stub as users_stub
 from app import db
 from komidabot.users import UserId
@@ -7,6 +5,10 @@ from tests.base import BaseTestCase
 
 
 class TestUsersBase(BaseTestCase):
+    """
+    Base tests for komidabot.users
+    """
+
     def setUp(self):
         super().setUp()
 
@@ -16,12 +18,12 @@ class TestUsersBase(BaseTestCase):
 
             self.app.admin_ids = [UserId('admin1', users_stub.PROVIDER_ID), UserId('admin2', users_stub.PROVIDER_ID)]
 
-            self.user1 = user_manager.add_user('user1', locale='nl_BE')
-            self.user2 = user_manager.add_user('user2', locale='nl_BE')
+            self.user1 = user_manager.add_user('user1', locale='nl')
+            self.user2 = user_manager.add_user('user2', locale='nl')
 
             # Defined in TestingConfig
-            self.admin1 = user_manager.add_user('admin1', locale='nl_BE')
-            self.admin2 = user_manager.add_user('admin2', locale='nl_BE')
+            self.admin1 = user_manager.add_user('admin1', locale='nl')
+            self.admin2 = user_manager.add_user('admin2', locale='nl')
 
             db.session.commit()
 

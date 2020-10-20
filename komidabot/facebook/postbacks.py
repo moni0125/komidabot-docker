@@ -85,7 +85,8 @@ def settings_subscriptions(trigger: triggers.Trigger):
         return None
 
     current_subscriptions = {item.day: (item.campus_id if item.active else None) for item in
-                             models.UserSubscription.get_all_for_user(db_user)}  # type: Dict[models.Day, int]
+                             models.UserDayCampusPreference.get_all_for_user(db_user)}
+    current_subscriptions: Dict[models.Day, Optional[int]]
 
     elements_list = [[]]
 

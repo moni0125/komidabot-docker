@@ -18,7 +18,7 @@ T = TypeVar('T')
 
 class Trigger:
     def __init__(self, aspects: List[Aspect] = None):
-        self._aspects = dict()  # type: Dict[Type[Aspect], Union[List[Aspect], Aspect]]
+        self._aspects: Dict[Type[Aspect], Union[List[Aspect], Aspect]] = dict()
         if aspects:
             for aspect in aspects:
                 self.add_aspect(aspect)
@@ -96,7 +96,7 @@ class SubscriptionMenuMessage(Message):
         self.date = date
         self.translator = translator
         # campus id -> {language -> {user manager -> prepared message}}
-        self.prepared_cache = dict()  # type: Dict[int, Dict[str, Dict[str, Any]]]
+        self.prepared_cache: Dict[int, Dict[str, Dict[str, Any]]] = dict()
 
     def get_prepared(self, campus: models.Campus, lang: str, user_manager: str) -> Optional[Any]:
         if campus.id in self.prepared_cache:

@@ -1,5 +1,4 @@
 import datetime
-import unittest
 from decimal import Decimal
 from typing import Dict, List, Tuple
 
@@ -10,7 +9,7 @@ import komidabot.util as util
 import tests.users_stub as users_stub
 import tests.utils as utils
 from app import db
-from komidabot.models import AppUser, Day, CourseType, CourseSubType, UserSubscription, course_icons_matrix
+from komidabot.models import AppUser, Day, CourseType, CourseSubType, UserDayCampusPreference, course_icons_matrix
 from tests.base import BaseTestCase, HttpCapture, menu_item
 
 
@@ -30,9 +29,9 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
             self.message_handler = user_manager.message_handler
             self.app.user_manager = user_manager  # Replace the unified user manager completely to test
 
-            self.user1 = user_manager.add_user('user1', locale='nl_BE')
-            self.user2 = user_manager.add_user('user2', locale='nl_BE')
-            self.user3 = user_manager.add_user('user3', locale='nl_BE')
+            self.user1 = user_manager.add_user('user1', locale='nl')
+            self.user2 = user_manager.add_user('user2', locale='nl')
+            self.user3 = user_manager.add_user('user3', locale='nl')
 
             db.session.commit()
 
@@ -40,7 +39,7 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
         def create_subscriptions(user: users.UserId, days: List[Tuple[Day, int, bool]]):
             for day, campus, active in days:
                 user_obj = AppUser.find_by_id(user.provider, user.id)
-                UserSubscription.create(user_obj, day, self.campuses[campus], active=active)
+                UserDayCampusPreference.create(user_obj, day, self.campuses[campus], active=active)
 
         with self.app.app_context():
             db.session.add_all(self.campuses)
@@ -75,7 +74,7 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
             db.session.commit()
 
     def setup_menu(self):
-        self.expected_menus = dict()  # type: Dict[Tuple[str, datetime.date], str]
+        self.expected_menus: Dict[Tuple[str, datetime.date], str] = dict()
         course_types = CourseType
         sub_types = CourseSubType
 
@@ -89,7 +88,7 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
                                        sub_type,
                                        [],
                                        '{} at {} for {}'.format(course_type.name, campus.short_name, day_name),
-                                       'nl_BE',
+                                       'nl',
                                        Decimal('1.0'),
                                        Decimal('2.0'))
                              for course_type in course_types
@@ -98,7 +97,7 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
 
                     result = [
                         'Menu van {date} in {campus}'.format(campus=campus.name,
-                                                             date=util.date_to_string('nl_BE', day)),
+                                                             date=util.date_to_string('nl', day)),
                         '',
                     ]
                     for item in items:

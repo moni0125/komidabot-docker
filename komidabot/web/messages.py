@@ -58,6 +58,9 @@ class MessageHandler(messages.MessageHandler):
                       flush=True)
                 print(response.content, flush=True)
 
+            if 500 <= response.status_code < 600:
+                return messages.MessageSendResult.EXTERNAL_ERROR
+
             if response.status_code == 429:  # Too many requests, rate limited
                 pass  # TODO: Handle rate-limiting
             if response.status_code == 400:  # Invalid request

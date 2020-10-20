@@ -1,5 +1,4 @@
 import datetime
-import unittest
 
 import komidabot.triggers as triggers
 from tests.base import BaseTestCase

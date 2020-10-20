@@ -1,5 +1,3 @@
-import unittest
-
 from sqlalchemy import inspect
 
 import komidabot.models as models
@@ -9,13 +7,17 @@ from tests.base import BaseTestCase
 
 # TODO: Add provider tests
 class TestModelsTranslations(BaseTestCase):
+    """
+    Test models.Translatable and models.Translation
+    """
+
     def test_simple_constructors(self):
         # Test constructor of Translatable and Translation models
 
         with self.app.app_context():
-            translatable1 = models.Translatable('Translation 1: en_US', 'en_US')
-            translatable2 = models.Translatable('Translation 2: en_US', 'en_US')
-            translatable3 = models.Translatable('Translation 3: en_US', 'en_US')
+            translatable1 = models.Translatable('Translation 1: en', 'en')
+            translatable2 = models.Translatable('Translation 2: en', 'en')
+            translatable3 = models.Translatable('Translation 3: en', 'en')
 
             # Ensure that the constructor does not add the entities to the database
             self.assertTrue(inspect(translatable1).transient)
@@ -28,8 +30,8 @@ class TestModelsTranslations(BaseTestCase):
 
             db.session.flush()
 
-            translation1a = models.Translation(translatable1.id, 'nl_BE', 'Translation 1: nl_BE')
-            translation1b = models.Translation(translatable1.id, 'fr_FR', 'Translation 1: fr_FR')
+            translation1a = models.Translation(translatable1.id, 'nl', 'Translation 1: nl')
+            translation1b = models.Translation(translatable1.id, 'fr', 'Translation 1: fr')
 
             self.assertTrue(inspect(translation1a).transient)
             self.assertTrue(inspect(translation1b).transient)
@@ -39,7 +41,7 @@ class TestModelsTranslations(BaseTestCase):
 
             db.session.commit()
 
-            translation2 = models.Translation(translatable2.id, 'nl_BE', 'Translation 2: nl_BE')
+            translation2 = models.Translation(translatable2.id, 'nl', 'Translation 2: nl')
 
             self.assertTrue(inspect(translation2).transient)
 
@@ -51,9 +53,9 @@ class TestModelsTranslations(BaseTestCase):
         # Test usage of Translatable.get_or_create
 
         with self.app.app_context():
-            translatable1, translation1 = models.Translatable.get_or_create('Translation 1: en_US', 'en_US')
-            translatable2, translation2 = models.Translatable.get_or_create('Translation 2: en_US', 'en_US')
-            translatable3, translation3 = models.Translatable.get_or_create('Translation 3: en_US', 'en_US')
+            translatable1, translation1 = models.Translatable.get_or_create('Translation 1: en', 'en')
+            translatable2, translation2 = models.Translatable.get_or_create('Translation 2: en', 'en')
+            translatable3, translation3 = models.Translatable.get_or_create('Translation 3: en', 'en')
 
             # Ensure that the create method adds the entities to the database
             self.assertFalse(inspect(translatable1).transient)
@@ -69,19 +71,19 @@ class TestModelsTranslations(BaseTestCase):
         # Test usage of Translatable.add_translation
 
         with self.app.app_context():
-            translatable1, translation1a = models.Translatable.get_or_create('Translation 1: en_US', 'en_US')
-            translatable2, translation2a = models.Translatable.get_or_create('Translation 2: en_US', 'en_US')
-            translatable3, translation3a = models.Translatable.get_or_create('Translation 3: en_US', 'en_US')
+            translatable1, translation1a = models.Translatable.get_or_create('Translation 1: en', 'en')
+            translatable2, translation2a = models.Translatable.get_or_create('Translation 2: en', 'en')
+            translatable3, translation3a = models.Translatable.get_or_create('Translation 3: en', 'en')
 
-            translation1b = translatable1.add_translation('nl_BE', 'Translation 1: nl_BE')
+            translation1b = translatable1.add_translation('nl', 'Translation 1: nl')
 
             db.session.flush()
 
-            translation2b = translatable2.add_translation('nl_BE', 'Translation 2: nl_BE')
+            translation2b = translatable2.add_translation('nl', 'Translation 2: nl')
 
             db.session.commit()
 
-            translation3b = translatable3.add_translation('nl_BE', 'Translation 3: nl_BE')
+            translation3b = translatable3.add_translation('nl', 'Translation 3: nl')
 
             db.session.commit()
 
@@ -103,49 +105,49 @@ class TestModelsTranslations(BaseTestCase):
         # Test usage of Translatable.add_translation
 
         with self.app.app_context():
-            translatable1, translation1a = models.Translatable.get_or_create('Translation 1: en_US', 'en_US')
-            translatable2, translation2a = models.Translatable.get_or_create('Translation 2: nl_BE', 'nl_BE')
+            translatable1, translation1a = models.Translatable.get_or_create('Translation 1: en', 'en')
+            translatable2, translation2a = models.Translatable.get_or_create('Translation 2: nl', 'nl')
 
-            translatable1.add_translation('nl_BE', 'Translation 1: nl_BE')
+            translatable1.add_translation('nl', 'Translation 1: nl')
 
             db.session.flush()
 
-            translatable2.add_translation('en_US', 'Translation 2: en_US')
+            translatable2.add_translation('en', 'Translation 2: en')
 
             db.session.commit()
 
-            self.assertTrue(translatable1.has_translation('en_US'))
-            self.assertTrue(translatable2.has_translation('en_US'))
-            self.assertTrue(translatable1.has_translation('nl_BE'))
-            self.assertTrue(translatable2.has_translation('nl_BE'))
-            self.assertFalse(translatable1.has_translation('fr_FR'))
-            self.assertFalse(translatable2.has_translation('fr_FR'))
+            self.assertTrue(translatable1.has_translation('en'))
+            self.assertTrue(translatable2.has_translation('en'))
+            self.assertTrue(translatable1.has_translation('nl'))
+            self.assertTrue(translatable2.has_translation('nl'))
+            self.assertFalse(translatable1.has_translation('fr'))
+            self.assertFalse(translatable2.has_translation('fr'))
 
     # TODO: Test get_translation
     def test_get_translation(self):
         # Test usage of Translatable.get_translation
 
         with self.app.app_context():
-            translatable1, translation1a = models.Translatable.get_or_create('Translation 1: en_US', 'en_US')
-            translatable2, translation2a = models.Translatable.get_or_create('Translation 2: en_US', 'en_US')
-            translatable3, translation3a = models.Translatable.get_or_create('Translation 3: en_US', 'en_US')
+            translatable1, translation1a = models.Translatable.get_or_create('Translation 1: en', 'en')
+            translatable2, translation2a = models.Translatable.get_or_create('Translation 2: en', 'en')
+            translatable3, translation3a = models.Translatable.get_or_create('Translation 3: en', 'en')
 
-            translation1b = translatable1.add_translation('nl_BE', 'Translation 1: nl_BE')
-            translation2b = translatable2.add_translation('nl_BE', 'Translation 2: nl_BE')
-            translation3b = translatable3.add_translation('nl_BE', 'Translation 3: nl_BE')
+            translation1b = translatable1.add_translation('nl', 'Translation 1: nl')
+            translation2b = translatable2.add_translation('nl', 'Translation 2: nl')
+            translation3b = translatable3.add_translation('nl', 'Translation 3: nl')
 
             db.session.commit()
 
-            self.assertEqual(translatable1.get_translation('en_US', None), translation1a)
-            self.assertEqual(translatable2.get_translation('en_US', None), translation2a)
-            self.assertEqual(translatable3.get_translation('en_US', None), translation3a)
-            self.assertEqual(translatable1.get_translation('nl_BE', None), translation1b)
-            self.assertEqual(translatable2.get_translation('nl_BE', None), translation2b)
-            self.assertEqual(translatable3.get_translation('nl_BE', None), translation3b)
+            self.assertEqual(translatable1.get_translation('en', None), translation1a)
+            self.assertEqual(translatable2.get_translation('en', None), translation2a)
+            self.assertEqual(translatable3.get_translation('en', None), translation3a)
+            self.assertEqual(translatable1.get_translation('nl', None), translation1b)
+            self.assertEqual(translatable2.get_translation('nl', None), translation2b)
+            self.assertEqual(translatable3.get_translation('nl', None), translation3b)
 
-            translation1c = translatable1.get_translation('fr_FR', self.translator)
-            translation2c = translatable2.get_translation('fr_FR', self.translator)
-            translation3c = translatable3.get_translation('fr_FR', self.translator)
+            translation1c = translatable1.get_translation('fr', self.translator)
+            translation2c = translatable2.get_translation('fr', self.translator)
+            translation3c = translatable3.get_translation('fr', self.translator)
 
             db.session.commit()
 
@@ -157,7 +159,7 @@ class TestModelsTranslations(BaseTestCase):
             self.assertNotEqual(translation3c, translation3b)
 
             for translation in [translation1c, translation2c, translation3c]:
-                translatable = translation.translatable  # type: models.Translatable
+                translatable: models.Translatable = translation.translatable
 
                 self.assertEqual(translation.translation, self.translator.translate(translatable.original_text,
                                                                                     translatable.original_language,
@@ -167,9 +169,9 @@ class TestModelsTranslations(BaseTestCase):
         # Test usage of Translatable.get_by_id
 
         with self.app.app_context():
-            translatable1, _ = models.Translatable.get_or_create('Translation 1: en_US', 'en_US')
-            translatable2, _ = models.Translatable.get_or_create('Translation 2: en_US', 'en_US')
-            translatable3, _ = models.Translatable.get_or_create('Translation 3: en_US', 'en_US')
+            translatable1, _ = models.Translatable.get_or_create('Translation 1: en', 'en')
+            translatable2, _ = models.Translatable.get_or_create('Translation 2: en', 'en')
+            translatable3, _ = models.Translatable.get_or_create('Translation 3: en', 'en')
 
             db.session.commit()
 

@@ -5,7 +5,7 @@ from komidabot.debug.state import DebuggableException, ProgramStateTrace, Simple
 
 class TestConstants(unittest.TestCase):
     """
-    Tests to see if komidabot.debug.state properly works.
+    Tests to see if komidabot.debug.state works properly.
     """
 
     def test_no_raise(self):
@@ -28,7 +28,7 @@ class TestConstants(unittest.TestCase):
             "- InitialState",
             "- State('Test state 1', None)",
         ])
-        ex = caught.exception  # type: DebuggableException
+        ex: DebuggableException = caught.exception
 
         self.assertEqual(expected, repr(ex.get_trace()))
 
@@ -47,7 +47,7 @@ class TestConstants(unittest.TestCase):
             "- State('Test state 1', None)",
             "- State('Test state 2', None)",
         ])
-        ex = caught.exception  # type: DebuggableException
+        ex: DebuggableException = caught.exception
 
         self.assertEqual(expected, repr(ex.get_trace()))
 
@@ -84,7 +84,7 @@ class TestConstants(unittest.TestCase):
             "- State('Test state 2', None)",
             "- State('Test state 2b', None)",
         ])
-        ex = caught.exception  # type: DebuggableException
+        ex: DebuggableException = caught.exception
 
         self.assertEqual(expected, repr(ex.get_trace()))
 
@@ -106,7 +106,7 @@ class TestConstants(unittest.TestCase):
             "- InitialState",
             "- State('Test state 2', None)",
         ])
-        ex = caught.exception  # type: DebuggableException
+        ex: DebuggableException = caught.exception
 
         self.assertEqual(expected, repr(ex.get_trace()))
 
@@ -147,6 +147,6 @@ class TestConstants(unittest.TestCase):
             "- InitialState",
             "- State('Test state 2b', None)",
         ])
-        ex = caught.exception  # type: DebuggableException
+        ex: DebuggableException = caught.exception
 
         self.assertEqual(expected, repr(ex.get_trace()))

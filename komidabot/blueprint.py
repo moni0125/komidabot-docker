@@ -6,7 +6,6 @@ import sys
 import time
 import traceback
 from functools import wraps
-from typing import Dict
 
 from flask import Blueprint, abort, request
 
@@ -22,7 +21,7 @@ from komidabot.debug.state import DebuggableException
 from komidabot.facebook.users import User as FacebookUser
 from komidabot.komidabot import Bot
 from komidabot.messages import TextMessage
-from komidabot.users import UserManager, UserId
+from komidabot.users import UserId
 from komidabot.web.users import User as WebUser
 
 blueprint = Blueprint('komidabot', __name__)
@@ -78,7 +77,9 @@ def handle_facebook_webhook():
         data = request.get_json()
 
         if data and data['object'] == 'page':
-            for entry in data['entry']:  # type: dict
+            for entry in data['entry']:
+                entry: dict
+
                 if 'messaging' not in entry:
                     continue
 
@@ -86,9 +87,8 @@ def handle_facebook_webhook():
                     sender = event["sender"]["id"]
                     # recipient = event["recipient"]["id"]
 
-                    user_manager = app.user_manager  # type: UserManager
-                    user = user_manager.get_user(UserId(sender, fb_constants.PROVIDER_ID),
-                                                 event=event)  # type: FacebookUser
+                    user_manager = app.user_manager
+                    user: FacebookUser = user_manager.get_user(UserId(sender, fb_constants.PROVIDER_ID), event=event)
 
                     if not isinstance(user, FacebookUser):
                         # FIXME: Rather have a check that when the user supports "read" markers, we mark as read
@@ -200,12 +200,12 @@ def _do_handle_facebook_webhook(event, user: FacebookUser, app):
 
                         return
 
-                postback = event['postback']  # type: dict
+                postback: dict = event['postback']
 
                 payload = postback.get('payload')
 
                 try:
-                    data = json.loads(payload)  # type: Dict
+                    data: dict = json.loads(payload)
                 except json.JSONDecodeError:
                     raise
 
@@ -225,7 +225,7 @@ def _do_handle_facebook_webhook(event, user: FacebookUser, app):
                     user.send_message(TextMessage(trigger, localisation.ERROR_POSTBACK(locale)))
                     return
             elif 'request_thread_control' in event:
-                request_thread_control = event['request_thread_control']  # type: dict
+                request_thread_control: dict = event['request_thread_control']
 
                 requested_owner_app_id = request_thread_control['requested_owner_app_id']
                 metadata = request_thread_control['metadata']
@@ -289,8 +289,8 @@ def handle_web_push_subscription():
 
             needs_commit = False
 
-            user_manager = app.user_manager  # type: UserManager
-            user = user_manager.get_user(UserId(endpoint, web_constants.PROVIDER_ID))  # type: WebUser
+            user_manager = app.user_manager
+            user: WebUser = user_manager.get_user(UserId(endpoint, web_constants.PROVIDER_ID))
 
             if user.get_db_user() is None:
                 print('Adding new subscription to the database {}'.format(user.id), flush=True)

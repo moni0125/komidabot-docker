@@ -1,4 +1,3 @@
-import unittest
 from decimal import Decimal
 
 import tests.utils as utils
@@ -8,6 +7,10 @@ from tests.base import BaseTestCase
 
 
 class TestModelsMenu(BaseTestCase):
+    """
+    Test models.Menu
+    """
+
     def setUp(self):
         super().setUp()
 
@@ -33,6 +36,24 @@ class TestModelsMenu(BaseTestCase):
             db.session.add(menu5)
             db.session.commit()
 
+    def test_invalid_constructors(self):
+        # Test constructor of Campus model
+
+        with self.app.app_context():
+            db.session.add_all(self.campuses)
+
+            with self.assertRaises(ValueError):
+                Menu(None, utils.DAYS['MON'])
+
+            with self.assertRaises(ValueError):
+                Menu('id', utils.DAYS['MON'])
+
+            with self.assertRaises(ValueError):
+                Menu(self.campuses[0].id, None)
+
+            with self.assertRaises(ValueError):
+                Menu(self.campuses[0].id, '2020-02-20')
+
     def test_create(self):
         # Test usage of Menu.create to check if Menus are constructed the same way as through their constructor
 
@@ -53,9 +74,9 @@ class TestModelsMenu(BaseTestCase):
         with self.app.app_context():
             db.session.add_all(self.campuses)
 
-            translatable1, _ = self.create_translation({'en_US': 'Translation 1: en_US'}, 'en_US', has_context=True)
-            translatable2, _ = self.create_translation({'en_US': 'Translation 2: en_US'}, 'en_US', has_context=True)
-            translatable3, _ = self.create_translation({'en_US': 'Translation 3: en_US'}, 'en_US', has_context=True)
+            translatable1, _ = self.create_translation({'en': 'Translation 1: en'}, 'en', has_context=True)
+            translatable2, _ = self.create_translation({'en': 'Translation 2: en'}, 'en', has_context=True)
+            translatable3, _ = self.create_translation({'en': 'Translation 3: en'}, 'en', has_context=True)
 
             menu = Menu.create(self.campuses[0], utils.DAYS['MON'], add_to_db=False)
 
@@ -81,9 +102,9 @@ class TestModelsMenu(BaseTestCase):
         with self.app.app_context():
             db.session.add_all(self.campuses)
 
-            translatable1, _ = self.create_translation({'en_US': 'Translation 1: en_US'}, 'en_US', has_context=True)
-            translatable2, _ = self.create_translation({'en_US': 'Translation 2: en_US'}, 'en_US', has_context=True)
-            translatable3, _ = self.create_translation({'en_US': 'Translation 3: en_US'}, 'en_US', has_context=True)
+            translatable1, _ = self.create_translation({'en': 'Translation 1: en'}, 'en', has_context=True)
+            translatable2, _ = self.create_translation({'en': 'Translation 2: en'}, 'en', has_context=True)
+            translatable3, _ = self.create_translation({'en': 'Translation 3: en'}, 'en', has_context=True)
 
             menu1 = Menu.create(self.campuses[0], utils.DAYS['MON'])
 
@@ -140,9 +161,9 @@ class TestModelsMenu(BaseTestCase):
         with self.app.app_context():
             db.session.add_all(self.campuses)
 
-            translatable1, _ = self.create_translation({'en_US': 'Translation 1: en_US'}, 'en_US', has_context=True)
-            translatable2, _ = self.create_translation({'en_US': 'Translation 2: en_US'}, 'en_US', has_context=True)
-            translatable3, _ = self.create_translation({'en_US': 'Translation 3: en_US'}, 'en_US', has_context=True)
+            translatable1, _ = self.create_translation({'en': 'Translation 1: en'}, 'en', has_context=True)
+            translatable2, _ = self.create_translation({'en': 'Translation 2: en'}, 'en', has_context=True)
+            translatable3, _ = self.create_translation({'en': 'Translation 3: en'}, 'en', has_context=True)
 
             menu1 = Menu.create(self.campuses[0], utils.DAYS['MON'])
 

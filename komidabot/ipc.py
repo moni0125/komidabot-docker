@@ -3,11 +3,12 @@ import json
 import os
 import socket
 import struct
+import sys
 import threading
 import traceback
-import sys
 from typing import Dict, Optional
-from komidabot.debug.state import DebuggableException, ProgramStateTrace, SimpleProgramState
+
+from komidabot.debug.state import DebuggableException
 
 SOCKET_PATH = '/tmp/komidabot_socket'
 
@@ -20,10 +21,10 @@ def start_server(callback):
 
     path = SOCKET_PATH
     running = True
-    thread = None  # type: Optional[threading.Thread]
-    sock = None  # type: Optional[socket.socket]
+    thread: Optional[threading.Thread] = None
+    sock: Optional[socket.socket] = None
 
-    client_threads = {}  # type: Dict[int, threading.Thread]
+    client_threads: Dict[int, threading.Thread] = {}
     next_thread_id = 1
 
     def stop_server():

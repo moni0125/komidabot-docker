@@ -7,7 +7,7 @@ import komidabot.models as models
 import komidabot.web.constants as web_constants
 from komidabot.api_utils import check_logged_in, expects_schema, wrap_exceptions
 from komidabot.app import get_app
-from komidabot.users import UserManager, UserId
+from komidabot.users import UserId
 from komidabot.web.users import User as WebUser
 
 blueprint = Blueprint('komidabot api', __name__)
@@ -58,8 +58,7 @@ def post_subscribe():
     data = post_data['data'] if 'data' in post_data else None
 
     app = get_app()
-    user_manager = app.user_manager  # type: UserManager
-    user = user_manager.get_user(UserId(endpoint, web_constants.PROVIDER_ID))  # type: WebUser
+    user: WebUser = app.user_manager.get_user(UserId(endpoint, web_constants.PROVIDER_ID))
 
     if user.get_db_user() is None:
         user.add_to_db()
@@ -82,8 +81,7 @@ def delete_subscribe():
     channel = post_data['channel']
 
     app = get_app()
-    user_manager = app.user_manager  # type: UserManager
-    user = user_manager.get_user(UserId(endpoint, web_constants.PROVIDER_ID))  # type: WebUser
+    user: WebUser = app.user_manager.get_user(UserId(endpoint, web_constants.PROVIDER_ID))
 
     if user.get_db_user() is None:
         return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200]}), 200
@@ -104,7 +102,7 @@ def put_subscribe():
     keys = post_data['keys']
 
     app = get_app()
-    user = app.user_manager.get_user(UserId(old_endpoint, web_constants.PROVIDER_ID))  # type: WebUser
+    user: WebUser = app.user_manager.get_user(UserId(old_endpoint, web_constants.PROVIDER_ID))
 
     # FIXME: Change internal ID of user and keys
 
@@ -204,7 +202,8 @@ def get_menu(short_name: str, day_str: str):
     if menu is None:
         return jsonify(result)
 
-    for menu_item in menu.menu_items:  # type: models.MenuItem
+    for menu_item in menu.menu_items:
+        menu_item: models.MenuItem
         value = {
             'course_type': menu_item.course_type.value,
             'course_sub_type': menu_item.course_sub_type.value,

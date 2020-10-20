@@ -1,12 +1,10 @@
-import unittest
-
 import tests.utils as utils
 from tests.base import BaseTestCase
 
 
 class TestConstants(BaseTestCase):
     """
-    Sanity tests for all other tests.
+    Sanity tests for testing utilities.
     """
 
     def test_days(self):

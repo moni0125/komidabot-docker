@@ -51,7 +51,7 @@ class BaseTestCase(TestCase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # noinspection PyTypeChecker
-        self.app = None  # type: App
+        self.app: App = None
 
     def create_app(self):
         script_info = ScriptInfo(create_app=create_app)

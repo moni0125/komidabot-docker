@@ -38,7 +38,8 @@ def get_menu_text(menu: Optional[models.Menu], translator: translation.Translati
     #     result.insert(1, localisation.REPLY_MENU_INCOMPLETE(locale))
 
     try:
-        for item in menu.menu_items:  # type: models.MenuItem
+        for item in menu.menu_items:
+            item: models.MenuItem
             result.append(get_menu_line(item, translator, locale))
     except Exception:
         print('Failed translating to {}'.format(locale), flush=True)
@@ -55,7 +56,8 @@ def get_short_menu_text(menu: Optional[models.Menu], translator: translation.Tra
     result = []
 
     try:
-        for item in menu.menu_items:  # type: models.MenuItem
+        for item in menu.menu_items:
+            item: models.MenuItem
             if course_types and item.course_type in course_types:
                 result.append(get_menu_line(item, translator, locale))
     except Exception:

@@ -22,24 +22,24 @@ class App:
         from komidabot.subscriptions import SubscriptionManager
         from komidabot.komidabot import Komidabot
         from komidabot.translation import GoogleTranslationService, TranslationService
-        from komidabot.users import UnifiedUserManager, UserId
+        from komidabot.users import UnifiedUserManager, UserId, UserManager
 
-        self.logger = self.logger  # type: logging.Logger
+        self.logger: logging.Logger = self.logger
 
         self.bot_interfaces = dict()  # TODO: Deprecate?
         self.bot_interfaces['facebook'] = {
             'api_interface': ApiInterface(config.get('PAGE_ACCESS_TOKEN'))
         }
 
-        self.user_manager = UnifiedUserManager()
-        self.user_manager.register_manager(FBUserManager())
-        self.user_manager.register_manager(WebUserManager())
+        self.user_manager: UserManager = (user_manager := UnifiedUserManager())
+        user_manager.register_manager(FBUserManager())
+        user_manager.register_manager(WebUserManager())
 
         self.subscription_manager = SubscriptionManager()
         self.subscription_manager.register_channel(AdministrationChannel())
         self.subscription_manager.register_channel(DailyMenuChannel())
 
-        self.translator = GoogleTranslationService()  # type: TranslationService
+        self.translator: TranslationService = GoogleTranslationService()
 
         self.bot = Komidabot(self)
 

@@ -27,6 +27,8 @@ services:
       POSTGRES_DB: komidabot_prod
       APP_SETTINGS: config.ProductionConfig
       FLASK_ENV: production
+    volumes:
+      - prod_sessions:/var/flask_session
     env_file:
       - config-prod.env
     ports:
@@ -61,4 +63,6 @@ volumes:
   pgdata:
     driver: local
   dev_sessions:
+    driver: local
+  prod_sessions:
     driver: local

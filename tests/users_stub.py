@@ -1,5 +1,5 @@
 from typing import Dict, List
-from typing import Optional, Union
+from typing import Union
 
 import komidabot.menu
 import komidabot.messages as messages
@@ -13,20 +13,21 @@ PROVIDER_ID = 'stub'
 
 class UserManager(users.UserManager):
     def __init__(self):
-        self.users = dict()  # type: Dict[users.UserId,User]
+        self.users: 'Dict[users.UserId, User]' = dict()
 
         self.message_handler = MessageHandler()
 
-    def add_user(self, internal_id: str, locale: str = 'nl_BE') -> 'User':
+    def add_user(self, internal_id: str, locale: str = 'nl') -> 'User':
         user_id = users.UserId(internal_id, PROVIDER_ID)
 
         if user_id in self.users:
             raise ValueError('Duplicate user ID')
 
-        user = User(self, user_id.id, locale)
+        user = User(self, user_id.id)
         self.users[user_id] = user
 
-        AppUser.create(PROVIDER_ID, internal_id, user.get_locale())
+        user.add_to_db()
+        user.get_db_user().set_language(locale)
 
         return user
 
@@ -43,28 +44,16 @@ class UserManager(users.UserManager):
         return self.users[user]
 
     def initialise(self):
-        db_users = AppUser.find_by_provider(PROVIDER_ID)
-
-        for db_user in db_users:
-            user_id = users.UserId(db_user.internal_id, db_user.provider)
-            user = User(self, user_id.id, db_user.language)
-            self.users[user_id] = user
+        assert False  # Does not get called
 
     def get_identifier(self):
         return PROVIDER_ID
 
 
 class User(users.User):
-    def __init__(self, manager: UserManager, internal_id: str, locale: str):
+    def __init__(self, manager: UserManager, internal_id: str):
         self._manager = manager
         self._id = internal_id
-        self._locale = locale
-
-    def get_locale(self) -> 'Optional[str]':
-        return self._locale
-
-    def set_locale(self, value: str):
-        self._locale = value
 
     def get_provider_name(self) -> 'str':
         return PROVIDER_ID
@@ -88,7 +77,7 @@ class MessageHandler(messages.MessageHandler):
     """Message handler that stores messages in a user->messages dictionary"""
 
     def __init__(self):
-        self.message_log = dict()  # type: Dict[users.UserId, List[str]]
+        self.message_log: Dict[users.UserId, List[str]] = dict()
 
     def reset(self):
         self.message_log = dict()
