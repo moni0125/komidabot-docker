@@ -4,6 +4,7 @@ import unittest
 from typing import Optional
 
 import click
+from colour_runner.runner import ColourTextTestRunner
 from flask import current_app
 from flask.cli import FlaskGroup
 
@@ -53,7 +54,7 @@ def test(case: Optional[str]):
         tests = unittest.TestLoader().loadTestsFromName('tests.' + case)
     else:
         tests = unittest.TestLoader().discover('tests', pattern='test_*.py')
-    result = unittest.TextTestRunner(verbosity=2).run(tests)
+    result = ColourTextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():
         return 0
     # This makes Flash return an exit code of 1, otherwise it defaults to 0 even if returning 0
