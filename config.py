@@ -1,5 +1,6 @@
 import os
 from collections import namedtuple
+from typing import List, Optional, TypedDict
 
 POSTGRES_HOST = os.getenv('POSTGRES_HOST', 'localhost')
 POSTGRES_USER = os.getenv('POSTGRES_USER', 'postgres')
@@ -27,6 +28,30 @@ def _get_postgres_uri(host, user, password, db):
         return f'postgresql://{user}@{host}:5432/{db}'
 
 
+class ConfigType(TypedDict):
+    TESTING: bool
+    TESTING: bool
+    PRODUCTION: bool
+    DISABLED: bool
+    VERBOSE: bool
+    DUMP_FILE: Optional[str]
+
+    PAGE_ACCESS_TOKEN: Optional[str]
+    VERIFY_TOKEN: Optional[str]
+    APP_SECRET: Optional[str]
+
+    ADMIN_IDS: List[_UserId]
+
+    VAPID_PRIVATE_KEY: Optional[str]
+    VAPID_PUBLIC_KEY: Optional[str]
+
+    AUTH_GOOGLE_CLIENT_ID: Optional[str]
+    AUTH_GOOGLE_CLIENT_SECRET: Optional[str]
+    AUTH_GOOGLE_DISCOVERY_URL: str
+
+    COVID19_DISABLED: int
+
+
 class BaseConfig:
     """Base configuration"""
     TESTING = False
@@ -44,7 +69,9 @@ class BaseConfig:
     VAPID_PRIVATE_KEY = os.getenv('VAPID_PRIVATE_KEY', '')
     VAPID_PUBLIC_KEY = os.getenv('VAPID_PUBLIC_KEY', '')
 
-    HTTP_AUTHENTICATION_PASSWORD = os.getenv('HTTP_AUTHENTICATION_PASSWORD', None)
+    AUTH_GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", None)
+    AUTH_GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", None)
+    AUTH_GOOGLE_DISCOVERY_URL = 'https://accounts.google.com/.well-known/openid-configuration'
 
     COVID19_DISABLED = int(os.getenv('COVID19_DISABLED', '0')) != 0
 

@@ -4,6 +4,7 @@
 .idea
 venv
 web
+__pycache__
 
 config.env
 docker-compose.yml

@@ -4,14 +4,14 @@ import sys
 import traceback
 from functools import wraps
 
-from flask import jsonify, session, request
+from flask import jsonify, request
 from jsonschema import ValidationError, Draft7Validator, RefResolver
 from werkzeug.http import HTTP_STATUS_CODES
 
 from komidabot.app import get_app
 from komidabot.debug.state import DebuggableException
 
-__all__ = ['check_logged_in', 'expects_schema', 'is_logged_in', 'wrap_exceptions']
+__all__ = ['expects_schema', 'wrap_exceptions']
 
 
 def response_ok():
@@ -24,22 +24,6 @@ def response_bad_request():
 
 def response_unauthorized():
     return jsonify({'status': 401, 'message': HTTP_STATUS_CODES[401]}), 200
-
-
-def is_logged_in():
-    return session.get('user_id', None) is not None
-
-
-# FIXME: In the future, this should ideally be a proper login system, with a database et al connected to it
-def check_logged_in(func):
-    @wraps(func)
-    def decorated_func(*args, **kwargs):
-        if not is_logged_in():
-            return response_unauthorized()
-
-        return func(*args, **kwargs)
-
-    return decorated_func
 
 
 def wrap_exceptions(func):

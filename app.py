@@ -4,8 +4,9 @@ import os
 
 from flask import Flask
 from flask.cli import ScriptInfo
+from werkzeug.middleware.proxy_fix import ProxyFix
 
-from extensions import db, migrate, session
+from extensions import db, login, migrate, session
 from komidabot.app import App as KomidabotApp
 from komidabot.features import update_active_features
 
@@ -15,6 +16,7 @@ def create_app(script_info: ScriptInfo = None):
 
     # instantiate the app
     app = Flask(__name__)
+    app.wsgi_app = ProxyFix(app.wsgi_app)
 
     # set config
     app_settings = os.getenv('APP_SETTINGS')
@@ -30,13 +32,16 @@ def create_app(script_info: ScriptInfo = None):
     session.init_app(app)
     db.init_app(app)
     migrate.init_app(app)
+    login.init_app(app)
 
     # register blueprints
     from komidabot.blueprint import blueprint as webhook_blueprint
     from komidabot.blueprint_api import blueprint as api_blueprint
+    from komidabot.blueprint_authentication import blueprint as authentication_blueprint
 
     app.register_blueprint(webhook_blueprint, url_prefix='/webhook')
     app.register_blueprint(api_blueprint, url_prefix='/api')
+    app.register_blueprint(authentication_blueprint, url_prefix='/api')  # Shares the api prefix
 
     # shell context for flask cli
     @app.shell_context_processor

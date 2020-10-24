@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 from typing import Any, Dict, TypedDict
 
-from flask import Blueprint, abort, jsonify, request, session
+from flask import Blueprint, abort, jsonify, request
 
 import komidabot.api_utils as api_utils
 import komidabot.models as models
@@ -19,36 +19,6 @@ def translatable_to_object(translatable: models.Translatable):
         result[translation.language] = translation.translation
 
     return result
-
-
-@blueprint.route('/login', methods=['POST'])
-@api_utils.wrap_exceptions
-@api_utils.expects_schema(input_schema='POST_api_login', output_schema='api_response_strict')
-def post_login():
-    class PostData(TypedDict):
-        username: str
-        password: str
-
-    post_data: PostData = request.get_json()
-    username = post_data['username']
-    password = post_data['password']
-
-    app = get_app()
-
-    if username == 'komidabot' and password == app.config['HTTP_AUTHENTICATION_PASSWORD']:
-        session.clear()
-        session['user_id'] = 'komidabot'
-        return api_utils.response_ok()
-
-    return api_utils.response_unauthorized()
-
-
-@blueprint.route('/authorized', methods=['GET'])
-@api_utils.wrap_exceptions
-@api_utils.expects_schema(output_schema='api_response_strict')
-@api_utils.check_logged_in
-def get_authorized():
-    return api_utils.response_ok()
 
 
 @blueprint.route('/subscribe', methods=['POST'])

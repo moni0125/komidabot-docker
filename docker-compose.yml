@@ -51,7 +51,6 @@ services:
     volumes:
       - .:/usr/src/app
       - dev_sessions:/var/flask_session
-      - /usr/src/app/__pycache__/
     env_file:
       - config-dev.env
     ports:

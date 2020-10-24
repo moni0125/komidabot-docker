@@ -3,8 +3,9 @@ import enum
 import json
 import locale
 from decimal import Decimal
-from typing import Collection, Dict, List, Optional, Tuple
+from typing import Any, Collection, Dict, List, Optional, Tuple
 
+from flask_login import UserMixin
 from sqlalchemy import inspect as sqlalchemy_inspect
 from sqlalchemy.orm.session import make_transient, make_transient_to_detached
 from sqlalchemy.sql import expression
@@ -173,6 +174,39 @@ class Day(enum.Enum):
 
 
 week_days = [Day.MONDAY, Day.TUESDAY, Day.WEDNESDAY, Day.THURSDAY, Day.FRIDAY]
+
+
+class AppSettings(db.Model, UserMixin):
+    __tablename__ = 'app_settings'
+
+    name = db.Column(db.String(), primary_key=True)
+    value = db.Column(db.String(), nullable=False, server_default=expression.text(json.dumps(None)))
+
+    def __init__(self, name: str, value: Any = None):
+        if not isinstance(name, str):
+            raise ValueError('name')
+
+        self.name = name
+        self.value = json.dumps(value)
+
+    @staticmethod
+    def set_default(name: str, default: Any) -> 'AppSettings':
+        setting = AppSettings.query.filter_by(name=name).first()
+
+        if setting is None:
+            setting = AppSettings(name, default)
+
+            db.session.add(setting)
+
+        return setting
+
+    @staticmethod
+    def get_value(name: str) -> Any:
+        setting = AppSettings.query.filter_by(name=name).first()
+
+        assert setting is not None
+
+        return json.loads(setting.value)
 
 
 class Campus(db.Model):
@@ -876,6 +910,50 @@ class FeatureParticipation(db.Model):
 
     def __hash__(self):
         return hash((self.user_id, self.feature_id))
+
+
+class RegisteredUser(db.Model, UserMixin):
+    __tablename__ = 'registered_user'
+
+    id = db.Column(db.String(), primary_key=True)
+    name = db.Column(db.String(), nullable=False)
+    email = db.Column(db.String(), nullable=False, unique=True)
+    profile_picture = db.Column(db.String(), nullable=False)
+    enabled = db.Column(db.Boolean(), nullable=False, server_default=expression.false())
+
+    def __init__(self, user_id: str, name: str, email: str, profile_picture: str):
+        if not isinstance(user_id, str):
+            raise ValueError('user_id')
+        if not isinstance(name, str):
+            raise ValueError('name')
+        if not isinstance(email, str):
+            raise ValueError('email')
+        if not isinstance(profile_picture, str):
+            raise ValueError('profile_picture')
+
+        self.id = user_id
+        self.name = name
+        self.email = email
+        self.profile_picture = profile_picture
+
+    @staticmethod
+    def find_by_id(user_id: str) -> 'Optional[RegisteredUser]':
+        return RegisteredUser.query.filter_by(id=user_id).first()
+
+    @staticmethod
+    def find_by_email(email: str) -> 'Optional[RegisteredUser]':
+        return RegisteredUser.query.filter_by(email=email).first()
+
+    @staticmethod
+    def create(user_id: str, name: str, email: str, profile_picture: str) -> 'RegisteredUser':
+        user = RegisteredUser(user_id, name, email, profile_picture)
+
+        db.session.add(user)
+
+        return user
+
+    def delete(self):
+        db.session.delete(self)
 
 
 def recreate_db():

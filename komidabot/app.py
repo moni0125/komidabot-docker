@@ -3,6 +3,8 @@ import logging
 
 from flask import current_app as _current_app
 
+from config import ConfigType
+
 
 def get_app() -> 'App':
     return _current_app
@@ -24,14 +26,15 @@ class App:
         from komidabot.translation import GoogleTranslationService, TranslationService
         from komidabot.users import UnifiedUserManager, UserId, UserManager
 
-        self.logger: logging.Logger = self.logger
+        self.logger: logging.Logger
 
         self.bot_interfaces = dict()  # TODO: Deprecate?
         self.bot_interfaces['facebook'] = {
             'api_interface': ApiInterface(config.get('PAGE_ACCESS_TOKEN'))
         }
 
-        self.user_manager: UserManager = (user_manager := UnifiedUserManager())
+        user_manager = UnifiedUserManager()
+        self.user_manager: UserManager = user_manager
         user_manager.register_manager(FBUserManager())
         user_manager.register_manager(WebUserManager())
 
@@ -53,6 +56,9 @@ class App:
         with self.app_context():
             self.user_manager.initialise()
 
+            from komidabot.models import AppSettings
+            AppSettings.set_default('registrations_enabled', False)
+
         if not config['TESTING']:
             def ipc_callback(bot, app_context, data):
                 with app_context():
@@ -64,7 +70,7 @@ class App:
         raise NotImplementedError()
 
     @property
-    def config(self):
+    def config(self) -> 'ConfigType':
         raise NotImplementedError()
 
     def _get_current_object(self):
