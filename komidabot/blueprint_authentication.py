@@ -102,12 +102,6 @@ def get_login_google_callback():
         auth=(app.config.get('AUTH_GOOGLE_CLIENT_ID'), app.config.get('AUTH_GOOGLE_CLIENT_SECRET')),
     )
 
-    print(token_url, headers, body)
-
-    import pprint
-    pprint.pp(token_response.json())
-    print(flush=True)
-
     google_client.parse_request_body_response(json.dumps(token_response.json()))
 
     userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
