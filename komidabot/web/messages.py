@@ -21,7 +21,7 @@ VAPID_CLAIMS = {
 class MessageHandler(messages.MessageHandler):
     def send_message(self, user: users.User, message: messages.Message) -> messages.MessageSendResult:
         if user.id.provider != web_constants.PROVIDER_ID:
-            raise ValueError('User id is not for Web')
+            raise ValueError('User id is not for {}'.format(web_constants.PROVIDER_ID))
 
         if isinstance(message, messages.TextMessage):
             return self._send_text_message(user, message)

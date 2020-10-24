@@ -1,13 +1,12 @@
-from typing import Union
+from typing import Dict, Optional, TypedDict, Union
 
 import komidabot.messages as messages
 import komidabot.models as models
 import komidabot.users as users
 import komidabot.web.constants as web_constants
-from komidabot.subscriptions.administration import CHANNEL_ID as ADMINISTRATION_ID
 from komidabot.web.messages import MessageHandler as WebMessageHandler
 
-__all__ = ['User', 'UserManager']
+__all__ = ['User', 'UserData', 'UserManager']
 
 
 class UserManager(users.UserManager):
@@ -19,7 +18,7 @@ class UserManager(users.UserManager):
             return User(self, user.internal_id)
 
         if user.provider != web_constants.PROVIDER_ID:
-            raise ValueError('User id is not for Web')
+            raise ValueError('User id is not for {}'.format(web_constants.PROVIDER_ID))
 
         # TODO: This probably could use more checks or something
         #       For example: check if there is a subscription
@@ -44,10 +43,20 @@ class User(users.User):
         return self._id
 
     def supports_subscription_channel(self, channel: str) -> bool:
-        return channel in [ADMINISTRATION_ID]
+        return channel in []
 
     def get_manager(self) -> UserManager:
         return self._manager
 
     def get_message_handler(self) -> messages.MessageHandler:
         return self._manager.message_handler
+
+    def get_data(self) -> 'Optional[UserData]':
+        return super().get_data()
+
+    def set_data(self, data: 'Optional[UserData]'):
+        return super().set_data(data)
+
+
+class UserData(TypedDict):
+    keys: Dict[str, str]

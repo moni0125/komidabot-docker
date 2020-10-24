@@ -14,8 +14,20 @@ from komidabot.debug.state import DebuggableException
 __all__ = ['check_logged_in', 'expects_schema', 'is_logged_in', 'wrap_exceptions']
 
 
+def response_ok():
+    return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200]}), 200
+
+
+def response_bad_request():
+    return jsonify({'status': 400, 'message': HTTP_STATUS_CODES[400]}), 200
+
+
+def response_unauthorized():
+    return jsonify({'status': 401, 'message': HTTP_STATUS_CODES[401]}), 200
+
+
 def is_logged_in():
-    return session.get('logged_in') is not None
+    return session.get('user_id', None) is not None
 
 
 # FIXME: In the future, this should ideally be a proper login system, with a database et al connected to it
@@ -23,7 +35,7 @@ def check_logged_in(func):
     @wraps(func)
     def decorated_func(*args, **kwargs):
         if not is_logged_in():
-            return jsonify({'status': 401, 'message': HTTP_STATUS_CODES[401]}), 200
+            return response_unauthorized()
 
         return func(*args, **kwargs)
 
@@ -85,12 +97,12 @@ def expects_schema(input_schema: str = None, output_schema: str = None):
                 data = request.get_json(force=False)
 
                 if data is None:
-                    return jsonify({'status': 400, 'message': HTTP_STATUS_CODES[400]}), 200
+                    return response_bad_request()
 
                 try:
                     in_validator.validate(data)
                 except ValidationError:
-                    return jsonify({'status': 400, 'message': HTTP_STATUS_CODES[400]}), 200
+                    return response_bad_request()
 
             output = func(*args, **kwargs)
 

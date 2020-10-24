@@ -25,7 +25,7 @@ class UserManager(users.UserManager):
             return User(self, user.internal_id)
 
         if user.provider != fb_constants.PROVIDER_ID:
-            raise ValueError('User id is not for Facebook')
+            raise ValueError('User id is not for {}'.format(fb_constants.PROVIDER_ID))
 
         # TODO: This probably could use more checks or something
         #       For example: check if there is a subscription

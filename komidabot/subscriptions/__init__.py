@@ -50,6 +50,9 @@ class SubscriptionManager:
 
         self._channels[channel.get_name()] = channel
 
+    def get_channel(self, channel: str) -> 'Optional[SubscriptionChannel]':
+        return self._channels.get(channel, None)
+
     def get_subscribed_users(self, channel: str, /, query: Union[SubscriptionQuery, Dict] = None) -> 'List[User]':
         if channel not in self._channels:
             raise ValueError('Unknown channel')
