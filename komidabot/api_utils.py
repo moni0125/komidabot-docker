@@ -6,6 +6,7 @@ from functools import wraps
 
 from flask import jsonify, request
 from jsonschema import ValidationError, Draft7Validator, RefResolver
+from werkzeug.exceptions import HTTPException
 from werkzeug.http import HTTP_STATUS_CODES
 
 from komidabot.app import get_app
@@ -31,6 +32,8 @@ def wrap_exceptions(func):
     def decorated_func(*args, **kwargs):
         try:
             return func(*args, **kwargs)
+        except HTTPException as e:
+            raise e  # Fall through
         except DebuggableException as e:
             app = get_app()
             app.bot.notify_error(e)
