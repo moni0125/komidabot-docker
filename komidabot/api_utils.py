@@ -33,7 +33,7 @@ def wrap_exceptions(func):
         try:
             return func(*args, **kwargs)
         except HTTPException as e:
-            raise e  # Fall through
+            return jsonify({'status': e.code, 'message': HTTP_STATUS_CODES[e.code]}), e.code
         except DebuggableException as e:
             app = get_app()
             app.bot.notify_error(e)
