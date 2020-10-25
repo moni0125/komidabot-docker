@@ -61,7 +61,7 @@ def get_login_google():
         init_google_client(app)
 
     if google_client is False:
-        return abort(503)
+        return abort(503)  # TODO: Show proper unavailable screen in the future
 
     google_provider_cfg = get_google_provider_cfg()
 
@@ -97,7 +97,7 @@ def get_login_google_callback():
         init_google_client(app)
 
     if google_client is False:
-        return abort(503)
+        return abort(503)  # TODO: Show proper unavailable screen in the future
 
     code = request.args.get('code')
     state = json.loads(unquote(request.args.get('state')))
@@ -134,7 +134,7 @@ def get_login_google_callback():
         picture = userinfo_response.json()['picture']
         users_name = userinfo_response.json()['given_name']
     else:
-        return abort(403)
+        return abort(403)  # TODO: Show account not verified screen in the future
 
     user = RegisteredUser.find_by_id(unique_id)
     if not user:
@@ -142,7 +142,10 @@ def get_login_google_callback():
             user = RegisteredUser.create(unique_id, users_name, users_email, picture)
             db.session.commit()
         else:
-            return abort(403)
+            return abort(403)  # TODO: Show registrations not allowed screen in the future
+
+    if not user.is_active:
+        return abort(403)  # TODO: Show account not active screen in the future
 
     login_user(user)
 
