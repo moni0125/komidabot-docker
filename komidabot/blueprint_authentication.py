@@ -156,6 +156,15 @@ def get_login_google_callback():
 @login_required
 def get_logout():
     logout_user()
+
+    if 'next' in request.args:
+        next_url = request.args.get('next')
+        parsed_next_url = urlparse(next_url)
+
+        # Prevent changing the scheme or host
+        if parsed_next_url.scheme == '' and parsed_next_url.netloc == '':
+            return redirect(parsed_next_url.geturl())
+
     return redirect('/')
 
 
