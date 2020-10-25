@@ -92,8 +92,10 @@ class ExternalCourse:
 
 
 class ExternalMenuItem:
-    def __init__(self, sort_order: int, course_type: models.CourseType, course_sub_type: models.CourseSubType,
+    def __init__(self, external_id: int, sort_order: int,
+                 course_type: models.CourseType, course_sub_type: models.CourseSubType,
                  course_attributes: List[models.CourseAttributes], courses: List[ExternalCourse]):
+        self.external_id = external_id
         self.sort_order = sort_order
         self.course_type = course_type
         self.course_sub_type = course_sub_type
@@ -130,11 +132,12 @@ class ExternalMenuItem:
         return self.price_staff
 
     def __repr__(self):
-        return '{order} {type} {sub_type} {attributes} {icon} {text} ({price1} / {price2})' \
+        return '{external_id} {order} {type} {sub_type} {attributes} {icon} {text} ({price1} / {price2})' \
             .format(order=self.sort_order, icon=models.course_icons_matrix[self.course_type][self.course_sub_type],
                     text=self.get_combined_text(), price1=self.get_student_price(), price2=self.get_staff_price(),
                     type=self.course_type.name, sub_type=self.course_sub_type.name,
-                    attributes=[v.name for v in self.course_attributes])
+                    attributes=[v.name for v in self.course_attributes],
+                    external_id=self.external_id)
 
 
 class ExternalMenu:
@@ -182,6 +185,7 @@ class ExternalMenu:
 
                 for item in data['menuItems']:
                     with debug_state.state(SimpleProgramState('Menu item', item)):
+                        menu_item_id = item['id']
                         enabled = item['enabled']
                         sort_order = item['sortorder']
                         menu_contents = []
@@ -261,7 +265,8 @@ class ExternalMenu:
                         elif COURSE_LOGOS['SALAD'] in combined_logos:
                             course_type = models.CourseType.SALAD
 
-                        menu_item = ExternalMenuItem(sort_order, course_type, course_sub_type,
+                        menu_item = ExternalMenuItem(menu_item_id, sort_order,
+                                                     course_type, course_sub_type,
                                                      [models.CourseAttributes(v) for v in combined_logos],
                                                      menu_contents)
 

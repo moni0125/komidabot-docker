@@ -521,17 +521,17 @@ class Menu(db.Model):
     def delete(self):
         db.session.delete(self)
 
-    def update(self, new_menu: 'Menu'):
-        old: List[MenuItem] = self.menu_items
-        new: List[MenuItem] = new_menu.menu_items
-
-        _, added, removed = util.get_list_diff(old, new)
-
-        for item in removed:
-            db.session.delete(item)
-        for item in added:
-            # FIXME: Is this safe?
-            self.menu_items.append(item.copy(self))
+    # def update(self, new_menu: 'Menu'):
+    #     old: List[MenuItem] = self.menu_items
+    #     new: List[MenuItem] = new_menu.menu_items
+    #
+    #     _, added, removed = util.get_list_diff(old, new)
+    #
+    #     for item in removed:
+    #         db.session.delete(item)
+    #     for item in added:
+    #         # FIXME: Is this safe?
+    #         self.menu_items.append(item.copy(self))
 
     def clear(self):
         items = list(self.menu_items)
@@ -588,6 +588,7 @@ class MenuItem(db.Model):
                         nullable=False)
     translatable_id = db.Column(db.Integer(), db.ForeignKey('translatable.id', onupdate='CASCADE', ondelete='RESTRICT'),
                                 nullable=False)
+    external_id = db.Column(db.Integer(), unique=True, nullable=True, server_default=expression.null())
     food_type = db.Column(db.Enum(FoodType), nullable=False)
     course_type = db.Column(db.Enum(CourseType), nullable=False)
     course_sub_type = db.Column(db.Enum(CourseSubType), nullable=False)
