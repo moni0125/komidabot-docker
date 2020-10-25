@@ -37,7 +37,7 @@ def get_google_provider_cfg():
 
 @login.user_loader
 def user_loader(user_id):
-    return RegisteredUser.find_by_id(user_id)
+    return RegisteredUser.find_by_serialized_id(user_id)
 
 
 @login.unauthorized_handler
@@ -136,10 +136,10 @@ def get_login_google_callback():
     else:
         return abort(403)  # TODO: Show account not verified screen in the future
 
-    user = RegisteredUser.find_by_id(unique_id)
+    user = RegisteredUser.find_by_id('google', unique_id)
     if not user:
         if app_config.is_registrations_enabled():
-            user = RegisteredUser.create(unique_id, users_name, users_email, picture)
+            user = RegisteredUser.create('google', unique_id, users_name, users_email, picture)
             db.session.commit()
         else:
             return abort(403)  # TODO: Show registrations not allowed screen in the future

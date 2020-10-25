@@ -28,7 +28,7 @@ def upgrade():
 
     op.create_table('app_settings',
                     sa.Column('name', sa.String(), nullable=False),
-                    sa.Column('value', sa.String(), server_default=sa.text('null'), nullable=False),
+                    sa.Column('value', sa.String(), server_default='null', nullable=False),
                     sa.PrimaryKeyConstraint('name')
                     )
 

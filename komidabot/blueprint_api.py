@@ -1,16 +1,19 @@
 from datetime import date, timedelta
-from typing import Any, Dict, TypedDict
+from typing import Any, Dict, TypedDict, Union
 
 from flask import Blueprint, abort, jsonify, request
+from flask_login import current_user, UserMixin
 
 import komidabot.api_utils as api_utils
 import komidabot.models as models
 import komidabot.web.constants as web_constants
+from extensions import db, login
 from komidabot.app import get_app
 from komidabot.users import UserId
 from komidabot.web.users import User as WebUser
 
 blueprint = Blueprint('komidabot api', __name__)
+current_user: 'Union[models.RegisteredUser, UserMixin]'
 
 
 def translatable_to_object(translatable: models.Translatable):
@@ -37,22 +40,36 @@ def post_subscribe():
     channel = post_data['channel']
     data = post_data['data'] if 'data' in post_data else None
 
-    app = get_app()
-    user: WebUser = app.user_manager.get_user(UserId(endpoint, web_constants.PROVIDER_ID))
+    if channel == 'administration':
+        if not current_user.is_authenticated:
+            return login.unauthorized()
 
-    if user.get_db_user() is None:
-        user.add_to_db()
-        user.set_data({
-            'keys': keys
-        })
+        current_user.add_subscription(endpoint, keys)
 
-    # if not channel.user_supported(user):
-    #     return api_utils.response_bad_request()
+        db.session.commit()
 
-    if app.subscription_manager.user_subscribe(user, channel, data=data):
         return api_utils.response_ok()
     else:
+        # FIXME: This code is not really done, but until we can send out daily menus in a consistent manner it'll
+        #        have to be this way
+
         return api_utils.response_bad_request()
+        # app = get_app()
+        # user: WebUser = app.user_manager.get_user(UserId(endpoint, web_constants.PROVIDER_ID))
+        #
+        # if user.get_db_user() is None:
+        #     user.add_to_db()
+        #     user.set_data({
+        #         'keys': keys
+        #     })
+        #
+        # # if not channel.user_supported(user):
+        # #     return api_utils.response_bad_request()
+        #
+        # if app.subscription_manager.user_subscribe(user, channel, data=data):
+        #     return api_utils.response_ok()
+        # else:
+        #     return api_utils.response_bad_request()
 
 
 @blueprint.route('/subscribe', methods=['DELETE'])
@@ -67,16 +84,30 @@ def delete_subscribe():
     endpoint = post_data['endpoint']
     channel = post_data['channel']
 
-    app = get_app()
-    user: WebUser = app.user_manager.get_user(UserId(endpoint, web_constants.PROVIDER_ID))
+    if channel == 'administration':
+        if not current_user.is_authenticated:
+            return login.unauthorized()
 
-    if user.get_db_user() is None:
-        return api_utils.response_ok()
+        current_user.remove_subscription(endpoint)
 
-    if app.subscription_manager.user_unsubscribe(user, channel):
+        db.session.commit()
+
         return api_utils.response_ok()
     else:
+        # FIXME: This code is not really done, but until we can send out daily menus in a consistent manner it'll
+        #        have to be this way
+
         return api_utils.response_bad_request()
+        # app = get_app()
+        # user: WebUser = app.user_manager.get_user(UserId(endpoint, web_constants.PROVIDER_ID))
+        #
+        # if user.get_db_user() is None:
+        #     return api_utils.response_ok()
+        #
+        # if app.subscription_manager.user_unsubscribe(user, channel):
+        #     return api_utils.response_ok()
+        # else:
+        #     return api_utils.response_bad_request()
 
 
 @blueprint.route('/subscribe', methods=['PUT'])
@@ -97,6 +128,10 @@ def put_subscribe():
     user: WebUser = app.user_manager.get_user(UserId(old_endpoint, web_constants.PROVIDER_ID))
 
     # FIXME: Change internal ID of user and keys
+    # FIXME: Change admin subscriptions as well? Need to verify this
+
+    # FIXME: This code is not really done, but until we can send out daily menus in a consistent manner it'll
+    #        have to be this way
 
     return api_utils.response_bad_request()
 

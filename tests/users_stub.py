@@ -5,7 +5,6 @@ import komidabot.menu
 import komidabot.messages as messages
 import komidabot.users as users
 from komidabot.models import AppUser, Menu
-from komidabot.subscriptions.administration import CHANNEL_ID as ADMINISTRATION_ID
 from komidabot.subscriptions.daily_menu import CHANNEL_ID as DAILY_MENU_ID
 
 PROVIDER_ID = 'stub'
@@ -62,7 +61,7 @@ class User(users.User):
         return self._id
 
     def supports_subscription_channel(self, channel: str) -> bool:
-        return channel in [ADMINISTRATION_ID, DAILY_MENU_ID]
+        return channel in [DAILY_MENU_ID]
 
     def get_manager(self) -> UserManager:
         return self._manager

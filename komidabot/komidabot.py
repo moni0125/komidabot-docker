@@ -294,15 +294,14 @@ class Komidabot(Bot):
         self._handling_error = False
 
     def message_admins(self, message: messages.Message):
-        from komidabot.subscriptions.administration import CHANNEL_ID as ADMINISTRATION_ID
+        # FIXME: Change this
+        with self.lock:
+            app = get_app()
 
-        debug_state = ProgramStateTrace()
+            user_manager = app.user_manager
 
-        with debug_state.state(SimpleProgramState('Message admins')):
-            with self.lock:
-                app = get_app()
-
-                app.subscription_manager.deliver_message(ADMINISTRATION_ID, message)
+            for admin in user_manager.get_administrators():
+                admin.send_message(message)
 
     def handle_ipc(self, data):
         print('Received IPC message:', data, flush=True)

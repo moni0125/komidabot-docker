@@ -19,7 +19,6 @@ class App:
         from komidabot.facebook.api_interface import ApiInterface
         from komidabot.facebook.users import UserManager as FBUserManager
         from komidabot.web.users import UserManager as WebUserManager
-        from komidabot.subscriptions.administration import Channel as AdministrationChannel
         from komidabot.subscriptions.daily_menu import Channel as DailyMenuChannel
         from komidabot.subscriptions import SubscriptionManager
         from komidabot.komidabot import Komidabot
@@ -39,7 +38,6 @@ class App:
         user_manager.register_manager(WebUserManager())
 
         self.subscription_manager = SubscriptionManager()
-        self.subscription_manager.register_channel(AdministrationChannel())
         self.subscription_manager.register_channel(DailyMenuChannel())
 
         self.translator: TranslationService = GoogleTranslationService()

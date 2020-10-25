@@ -3,7 +3,7 @@ import enum
 import json
 import locale
 from decimal import Decimal
-from typing import Any, Collection, Dict, List, Optional, Tuple
+from typing import Any, Collection, Dict, List, Optional, Tuple, TypedDict
 
 from flask_login import UserMixin
 from sqlalchemy import inspect as sqlalchemy_inspect
@@ -180,7 +180,7 @@ class AppSettings(db.Model):
     __tablename__ = 'app_settings'
 
     name = db.Column(db.String(), primary_key=True)
-    value = db.Column(db.String(), nullable=False, server_default=expression.text(json.dumps(None)))
+    value = db.Column(db.String(), nullable=False, server_default=json.dumps(None))
 
     def __init__(self, name: str, value: Any = None):
         if not isinstance(name, str):
@@ -784,7 +784,7 @@ class AppUser(db.Model):
         sub.active = active
 
     @staticmethod
-    def create(provider: str, internal_id: str, language: str):
+    def create(provider: str, internal_id: str, language: str) -> 'AppUser':
         user = AppUser(provider, internal_id, language)
 
         db.session.add(user)
@@ -922,41 +922,61 @@ class RegisteredUser(db.Model, UserMixin):
     __tablename__ = 'registered_user'
 
     id = db.Column(db.String(), primary_key=True)
+    provider = db.Column(db.String(16), primary_key=True)
     name = db.Column(db.String(), nullable=False)
     email = db.Column(db.String(), nullable=False, unique=True)
     profile_picture = db.Column(db.String(), nullable=False)
     enabled = db.Column(db.Boolean(), nullable=False, server_default=expression.false())
+    web_subscriptions = db.Column(db.String(), nullable=False, server_default='[]')
 
-    def __init__(self, user_id: str, name: str, email: str, profile_picture: str):
+    def __init__(self, provider: str, user_id: str, name: str, email: str, profile_picture: str):
         if not isinstance(user_id, str):
             raise ValueError('user_id')
         if not isinstance(name, str):
             raise ValueError('name')
+        if not isinstance(provider, str):
+            raise ValueError('provider')
         if not isinstance(email, str):
             raise ValueError('email')
         if not isinstance(profile_picture, str):
             raise ValueError('profile_picture')
 
         self.id = user_id
+        self.provider = provider
         self.name = name
         self.email = email
         self.profile_picture = profile_picture
 
     @staticmethod
-    def find_by_id(user_id: str) -> 'Optional[RegisteredUser]':
-        return RegisteredUser.query.filter_by(id=user_id).first()
+    def create(provider: str, user_id: str, name: str, email: str, profile_picture: str) -> 'RegisteredUser':
+        user = RegisteredUser(provider, user_id, name, email, profile_picture)
+
+        db.session.add(user)
+
+        return user
+
+    @staticmethod
+    def find_by_serialized_id(serialized: str) -> 'Optional[RegisteredUser]':
+        return RegisteredUser.find_by_id(*json.loads(serialized))
+
+    def get_id(self):
+        return json.dumps([self.provider, self.id])
+
+    @staticmethod
+    def find_by_id(provider: str, user_id: str) -> 'Optional[RegisteredUser]':
+        return RegisteredUser.query.filter_by(provider=provider, id=user_id).first()
 
     @staticmethod
     def find_by_email(email: str) -> 'Optional[RegisteredUser]':
         return RegisteredUser.query.filter_by(email=email).first()
 
     @staticmethod
-    def create(user_id: str, name: str, email: str, profile_picture: str) -> 'RegisteredUser':
-        user = RegisteredUser(user_id, name, email, profile_picture)
+    def get_all() -> 'List[RegisteredUser]':
+        return RegisteredUser.query.all()
 
-        db.session.add(user)
-
-        return user
+    @staticmethod
+    def get_all_verified() -> 'List[RegisteredUser]':
+        return RegisteredUser.query.filter_by(enabled=True).all()
 
     def delete(self):
         db.session.delete(self)
@@ -964,6 +984,41 @@ class RegisteredUser(db.Model, UserMixin):
     @property
     def is_active(self):
         return self.enabled
+
+    def get_subscriptions(self) -> 'List[AdminSubscription]':
+        return json.loads(self.web_subscriptions)
+
+    def set_subscriptions(self, subscriptions: 'List[AdminSubscription]'):
+        self.web_subscriptions = json.dumps(subscriptions)
+
+    def add_subscription(self, endpoint: str, keys: Dict[str, str]):
+        subscriptions: 'List[AdminSubscription]' = []
+        found = False
+
+        for sub in self.get_subscriptions():
+            subscriptions.append(sub)
+
+            if sub['endpoint'] == endpoint:
+                found = True
+
+        if not found:
+            subscriptions.append({'endpoint': endpoint, 'keys': keys})
+
+        self.set_subscriptions(subscriptions)
+
+    def remove_subscription(self, endpoint: str):
+        self.set_subscriptions([sub for sub in self.get_subscriptions() if sub['endpoint'] != endpoint])
+
+    @staticmethod
+    def replace_subscription(old_endpoint: str, endpoint: str, keys: Dict[str, str]):
+        for user in RegisteredUser.get_all():
+            user.set_subscriptions([sub if sub['endpoint'] != old_endpoint else {'endpoint': endpoint, 'keys': keys}
+                                    for sub in user.get_subscriptions()])
+
+
+class AdminSubscription(TypedDict):
+    endpoint: str  # XXX: This is a globally unique identifier for the client
+    keys: Dict[str, str]
 
 
 def recreate_db():
