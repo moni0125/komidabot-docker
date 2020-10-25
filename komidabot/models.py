@@ -176,7 +176,7 @@ class Day(enum.Enum):
 week_days = [Day.MONDAY, Day.TUESDAY, Day.WEDNESDAY, Day.THURSDAY, Day.FRIDAY]
 
 
-class AppSettings(db.Model, UserMixin):
+class AppSettings(db.Model):
     __tablename__ = 'app_settings'
 
     name = db.Column(db.String(), primary_key=True)
@@ -954,6 +954,10 @@ class RegisteredUser(db.Model, UserMixin):
 
     def delete(self):
         db.session.delete(self)
+
+    @property
+    def is_active(self):
+        return self.enabled
 
 
 def recreate_db():

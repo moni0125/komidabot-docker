@@ -1,8 +1,9 @@
 import json
 from typing import Optional, Union
+from urllib.parse import urlparse
 
 import requests
-from flask import abort, Blueprint, redirect, request
+from flask import abort, Blueprint, redirect, request, url_for
 from flask_login import login_required, login_user, logout_user
 from oauthlib.oauth2 import WebApplicationClient
 
@@ -47,7 +48,8 @@ def unauthorized_handler():
 @blueprint.route('/login', methods=['GET'])
 @api_utils.wrap_exceptions
 def get_login():
-    return redirect(request.base_url + '/google')
+    next_url = request.args.get('next', '/')
+    return redirect(url_for('.get_login_google', next=next_url))
 
 
 @blueprint.route('/login/google', methods=['GET'])
@@ -65,9 +67,16 @@ def get_login_google():
 
     authorization_endpoint = google_provider_cfg['authorization_endpoint']
 
+    next_url = request.args.get('next', '/')
+    parsed_next_url = urlparse(next_url)
+
+    # Prevent changing the scheme or host
+    if parsed_next_url.scheme != '' or parsed_next_url.netloc != '':
+        return abort(400)
+
     request_uri = google_client.prepare_request_uri(
         authorization_endpoint,
-        redirect_uri=request.base_url + '/callback',
+        redirect_uri=url_for('.get_login_google_callback', _external=True, next=parsed_next_url.geturl()),
         scope=['openid', 'email', 'profile'],
     )
     return redirect(request_uri)
