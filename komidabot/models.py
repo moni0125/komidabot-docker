@@ -190,6 +190,12 @@ class AppSettings(db.Model):
         self.value = json.dumps(value)
 
     @staticmethod
+    def create_entries():
+        AppSettings.set_default('registrations_enabled', False)
+
+        db.session.commit()
+
+    @staticmethod
     def set_default(name: str, default: Any) -> 'AppSettings':
         setting = AppSettings.query.filter_by(name=name).first()
 

@@ -4,7 +4,6 @@ import logging
 from flask import current_app as _current_app
 
 from config import ConfigType
-from extensions import db
 
 
 def get_app() -> 'App':
@@ -57,12 +56,10 @@ class App:
         with self.app_context():
             self.user_manager.initialise()
 
-            from komidabot.models import AppSettings
-            AppSettings.set_default('registrations_enabled', False)
-
-            db.session.commit()
-
         if not config['TESTING']:
+            from komidabot.models import AppSettings
+            AppSettings.create_entries()
+
             def ipc_callback(bot, app_context, data):
                 with app_context():
                     bot.handle_ipc(data)
