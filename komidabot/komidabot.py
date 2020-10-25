@@ -287,9 +287,7 @@ class Komidabot(Bot):
             return
         self._handling_error = True
 
-        self.message_admins(messages.TextMessage(triggers.Trigger(),
-                                                 '⚠️ An internal error occurred, '
-                                                 'please check the console for more information'))
+        self.message_admins(messages.ExceptionMessage(triggers.Trigger(), error))
 
         self._handling_error = False
 

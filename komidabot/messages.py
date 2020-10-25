@@ -83,6 +83,12 @@ class TextMessage(Message):
         self.text = text
 
 
+class ExceptionMessage(Message):
+    def __init__(self, trigger: Trigger, source: Exception):
+        super().__init__(trigger)
+        self.source = source
+
+
 class MenuMessage(Message):
     def __init__(self, trigger: Trigger, menu: models.Menu, translator: translation.TranslationService):
         super().__init__(trigger)

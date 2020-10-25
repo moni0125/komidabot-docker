@@ -2,13 +2,16 @@ from datetime import date, timedelta
 from typing import Any, Dict, TypedDict, Union
 
 from flask import Blueprint, abort, jsonify, request
-from flask_login import current_user, UserMixin
+from flask_login import current_user, login_required, UserMixin
 
 import komidabot.api_utils as api_utils
+import komidabot.messages as messages
 import komidabot.models as models
+import komidabot.triggers as triggers
 import komidabot.web.constants as web_constants
 from extensions import db, login
 from komidabot.app import get_app
+from komidabot.debug.administration import notify_admins
 from komidabot.users import UserId
 from komidabot.web.users import User as WebUser
 
@@ -134,6 +137,38 @@ def put_subscribe():
     #        have to be this way
 
     return api_utils.response_bad_request()
+
+
+@blueprint.route('/trigger', methods=['POST'])
+@api_utils.wrap_exceptions
+@api_utils.expects_schema(input_schema='POST_api_trigger', output_schema='api_response_strict')
+@login_required
+def post_trigger():
+    class PostData(TypedDict):
+        trigger: str
+
+    post_data: PostData = request.get_json()
+    trigger = post_data['trigger']
+
+    if trigger == 'notification_test_error':
+        try:
+            raise RuntimeError('Test exception')
+        except RuntimeError as e:
+            notify_admins(messages.ExceptionMessage(triggers.Trigger(), e))
+
+        return api_utils.response_ok()
+    elif trigger == 'notification_test_text':
+        notify_admins(messages.TextMessage(triggers.Trigger(), 'Test notification'))
+
+        return api_utils.response_ok()
+    elif trigger == 'menu_update':
+        from komidabot.komidabot import update_menus
+
+        update_menus()
+
+        return api_utils.response_ok()
+    else:
+        return api_utils.response_bad_request()
 
 
 @blueprint.route('/campus', methods=['GET'])

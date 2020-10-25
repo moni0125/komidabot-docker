@@ -18,6 +18,8 @@ def notify_admins(message: messages.Message):
 
     if isinstance(message, messages.TextMessage):
         target = _send_text_message
+    elif isinstance(message, messages.ExceptionMessage):
+        target = _send_exception_message
     else:
         raise ValueError('Unsupported message type')
 
@@ -78,6 +80,32 @@ def _send_text_message(subscription: models.AdminSubscription,
             'badge': 'https://komidabot.xyz/assets/icons/notification-badge-android-72x72.png',
             'title': 'Komidabot message',
             'body': message.text,
+            'vibrate': [],
+            'renotify': False,
+            'requireInteraction': False,
+            'actions': [],
+            'silent': False,
+        }
+    }
+
+    return _send_notification(copy.deepcopy(subscription), data)
+
+
+def _send_exception_message(subscription: models.AdminSubscription,
+                            message: messages.ExceptionMessage) -> messages.MessageSendResult:
+    exception_string = str(message.source)
+
+    if exception_string:
+        body = '{}: {}'.format(type(message.source).__name__, exception_string)
+    else:
+        body = type(message.source).__name__
+
+    data = {
+        'notification': {
+            # 'lang': 'NL',
+            'badge': 'https://komidabot.xyz/assets/icons/notification-badge-android-72x72.png',
+            'title': 'Komidabot: Exception',
+            'body': body,
             'vibrate': [],
             'renotify': False,
             'requireInteraction': False,

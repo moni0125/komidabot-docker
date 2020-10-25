@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LoginMessage",
+  "type": "object",
+  "properties": {
+    "trigger": {
+      "type": "string",
+      "enum": [
+        "menu_update",
+        "notification_test_error",
+        "notification_test_text"
+      ]
+    }
+  },
+  "required": [
+    "username"
+  ],
+  "additionalProperties": false
+}
