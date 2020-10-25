@@ -57,8 +57,9 @@ class App:
             self.user_manager.initialise()
 
         if not config['TESTING']:
-            from komidabot.models import AppSettings
-            AppSettings.create_entries()
+            with self.app_context():
+                from komidabot.models import AppSettings
+                AppSettings.create_entries()
 
             def ipc_callback(bot, app_context, data):
                 with app_context():
