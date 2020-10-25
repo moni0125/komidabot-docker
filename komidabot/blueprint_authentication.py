@@ -1,6 +1,6 @@
 import json
 from typing import Optional, Union
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote, unquote
 
 import requests
 from flask import abort, Blueprint, redirect, request, url_for
@@ -48,7 +48,7 @@ def unauthorized_handler():
 @blueprint.route('/login', methods=['GET'])
 @api_utils.wrap_exceptions
 def get_login():
-    next_url = request.args.get('next', '/')
+    next_url = request.args.get('next', None)
     return redirect(url_for('.get_login_google', next=next_url))
 
 
@@ -67,17 +67,23 @@ def get_login_google():
 
     authorization_endpoint = google_provider_cfg['authorization_endpoint']
 
-    next_url = request.args.get('next', '/')
-    parsed_next_url = urlparse(next_url)
+    state = {}
 
-    # Prevent changing the scheme or host
-    if parsed_next_url.scheme != '' or parsed_next_url.netloc != '':
-        return abort(400)
+    if 'next' in request.args:
+        next_url = request.args.get('next')
+        parsed_next_url = urlparse(next_url)
+
+        # Prevent changing the scheme or host
+        if parsed_next_url.scheme != '' or parsed_next_url.netloc != '':
+            return abort(400)
+
+        state['next'] = parsed_next_url.geturl()
 
     request_uri = google_client.prepare_request_uri(
         authorization_endpoint,
-        redirect_uri=url_for('.get_login_google_callback', _external=True, next=parsed_next_url.geturl()),
+        redirect_uri=url_for('.get_login_google_callback', _external=True),
         scope=['openid', 'email', 'profile'],
+        state=quote(json.dumps(state))
     )
     return redirect(request_uri)
 
@@ -93,11 +99,13 @@ def get_login_google_callback():
     if google_client is False:
         return abort(503)
 
-    code = request.args.get("code")
+    code = request.args.get('code')
+    state = json.loads(unquote(request.args.get('state')))
+    next_url = state.get('next', '/')
 
     google_provider_cfg = get_google_provider_cfg()
 
-    token_endpoint = google_provider_cfg["token_endpoint"]
+    token_endpoint = google_provider_cfg['token_endpoint']
     token_url, headers, body = google_client.prepare_token_request(
         token_endpoint,
         authorization_response=request.url,
@@ -113,18 +121,18 @@ def get_login_google_callback():
 
     google_client.parse_request_body_response(json.dumps(token_response.json()))
 
-    userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
+    userinfo_endpoint = google_provider_cfg['userinfo_endpoint']
     uri, headers, body = google_client.add_token(userinfo_endpoint)
     userinfo_response = requests.get(uri, headers=headers, data=body)
 
     # You want to make sure their email is verified.
     # The user authenticated with Google, authorized your
     # app, and now you've verified their email through Google!
-    if userinfo_response.json().get("email_verified"):
-        unique_id = userinfo_response.json()["sub"]
-        users_email = userinfo_response.json()["email"]
-        picture = userinfo_response.json()["picture"]
-        users_name = userinfo_response.json()["given_name"]
+    if userinfo_response.json().get('email_verified'):
+        unique_id = userinfo_response.json()['sub']
+        users_email = userinfo_response.json()['email']
+        picture = userinfo_response.json()['picture']
+        users_name = userinfo_response.json()['given_name']
     else:
         return abort(403)
 
@@ -138,7 +146,7 @@ def get_login_google_callback():
 
     login_user(user)
 
-    return redirect('/')
+    return redirect(next_url)
 
 
 @blueprint.route('/logout', methods=['GET'])
