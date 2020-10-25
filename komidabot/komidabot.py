@@ -475,8 +475,9 @@ def update_menus(*campuses: str, dates: 'List[datetime.date]' = None):
                     menu_item: MenuItem
 
                     if menu_item.external_id is None:
-                        # Old item, remove
-                        db.session.delete(menu_item)
+                        if not menu_item.data_frozen:
+                            # Old item, remove
+                            db.session.delete(menu_item)
                     else:
                         menu_items[menu_item.external_id] = menu_item
 
@@ -507,10 +508,17 @@ def update_menus(*campuses: str, dates: 'List[datetime.date]' = None):
                             menu_item.set_attributes(item.course_attributes)
                             menu_item.price_students = item.get_student_price()
                             menu_item.price_staff = item.get_staff_price()
+
+                        del menu_items[item.external_id]
                     else:
                         menu_item = menu.add_menu_item(translatable, item.course_type, item.course_sub_type,
                                                        item.course_attributes,
                                                        item.get_student_price(), item.get_staff_price())
                         menu_item.external_id = item.external_id
+
+                    for menu_item in menu_items.values():
+                        if not menu_item.data_frozen:
+                            # External ID not encountered in response, so we delete it here as well
+                            db.session.delete(menu_item)
 
     db.session.commit()
