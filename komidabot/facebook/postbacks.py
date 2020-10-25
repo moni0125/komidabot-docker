@@ -230,7 +230,7 @@ def generate_postback_data(include_persistent_menu: bool, production: bool):
         ]
 
         if not production:
-            menu.append(url_button("Open Komidabot.xyz", 'https://komidabot.heldplayer.blue/'))
+            menu.append(url_button("Open Komidabot.xyz", 'https://dev.komidabot.xyz/'))
 
         # TODO: Once per-user persistent menus are available, use them
         #       https://developers.facebook.com/docs/messenger-platform/send-messages/persistent-menu/
