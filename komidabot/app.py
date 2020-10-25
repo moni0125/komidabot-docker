@@ -59,10 +59,6 @@ class App:
                 from komidabot.models import AppSettings
                 AppSettings.create_entries()
 
-                import komidabot.messages as messages
-                import komidabot.triggers as triggers
-                self.bot.message_admins(messages.TextMessage(triggers.Trigger(), 'This is a test message!'))
-
             def ipc_callback(bot, app_context, data):
                 with app_context():
                     bot.handle_ipc(data)
