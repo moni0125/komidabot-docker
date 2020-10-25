@@ -68,3 +68,12 @@ def date_to_string(locale: str, date):
                                                 weekday=localisation.DAYS[date.weekday()](locale))
     else:
         return str(date)
+
+
+def expected(name, value, *types):
+    types_str = ' or '.join(type_obj.__name__ for type_obj in types)
+    return ValueError('{} expected {} got {}'.format(name, types_str, type(value).__name__))
+
+
+def expected_or_none(value, *types):
+    return expected(value, *types, type(None))

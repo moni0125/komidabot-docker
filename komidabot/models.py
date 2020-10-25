@@ -10,9 +10,9 @@ from sqlalchemy import inspect as sqlalchemy_inspect
 from sqlalchemy.orm.session import make_transient, make_transient_to_detached
 from sqlalchemy.sql import expression
 
-import komidabot.util as util
 from extensions import db
 from komidabot.translation import TranslationService
+from komidabot.util import expected, expected_or_none
 
 make_transient = make_transient
 make_transient_to_detached = make_transient_to_detached
@@ -184,7 +184,7 @@ class AppSettings(db.Model):
 
     def __init__(self, name: str, value: Any = None):
         if not isinstance(name, str):
-            raise ValueError('name')
+            raise ValueError('name expected {} got {}'.format(type(str), type(name)))
 
         self.name = name
         self.value = json.dumps(value)
@@ -232,9 +232,9 @@ class Campus(db.Model):
 
     def __init__(self, name: str, short_name: str):
         if not isinstance(name, str):
-            raise ValueError('name')
+            raise expected('name', name, str)
         if not isinstance(short_name, str):
-            raise ValueError('short_name')
+            raise expected('short_name', short_name, str)
 
         self.name = name
         self.short_name = short_name.lower()
@@ -309,13 +309,13 @@ class ClosingDays(db.Model):
     def __init__(self, campus_id: int, first_day: datetime.date, last_day: datetime.date,
                  translatable_id: int):
         if not isinstance(campus_id, int):
-            raise ValueError('campus_id')
+            raise expected('campus_id', campus_id, int)
         if not isinstance(first_day, datetime.date):
-            raise ValueError('first_day')
+            raise expected('first_day', first_day, datetime.date)
         if last_day is not None and not isinstance(last_day, datetime.date):
-            raise ValueError('last_day')
+            raise expected_or_none('last_day', last_day, datetime.date)
         if not isinstance(translatable_id, int):
-            raise ValueError('translatable_id')
+            raise expected('translatable_id', translatable_id, int)
 
         self.campus_id = campus_id
         self.first_day = first_day
@@ -370,9 +370,9 @@ class Translatable(db.Model):
 
     def __init__(self, text: str, language: str):
         if not isinstance(text, str):
-            raise ValueError('text')
+            raise expected('text', text, str)
         if not isinstance(language, str):
-            raise ValueError('language')
+            raise expected('language', language, str)
 
         self.original_language = language
         self.original_text = text
@@ -394,9 +394,9 @@ class Translatable(db.Model):
 
     def get_translation(self, language: str, translator: 'TranslationService' = None) -> 'Translation':
         if not language:
-            raise ValueError('language')
+            raise ValueError('language expected (got {})'.format(language))
         if translator is not None and not isinstance(translator, TranslationService):
-            raise ValueError('translator')
+            raise expected_or_none('translator', translator, TranslationService)
 
         if sqlalchemy_inspect(self).transient:
             raise ValueError('Translatable is transient and cannot have translations')
@@ -473,13 +473,13 @@ class Translation(db.Model):
 
     def __init__(self, translatable_id: int, language: str, translation: str, provider: str = None):
         if not isinstance(translatable_id, int):
-            raise ValueError('translatable_id')
+            raise expected('translatable_id', translatable_id, int)
         if not isinstance(language, str):
-            raise ValueError('language')
+            raise expected('language', language, str)
         if not isinstance(translation, str):
-            raise ValueError('translation')
+            raise expected('translation', translation, str)
         if provider is not None and not isinstance(provider, str):
-            raise ValueError('provider')
+            raise expected_or_none('provider', provider, str)
 
         self.translatable_id = translatable_id
         self.language = language
@@ -511,9 +511,9 @@ class Menu(db.Model):
 
     def __init__(self, campus_id: int, day: datetime.date):
         if not isinstance(campus_id, int):
-            raise ValueError('campus_id')
+            raise expected('campus_id', campus_id, int)
         if not isinstance(day, datetime.date):
-            raise ValueError('day')
+            raise expected('day', day, datetime.date)
 
         self.campus_id = campus_id
         self.menu_day = day
@@ -521,28 +521,10 @@ class Menu(db.Model):
     def delete(self):
         db.session.delete(self)
 
-    # def update(self, new_menu: 'Menu'):
-    #     old: List[MenuItem] = self.menu_items
-    #     new: List[MenuItem] = new_menu.menu_items
-    #
-    #     _, added, removed = util.get_list_diff(old, new)
-    #
-    #     for item in removed:
-    #         db.session.delete(item)
-    #     for item in added:
-    #         # FIXME: Is this safe?
-    #         self.menu_items.append(item.copy(self))
-
-    def clear(self):
-        items = list(self.menu_items)
-
-        for item in items:
-            db.session.delete(item)
-
     def add_menu_item(self, translatable: Translatable, course_type: CourseType, course_sub_type: CourseSubType,
                       course_attributes: List[CourseAttributes], price_students: Decimal,
                       price_staff: Optional[Decimal]) -> 'MenuItem':
-        menu_item = MenuItem(self.id, translatable.id, course_type, course_sub_type, price_students, price_staff)
+        menu_item = MenuItem(self, translatable.id, course_type, course_sub_type, price_students, price_staff)
         menu_item.set_attributes(course_attributes)
 
         # FIXME: Is this safe?
@@ -595,35 +577,30 @@ class MenuItem(db.Model):
     course_attributes = db.Column(db.Text(), nullable=False, default='[]', server_default='[]')
     price_students = db.Column(db.Numeric(4, 2), nullable=False)
     price_staff = db.Column(db.Numeric(4, 2), nullable=True)
+    data_frozen = db.Column(db.Boolean(), nullable=False, server_default=expression.false())
 
-    def __init__(self, menu_id: int, translatable_id: int, course_type: CourseType, course_sub_type: CourseSubType,
+    def __init__(self, menu: Menu, translatable_id: int, course_type: CourseType, course_sub_type: CourseSubType,
                  price_students: Decimal, price_staff: Optional[Decimal]):
-        if menu_id is not None and not isinstance(menu_id, int):  # FIXME: Allowing a null ID is a dirty hack
-            raise ValueError('menu_id')
+        if not isinstance(menu, Menu):
+            raise expected('menu', menu, Menu)
         if not isinstance(translatable_id, int):
-            raise ValueError('translatable_id')
+            raise expected('translatable_id', translatable_id, int)
         if not isinstance(course_type, CourseType):
-            raise ValueError('course_type')
+            raise expected('course_type', course_type, CourseType)
         if not isinstance(course_sub_type, CourseSubType):
-            raise ValueError('course_sub_type')
+            raise expected('course_sub_type', course_sub_type, CourseSubType)
         if not isinstance(price_students, Decimal):
-            raise ValueError('price_students')
+            raise expected('price_students', price_students, Decimal)
         if price_staff is not None and not isinstance(price_staff, Decimal):
-            raise ValueError('price_staff')
+            raise expected_or_none('price_staff', price_staff, Decimal)
 
-        self.menu_id = menu_id
+        self.menu = menu
         self.translatable_id = translatable_id
         self.food_type = course_to_food_type_mapping[course_type][course_sub_type]
         self.course_type = course_type
         self.course_sub_type = course_sub_type
         self.price_students = price_students
         self.price_staff = price_staff
-
-    def copy(self, menu: Menu):
-        result = MenuItem(menu.id, self.translatable_id, self.course_type, self.course_sub_type, self.price_students,
-                          self.price_staff)
-        result.set_attributes(self.get_attributes())
-        return result
 
     def get_translation(self, language: str, translator: 'TranslationService') -> 'Translation':
         return self.translatable.get_translation(language, translator)
@@ -639,28 +616,6 @@ class MenuItem(db.Model):
 
     def set_attributes(self, attributes: List[CourseAttributes]):
         self.course_attributes = json.dumps([v.value for v in attributes])
-
-    def __lt__(self, other: 'MenuItem') -> bool:
-        return (self.course_type, self.course_sub_type, self.translatable_id, self.id) < \
-               (other.course_type, other.course_sub_type, other.translatable_id, other.id)
-
-    def __eq__(self, other: 'MenuItem') -> bool:
-        if self is other or (self.id is not None and self.id == other.id):  # FIXME: Allowing a null ID is a dirty hack
-            return True
-            # menu_id is ignored
-        if self.translatable_id != other.translatable_id:
-            return False
-        if self.course_type != other.course_type:
-            return False
-        if self.course_sub_type != other.course_sub_type:
-            return False
-        if self.course_attributes != other.course_attributes:
-            return False
-        if self.price_students != other.price_students:
-            return False
-        if self.price_staff != other.price_staff:
-            return False
-        return True
 
     def __hash__(self):
         return hash(self.id)
@@ -680,13 +635,13 @@ class UserDayCampusPreference(db.Model):
 
     def __init__(self, user_id: int, day: Day, campus_id: int, active=True) -> None:
         if not isinstance(user_id, int):
-            raise ValueError('user_id')
+            raise expected('user_id', user_id, int)
         if not isinstance(day, Day):
-            raise ValueError('day')
+            raise expected('day', day, Day)
         if not isinstance(campus_id, int):
-            raise ValueError('campus_id')
+            raise expected('campus_id', campus_id, int)
         if not isinstance(active, bool):
-            raise ValueError('active')
+            raise expected('active', active, bool)
 
         self.user_id = user_id
         self.day = day
@@ -737,11 +692,11 @@ class AppUser(db.Model):
 
     def __init__(self, provider: str, internal_id: str, language: str):
         if not isinstance(provider, str):
-            raise ValueError('provider')
+            raise expected('provider', provider, str)
         if not isinstance(internal_id, str):
-            raise ValueError('internal_id')
+            raise expected('internal_id', internal_id, str)
         if not isinstance(language, str):
-            raise ValueError('language')
+            raise expected('language', language, str)
 
         self.provider = provider
         self.internal_id = internal_id
@@ -830,11 +785,11 @@ class Feature(db.Model):
 
     def __init__(self, string_id: str, description: str = None, globally_available=False):
         if not isinstance(string_id, str):
-            raise ValueError('string_id')
+            raise expected('string_id', string_id, str)
         if description is not None and not isinstance(description, str):
-            raise ValueError('description')
+            raise expected_or_none('description', description, str)
         if globally_available is not None and not isinstance(globally_available, bool):
-            raise ValueError('globally_available')
+            raise expected_or_none('globally_available', globally_available, bool)
 
         self.string_id = string_id
         self.description = description
@@ -896,9 +851,9 @@ class FeatureParticipation(db.Model):
 
     def __init__(self, user_id: int, feature_id: int):
         if not isinstance(user_id, int):
-            raise ValueError('user_id')
+            raise expected('user_id', user_id, int)
         if not isinstance(feature_id, int):
-            raise ValueError('feature_id')
+            raise expected('feature_id', feature_id, int)
 
         self.user_id = user_id
         self.feature_id = feature_id
@@ -932,15 +887,15 @@ class RegisteredUser(db.Model, UserMixin):
 
     def __init__(self, provider: str, user_id: str, name: str, email: str, profile_picture: str):
         if not isinstance(user_id, str):
-            raise ValueError('user_id')
+            raise expected('user_id', user_id, str)
         if not isinstance(name, str):
-            raise ValueError('name')
+            raise expected('name', name, str)
         if not isinstance(provider, str):
-            raise ValueError('provider')
+            raise expected('provider', provider, str)
         if not isinstance(email, str):
-            raise ValueError('email')
+            raise expected('email', email, str)
         if not isinstance(profile_picture, str):
-            raise ValueError('profile_picture')
+            raise expected('profile_picture', profile_picture, str)
 
         self.id = user_id
         self.provider = provider

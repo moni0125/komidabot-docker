@@ -500,12 +500,13 @@ def update_menus(*campuses: str, dates: 'List[datetime.date]' = None):
 
                     if item.external_id in menu_items:
                         menu_item = menu_items[item.external_id]
-                        menu_item.translatable = translatable
-                        menu_item.course_type = item.course_type
-                        menu_item.course_sub_type = item.course_sub_type
-                        menu_item.set_attributes(item.course_attributes)
-                        menu_item.price_students = item.get_student_price()
-                        menu_item.price_staff = item.get_staff_price()
+                        if not menu_item.data_frozen:
+                            menu_item.translatable = translatable
+                            menu_item.course_type = item.course_type
+                            menu_item.course_sub_type = item.course_sub_type
+                            menu_item.set_attributes(item.course_attributes)
+                            menu_item.price_students = item.get_student_price()
+                            menu_item.price_staff = item.get_staff_price()
                     else:
                         menu_item = menu.add_menu_item(translatable, item.course_type, item.course_sub_type,
                                                        item.course_attributes,
