@@ -54,7 +54,6 @@ class ConfigType(TypedDict):
 
 class BaseConfig:
     """Base configuration"""
-    TESTING = False
     PRODUCTION = False
     DISABLED = int(os.getenv('DISABLED', '0')) != 0
     VERBOSE = int(os.getenv('VERBOSE', '0')) != 0
@@ -75,15 +74,20 @@ class BaseConfig:
 
     COVID19_DISABLED = int(os.getenv('COVID19_DISABLED', '0')) != 0
 
+    # Flask options
+    SESSION_REFRESH_EACH_REQUEST = False
+
     # Flask-SQLAlchemy options
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Flask-Session options
+    SESSION_COOKIE_PATH = '/api/'
     SESSION_COOKIE_HTTPONLY = True
-    SESSION_FILE_DIR = '/var/flask_session'
-    SESSION_PERMANENT = False
-    SESSION_REFRESH_EACH_REQUEST = False
+    SESSION_COOKIE_SECURE = int(os.getenv('LIVE_VERSION', '0')) != 0
+    SESSION_COOKIE_SAMESITE = 'Lax'
     SESSION_TYPE = 'filesystem'
+    SESSION_PERMANENT = False
+    SESSION_FILE_DIR = '/var/flask_session'
 
 
 class ProductionConfig(BaseConfig):
@@ -93,9 +97,6 @@ class ProductionConfig(BaseConfig):
     # Flask-SQLAlchemy options
     SQLALCHEMY_DATABASE_URI = _get_postgres_uri(POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, 'komidabot_prod')
 
-    # Flask-Session options
-    SESSION_COOKIE_SECURE = True
-
 
 class DevelopmentConfig(BaseConfig):
     """Development configuration"""
@@ -103,6 +104,9 @@ class DevelopmentConfig(BaseConfig):
 
     # Flask-SQLAlchemy options
     SQLALCHEMY_DATABASE_URI = _get_postgres_uri(POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, 'komidabot_dev')
+
+    # Flask-Session options
+    SESSION_COOKIE_NAME = 'session_dev'
 
 
 class TestingConfig(BaseConfig):
