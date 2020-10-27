@@ -30,6 +30,13 @@ class TestModelsCampus(BaseTestCase):
             db.session.add(campus2)
             db.session.add(campus3)
 
+            # Flush makes sure default values are actually assigned
+            db.session.flush()
+
+            self.assertTrue(campus1.active)
+            self.assertTrue(campus2.active)
+            self.assertTrue(campus3.active)
+
             db.session.commit()
 
     def test_invalid_constructors(self):
@@ -63,6 +70,13 @@ class TestModelsCampus(BaseTestCase):
             self.assertFalse(inspect(campus1).transient)
             self.assertFalse(inspect(campus2).transient)
             self.assertFalse(inspect(campus3).transient)
+
+            # Flush makes sure default values are actually assigned
+            db.session.flush()
+
+            self.assertTrue(campus1.active)
+            self.assertTrue(campus2.active)
+            self.assertTrue(campus3.active)
 
             db.session.commit()
 
