@@ -1,0 +1,200 @@
+$test_case:
+  course_of_interest: 5398
+  reason: |
+    On this response, Komidabot differred from the official site by only showing one price for the "Purple bowl" menu
+    item. The reason for this is we only used to look if "calculatedMultiplePrices" is set to true, but
+    "fixedMultiplePrices" set to true should behave the same way (at least to display menu items).
+campus: cmi
+date: '2020-03-12'
+menu:
+- components:
+  - allergens: []
+    attributes:
+    - BIO
+    - SOUP
+    - VEGAN
+    name:
+      en: Organic cauliflower soup
+      nl: Bio-bloemkoolsoep
+  external_id: 3657
+  multiple_prices: false
+  price: '0.90'
+  sort_order: 0
+- components:
+  - allergens:
+    - EGG
+    - LUPINE
+    - MILK_LACTOSE
+    - NUTS
+    - SESAME
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes:
+    - VEGGIE
+    name:
+      en: Vegetarian vol-au-vent
+      nl: Veggie koninginnehapje
+  - allergens:
+    - WHEAT_GLUTEN
+    attributes: []
+    name:
+      en: fries
+      nl: frieten
+  - allergens:
+    - EGG
+    - MILK_LACTOSE
+    - NUTS
+    attributes: []
+    name:
+      en: Belgian endive salad with nuts, w
+      nl: witloofsla met noten, w
+  external_id: 3658
+  multiple_prices: true
+  price: '5.40'
+  sort_order: 1
+- components:
+  - allergens:
+    - CELERY
+    - EGG
+    - LUPINE
+    - MILK_LACTOSE
+    - MUSTARD
+    - NUTS
+    - SESAME
+    - SOY
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes:
+    - CHICKEN
+    name:
+      en: Chicken vol-au-vent
+      nl: Koninginnehapje
+  - allergens:
+    - WHEAT_GLUTEN
+    attributes: []
+    name:
+      en: fries
+      nl: frieten
+  - allergens:
+    - CELERY
+    - EGG
+    - FISH
+    - LUPINE
+    - MILK_LACTOSE
+    - MOLLUSKS
+    - MUSTARD
+    - NUTS
+    - PEANUTS
+    - SESAME
+    - SHELLFISH
+    - SOY
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes: []
+    name:
+      en: "crudit\xE9s"
+      nl: Rauwkostslaatje
+  external_id: 3659
+  multiple_prices: true
+  price: '5.40'
+  sort_order: 2
+- components:
+  - allergens:
+    - CELERY
+    - EGG
+    - FISH
+    - MILK_LACTOSE
+    - NUTS
+    - PEANUTS
+    - SESAME
+    attributes:
+    - SALAD
+    - VEGGIE
+    name:
+      en: Salad without lettuce
+      nl: Salade zonder sla
+  external_id: 5391
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 6
+- components:
+  - allergens:
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - SNACK
+    - VEGAN
+    name:
+      en: Sjeik sandwich
+      nl: Broodje sjeik
+  external_id: 5396
+  multiple_prices: false
+  price: '3.60'
+  sort_order: 7
+- components:
+  - allergens:
+    - CELERY
+    - NUTS
+    - PEANUTS
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes:
+    - CHICKEN
+    - SALAD
+    name:
+      en: purple bowl
+      nl: Purple bowl
+  external_id: 5398
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 5
+- components:
+  - allergens:
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - PASTA
+    - VEGAN
+    name:
+      en: paprika cream with garden cress
+      nl: pasta met paprikaroom & waterkers
+  external_id: 5505
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 3
+- components:
+  - allergens:
+    - CELERY
+    - EGG
+    - MILK_LACTOSE
+    - MUSTARD
+    - NUTS
+    - PEANUTS
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - PASTA
+    - PIG
+    name:
+      en: Pasta with salsify in garlic butter, with egg, olives, snow peas & cubed
+        bacons
+      nl: Pasta met schorseneren in lookboter, met ei, olijven, peultjes & spekjes
+  external_id: 5510
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 4
+- components:
+  - allergens:
+    - EGG
+    - MUSTARD
+    - WHEAT_GLUTEN
+    attributes:
+    - GRILL
+    - VEGGIE
+    name:
+      en: New Orleans pepper burger
+      nl: New Orleans pepper burger
+  external_id: 5539
+  multiple_prices: true
+  price: '5.00'
+  sort_order: 5

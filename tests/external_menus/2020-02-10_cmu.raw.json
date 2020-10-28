@@ -1,5 +1,4 @@
 {
-  "COMMENT": "This file contains a menu item (last one) that has only 1 element, and this element is marked as disabled AND deleted. This item should thus be ignored",
   "id": 510,
   "menuDate": "2020-02-10T00:00:00",
   "restaurantId": 5,
@@ -99,7 +98,7 @@
             "weight": "350g",
             "extra": "koel bewaren",
             "preparation": "conceptsalade winter miehoen koken - mie mengen met de world grill saus - pastinaak grillen en mengen met de wortelen en sojascheuten en kokosschilfers - opbouw: miehoen, groentjes en platte peterselie",
-            "price": 3.4,
+            "price": 3.8,
             "photo": "",
             "isCourse": false,
             "isIngredient": false,
@@ -178,10 +177,6 @@
               },
               {
                 "courseId": 3874,
-                "allergenId": 204
-              },
-              {
-                "courseId": 3874,
                 "allergenId": 205
               },
               {
@@ -253,15 +248,7 @@
               },
               {
                 "courseId": 5523,
-                "allergenId": 205
-              },
-              {
-                "courseId": 5523,
                 "allergenId": 206
-              },
-              {
-                "courseId": 5523,
-                "allergenId": 209
               },
               {
                 "courseId": 5523,
@@ -576,7 +563,7 @@
             "nameEn": "",
             "weight": null,
             "extra": "vegan (snack)",
-            "preparation": "snack winter bak de burgers.- warm de geroosterde maïs op.- bestrijk de broodjes met de salsa mexicana, de piri piri saus en maïs, de burger en de farmersla.",
+            "preparation": "snack winter bak de burgers.- bestrijk de broodjes met de salsa mexicana, de piri piri saus en ma\u00efs, de burger en de farmersla.",
             "price": 3.1,
             "photo": "",
             "isCourse": false,
@@ -678,5 +665,6 @@
         }
       ]
     }
-  ]
+  ],
+  "$schema": "./raw.schema.json"
 }

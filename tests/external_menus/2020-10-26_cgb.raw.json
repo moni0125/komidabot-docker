@@ -1,0 +1,756 @@
+{
+  "id": 1136,
+  "menuDate": "2020-10-26T00:00:00",
+  "restaurantId": 4,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 9182,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 1136,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 11592,
+          "menuItemId": 9182,
+          "courseId": 2381,
+          "sortOrder": 0,
+          "course": {
+            "id": 2381,
+            "dispNameNl": "Tomatensoep",
+            "dispNameEn": "Tomato soup",
+            "nameNl": "tomatensoep",
+            "nameEn": "",
+            "weight": "500 ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": "groenten en aardappelen in water aan de kook brengen met de bio groentebouillon. - daarna de tomatenpuree toevoegen - mixen en afsmaken.",
+            "price": 1.5,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 2381,
+                "allergenId": 201
+              },
+              {
+                "courseId": 2381,
+                "allergenId": 208
+              },
+              {
+                "courseId": 2381,
+                "allergenId": 209
+              },
+              {
+                "courseId": 2381,
+                "allergenId": 210
+              },
+              {
+                "courseId": 2381,
+                "allergenId": 211
+              },
+              {
+                "courseId": 2381,
+                "allergenId": 212
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 2381,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 2381,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "klein: \u20ac 0.90",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": "large: 1.20"
+          }
+        }
+      ]
+    },
+    {
+      "id": 9192,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 1136,
+      "sortorder": 10,
+      "menuItemContents": [
+        {
+          "id": 11603,
+          "menuItemId": 9192,
+          "courseId": 5548,
+          "sortOrder": 0,
+          "course": {
+            "id": 5548,
+            "dispNameNl": "Carrot cake",
+            "dispNameEn": "carrot cake",
+            "nameNl": "Carrot cake",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "",
+            "price": 2.3,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5548,
+                "allergenId": 200
+              },
+              {
+                "courseId": 5548,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5548,
+                "allergenId": 203
+              },
+              {
+                "courseId": 5548,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5548,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 9146,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 1136,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 11556,
+          "menuItemId": 9146,
+          "courseId": 530,
+          "sortOrder": 0,
+          "course": {
+            "id": 530,
+            "dispNameNl": "Tuinbroodje ",
+            "dispNameEn": "Spring sandwich ",
+            "nameNl": "tuinbroodje dd, z",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": "koel bewaren - veggie",
+            "preparation": null,
+            "price": 3.1,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 530,
+                "allergenId": 201
+              },
+              {
+                "courseId": 530,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 530,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 530,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 530,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 9151,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 1136,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 11561,
+          "menuItemId": 9151,
+          "courseId": 525,
+          "sortOrder": 0,
+          "course": {
+            "id": 525,
+            "dispNameNl": "Caesar salad on a bun",
+            "dispNameEn": "Caesar salad on a bun",
+            "nameNl": "caesar salad on a bun, dd, z",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "koel bewaren",
+            "preparation": null,
+            "price": 3.6,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 525,
+                "allergenId": 200
+              },
+              {
+                "courseId": 525,
+                "allergenId": 203
+              },
+              {
+                "courseId": 525,
+                "allergenId": 212
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 525,
+                "courseLogoId": 210
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 9156,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 1136,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 11566,
+          "menuItemId": 9156,
+          "courseId": 4169,
+          "sortOrder": 0,
+          "course": {
+            "id": 4169,
+            "dispNameNl": "Nordic cottage cheese",
+            "dispNameEn": "Nordic cottage cheese",
+            "nameNl": "cottage cheese nordic (ger. zalm)",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": "koel bewaren",
+            "preparation": null,
+            "price": 3.1,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4169,
+                "allergenId": 200
+              },
+              {
+                "courseId": 4169,
+                "allergenId": 201
+              },
+              {
+                "courseId": 4169,
+                "allergenId": 203
+              },
+              {
+                "courseId": 4169,
+                "allergenId": 205
+              },
+              {
+                "courseId": 4169,
+                "allergenId": 210
+              },
+              {
+                "courseId": 4169,
+                "allergenId": 212
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4169,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 4169,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 4169,
+                "courseLogoId": 215
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 9161,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 1136,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 11571,
+          "menuItemId": 9161,
+          "courseId": 5499,
+          "sortOrder": 0,
+          "course": {
+            "id": 5499,
+            "dispNameNl": "Pepper rocket",
+            "dispNameEn": "pepper rocket",
+            "nameNl": "Pepper rocket",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "",
+            "price": 3.4,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5499,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5499,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5499,
+                "allergenId": 209
+              },
+              {
+                "courseId": 5499,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5499,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 5499,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 9166,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 1136,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 11576,
+          "menuItemId": 9166,
+          "courseId": 1865,
+          "sortOrder": 0,
+          "course": {
+            "id": 1865,
+            "dispNameNl": "Salade Dolce Vita",
+            "dispNameEn": "Dolce Vita salad",
+            "nameNl": "salade dolce vita (penne, mozzarella, courgette), dd, z",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "meer dan de helft van de salade moet bestaan uit groenten. courgette en aubergine snijden en kort roosteren.pasta koken. - kerstomaat en notensla wassen - olijven laten uitlekken. groenten mengen en afsmaken.- pasta groenten en mozzarella assembleren afwerken met notensla en hennepzaad",
+            "price": 4.2,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1865,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1865,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1865,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1865,
+                "allergenId": 204
+              },
+              {
+                "courseId": 1865,
+                "allergenId": 206
+              },
+              {
+                "courseId": 1865,
+                "allergenId": 209
+              },
+              {
+                "courseId": 1865,
+                "allergenId": 210
+              },
+              {
+                "courseId": 1865,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1865,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 1865,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 1865,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 9171,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 1136,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 11581,
+          "menuItemId": 9171,
+          "courseId": 5226,
+          "sortOrder": 0,
+          "course": {
+            "id": 5226,
+            "dispNameNl": "Regenboog quinoa bowl",
+            "dispNameEn": "Rainbow quinoa bowl",
+            "nameNl": "00 regenboog quinoa bowl,z (vegan)",
+            "nameEn": "",
+            "weight": null,
+            "extra": null,
+            "preparation": "maak de rode quinoa klaar volgens de bereidingswijze op de verpakking en laat afkoelen.- maak de humusdressing met sojayoghurt en humus, breng op smaak met peper en zout. - maak de bowl: doe de quinoa in een kom, vervolgens baby leaf, rode en groene paprikareepjes, reepjes komkommer, kerstomaten en kikkererwten.- werk af met de prei scheuten, granaatappelpitjes, sesamzaad en de tahini dressing",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5226,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5226,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5226,
+                "allergenId": 209
+              },
+              {
+                "courseId": 5226,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5226,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 5226,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 9176,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 1136,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 11586,
+          "menuItemId": 9176,
+          "courseId": 3487,
+          "sortOrder": 0,
+          "course": {
+            "id": 3487,
+            "dispNameNl": "Thai bombai salade met kip",
+            "dispNameEn": "Thai Bombai chicken salad",
+            "nameNl": "thai bombai kip salade, w",
+            "nameEn": "",
+            "weight": "350g",
+            "extra": "koel bewaren",
+            "preparation": "kip bakken in olijfolie met pezo - mie koken - mie mengen met de world grill saus - pastinaak grillen en mengen met de wortelen en sojascheuten en kokosschilfers - opbouw: mie, kippenreepjes, groentjes en platte peterselie",
+            "price": 4.4,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3487,
+                "allergenId": 200
+              },
+              {
+                "courseId": 3487,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3487,
+                "allergenId": 208
+              },
+              {
+                "courseId": 3487,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3487,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 3487,
+                "courseLogoId": 209
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 9187,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 1136,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 11598,
+          "menuItemId": 9187,
+          "courseId": 1113,
+          "sortOrder": 0,
+          "course": {
+            "id": 1113,
+            "dispNameNl": "Mexicano",
+            "dispNameEn": "Mexicano",
+            "nameNl": "mexicano, z",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": null,
+            "preparation": "keuze om ketchup 3 liter of 1 liter te gebruiken",
+            "price": 3.1,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1113,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1113,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1113,
+                "allergenId": 204
+              },
+              {
+                "courseId": 1113,
+                "allergenId": 209
+              },
+              {
+                "courseId": 1113,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1113,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 1113,
+                "courseLogoId": 208
+              },
+              {
+                "courseId": 1113,
+                "courseLogoId": 210
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

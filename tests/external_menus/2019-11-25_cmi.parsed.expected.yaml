@@ -1,0 +1,215 @@
+$test_case:
+  course_of_interest: 1390
+  reason: |
+    This response originally broke an assumption that "maincourse" has precedence over "showFirst".
+    As far as I know, course component ordering is based on:
+    1. "showFirst": true has precedence over false, otherwise:
+    2. "maincourse": true has precedence over false, otherwise:
+    3. (?) "sortOrder": lower values have precedence over higher values, otherwise:
+    4: The order in which items are returned by the API
+
+    However, I have not yet encountered a sortOrder other than 0 in the wild, and I'd need to check the official website
+    implementation to see if this is actually used.
+campus: cmi
+date: '2019-11-25'
+menu:
+- components:
+  - allergens:
+    - WHEAT_GLUTEN
+    attributes:
+    - VEGAN
+    name:
+      en: Falafel
+      nl: Falafel
+  - allergens:
+    - CELERY
+    - WHEAT_GLUTEN
+    attributes: [ ]
+    name:
+      en: sauce Marengo
+      nl: marengosaus
+  - allergens: [ ]
+    attributes: [ ]
+    name:
+      en: parsley potatoes
+      nl: aardappelen met peterselie
+  external_id: 838
+  multiple_prices: true
+  price: '4.00'
+  sort_order: 1
+- components:
+  - allergens:
+    - CELERY
+    - WHEAT_GLUTEN
+    attributes:
+    - SOUP
+    - VEGAN
+    name:
+      en: Leek soup
+      nl: Preisoep
+  external_id: 839
+  multiple_prices: false
+  price: '0.90'
+  sort_order: 0
+- components:
+  - allergens:
+    - CELERY
+    - EGG
+    - MILK_LACTOSE
+    - MUSTARD
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - CHICKEN
+    name:
+      en: "Turkey pav\xE9"
+      nl: "Kalkoenpav\xE9"
+  - allergens:
+    - CELERY
+    - WHEAT_GLUTEN
+    attributes: [ ]
+    name:
+      en: sauce Marengo
+      nl: marengosaus
+  - allergens: [ ]
+    attributes: [ ]
+    name:
+      en: parsley potatoes
+      nl: aardappelen met peterselie
+  external_id: 840
+  multiple_prices: true
+  price: '4.20'
+  sort_order: 2
+- components:
+  - allergens:
+    - EGG
+    - WHEAT_GLUTEN
+    attributes: [ ]
+    name:
+      en: penne
+      nl: Penne
+    $test_case:
+      showFirst: true
+      maincourse: false
+  - allergens:
+    - EGG
+    - MILK_LACTOSE
+    attributes:
+    - PASTA
+    - VEGGIE
+    name:
+      en: African sunshine sauce
+      nl: African sunshinesaus
+    $test_case:
+      showFirst: false
+      maincourse: true
+  external_id: 1390
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 4
+- components:
+  - allergens:
+    - WHEAT_GLUTEN
+    attributes:
+    - PASTA
+    - VEGAN
+    name:
+      en: Penne with mushrooms and a creamy cauliflower sauce
+      nl: Penne met paddenstoelen en romige bloemkoolsaus
+  external_id: 1391
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 3
+- components:
+  - allergens: [ ]
+    attributes:
+    - CHICKEN
+    - GRILL
+    name:
+      en: Marinated chicken skewer
+      nl: Gemarineerde kippenbrochette
+  - allergens:
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes: [ ]
+    name:
+      en: "Proven\xE7al sauce"
+      nl: "Proven\xE7aalse saus"
+  - allergens:
+    - WHEAT_GLUTEN
+    attributes: [ ]
+    name:
+      en: fries
+      nl: frieten
+  - allergens:
+    - CELERY
+    - EGG
+    - FISH
+    - LUPINE
+    - MILK_LACTOSE
+    - MOLLUSKS
+    - MUSTARD
+    - NUTS
+    - PEANUTS
+    - SESAME
+    - SHELLFISH
+    - SOY
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes: [ ]
+    name:
+      en: saladbar
+      nl: Saladbar
+  external_id: 1392
+  multiple_prices: true
+  price: '5.20'
+  sort_order: 5
+- components:
+  - allergens:
+    - NUTS
+    - PEANUTS
+    - SESAME
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes:
+    - CHICKEN
+    - SALAD
+    name:
+      en: Mango and chicken salad
+      nl: Mango-kip-salade
+  external_id: 1393
+  multiple_prices: true
+  price: '4.40'
+  sort_order: 6
+- components:
+  - allergens:
+    - EGG
+    - FISH
+    - MUSTARD
+    - WHEAT_GLUTEN
+    attributes:
+    - FISH
+    - SALAD
+    name:
+      en: Salad with peaches and salmon salad
+      nl: Salade met perziken en zalmsalade
+  external_id: 1394
+  multiple_prices: true
+  price: '4.80'
+  sort_order: 7
+- components:
+  - allergens:
+    - EGG
+    - FISH
+    - MUSTARD
+    - WHEAT_GLUTEN
+    attributes:
+    - FISH
+    - SNACK
+    name:
+      en: Trout and citrus sandwich
+      nl: Broodje forel-citrus
+  external_id: 1396
+  multiple_prices: false
+  price: '3.10'
+  sort_order: 8

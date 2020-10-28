@@ -1,0 +1,144 @@
+$test_case:
+  course_of_interest: 3155
+  reason: |
+    This response contains a menu item which on its own has "enabled" set to 1, but has only one component which is has
+    "deleted" set to true and "enabled" set to false.
+
+    The course of interest here does not appear in this file as it should be ignored.
+campus: cmu
+date: '2020-02-10'
+menu:
+- components:
+  - allergens:
+    - MILK_LACTOSE
+    attributes:
+    - BIO
+    - SOUP
+    - VEGGIE
+    name:
+      en: Organic pumpkin soup
+      nl: Bio-pompoensoep
+  external_id: 3151
+  multiple_prices: false
+  price: '0.90'
+  sort_order: 0
+- components:
+  - allergens:
+    - CELERY
+    - SOY
+    attributes:
+    - SALAD
+    - VEGAN
+    name:
+      en: Thai Bombai salad
+      nl: Thai bombai salade
+  external_id: 3152
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 1
+- components:
+  - allergens:
+    - CELERY
+    - MILK_LACTOSE
+    - NUTS
+    - WHEAT_GLUTEN
+    attributes:
+    - CHEESE
+    - SALAD
+    - VEGGIE
+    name:
+      en: Spiced bread and goat cheese
+      nl: Peperkoeken geitenkaasje
+  external_id: 3153
+  multiple_prices: true
+  price: '4.40'
+  sort_order: 2
+- components:
+  - allergens:
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - SNACK
+    - VEGAN
+    name:
+      en: Deluxe vegan burger
+      nl: Vegan burger deluxe
+  external_id: 3154
+  multiple_prices: false
+  price: '3.10'
+  sort_order: 7
+- components:
+  - allergens:
+    - PEANUTS
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - SNACK
+    - VEGAN
+    name:
+      en: lentilicious
+      nl: Lentilicious
+  external_id: 3156
+  multiple_prices: false
+  price: '3.40'
+  sort_order: 3
+- components:
+  - allergens:
+    - EGG
+    - MILK_LACTOSE
+    - MUSTARD
+    - NUTS
+    - PEANUTS
+    - SESAME
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - FISH
+    - SNACK
+    name:
+      en: Multigrain roll with MSC tuna salad
+      nl: Meergranenbroodje met MSC-tonijnsalade
+  external_id: 3157
+  multiple_prices: false
+  price: '3.40'
+  sort_order: 5
+- components:
+  - allergens:
+    - CELERY
+    - EGG
+    - FISH
+    - MILK_LACTOSE
+    - MUSTARD
+    - SHELLFISH
+    - SOY
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes:
+    - SNACK
+    - VEAL
+    name:
+      en: Celery and roast beef focaccia
+      nl: Focaccia selder-rosbief
+  external_id: 3158
+  multiple_prices: false
+  price: '3.40'
+  sort_order: 4
+- components:
+  - allergens:
+    - EGG
+    - MILK_LACTOSE
+    - MUSTARD
+    - SESAME
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - CHEESE
+    - SNACK
+    - VEGGIE
+    name:
+      en: Multigrain roll with cheese and winter vegetables
+      nl: Meergranenbroodje met kaas en wintergroenten
+  external_id: 3159
+  multiple_prices: false
+  price: '3.00'
+  sort_order: 6

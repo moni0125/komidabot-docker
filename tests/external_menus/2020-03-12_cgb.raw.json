@@ -1,0 +1,452 @@
+{
+  "id": 807,
+  "menuDate": "2020-03-12T00:00:00",
+  "restaurantId": 4,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 5418,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 807,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 7404,
+          "menuItemId": 5418,
+          "courseId": 2523,
+          "sortOrder": 0,
+          "course": {
+            "id": 2523,
+            "dispNameNl": "Bio-bloemkoolsoep",
+            "dispNameEn": "Organic cauliflower soup",
+            "nameNl": "bio-bloemkoolsoep",
+            "nameEn": "",
+            "weight": "500ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": "water aan de kook brengen. - 20 kg bloemkool, aardappel en ajuin toevoegen. - bouillon peper zout toevoegen en laten koken. - als groenten gaar.+ 5 kg bloemkoolroosjes op laatste moment toevoegen.",
+            "price": 0.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [
+              {
+                "courseId": 2523,
+                "courseLogoId": 201
+              },
+              {
+                "courseId": 2523,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 2523,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5428,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 807,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 7413,
+          "menuItemId": 5428,
+          "courseId": 5650,
+          "sortOrder": 0,
+          "course": {
+            "id": 5650,
+            "dispNameNl": "Pasta met schorseneren in lookboter, met ei, olijven, peultjes & spekjes",
+            "dispNameEn": "Pasta with salsify in garlic butter, with egg, olives, snow peas & cubed bacons",
+            "nameNl": "Pasta met schorseneren in lookboter, met ei, olijven, peultjes & spekjes",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "beetgare pasta voorzichtig mengen met voorgesteamde peultjes en schorseneren, grof gesneden eitjes, look, olijven, peterselie en gesmolten boter -  gebakken spekblokjes toevoegen - afkruiden met pezo. - in gn van 6 diep verdelen en opwarmen in combi-steamer. ",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5650,
+                "allergenId": 200
+              },
+              {
+                "courseId": 5650,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5650,
+                "allergenId": 203
+              },
+              {
+                "courseId": 5650,
+                "allergenId": 204
+              },
+              {
+                "courseId": 5650,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5650,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5650,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5650,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5650,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 5650,
+                "courseLogoId": 212
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": 5431,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 807,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 7416,
+          "menuItemId": 5431,
+          "courseId": 5573,
+          "sortOrder": 0,
+          "course": {
+            "id": 5573,
+            "dispNameNl": "Purple bowl",
+            "dispNameEn": "purple bowl",
+            "nameNl": "Purple bowl,w",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "Maak de parelcouscous klaar volgens de bereidingswijze op de verpakking & laat afkoelen . - Maak de budhabowl als volgt: vul het kommetje met de parelcouscous, vervolgens de bonen, rode bietblokjes, geraspte knolselder en een paar stukjes witloof aan de zijkant. Werk de budha bowl af met kippenreepjes, gecrunshte pindanoten, gebakken uitjes & peterselie. Serveer hierbij de vinaigrette sjalot & ui. Zet het deksel op de weckpot en plak het etiket aan de zijkant.",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5573,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5573,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5573,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5573,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5573,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5573,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 5573,
+                "courseLogoId": 209
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5413,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 807,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 7399,
+          "menuItemId": 5413,
+          "courseId": 3104,
+          "sortOrder": 0,
+          "course": {
+            "id": 3104,
+            "dispNameNl": "Broodje sjeik",
+            "dispNameEn": "Sjeik sandwich",
+            "nameNl": "broodje sjeik,w (vegan)",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "koel bewaren - vegan",
+            "preparation": "conceptbroodje winter eerst tomatade - dan augurken - mozzarisella - postelein",
+            "price": 3.6,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3104,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3104,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3104,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 3104,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5407,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 807,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 7394,
+          "menuItemId": 5407,
+          "courseId": 1890,
+          "sortOrder": 0,
+          "course": {
+            "id": 1890,
+            "dispNameNl": "Salade zonder sla",
+            "dispNameEn": "Salad without lettuce",
+            "nameNl": "salade slaatje zonder sla (aardappel, appel, raapjes), dd, w",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "scharrelei gekookt rico 75st of scharrelei gekookt rico 6x12st karton appel besprenkelen met citroensap",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1890,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 205
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 206
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 208
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 209
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 212
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1890,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 1890,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5424,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 807,
+      "sortorder": 5,
+      "menuItemContents": [
+        {
+          "id": 7409,
+          "menuItemId": 5424,
+          "courseId": 1084,
+          "sortOrder": 0,
+          "course": {
+            "id": 1084,
+            "dispNameNl": "Croque Hawa\u00ef",
+            "dispNameEn": "Croque Hawaii",
+            "nameNl": "croque hawa\u00ef, z & w",
+            "nameEn": "",
+            "weight": "200g",
+            "extra": null,
+            "preparation": "keuze uit wit brood of bruin brood om de croque te maken 1 potje saus is inbegrepen in de prijs",
+            "price": 1.6,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1084,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1084,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1084,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1084,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 1084,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 1084,
+                "courseLogoId": 212
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

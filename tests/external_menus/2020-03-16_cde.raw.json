@@ -1,0 +1,60 @@
+{
+  "id": 799,
+  "menuDate": "2020-03-16T00:00:00",
+  "restaurantId": 2,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 5834,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 799,
+      "sortorder": 10,
+      "menuItemContents": [
+        {
+          "id": 7910,
+          "menuItemId": 5834,
+          "courseId": 5684,
+          "sortOrder": 0,
+          "course": {
+            "id": 5684,
+            "dispNameNl": "komida is minstens tot en met 3 april gesloten.",
+            "dispNameEn": "From 16/03/2020 till (at least) 3/04/2020 komida will be closed.",
+            "nameNl": "Vanaf 16/03/2020 tot en met 3/04/2020 is komida enkel een shop waar je terecht kan voor belegde broodjes, snoep en drank. Ter plaatse eten kan niet.",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": ""
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

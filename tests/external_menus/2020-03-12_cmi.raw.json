@@ -1,5 +1,4 @@
 {
-  "COMMENT": "Purple Bowl menu item displays 2 prices on the official site, but the bot only finds 1 price. Probably fixedMultiplePrices vs calculatedMultiplePrices",
   "id": 599,
   "menuDate": "2020-03-12T00:00:00",
   "restaurantId": 3,
@@ -364,7 +363,7 @@
           "course": {
             "id": 5514,
             "dispNameNl": "Rauwkostslaatje",
-            "dispNameEn": "crudités",
+            "dispNameEn": "crudit\u00e9s",
             "nameNl": "rauwkostslaatje",
             "nameEn": "",
             "weight": "",
@@ -471,8 +470,8 @@
             "nameEn": "",
             "weight": "200g",
             "extra": "vegan",
-            "preparation": "tomatensaus maken: ajuin aanstoven - bestrooien met paprika, look, bloem en tomatenpuree - drogen - water toevoegen + tomatenblokjes - 1 uur laten koken op klein vuur - mixen en afbinden met blanke roux afsmaken met pezo en provençaalse kruiden. - rode paprika gaar steamen en samen met room bij tomatensaus doen - mixen en eventueel verdunnen/aandikken serveer met een vegan pasta ( volkoren spaghetti speciality anco/ fusili volkoren bio)",
-            "price": 3.4,
+            "preparation": "tomatensaus maken: ajuin aanstoven - bestrooien met paprika, look, bloem en tomatenpuree - drogen - water toevoegen + tomatenblokjes - 1 uur laten koken op klein vuur - mixen en afbinden met blanke roux afsmaken met pezo en proven\u00e7aalse kruiden. - rode paprika gaar steamen en samen met room bij tomatensaus doen - mixen en eventueel verdunnen/aandikken serveer met een vegan pasta ( volkoren spaghetti speciality anco/ fusili volkoren bio)",
+            "price": 3.8,
             "photo": "",
             "isCourse": false,
             "isIngredient": false,
@@ -696,7 +695,7 @@
             "nameEn": "",
             "weight": "200g",
             "extra": "veggie",
-            "preparation": "saus maken met dressing maison - mayo - mosterd (keuze uit 1 liter of 3 liter) - bbq verstegen saus - groentenmengeling maken met witte kool, geraspte wortel, postelein, bieslook en peterselie. - hamburger broodje grillen langs beide kanten - burger op voorhand in oven garen - burger à la minute grillen - saus op broodje doen - burger erop en afwerken met de groentjes en gebakken ajuintjes - serveren met: frietjes - steakhouse frieten - kroketten - aardappelwafeltjes - gebakken krieltjes - parelcouscous met borlotti bonen - wedges - aardappel in de schil",
+            "preparation": "saus maken met dressing maison - mayo - mosterd (keuze uit 1 liter of 3 liter) - bbq verstegen saus - groentenmengeling maken met witte kool, geraspte wortel, postelein, bieslook en peterselie. - hamburger broodje grillen langs beide kanten - burger op voorhand in oven garen - burger \u00e0 la minute grillen - saus op broodje doen - burger erop en afwerken met de groentjes en gebakken ajuintjes - serveren met: frietjes - steakhouse frieten - kroketten - aardappelwafeltjes - gebakken krieltjes - parelcouscous met borlotti bonen - wedges - aardappel in de schil",
             "price": 5.0,
             "photo": "",
             "isCourse": false,
@@ -885,5 +884,6 @@
         }
       ]
     }
-  ]
+  ],
+  "$schema": "./raw.schema.json"
 }

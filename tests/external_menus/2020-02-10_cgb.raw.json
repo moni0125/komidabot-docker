@@ -1,0 +1,311 @@
+{
+  "id": 631,
+  "menuDate": "2020-02-10T00:00:00",
+  "restaurantId": 4,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 3910,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 631,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 5440,
+          "menuItemId": 3910,
+          "courseId": 1605,
+          "sortOrder": 0,
+          "course": {
+            "id": 1605,
+            "dispNameNl": "Roomsoep van schorseneren",
+            "dispNameEn": "Cream of salsify",
+            "nameNl": "roomsoep van schorseneren",
+            "nameEn": "",
+            "weight": "500 ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": null,
+            "price": 0.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1605,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1605,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1605,
+                "allergenId": 208
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1605,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 1605,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3911,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 631,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 5441,
+          "menuItemId": 3911,
+          "courseId": 4975,
+          "sortOrder": 0,
+          "course": {
+            "id": 4975,
+            "dispNameNl": "Salade Marrakech veganlicious ",
+            "dispNameEn": "Marrakesh veganlicious salad ",
+            "nameNl": "00 salade marrakech veganlicious(couscous,mozzarisella),dd,w (vegan)",
+            "nameEn": "",
+            "weight": "300 gr",
+            "extra": "koel bewaren - vegan",
+            "preparation": "conceptsalade winter",
+            "price": 4.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4975,
+                "allergenId": 201
+              },
+              {
+                "courseId": 4975,
+                "allergenId": 204
+              },
+              {
+                "courseId": 4975,
+                "allergenId": 208
+              },
+              {
+                "courseId": 4975,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4975,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 4975,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3916,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 631,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 5446,
+          "menuItemId": 3916,
+          "courseId": 3161,
+          "sortOrder": 0,
+          "course": {
+            "id": 3161,
+            "dispNameNl": "Bagel pumpkin",
+            "dispNameEn": "Pumpkin bagel",
+            "nameNl": "00 bagel pumpkin (cottage cheese,geroosterde pompoen), w",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "pompoen met olijfolie en pezo roosteren in de oven. bestrijk 1 kant van de bagel met de cottage cheese, beleg met de geroosterde pompoen en werk af met gecrunchte walnoten.",
+            "price": 2.5,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3161,
+                "allergenId": 200
+              },
+              {
+                "courseId": 3161,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3161,
+                "allergenId": 203
+              },
+              {
+                "courseId": 3161,
+                "allergenId": 205
+              },
+              {
+                "courseId": 3161,
+                "allergenId": 208
+              },
+              {
+                "courseId": 3161,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3161,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 3161,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 3161,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3921,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 631,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 5451,
+          "menuItemId": 3921,
+          "courseId": 2424,
+          "sortOrder": 0,
+          "course": {
+            "id": 2424,
+            "dispNameNl": "Panini 'kalkoen-pesto'",
+            "dispNameEn": "Turkey pesto panini",
+            "nameNl": "panini 'kalkoen-pesto', z & w",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": null,
+            "preparation": "vanaf nu pestospread gran'olivia gebruiken - sandwich spread opwerken",
+            "price": 2.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 2424,
+                "allergenId": 200
+              },
+              {
+                "courseId": 2424,
+                "allergenId": 201
+              },
+              {
+                "courseId": 2424,
+                "allergenId": 203
+              },
+              {
+                "courseId": 2424,
+                "allergenId": 205
+              },
+              {
+                "courseId": 2424,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 2424,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 2424,
+                "courseLogoId": 210
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

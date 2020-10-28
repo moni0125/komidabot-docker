@@ -1,0 +1,81 @@
+campus: cmu
+date: '2019-11-25'
+menu:
+- components:
+  - allergens:
+    - NUTS
+    - SESAME
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - SALAD
+    - VEGAN
+    name:
+      en: Oriental bulghur salad with chilli
+      nl: Oosterse bulgursalade met chili
+  external_id: 1321
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 1
+- components:
+  - allergens:
+    - MILK_LACTOSE
+    - MUSTARD
+    - NUTS
+    - PEANUTS
+    - SESAME
+    - WHEAT_GLUTEN
+    attributes:
+    - CHEESE
+    - SALAD
+    - VEGGIE
+    name:
+      en: Crunchy salad
+      nl: Krokante salade
+  external_id: 1322
+  multiple_prices: true
+  price: '5.00'
+  sort_order: 2
+- components:
+  - allergens: []
+    attributes:
+    - BIO
+    - SOUP
+    - VEGAN
+    name:
+      en: Organic broccoli soup
+      nl: Bio-broccolisoep
+  external_id: 1323
+  multiple_prices: false
+  price: '0.90'
+  sort_order: 0
+- components:
+  - allergens:
+    - MILK_LACTOSE
+    - WHEAT_GLUTEN
+    attributes:
+    - CHEESE
+    - SNACK
+    - VEGGIE
+    name:
+      en: Grilled goat cheese sandwich with honey
+      nl: Croque geitenkaas-honing
+  external_id: 1324
+  multiple_prices: false
+  price: '1.60'
+  sort_order: 11
+- components:
+  - allergens:
+    - NUTS
+    - SESAME
+    - WHEAT_GLUTEN
+    attributes:
+    - SNACK
+    - VEGAN
+    name:
+      en: Panini California
+      nl: Panini California
+  external_id: 1325
+  multiple_prices: false
+  price: '2.90'
+  sort_order: 3

@@ -1,0 +1,121 @@
+campus: hzs
+date: '2019-11-25'
+menu:
+- components:
+  - allergens:
+    - CELERY
+    - WHEAT_GLUTEN
+    attributes:
+    - SOUP
+    - VEGAN
+    name:
+      en: Bell pepper soup
+      nl: Paprikasoep
+  external_id: 1163
+  multiple_prices: false
+  price: '0.90'
+  sort_order: 0
+- components:
+  - allergens:
+    - MILK_LACTOSE
+    - WHEAT_GLUTEN
+    attributes:
+    - SNACK
+    - VEGGIE
+    name:
+      en: Sweet 'n cheesy
+      nl: Sweet 'n cheesy
+  external_id: 1164
+  multiple_prices: false
+  price: '3.10'
+  sort_order: 1
+- components:
+  - allergens:
+    - EGG
+    - FISH
+    - MUSTARD
+    - SESAME
+    - SHELLFISH
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - FISH
+    - SNACK
+    name:
+      en: Multigrain roll with langoustine salad
+      nl: Meergranenbroodje met langoustinesalade
+  external_id: 1165
+  multiple_prices: false
+  price: '3.10'
+  sort_order: 2
+- components:
+  - allergens:
+    - CELERY
+    - MILK_LACTOSE
+    - MUSTARD
+    - WHEAT_GLUTEN
+    attributes:
+    - SALAD
+    - VEGGIE
+    name:
+      en: Marrakesh salad
+      nl: Salade Marrakech
+  external_id: 1166
+  multiple_prices: true
+  price: '4.40'
+  sort_order: 3
+- components:
+  - allergens:
+    - NUTS
+    - SESAME
+    - WHEAT_GLUTEN
+    attributes:
+    - SALAD
+    - VEGAN
+    name:
+      en: Avocado and quinoa salad
+      nl: Avocado-quinoasalade
+  external_id: 1167
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 10
+- components:
+  - allergens:
+    - WHEAT_GLUTEN
+    attributes:
+    - SNACK
+    - VEGAN
+    name:
+      en: Mexican wrap
+      nl: Mexicaanse wrap
+  external_id: 1168
+  multiple_prices: false
+  price: '2.00'
+  sort_order: 10
+- components:
+  - allergens:
+    - NUTS
+    - SESAME
+    - WHEAT_GLUTEN
+    attributes:
+    - SNACK
+    - VEGAN
+    name:
+      en: Humus and avocado panini
+      nl: Humus-avocado-panini
+  external_id: 1169
+  multiple_prices: false
+  price: '3.60'
+  sort_order: 10
+- components:
+  - allergens: []
+    attributes:
+    - PASTA
+    - VEGGIE
+    name:
+      en: Pasta pesto with sun-dried tomatoes
+      nl: Pasta pesto met zongedroogde tomaatjes
+  external_id: 1170
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 10

@@ -1,0 +1,60 @@
+{
+  "id": 750,
+  "menuDate": "2020-03-16T00:00:00",
+  "restaurantId": 5,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 5885,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 750,
+      "sortorder": 10,
+      "menuItemContents": [
+        {
+          "id": 7960,
+          "menuItemId": 5885,
+          "courseId": 5685,
+          "sortOrder": 0,
+          "course": {
+            "id": 5685,
+            "dispNameNl": "Gesloten van 16/03/2020 tot en met 17/04/2020",
+            "dispNameEn": "Closed from 16/03/2020 till 17/04/2020",
+            "nameNl": "Gesloten van 16/03/2020 tot en met 17/04/2020 ",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": ""
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

@@ -1,0 +1,519 @@
+{
+  "id": 683,
+  "menuDate": "2020-03-12T00:00:00",
+  "restaurantId": 6,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 4179,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 683,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 5803,
+          "menuItemId": 4179,
+          "courseId": 3623,
+          "sortOrder": 0,
+          "course": {
+            "id": 3623,
+            "dispNameNl": "Bio-tomatensoep",
+            "dispNameEn": "Organic tomato soup",
+            "nameNl": "bio-tomatensoep",
+            "nameEn": "",
+            "weight": "500 ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": "bieslook op het einde toevoegen",
+            "price": 0.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [
+              {
+                "courseId": 3623,
+                "courseLogoId": 201
+              },
+              {
+                "courseId": 3623,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 3623,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4184,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 683,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 5808,
+          "menuItemId": 4184,
+          "courseId": 403,
+          "sortOrder": 0,
+          "course": {
+            "id": 403,
+            "dispNameNl": "Sweet 'n cheesy ",
+            "dispNameEn": "Sweet 'n cheesy ",
+            "nameNl": "sweet 'n cheesy (smeerkaas, tapenade paprika) dd, w",
+            "nameEn": "",
+            "weight": "250 g",
+            "extra": "koel bewaren - veggie",
+            "preparation": null,
+            "price": 3.1,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 403,
+                "allergenId": 201
+              },
+              {
+                "courseId": 403,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 403,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 403,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4189,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 683,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 5813,
+          "menuItemId": 4189,
+          "courseId": 1867,
+          "sortOrder": 0,
+          "course": {
+            "id": 1867,
+            "dispNameNl": "Pikant chilibroodje",
+            "dispNameEn": "Spicy chilli sandwich",
+            "nameNl": "chilibroodje pikant (rosbief), w",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": "koel bewaren",
+            "preparation": "kruiden met piri piri, mag pittig zijn",
+            "price": 3.4,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1867,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1867,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1867,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1867,
+                "courseLogoId": 208
+              },
+              {
+                "courseId": 1867,
+                "courseLogoId": 210
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4194,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 683,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 5818,
+          "menuItemId": 4194,
+          "courseId": 1890,
+          "sortOrder": 0,
+          "course": {
+            "id": 1890,
+            "dispNameNl": "Salade zonder sla",
+            "dispNameEn": "Salad without lettuce",
+            "nameNl": "salade slaatje zonder sla (aardappel, appel, raapjes), dd, w",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "scharrelei gekookt rico 75st of scharrelei gekookt rico 6x12st karton appel besprenkelen met citroensap",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1890,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 205
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 206
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 208
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 209
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 212
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1890,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 1890,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4199,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 683,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 5823,
+          "menuItemId": 4199,
+          "courseId": 3871,
+          "sortOrder": 0,
+          "course": {
+            "id": 3871,
+            "dispNameNl": "Mango-kip-salade",
+            "dispNameEn": "Mango and chicken salad",
+            "nameNl": "salade mango-kip, w",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "koel bewaren",
+            "preparation": null,
+            "price": 4.4,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3871,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3871,
+                "allergenId": 205
+              },
+              {
+                "courseId": 3871,
+                "allergenId": 206
+              },
+              {
+                "courseId": 3871,
+                "allergenId": 209
+              },
+              {
+                "courseId": 3871,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3871,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 3871,
+                "courseLogoId": 209
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4204,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 683,
+      "sortorder": 5,
+      "menuItemContents": [
+        {
+          "id": 5828,
+          "menuItemId": 4204,
+          "courseId": 175,
+          "sortOrder": 0,
+          "course": {
+            "id": 175,
+            "dispNameNl": "Panini Marco Polo",
+            "dispNameEn": "Panini Marco Polo",
+            "nameNl": "panini marco polo (tapenade paprika, cheddar) dd, z & w",
+            "nameEn": "",
+            "weight": "250 g",
+            "extra": "koel bewaren - veggie",
+            "preparation": null,
+            "price": 2.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 175,
+                "allergenId": 201
+              },
+              {
+                "courseId": 175,
+                "allergenId": 203
+              },
+              {
+                "courseId": 175,
+                "allergenId": 205
+              },
+              {
+                "courseId": 175,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 175,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 175,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 175,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4209,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 683,
+      "sortorder": 6,
+      "menuItemContents": [
+        {
+          "id": 5833,
+          "menuItemId": 4209,
+          "courseId": 1111,
+          "sortOrder": 0,
+          "course": {
+            "id": 1111,
+            "dispNameNl": "Fishburger",
+            "dispNameEn": "Fish burger",
+            "nameNl": "fishburger (met tartaarsaus), z",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": null,
+            "preparation": null,
+            "price": 3.1,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1111,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1111,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1111,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1111,
+                "allergenId": 204
+              },
+              {
+                "courseId": 1111,
+                "allergenId": 208
+              },
+              {
+                "courseId": 1111,
+                "allergenId": 210
+              },
+              {
+                "courseId": 1111,
+                "allergenId": 212
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1111,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 1111,
+                "courseLogoId": 215
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

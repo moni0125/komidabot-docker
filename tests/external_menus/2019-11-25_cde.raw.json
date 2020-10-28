@@ -1,5 +1,4 @@
 {
-  "COMMENT": "This file broke an assumption that only one menu item could contain a price (3rd item)",
   "id": 208,
   "menuDate": "2019-11-25T00:00:00",
   "restaurantId": 2,
@@ -30,12 +29,12 @@
           "course": {
             "id": 859,
             "dispNameNl": "Knolseldersoep",
-            "dispNameEn": "",
+            "dispNameEn": "Celeriac soup",
             "nameNl": "knolseldersoep",
             "nameEn": "",
             "weight": "500 ml / 700ml",
             "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
-            "preparation": "Bouillon, ajuinblokjes, soepprei,Knolselder en eventueel aardappelen samen gaar koken. - Mixen. - Op smaak brengen met peper en zout. - Melk en Room toevoegen.\t\t",
+            "preparation": "bouillon, ajuinblokjes, soepprei,knolselder en eventueel aardappelen samen gaar koken. - mixen. - op smaak brengen met peper en zout. - melk en room toevoegen.",
             "price": 0.9,
             "photo": "",
             "isCourse": false,
@@ -72,7 +71,8 @@
             "fixedprice": true,
             "showFirst": false,
             "deleted": false,
-            "enabled": true
+            "enabled": true,
+            "menuInfoEn": null
           }
         }
       ]
@@ -96,12 +96,12 @@
           "course": {
             "id": 999,
             "dispNameNl": "rijst",
-            "dispNameEn": "",
+            "dispNameEn": "rice",
             "nameNl": "rijst",
             "nameEn": "",
             "weight": "150g",
             "extra": null,
-            "preparation": "kook de rijst gaar in licht gezouten water - ",
+            "preparation": "kook de rijst gaar in licht gezouten water -",
             "price": 0.0,
             "photo": "",
             "isCourse": false,
@@ -116,7 +116,8 @@
             "fixedprice": false,
             "showFirst": false,
             "deleted": false,
-            "enabled": true
+            "enabled": true,
+            "menuInfoEn": null
           }
         },
         {
@@ -127,12 +128,12 @@
           "course": {
             "id": 1318,
             "dispNameNl": "Goulash met quorn en paprika dd",
-            "dispNameEn": "",
+            "dispNameEn": "Quorn and bell pepper goulash dd",
             "nameNl": "goulash met quorn en paprika dd",
             "nameEn": "",
             "weight": "200g pp",
             "extra": null,
-            "preparation": "ajuin aanbakken in vetstof, quornblokjes toevoegen - tomatenpuree en paprikapoeder toevoegen en laten\t\t\t\t\t\r\nuitdrogen - bevochtigen met water en tomatenblokjes - kruiden met pezo, look, tijm en laurier - bouillon toevoegen\t\t\t\t\t\r\nchampignons en paprika toe",
+            "preparation": "ajuin aanbakken in vetstof, quornblokjes toevoegen - tomatenpuree en paprikapoeder toevoegen en laten uitdrogen - bevochtigen met water en tomatenblokjes - kruiden met pezo, look, tijm en laurier - bouillon toevoegen champignons en paprika toevoegen. - binden met blanke roux en afwerken met peterselie.",
             "price": 4.6,
             "photo": "",
             "isCourse": false,
@@ -149,27 +150,7 @@
               },
               {
                 "courseId": 1318,
-                "allergenId": 203
-              },
-              {
-                "courseId": 1318,
-                "allergenId": 208
-              },
-              {
-                "courseId": 1318,
-                "allergenId": 209
-              },
-              {
-                "courseId": 1318,
-                "allergenId": 210
-              },
-              {
-                "courseId": 1318,
                 "allergenId": 211
-              },
-              {
-                "courseId": 1318,
-                "allergenId": 212
               }
             ],
             "course_CourseLogos": [
@@ -185,7 +166,8 @@
             "fixedprice": false,
             "showFirst": false,
             "deleted": false,
-            "enabled": true
+            "enabled": true,
+            "menuInfoEn": null
           }
         }
       ]
@@ -209,7 +191,7 @@
           "course": {
             "id": 977,
             "dispNameNl": "couscous",
-            "dispNameEn": "",
+            "dispNameEn": "couscous",
             "nameNl": "couscous",
             "nameEn": "",
             "weight": "150 - 200g pp",
@@ -238,7 +220,8 @@
             "fixedprice": false,
             "showFirst": false,
             "deleted": false,
-            "enabled": true
+            "enabled": true,
+            "menuInfoEn": null
           }
         },
         {
@@ -249,12 +232,12 @@
           "course": {
             "id": 1032,
             "dispNameNl": "couscousgroenten",
-            "dispNameEn": "",
+            "dispNameEn": "couscous vegetables",
             "nameNl": "couscousgroenten",
             "nameEn": "",
             "weight": "200g pp",
             "extra": null,
-            "preparation": "Couscousgroenten beetgaar steamen. Stoven in margarine, op smaak brengen met peper en zout. \r\nIn gastronorm doen en bestrooien met  koriander.\t\t\t\t\r\n",
+            "preparation": "couscousgroenten beetgaar steamen. stoven in margarine, op smaak brengen met peper en zout. in gastronorm doen en bestrooien met koriander.",
             "price": 0.2,
             "photo": "",
             "isCourse": false,
@@ -274,7 +257,8 @@
             "fixedprice": false,
             "showFirst": false,
             "deleted": false,
-            "enabled": true
+            "enabled": true,
+            "menuInfoEn": null
           }
         },
         {
@@ -285,12 +269,12 @@
           "course": {
             "id": 1864,
             "dispNameNl": "Kiprollade met zongedroogde tomaat ",
-            "dispNameEn": "",
+            "dispNameEn": "Chicken roulade with sun-dried tomatoes ",
             "nameNl": "kiprollade zongedroogde tomaat dd",
             "nameEn": "",
             "weight": "150g",
             "extra": null,
-            "preparation": "Zie receptuur\t\t\t\t\t\r\nportioneren, schikken op geoliede gastro en verwarmen combi op 140° met vochtimpuls\t\t\t\t\t\r\n",
+            "preparation": "zie receptuur portioneren, schikken op geoliede gastro en verwarmen combi op 140\u00b0 met vochtimpuls",
             "price": 4.6,
             "photo": "",
             "isCourse": false,
@@ -319,7 +303,8 @@
             "fixedprice": false,
             "showFirst": false,
             "deleted": false,
-            "enabled": true
+            "enabled": true,
+            "menuInfoEn": null
           }
         }
       ]
@@ -343,12 +328,12 @@
           "course": {
             "id": 5177,
             "dispNameNl": "Penne met paddenstoelen en romige bloemkoolsaus",
-            "dispNameEn": "",
+            "dispNameEn": "Penne with mushrooms and a creamy cauliflower sauce",
             "nameNl": "00 penne met paddenstoelen en romige bloemkoolsaus (vegan)",
             "nameEn": "",
             "weight": null,
             "extra": null,
-            "preparation": "Maak de bloemkoolsaus klaar volgens de receptuur (zie fiche). -  Maak de volkoren penne klaar volgens de receptuur. Fruit de ui en bak hierbij de champignons, breng op smaak met look, peper en zout.-  Meng de pasta met de bloemkoolsaus, de champignons en ",
+            "preparation": "maak de bloemkoolsaus klaar volgens de receptuur (zie fiche). - maak de volkoren penne klaar volgens de receptuur. fruit de ui en bak hierbij de champignons, breng op smaak met look, peper en zout.- meng de pasta met de bloemkoolsaus, de champignons en werk af met platte peterselie & gebakken uitjes.",
             "price": 3.8,
             "photo": "",
             "isCourse": false,
@@ -358,14 +343,6 @@
               {
                 "courseId": 5177,
                 "allergenId": 201
-              },
-              {
-                "courseId": 5177,
-                "allergenId": 203
-              },
-              {
-                "courseId": 5177,
-                "allergenId": 210
               }
             ],
             "course_CourseLogos": [
@@ -385,7 +362,8 @@
             "fixedprice": false,
             "showFirst": false,
             "deleted": false,
-            "enabled": true
+            "enabled": true,
+            "menuInfoEn": null
           }
         }
       ]
@@ -409,12 +387,12 @@
           "course": {
             "id": 990,
             "dispNameNl": "pasta",
-            "dispNameEn": "",
+            "dispNameEn": "pasta",
             "nameNl": "pasta",
             "nameEn": "",
             "weight": "150 - 200g pp",
             "extra": null,
-            "preparation": "kook de pasta gaar in licht gezouten water, sojaolie toevoegen, - kooktijd is afhankelijk van de soort pasta\t\t\t\t\r\n",
+            "preparation": "kook de pasta gaar in licht gezouten water, sojaolie toevoegen, - kooktijd is afhankelijk van de soort pasta",
             "price": 0.0,
             "photo": "",
             "isCourse": false,
@@ -438,7 +416,8 @@
             "fixedprice": false,
             "showFirst": true,
             "deleted": false,
-            "enabled": true
+            "enabled": true,
+            "menuInfoEn": null
           }
         },
         {
@@ -449,13 +428,13 @@
           "course": {
             "id": 1416,
             "dispNameNl": "African sunshinesaus",
-            "dispNameEn": "",
+            "dispNameEn": "African sunshine sauce",
             "nameNl": "african sunshine saus, zvv, dd",
             "nameEn": "",
             "weight": "200g",
             "extra": "veggie",
             "preparation": "courgettes en paprika aanstoven en kruiden. - mengen met de pasta en de african sunshine saus toevoegen.",
-            "price": 3.4,
+            "price": 3.8,
             "photo": "",
             "isCourse": false,
             "isIngredient": false,
@@ -473,6 +452,10 @@
             "course_CourseLogos": [
               {
                 "courseId": 1416,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 1416,
                 "courseLogoId": 214
               }
             ],
@@ -483,7 +466,8 @@
             "fixedprice": false,
             "showFirst": false,
             "deleted": false,
-            "enabled": true
+            "enabled": true,
+            "menuInfoEn": null
           }
         }
       ]
@@ -507,12 +491,12 @@
           "course": {
             "id": 980,
             "dispNameNl": "frieten",
-            "dispNameEn": "",
+            "dispNameEn": "fries",
             "nameNl": "frieten",
             "nameEn": "",
             "weight": "200g pp",
             "extra": null,
-            "preparation": "afbakken in het frituur op 170 graden\t\t\r\n",
+            "preparation": "afbakken in het frituur op 170 graden",
             "price": 0.0,
             "photo": "",
             "isCourse": false,
@@ -532,7 +516,8 @@
             "fixedprice": false,
             "showFirst": false,
             "deleted": false,
-            "enabled": true
+            "enabled": true,
+            "menuInfoEn": null
           }
         },
         {
@@ -543,7 +528,7 @@
           "course": {
             "id": 3264,
             "dispNameNl": "Kipfilet op de grill ",
-            "dispNameEn": "",
+            "dispNameEn": "Grilled chicken breast ",
             "nameNl": "kipfilet op de grill 1 (kippenkruiden), dd",
             "nameEn": "",
             "weight": "140g",
@@ -572,7 +557,8 @@
             "fixedprice": false,
             "showFirst": false,
             "deleted": false,
-            "enabled": true
+            "enabled": true,
+            "menuInfoEn": null
           }
         },
         {
@@ -583,7 +569,7 @@
           "course": {
             "id": 5515,
             "dispNameNl": "Saladbar",
-            "dispNameEn": "",
+            "dispNameEn": "saladbar",
             "nameNl": "Salade - bar",
             "nameEn": "",
             "weight": "",
@@ -660,7 +646,8 @@
             "fixedprice": false,
             "showFirst": false,
             "deleted": false,
-            "enabled": true
+            "enabled": true,
+            "menuInfoEn": null
           }
         }
       ]
@@ -683,14 +670,14 @@
           "sortOrder": 0,
           "course": {
             "id": 5224,
-            "dispNameNl": "Buddha bow humuslicious",
-            "dispNameEn": "",
+            "dispNameNl": "Buddha bowl humuslicious",
+            "dispNameEn": "Buddha bow hummuslicious",
             "nameNl": "00 buddha bowl humuslicious,z (vegan)",
             "nameEn": "",
             "weight": null,
             "extra": null,
-            "preparation": "Maak de quinoa klaar volgens de receptuur & laat afkoelen.- Rooster de kikkererwten in de oven: besprenkel met olijfolie en kruid af met kruid mole oaxaca en zeezout & laat afkoelen - Rooster de groene asperges - Maak de bowl: doe de quinoa in een kom, ve",
-            "price": 3.6,
+            "preparation": "maak de quinoa klaar volgens de receptuur & laat afkoelen.- rooster de kikkererwten in de oven: besprenkel met olijfolie en kruid af met kruid mole oaxaca en zeezout & laat afkoelen - rooster de groene asperges - maak de bowl: doe de quinoa in een kom, vervolgens de gegrilde asperges, spinazie en schijfjes avocado (besprenkel met citroensap).- werk af met kerstomaten,granaatappelpitjes en de humus in het midden en geroosterde kikkererwten.",
+            "price": 3.8,
             "photo": "",
             "isCourse": false,
             "isIngredient": false,
@@ -704,20 +691,26 @@
             "course_CourseLogos": [
               {
                 "courseId": 5224,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 5224,
                 "courseLogoId": 213
               }
             ],
             "maincourse": true,
             "menuInfo": null,
-            "fixedMultiplePrices": false,
-            "calculatedMultiplePrices": true,
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
             "fixedprice": false,
             "showFirst": false,
             "deleted": false,
-            "enabled": true
+            "enabled": true,
+            "menuInfoEn": null
           }
         }
       ]
     }
-  ]
+  ],
+  "$schema": "raw.schema.json"
 }

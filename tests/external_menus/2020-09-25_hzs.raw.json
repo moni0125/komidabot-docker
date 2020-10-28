@@ -1,0 +1,27 @@
+{
+  "id": 1021,
+  "menuDate": "2020-09-25T00:00:00",
+  "restaurantId": 6,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 8034,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 0,
+      "remark": null,
+      "menuid": 1021,
+      "sortorder": 10,
+      "menuItemContents": []
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

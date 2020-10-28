@@ -1,0 +1,159 @@
+$test_case:
+  course_of_interest: 1353
+  reason: |
+    This response originally broke an assumption that only one component in a menu item can have a price attached to it.
+    However, the price is based on the sum of all components, some of which can have a fixed price, but others may
+    require "calculating" a staff price. If one or more requires this to be calculated this is done on the summed price.
+campus: cde
+date: '2019-11-25'
+menu:
+- components:
+  - allergens:
+    - CELERY
+    - MILK_LACTOSE
+    - WHEAT_GLUTEN
+    attributes:
+    - SOUP
+    - VEGGIE
+    name:
+      en: Celeriac soup
+      nl: Knolseldersoep
+  external_id: 1351
+  multiple_prices: false
+  price: '0.90'
+  sort_order: 0
+- components:
+  - allergens:
+    - EGG
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes:
+    - VEGGIE
+    name:
+      en: Quorn and bell pepper goulash dd
+      nl: Goulash met quorn en paprika dd
+  - allergens: [ ]
+    attributes: [ ]
+    name:
+      en: rice
+      nl: rijst
+  external_id: 1352
+  multiple_prices: true
+  price: '4.60'
+  sort_order: 1
+- components:
+  - allergens:
+    - MILK_LACTOSE
+    - WHEAT_GLUTEN
+    attributes:
+    - CHICKEN
+    name:
+      en: Chicken roulade with sun-dried tomatoes
+      nl: Kiprollade met zongedroogde tomaat
+    $test_case:
+      comment: This component has a price of 4.6 in the raw data
+  - allergens:
+    - MUSTARD
+    - WHEAT_GLUTEN
+    attributes: [ ]
+    name:
+      en: couscous
+      nl: couscous
+    $test_case:
+      comment: This component has a price of 0.2 in the raw data
+  - allergens:
+    - CELERY
+    attributes: [ ]
+    name:
+      en: couscous vegetables
+      nl: couscousgroenten
+  external_id: 1353
+  multiple_prices: true
+  price: '4.80'
+  $test_case:
+    comment: The price of this course is based on the sum of its components
+  sort_order: 2
+- components:
+  - allergens:
+    - WHEAT_GLUTEN
+    attributes:
+    - PASTA
+    - VEGAN
+    name:
+      en: Penne with mushrooms and a creamy cauliflower sauce
+      nl: Penne met paddenstoelen en romige bloemkoolsaus
+  external_id: 1427
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 3
+- components:
+  - allergens:
+    - EGG
+    - WHEAT_GLUTEN
+    attributes: [ ]
+    name:
+      en: pasta
+      nl: pasta
+  - allergens:
+    - EGG
+    - MILK_LACTOSE
+    attributes:
+    - PASTA
+    - VEGGIE
+    name:
+      en: African sunshine sauce
+      nl: African sunshinesaus
+  external_id: 1430
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 4
+- components:
+  - allergens: [ ]
+    attributes:
+    - CHICKEN
+    - GRILL
+    name:
+      en: Grilled chicken breast
+      nl: Kipfilet op de grill
+  - allergens:
+    - WHEAT_GLUTEN
+    attributes: [ ]
+    name:
+      en: fries
+      nl: frieten
+  - allergens:
+    - CELERY
+    - EGG
+    - FISH
+    - LUPINE
+    - MILK_LACTOSE
+    - MOLLUSKS
+    - MUSTARD
+    - NUTS
+    - PEANUTS
+    - SESAME
+    - SHELLFISH
+    - SOY
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes: [ ]
+    name:
+      en: saladbar
+      nl: Saladbar
+  external_id: 1431
+  multiple_prices: true
+  price: '4.80'
+  sort_order: 5
+- components:
+  - allergens:
+    - SESAME
+    attributes:
+    - SALAD
+    - VEGAN
+    name:
+      en: Buddha bow hummuslicious
+      nl: Buddha bowl humuslicious
+  external_id: 1432
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 11

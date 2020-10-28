@@ -1,0 +1,201 @@
+campus: cst
+date: '2019-11-25'
+menu:
+- components:
+  - allergens:
+    - CELERY
+    - MILK_LACTOSE
+    - WHEAT_GLUTEN
+    attributes:
+    - SOUP
+    - VEGGIE
+    name:
+      en: Parsnip soup
+      nl: Pastinaaksoep
+  external_id: 982
+  multiple_prices: false
+  price: '1.50'
+  sort_order: 0
+- components:
+  - allergens: []
+    attributes:
+    - VEGGIE
+    name:
+      en: Pea kofte
+      nl: "Erwtenk\xF6fteballetjes"
+  - allergens:
+    - MILK_LACTOSE
+    - WHEAT_GLUTEN
+    attributes: []
+    name:
+      en: white cabbage in white sauce
+      nl: witte kool in witte saus
+  - allergens: []
+    attributes: []
+    name:
+      en: fried potato slices
+      nl: gebakken aardappelschijfjes
+  external_id: 983
+  multiple_prices: true
+  price: '4.40'
+  sort_order: 1
+- components:
+  - allergens:
+    - CELERY
+    - EGG
+    - MILK_LACTOSE
+    - MUSTARD
+    - NUTS
+    - SESAME
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - LESS_MEAT
+    - PIG
+    name:
+      en: Less  Meat Loaf
+      nl: Vleesbrood met weinig vlees
+  - allergens:
+    - MILK_LACTOSE
+    - WHEAT_GLUTEN
+    attributes: []
+    name:
+      en: white cabbage in white sauce
+      nl: witte kool in witte saus
+  - allergens: []
+    attributes: []
+    name:
+      en: fried potato slices
+      nl: gebakken aardappelschijfjes
+  external_id: 984
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 2
+- components:
+  - allergens:
+    - WHEAT_GLUTEN
+    attributes:
+    - PASTA
+    - VEGAN
+    name:
+      en: Penne with mushrooms and a creamy cauliflower sauce
+      nl: Penne met paddenstoelen en romige bloemkoolsaus
+  external_id: 1412
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 3
+- components:
+  - allergens:
+    - WHEAT_GLUTEN
+    attributes: []
+    name:
+      en: spelt penne
+      nl: Speltpenne
+  - allergens:
+    - CELERY
+    - NUTS
+    - PEANUTS
+    - SESAME
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes:
+    - PASTA
+    - VEGAN
+    name:
+      en: bolnienaise veganlicious
+      nl: bolnienaise veganlicious
+  external_id: 1413
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 4
+- components:
+  - allergens: []
+    attributes:
+    - CHICKEN
+    - GRILL
+    name:
+      en: Grilled chicken breast
+      nl: Kipfilet op de grill
+  - allergens:
+    - CELERY
+    - EGG
+    - MILK_LACTOSE
+    - MUSTARD
+    - SOY
+    attributes: []
+    name:
+      en: choron sauce
+      nl: choronsaus
+  - allergens:
+    - CELERY
+    - EGG
+    - FISH
+    - LUPINE
+    - MILK_LACTOSE
+    - MOLLUSKS
+    - MUSTARD
+    - NUTS
+    - PEANUTS
+    - SESAME
+    - SHELLFISH
+    - SOY
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes: []
+    name:
+      en: saladbar
+      nl: Saladbar
+  external_id: 1414
+  multiple_prices: true
+  price: '5.00'
+  sort_order: 5
+- components:
+  - allergens:
+    - CELERY
+    - NUTS
+    - SESAME
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - SALAD
+    - VEGAN
+    name:
+      en: "P\xE9pites bowl"
+      nl: "P\xE9pites bowl"
+  external_id: 1415
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 11
+- components:
+  - allergens:
+    - EGG
+    - MILK_LACTOSE
+    - NUTS
+    - PEANUTS
+    - SESAME
+    - WHEAT_GLUTEN
+    attributes:
+    - CHEESE
+    - SALAD
+    - VEGGIE
+    name:
+      en: Cottage cheese salad
+      nl: "Salade h\xFCttekase"
+  external_id: 1416
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 11
+- components:
+  - allergens:
+    - CELERY
+    - SOY
+    attributes:
+    - SALAD
+    - VEGAN
+    name:
+      en: Thai Bombai salad
+      nl: Thai bombai salade
+  external_id: 1417
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 11

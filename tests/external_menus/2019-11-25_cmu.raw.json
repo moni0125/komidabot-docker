@@ -1,0 +1,361 @@
+{
+  "id": 242,
+  "menuDate": "2019-11-25T00:00:00",
+  "restaurantId": 5,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 1323,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 242,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 1943,
+          "menuItemId": 1323,
+          "courseId": 2524,
+          "sortOrder": 0,
+          "course": {
+            "id": 2524,
+            "dispNameNl": "Bio-broccolisoep",
+            "dispNameEn": "Organic broccoli soup",
+            "nameNl": "bio-broccolisoep",
+            "nameEn": "",
+            "weight": "500ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": null,
+            "price": 0.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [
+              {
+                "courseId": 2524,
+                "courseLogoId": 201
+              },
+              {
+                "courseId": 2524,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 2524,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1321,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 242,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 1941,
+          "menuItemId": 1321,
+          "courseId": 4980,
+          "sortOrder": 0,
+          "course": {
+            "id": 4980,
+            "dispNameNl": "Oosterse bulgursalade met chili",
+            "dispNameEn": "Oriental bulghur salad with chilli",
+            "nameNl": "00 oosterse bulgursalade met chili,w",
+            "nameEn": "",
+            "weight": null,
+            "extra": "vegan",
+            "preparation": "conceptsalade winter",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4980,
+                "allergenId": 201
+              },
+              {
+                "courseId": 4980,
+                "allergenId": 205
+              },
+              {
+                "courseId": 4980,
+                "allergenId": 209
+              },
+              {
+                "courseId": 4980,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4980,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 4980,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1322,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 242,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 1942,
+          "menuItemId": 1322,
+          "courseId": 3142,
+          "sortOrder": 0,
+          "course": {
+            "id": 3142,
+            "dispNameNl": "Krokante salade",
+            "dispNameEn": "Crunchy salad",
+            "nameNl": "krokante salade (veggie), w",
+            "nameEn": "",
+            "weight": "350g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "laagjes van onder naar boven: noten (mengeling) rammenas appel met schil (in schijfjes), besprenkelen met citroensap witloofblaren blauwe kaas veldsla croutons potje dressing",
+            "price": 5.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3142,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3142,
+                "allergenId": 203
+              },
+              {
+                "courseId": 3142,
+                "allergenId": 204
+              },
+              {
+                "courseId": 3142,
+                "allergenId": 205
+              },
+              {
+                "courseId": 3142,
+                "allergenId": 206
+              },
+              {
+                "courseId": 3142,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3142,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 3142,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 3142,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1325,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 242,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 1945,
+          "menuItemId": 1325,
+          "courseId": 4972,
+          "sortOrder": 0,
+          "course": {
+            "id": 4972,
+            "dispNameNl": "Panini California ",
+            "dispNameEn": "Panini California ",
+            "nameNl": "00 california panini,w (vegan)",
+            "nameEn": "",
+            "weight": null,
+            "extra": "vegan",
+            "preparation": "snack winter olie van de tomaatjes maakt het smeuig",
+            "price": 2.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4972,
+                "allergenId": 201
+              },
+              {
+                "courseId": 4972,
+                "allergenId": 205
+              },
+              {
+                "courseId": 4972,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4972,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 4972,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1324,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 242,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 1944,
+          "menuItemId": 1324,
+          "courseId": 1082,
+          "sortOrder": 0,
+          "course": {
+            "id": 1082,
+            "dispNameNl": "Croque geitenkaas-honing",
+            "dispNameEn": "Grilled goat cheese sandwich with honey",
+            "nameNl": "croque geitenkaas-honing, dd, z & w",
+            "nameEn": "",
+            "weight": "200g",
+            "extra": "veggie",
+            "preparation": "keuze uit wit brood of bruin brood om de croque te maken 1 potje saus is in de prijs inbegrepen",
+            "price": 1.6,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1082,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1082,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1082,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 1082,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 1082,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

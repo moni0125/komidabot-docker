@@ -1,0 +1,955 @@
+{
+  "id": 177,
+  "menuDate": "2019-11-25T00:00:00",
+  "restaurantId": 3,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 839,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 177,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 1254,
+          "menuItemId": 839,
+          "courseId": 869,
+          "sortOrder": 0,
+          "course": {
+            "id": 869,
+            "dispNameNl": "Preisoep",
+            "dispNameEn": "Leek soup",
+            "nameNl": "preisoep",
+            "nameEn": "",
+            "weight": "500ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": null,
+            "price": 0.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 869,
+                "allergenId": 201
+              },
+              {
+                "courseId": 869,
+                "allergenId": 208
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 869,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 869,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "groot: \u20ac 1.20",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 838,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 177,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 1252,
+          "menuItemId": 838,
+          "courseId": 924,
+          "sortOrder": 0,
+          "course": {
+            "id": 924,
+            "dispNameNl": "marengosaus ",
+            "dispNameEn": "sauce Marengo ",
+            "nameNl": "marengo saus dd",
+            "nameEn": "",
+            "weight": "50 ml",
+            "extra": null,
+            "preparation": "ajuin aanstoven - bestrooien met paprika, look, bloem en tomatenpuree - drogen - water toevoegen + tomatenblokjes - 1 uur laten koken op klein vuur - mixen en afbinden met blanke roux. - afsmaken met pezo en proven\u00e7aalse kruiden en sambal. - garnituur van gestoofde ajuin, olijven, erwtjes en peterselie toevoegen opm je kan ook de erwtjes apart geven als volwaardige groenten (meer rekenen dan)",
+            "price": 0.2,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 924,
+                "allergenId": 201
+              },
+              {
+                "courseId": 924,
+                "allergenId": 208
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 1253,
+          "menuItemId": 838,
+          "courseId": 991,
+          "sortOrder": 0,
+          "course": {
+            "id": 991,
+            "dispNameNl": "aardappelen met peterselie",
+            "dispNameEn": "parsley potatoes",
+            "nameNl": "aardappelen met peterselie",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": "stoom de aardappelen gaar in 18 min. - voeg de gehakte peterselie toe. -je kan er optioneel geklaarde boter aan toevoegen",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 1251,
+          "menuItemId": 838,
+          "courseId": 1269,
+          "sortOrder": 0,
+          "course": {
+            "id": 1269,
+            "dispNameNl": "Falafel",
+            "dispNameEn": "Falafel",
+            "nameNl": "falafel dd",
+            "nameEn": "",
+            "weight": "6x14g",
+            "extra": null,
+            "preparation": "frituur voorverwarmen op 170\u00b0. - falafel afbakken tot een temperatuur van minstens 65\u00b0c bereikt is . - in bain marie schikken",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1269,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1269,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 840,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 177,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 1256,
+          "menuItemId": 840,
+          "courseId": 924,
+          "sortOrder": 0,
+          "course": {
+            "id": 924,
+            "dispNameNl": "marengosaus ",
+            "dispNameEn": "sauce Marengo ",
+            "nameNl": "marengo saus dd",
+            "nameEn": "",
+            "weight": "50 ml",
+            "extra": null,
+            "preparation": "ajuin aanstoven - bestrooien met paprika, look, bloem en tomatenpuree - drogen - water toevoegen + tomatenblokjes - 1 uur laten koken op klein vuur - mixen en afbinden met blanke roux. - afsmaken met pezo en proven\u00e7aalse kruiden en sambal. - garnituur van gestoofde ajuin, olijven, erwtjes en peterselie toevoegen opm je kan ook de erwtjes apart geven als volwaardige groenten (meer rekenen dan)",
+            "price": 0.2,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 924,
+                "allergenId": 201
+              },
+              {
+                "courseId": 924,
+                "allergenId": 208
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 1257,
+          "menuItemId": 840,
+          "courseId": 991,
+          "sortOrder": 0,
+          "course": {
+            "id": 991,
+            "dispNameNl": "aardappelen met peterselie",
+            "dispNameEn": "parsley potatoes",
+            "nameNl": "aardappelen met peterselie",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": "stoom de aardappelen gaar in 18 min. - voeg de gehakte peterselie toe. -je kan er optioneel geklaarde boter aan toevoegen",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 1255,
+          "menuItemId": 840,
+          "courseId": 1841,
+          "sortOrder": 0,
+          "course": {
+            "id": 1841,
+            "dispNameNl": "Kalkoenpav\u00e9",
+            "dispNameEn": "Turkey pav\u00e9",
+            "nameNl": "kalkoenpav\u00e9, dd",
+            "nameEn": "",
+            "weight": "120g",
+            "extra": null,
+            "preparation": "op te warmen in steamer. - vacu\u00fcm verpakt",
+            "price": 4.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1841,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1841,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1841,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1841,
+                "allergenId": 204
+              },
+              {
+                "courseId": 1841,
+                "allergenId": 208
+              },
+              {
+                "courseId": 1841,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1841,
+                "courseLogoId": 202
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1391,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 177,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 2029,
+          "menuItemId": 1391,
+          "courseId": 5177,
+          "sortOrder": 0,
+          "course": {
+            "id": 5177,
+            "dispNameNl": "Penne met paddenstoelen en romige bloemkoolsaus",
+            "dispNameEn": "Penne with mushrooms and a creamy cauliflower sauce",
+            "nameNl": "00 penne met paddenstoelen en romige bloemkoolsaus (vegan)",
+            "nameEn": "",
+            "weight": null,
+            "extra": null,
+            "preparation": "maak de bloemkoolsaus klaar volgens de receptuur (zie fiche). - maak de volkoren penne klaar volgens de receptuur. fruit de ui en bak hierbij de champignons, breng op smaak met look, peper en zout.- meng de pasta met de bloemkoolsaus, de champignons en werk af met platte peterselie & gebakken uitjes.",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5177,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5177,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 5177,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1390,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 177,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 2027,
+          "menuItemId": 1390,
+          "courseId": 1416,
+          "sortOrder": 0,
+          "course": {
+            "id": 1416,
+            "dispNameNl": "African sunshinesaus",
+            "dispNameEn": "African sunshine sauce",
+            "nameNl": "african sunshine saus, zvv, dd",
+            "nameEn": "",
+            "weight": "200g",
+            "extra": "veggie",
+            "preparation": "courgettes en paprika aanstoven en kruiden. - mengen met de pasta en de african sunshine saus toevoegen.",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1416,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1416,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1416,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 1416,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 2028,
+          "menuItemId": 1390,
+          "courseId": 5480,
+          "sortOrder": 0,
+          "course": {
+            "id": 5480,
+            "dispNameNl": "Penne",
+            "dispNameEn": "penne",
+            "nameNl": "Penne,kookvast",
+            "nameEn": "",
+            "weight": "150 - 200 g pp",
+            "extra": "",
+            "preparation": "kook de pasta gaar in licht gezouten water, olie toevoegen. De kooktijd is afhankelijk van de soort pasta.",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5480,
+                "allergenId": 200
+              },
+              {
+                "courseId": 5480,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": true,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1392,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 177,
+      "sortorder": 5,
+      "menuItemContents": [
+        {
+          "id": 2031,
+          "menuItemId": 1392,
+          "courseId": 932,
+          "sortOrder": 0,
+          "course": {
+            "id": 932,
+            "dispNameNl": "Proven\u00e7aalse saus",
+            "dispNameEn": "Proven\u00e7al sauce",
+            "nameNl": "proven\u00e7aalse saus",
+            "nameEn": "",
+            "weight": "50 ml",
+            "extra": null,
+            "preparation": "tomatensaus maken: ajuin aanstoven - bestrooien met paprika, look, bloem en tomatenpuree - drogen - water toevoegen + tomatenblokjes - 1 uur laten koken op klein vuur - mixen en afbinden met blanke roux - afsmaken met pezo en proven\u00e7aalse kruiden. ajuin en champignons aanstoven en kleuren, courgetten (schijven nog eventueel halveren) en paprika toevoegen warme tomatensaus toevoegen en afwerken met proven\u00e7aalse kruiden en peterselie. - eventueel verdunnen met heet water",
+            "price": 0.2,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 932,
+                "allergenId": 201
+              },
+              {
+                "courseId": 932,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 2033,
+          "menuItemId": 1392,
+          "courseId": 980,
+          "sortOrder": 0,
+          "course": {
+            "id": 980,
+            "dispNameNl": "frieten",
+            "dispNameEn": "fries",
+            "nameNl": "frieten",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": "afbakken in het frituur op 170 graden",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 980,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 2030,
+          "menuItemId": 1392,
+          "courseId": 1374,
+          "sortOrder": 0,
+          "course": {
+            "id": 1374,
+            "dispNameNl": "Gemarineerde kippenbrochette ",
+            "dispNameEn": "Marinated chicken skewer ",
+            "nameNl": "kippenbrochette gemarineerd, dd",
+            "nameEn": "",
+            "weight": "150g",
+            "extra": null,
+            "preparation": "marineren en afbakken op de grill",
+            "price": 5.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [
+              {
+                "courseId": 1374,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 1374,
+                "courseLogoId": 203
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 2032,
+          "menuItemId": 1392,
+          "courseId": 5515,
+          "sortOrder": 0,
+          "course": {
+            "id": 5515,
+            "dispNameNl": "Saladbar",
+            "dispNameEn": "saladbar",
+            "nameNl": "Salade - bar",
+            "nameEn": "",
+            "weight": "",
+            "extra": "Dit is de saladbar om toe te voegen aan een grill-gerecht, is reeds ingecalculeerd in de prijs van het grill-gerecht",
+            "preparation": "",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5515,
+                "allergenId": 200
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 202
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 203
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 204
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 207
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 209
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 210
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 211
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 212
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 213
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1393,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 177,
+      "sortorder": 6,
+      "menuItemContents": [
+        {
+          "id": 2034,
+          "menuItemId": 1393,
+          "courseId": 3871,
+          "sortOrder": 0,
+          "course": {
+            "id": 3871,
+            "dispNameNl": "Mango-kip-salade",
+            "dispNameEn": "Mango and chicken salad",
+            "nameNl": "salade mango-kip, w",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "koel bewaren",
+            "preparation": null,
+            "price": 4.4,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3871,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3871,
+                "allergenId": 205
+              },
+              {
+                "courseId": 3871,
+                "allergenId": 206
+              },
+              {
+                "courseId": 3871,
+                "allergenId": 209
+              },
+              {
+                "courseId": 3871,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3871,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 3871,
+                "courseLogoId": 209
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1394,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 177,
+      "sortorder": 7,
+      "menuItemContents": [
+        {
+          "id": 2035,
+          "menuItemId": 1394,
+          "courseId": 2071,
+          "sortOrder": 0,
+          "course": {
+            "id": 2071,
+            "dispNameNl": "Salade met perziken en zalmsalade",
+            "dispNameEn": "Salad with peaches and salmon salad",
+            "nameNl": "salade met perziken en zalmsalade, w",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "koel bewaren",
+            "preparation": "zalm stomen en laten afkoelen (slechts max. 100g per persoon gebruiken) - zalm prakken, mengen met een kleine hoeveelheid mayonaise (voeg enkel extra mayo toe als de zalmsalade nog te droog is, laat de zalm in geen geval \u2018zwemmen\u2019 in de mayonaise), met geplette hardgekookte eieren en peterselie - perziken in partjes snijden - veldsla en rammenas mengen. scharrelei gekookt rico 75st of scharrelei gekookt rico 6x12st karton gebruiken volgorde voor vullen van onder naar boven: gesneden perziken (2 -3 stuks) + zalmsalade (+/- 80-100 gr) + gemengde veldsla \u2013 rammenas",
+            "price": 4.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 2071,
+                "allergenId": 200
+              },
+              {
+                "courseId": 2071,
+                "allergenId": 201
+              },
+              {
+                "courseId": 2071,
+                "allergenId": 204
+              },
+              {
+                "courseId": 2071,
+                "allergenId": 212
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 2071,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 2071,
+                "courseLogoId": 215
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1396,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 177,
+      "sortorder": 8,
+      "menuItemContents": [
+        {
+          "id": 2037,
+          "menuItemId": 1396,
+          "courseId": 3846,
+          "sortOrder": 0,
+          "course": {
+            "id": 3846,
+            "dispNameNl": "Broodje forel-citrus",
+            "dispNameEn": "Trout and citrus sandwich",
+            "nameNl": "broodje forel-citrus, w",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": "koel bewaren",
+            "preparation": "citrus vinaigrette mengen met mayo, dille, peterselie, veldsla en forel - op bun broodje beleggen",
+            "price": 3.1,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3846,
+                "allergenId": 200
+              },
+              {
+                "courseId": 3846,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3846,
+                "allergenId": 204
+              },
+              {
+                "courseId": 3846,
+                "allergenId": 212
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3846,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 3846,
+                "courseLogoId": 215
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

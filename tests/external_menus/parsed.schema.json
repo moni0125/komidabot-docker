@@ -1,0 +1,128 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ParsedMenu",
+  "type": "object",
+  "properties": {
+    "$schema": true,
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "campus": {
+      "type": "string",
+      "enum": [
+        "cst",
+        "cde",
+        "cmi",
+        "cgb",
+        "cmu",
+        "hzs"
+      ]
+    },
+    "menu": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "external_id": {
+            "type": "integer"
+          },
+          "components": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^[a-z][a-z]$": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "attributes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "BIO",
+                      "CHICKEN",
+                      "GRILL",
+                      "CHEESE",
+                      "RABBIT",
+                      "LAMB",
+                      "PASTA",
+                      "VEAL",
+                      "SALAD",
+                      "SNACK",
+                      "SOUP",
+                      "PIG",
+                      "VEGAN",
+                      "VEGGIE",
+                      "FISH",
+                      "LESS_MEAT"
+                    ]
+                  }
+                },
+                "allergens": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "EGG",
+                      "WHEAT_GLUTEN",
+                      "LUPINE",
+                      "MILK_LACTOSE",
+                      "MUSTARD",
+                      "NUTS",
+                      "PEANUTS",
+                      "SHELLFISH",
+                      "CELERY",
+                      "SESAME",
+                      "SOY",
+                      "SULFITES",
+                      "FISH",
+                      "MOLLUSKS",
+                      "HALAL"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "attributes",
+                "allergens"
+              ]
+            }
+          },
+          "price": {
+            "type": "string",
+            "pattern": "([0-9]|[1-9][0-9]+)\\.[0-9][0-9]"
+          },
+          "multiple_prices": {
+            "type": "boolean"
+          },
+          "sort_order": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 11
+          }
+        },
+        "required": [
+          "external_id",
+          "components",
+          "price",
+          "multiple_prices"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "date",
+    "campus",
+    "menu"
+  ],
+  "additionalProperties": false
+}

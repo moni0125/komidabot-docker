@@ -1,0 +1,826 @@
+{
+  "id": 544,
+  "menuDate": "2020-02-10T00:00:00",
+  "restaurantId": 2,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 3751,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 544,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 5234,
+          "menuItemId": 3751,
+          "courseId": 857,
+          "sortOrder": 0,
+          "course": {
+            "id": 857,
+            "dispNameNl": "Kervelsoep",
+            "dispNameEn": "Chervil soup",
+            "nameNl": "kervelsoep",
+            "nameEn": "",
+            "weight": "500 ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": null,
+            "price": 0.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 857,
+                "allergenId": 208
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 857,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 857,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "groot: 1.20",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": "large: 1.20"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3752,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 544,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 5237,
+          "menuItemId": 3752,
+          "courseId": 974,
+          "sortOrder": 0,
+          "course": {
+            "id": 974,
+            "dispNameNl": "aardappelen met bieslook",
+            "dispNameEn": "potatoes and chives",
+            "nameNl": "aardappelen met bieslook",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": "de aardappelen gaar stomen (ongeveer 20 min). - bieslook versnipperen en mengen met de aardappelen. - de margarine klaren en mengen met de aardappelen (optioneel)",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 5235,
+          "menuItemId": 3752,
+          "courseId": 1273,
+          "sortOrder": 0,
+          "course": {
+            "id": 1273,
+            "dispNameNl": "Groenteballetjes ",
+            "dispNameEn": "Vegetable meatballs ",
+            "nameNl": "groenteballetjes dd",
+            "nameEn": "",
+            "weight": "3x50g",
+            "extra": null,
+            "preparation": "friteuse voorverwarmen op 160\u00b0c. - balletjes kleuren en per 30 stuks op bakplaatjes schikken. - oven voorverwarmen op 180\u00b0c - burger verhitten tot kern van minstens 65 graden bereikt is. - in bain-marie schikken. - 150 gram pp",
+            "price": 4.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1273,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1273,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1273,
+                "allergenId": 206
+              },
+              {
+                "courseId": 1273,
+                "allergenId": 208
+              },
+              {
+                "courseId": 1273,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1273,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 5236,
+          "menuItemId": 3752,
+          "courseId": 3207,
+          "sortOrder": 0,
+          "course": {
+            "id": 3207,
+            "dispNameNl": "vergeten groenten",
+            "dispNameEn": "forgotten vegetables",
+            "nameNl": "vergeten groenten, z & w ",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": null,
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3753,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 544,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 5240,
+          "menuItemId": 3753,
+          "courseId": 974,
+          "sortOrder": 0,
+          "course": {
+            "id": 974,
+            "dispNameNl": "aardappelen met bieslook",
+            "dispNameEn": "potatoes and chives",
+            "nameNl": "aardappelen met bieslook",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": "de aardappelen gaar stomen (ongeveer 20 min). - bieslook versnipperen en mengen met de aardappelen. - de margarine klaren en mengen met de aardappelen (optioneel)",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 5238,
+          "menuItemId": 3753,
+          "courseId": 1395,
+          "sortOrder": 0,
+          "course": {
+            "id": 1395,
+            "dispNameNl": "Vogelnestje",
+            "dispNameEn": "Scotch egg",
+            "nameNl": "vogelnestje",
+            "nameEn": "",
+            "weight": "150g",
+            "extra": null,
+            "preparation": "vogelnestjes schikken op een ingeboterde lage gastro. - de vogelnestjes bestrijken met geklaarde boter afkruiden. - garen in de oven op 175 graden gedurende ongeveer 12 min tot een temperatuur van minstens 65\u00b0c bereikt is",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1395,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1395,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1395,
+                "courseLogoId": 208
+              },
+              {
+                "courseId": 1395,
+                "courseLogoId": 212
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 5239,
+          "menuItemId": 3753,
+          "courseId": 3207,
+          "sortOrder": 0,
+          "course": {
+            "id": 3207,
+            "dispNameNl": "vergeten groenten",
+            "dispNameEn": "forgotten vegetables",
+            "nameNl": "vergeten groenten, z & w ",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": null,
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4070,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 544,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 5648,
+          "menuItemId": 4070,
+          "courseId": 1425,
+          "sortOrder": 0,
+          "course": {
+            "id": 1425,
+            "dispNameNl": "pasta met paprikaroom & waterkers",
+            "dispNameEn": "paprika cream with garden cress",
+            "nameNl": "00 paprikaroom met waterkers, zvv, dd, z & w (vegan)",
+            "nameEn": "",
+            "weight": "200g",
+            "extra": "vegan",
+            "preparation": "tomatensaus maken: ajuin aanstoven - bestrooien met paprika, look, bloem en tomatenpuree - drogen - water toevoegen + tomatenblokjes - 1 uur laten koken op klein vuur - mixen en afbinden met blanke roux afsmaken met pezo en proven\u00e7aalse kruiden. - rode paprika gaar steamen en samen met room bij tomatensaus doen - mixen en eventueel verdunnen/aandikken serveer met een vegan pasta ( volkoren spaghetti speciality anco/ fusili volkoren bio)",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1425,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1425,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1425,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 1425,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4075,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 544,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 5654,
+          "menuItemId": 4075,
+          "courseId": 925,
+          "sortOrder": 0,
+          "course": {
+            "id": 925,
+            "dispNameNl": "Milanese saus met hamblokjes",
+            "dispNameEn": "Milanese sauce with cubed ham",
+            "nameNl": "milanese saus met hamblokjes",
+            "nameEn": "",
+            "weight": "50 ml",
+            "extra": null,
+            "preparation": "keuze in het gebruik van kappertjes 100ml of kappers 3l - tomatensaus maken: ajuin aanstoven - bestrooien met paprika, look, bloem en tomatenpuree - drogen - water met bouillon toevoegen + tomatenblokjes - 1 uur laten koken op klein vuur - mixen en afbinden met blanke roux indien nodig (optioneel). - afsmaken met pezo en proven\u00e7aalse kruiden. - sjalotjes aanstoven en bevochtigen met witte wijn - tomatenblokjes, kappertjes, lookpuree en kruiden toevoegen . - 15 minuten laten sudderen en bij warme tomatensaus voegen. - hamblokjes opwarmen en op einde toevoegen",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 925,
+                "allergenId": 201
+              },
+              {
+                "courseId": 925,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 925,
+                "courseLogoId": 212
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 5655,
+          "menuItemId": 4075,
+          "courseId": 990,
+          "sortOrder": 0,
+          "course": {
+            "id": 990,
+            "dispNameNl": "pasta",
+            "dispNameEn": "pasta",
+            "nameNl": "pasta",
+            "nameEn": "",
+            "weight": "150 - 200g pp",
+            "extra": null,
+            "preparation": "kook de pasta gaar in licht gezouten water, sojaolie toevoegen, - kooktijd is afhankelijk van de soort pasta",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 990,
+                "allergenId": 200
+              },
+              {
+                "courseId": 990,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": true,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4079,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 544,
+      "sortorder": 5,
+      "menuItemContents": [
+        {
+          "id": 5664,
+          "menuItemId": 4079,
+          "courseId": 980,
+          "sortOrder": 0,
+          "course": {
+            "id": 980,
+            "dispNameNl": "frieten",
+            "dispNameEn": "fries",
+            "nameNl": "frieten",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": "afbakken in het frituur op 170 graden",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 980,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 5665,
+          "menuItemId": 4079,
+          "courseId": 5515,
+          "sortOrder": 0,
+          "course": {
+            "id": 5515,
+            "dispNameNl": "Saladbar",
+            "dispNameEn": "saladbar",
+            "nameNl": "Salade - bar",
+            "nameEn": "",
+            "weight": "",
+            "extra": "Dit is de saladbar om toe te voegen aan een grill-gerecht, is reeds ingecalculeerd in de prijs van het grill-gerecht",
+            "preparation": "",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5515,
+                "allergenId": 200
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 202
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 203
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 204
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 207
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 209
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 210
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 211
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 212
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 213
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 5663,
+          "menuItemId": 4079,
+          "courseId": 5525,
+          "sortOrder": 0,
+          "course": {
+            "id": 5525,
+            "dispNameNl": "Scampi's",
+            "dispNameEn": "scampi",
+            "nameNl": "Scampi's",
+            "nameEn": "",
+            "weight": "6 - 7 stuks",
+            "extra": "",
+            "preparation": "insmeren met mengeling van saus lemon/green peper en soja olie - grillen",
+            "price": 5.2,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5525,
+                "allergenId": 207
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5525,
+                "courseLogoId": 203
+              },
+              {
+                "courseId": 5525,
+                "courseLogoId": 215
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3886,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 544,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 5412,
+          "menuItemId": 3886,
+          "courseId": 1892,
+          "sortOrder": 0,
+          "course": {
+            "id": 1892,
+            "dispNameNl": "Boerensalade",
+            "dispNameEn": "Farmer\u2019s salad",
+            "nameNl": "boerensalade (rosbief, aardappelsalade), w",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "koel bewaren",
+            "preparation": "rosbief: 2 sneetjes van 25g",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1892,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1892,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1892,
+                "allergenId": 204
+              },
+              {
+                "courseId": 1892,
+                "allergenId": 210
+              },
+              {
+                "courseId": 1892,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1892,
+                "courseLogoId": 208
+              },
+              {
+                "courseId": 1892,
+                "courseLogoId": 209
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4024,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 544,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 5595,
+          "menuItemId": 4024,
+          "courseId": 5531,
+          "sortOrder": 0,
+          "course": {
+            "id": 5531,
+            "dispNameNl": "Sweet potato bowl",
+            "dispNameEn": "Sweet potato bowl",
+            "nameNl": "Sweet potato bowl, w",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "Maak de quinoa klaar volgens de bereidingswijze van de fiche, laat de quinoa afkoelen.  Maak de zoete aardappel klaar volgens de fiche en breng op smaak met kaneel. Maak de bowl: doe de quinoa in een kommetje, vervolgens de bonen, zoete aardappel, curly kale & raapjes.  Werk af met kipreepjes, cashewnoten, platte peterselie & furikake. Serveer hierbij de vinaigrette.Zet het deksel op de weckpot en plak het etiket aan de zijkant.",
+            "price": 4.0,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5531,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5531,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5531,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5531,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 5531,
+                "courseLogoId": 209
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

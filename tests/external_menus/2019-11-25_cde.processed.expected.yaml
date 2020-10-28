@@ -1,0 +1,114 @@
+campus: cde
+date: '2019-11-25'
+menu:
+- course_allergens:
+  - CELERY
+  - MILK_LACTOSE
+  - WHEAT_GLUTEN
+  course_attributes:
+  - SOUP
+  - VEGGIE
+  course_sub_type: VEGETARIAN
+  course_type: SOUP
+  external_id: 1351
+  name:
+    en: Celeriac soup
+    nl: Knolseldersoep
+  price_staff: null
+  price_students: '0.90'
+- course_allergens:
+  - EGG
+  - SULFITES
+  - WHEAT_GLUTEN
+  course_attributes:
+  - VEGGIE
+  course_sub_type: VEGETARIAN
+  course_type: DAILY
+  external_id: 1352
+  name:
+    en: Quorn and bell pepper goulash dd, rice
+    nl: Goulash met quorn en paprika dd, rijst
+  price_staff: '5.70'
+  price_students: '4.60'
+- course_allergens:
+  - CELERY
+  - MILK_LACTOSE
+  - MUSTARD
+  - WHEAT_GLUTEN
+  course_attributes:
+  - CHICKEN
+  course_sub_type: NORMAL
+  course_type: DAILY
+  external_id: 1353
+  name:
+    en: Chicken roulade with sun-dried tomatoes, couscous, couscous vegetables
+    nl: Kiprollade met zongedroogde tomaat, couscous, couscousgroenten
+  price_staff: '6.00'
+  price_students: '4.80'
+- course_allergens:
+  - WHEAT_GLUTEN
+  course_attributes:
+  - PASTA
+  - VEGAN
+  course_sub_type: VEGAN
+  course_type: PASTA
+  external_id: 1427
+  name:
+    en: Penne with mushrooms and a creamy cauliflower sauce
+    nl: Penne met paddenstoelen en romige bloemkoolsaus
+  price_staff: '4.70'
+  price_students: '3.80'
+- course_allergens:
+  - EGG
+  - MILK_LACTOSE
+  - WHEAT_GLUTEN
+  course_attributes:
+  - PASTA
+  - VEGGIE
+  course_sub_type: VEGETARIAN
+  course_type: PASTA
+  external_id: 1430
+  name:
+    en: Pasta, African sunshine sauce
+    nl: Pasta, African sunshinesaus
+  price_staff: '4.70'
+  price_students: '3.80'
+- course_allergens:
+  - CELERY
+  - EGG
+  - FISH
+  - LUPINE
+  - MILK_LACTOSE
+  - MOLLUSKS
+  - MUSTARD
+  - NUTS
+  - PEANUTS
+  - SESAME
+  - SHELLFISH
+  - SOY
+  - SULFITES
+  - WHEAT_GLUTEN
+  course_attributes:
+  - CHICKEN
+  - GRILL
+  course_sub_type: NORMAL
+  course_type: GRILL
+  external_id: 1431
+  name:
+    en: Grilled chicken breast, fries, saladbar
+    nl: Kipfilet op de grill, frieten, Saladbar
+  price_staff: '6.00'
+  price_students: '4.80'
+- course_allergens:
+  - SESAME
+  course_attributes:
+  - SALAD
+  - VEGAN
+  course_sub_type: VEGAN
+  course_type: SALAD
+  external_id: 1432
+  name:
+    en: Buddha bow hummuslicious
+    nl: Buddha bowl humuslicious
+  price_staff: '4.70'
+  price_students: '3.80'

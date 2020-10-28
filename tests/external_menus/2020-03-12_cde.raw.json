@@ -1,0 +1,829 @@
+{
+  "id": 797,
+  "menuDate": "2020-03-12T00:00:00",
+  "restaurantId": 2,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 5350,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 797,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 7297,
+          "menuItemId": 5350,
+          "courseId": 3622,
+          "sortOrder": 0,
+          "course": {
+            "id": 3622,
+            "dispNameNl": "Bio-minestrone",
+            "dispNameEn": "Organic minestrone",
+            "nameNl": "bio-minestrone",
+            "nameEn": "",
+            "weight": "500 ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": null,
+            "price": 0.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3622,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3622,
+                "allergenId": 208
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3622,
+                "courseLogoId": 201
+              },
+              {
+                "courseId": 3622,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 3622,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "groot: 1.20",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": "large: 1.20"
+          }
+        }
+      ]
+    },
+    {
+      "id": 5313,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 797,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 7234,
+          "menuItemId": 5313,
+          "courseId": 975,
+          "sortOrder": 0,
+          "course": {
+            "id": 975,
+            "dispNameNl": "rijst met munt",
+            "dispNameEn": "rice with mint",
+            "nameNl": "rijst met munt",
+            "nameEn": "",
+            "weight": "150g pp",
+            "extra": null,
+            "preparation": "kook de rijst gaar in licht gezouten water. - witte basmati ongeveer 10 min - volkoren basmati ongeveer 20 min - voeg er de verse munt aan toe,",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 7232,
+          "menuItemId": 5313,
+          "courseId": 1304,
+          "sortOrder": 0,
+          "course": {
+            "id": 1304,
+            "dispNameNl": "Quornburger 'southern style' ",
+            "dispNameEn": "'Southern style\u2019 quorn burger ",
+            "nameNl": "quornburger southern style dd",
+            "nameEn": "",
+            "weight": "2x63g",
+            "extra": null,
+            "preparation": "op platte plaatjes met bakpapier afbakken tot een temperatuur van minstens 65\u00b0c bereikt is",
+            "price": 4.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1304,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1304,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1304,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1304,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 7233,
+          "menuItemId": 5313,
+          "courseId": 2008,
+          "sortOrder": 0,
+          "course": {
+            "id": 2008,
+            "dispNameNl": "wokgroenten",
+            "dispNameEn": "stir-fried vegetables",
+            "nameNl": "wokgroenten, w",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": null,
+            "price": 0.2,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 2008,
+                "allergenId": 201
+              },
+              {
+                "courseId": 2008,
+                "allergenId": 208
+              },
+              {
+                "courseId": 2008,
+                "allergenId": 210
+              },
+              {
+                "courseId": 2008,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5314,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 797,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 7236,
+          "menuItemId": 5314,
+          "courseId": 1052,
+          "sortOrder": 0,
+          "course": {
+            "id": 1052,
+            "dispNameNl": "ratatouille",
+            "dispNameEn": "ratatouille",
+            "nameNl": "ratatouille",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": null,
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1052,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 7235,
+          "menuItemId": 5314,
+          "courseId": 1350,
+          "sortOrder": 0,
+          "course": {
+            "id": 1350,
+            "dispNameNl": "Cordon bleu ",
+            "dispNameEn": "Cordon bleu ",
+            "nameNl": "cordon bleu varken",
+            "nameEn": "",
+            "weight": "160g",
+            "extra": null,
+            "preparation": "voorbakken in pan, kruiden en nadien afbakken in oven",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1350,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1350,
+                "courseLogoId": 212
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 7237,
+          "menuItemId": 5314,
+          "courseId": 3991,
+          "sortOrder": 0,
+          "course": {
+            "id": 3991,
+            "dispNameNl": "parelcouscous",
+            "dispNameEn": "pearl couscous",
+            "nameNl": "parelcouscous",
+            "nameEn": "",
+            "weight": "150g pp",
+            "extra": null,
+            "preparation": null,
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3991,
+                "allergenId": 204
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5320,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 797,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 7249,
+          "menuItemId": 5320,
+          "courseId": 1432,
+          "sortOrder": 0,
+          "course": {
+            "id": 1432,
+            "dispNameNl": "mediterraanse groentesaus",
+            "dispNameEn": "Mediterranean vegetable sauce",
+            "nameNl": "mediterraanse groentesaus, zvv, dd z&w (vegan)",
+            "nameEn": "",
+            "weight": "200g",
+            "extra": null,
+            "preparation": "pastasaus groenten aanstoven en bevochtigen met water. - kruiden toevoegen en een half uurtje laten pruttelen. - afbinden opgelet: vegan pasta voorzien",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1432,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1432,
+                "allergenId": 208
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1432,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 7256,
+          "menuItemId": 5320,
+          "courseId": 5478,
+          "sortOrder": 0,
+          "course": {
+            "id": 5478,
+            "dispNameNl": "Volkoren fusili",
+            "dispNameEn": "wholegrain fusili",
+            "nameNl": "Volkoren fusili, vegan",
+            "nameEn": "",
+            "weight": "150 - 200g pp",
+            "extra": "",
+            "preparation": "kook de pasta gaar in licht gezouten water, olie toevoegen - de kooktijd is afhankelijk van de soort pasta",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5478,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5325,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 797,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 7263,
+          "menuItemId": 5325,
+          "courseId": 1414,
+          "sortOrder": 0,
+          "course": {
+            "id": 1414,
+            "dispNameNl": "Spaghetti carbonara",
+            "dispNameEn": "carbonara sauce",
+            "nameNl": "Spaghetti carbonara",
+            "nameEn": "",
+            "weight": "200g",
+            "extra": null,
+            "preparation": "witte saus poeder toevoegen aan kokend water en goed laten doorkoken. - culinaire room toevoegen en de kruiden. - terug laten koken en gebakken spekreepjes toevoegen. + gemalen kaas erbij serveren",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1414,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1414,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1414,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1414,
+                "allergenId": 204
+              },
+              {
+                "courseId": 1414,
+                "allergenId": 205
+              },
+              {
+                "courseId": 1414,
+                "allergenId": 206
+              },
+              {
+                "courseId": 1414,
+                "allergenId": 208
+              },
+              {
+                "courseId": 1414,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1414,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 1414,
+                "courseLogoId": 212
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5330,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 797,
+      "sortorder": 5,
+      "menuItemContents": [
+        {
+          "id": 7273,
+          "menuItemId": 5330,
+          "courseId": 922,
+          "sortOrder": 0,
+          "course": {
+            "id": 922,
+            "dispNameNl": "looksaus ",
+            "dispNameEn": "garlic sauce ",
+            "nameNl": "looksaus koud",
+            "nameEn": "",
+            "weight": "50 ml",
+            "extra": null,
+            "preparation": "mayonaise aanlengen met water tot gladde saus. - peterselie + lookpuree toevoegen en wederom goed mengen",
+            "price": 0.2,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 922,
+                "allergenId": 200
+              },
+              {
+                "courseId": 922,
+                "allergenId": 201
+              },
+              {
+                "courseId": 922,
+                "allergenId": 204
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 7278,
+          "menuItemId": 5330,
+          "courseId": 980,
+          "sortOrder": 0,
+          "course": {
+            "id": 980,
+            "dispNameNl": "frieten",
+            "dispNameEn": "fries",
+            "nameNl": "frieten",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": "afbakken in het frituur op 170 graden",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 980,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 7268,
+          "menuItemId": 5330,
+          "courseId": 1078,
+          "sortOrder": 0,
+          "course": {
+            "id": 1078,
+            "dispNameNl": "Scampibrochette",
+            "dispNameEn": "Scampi skewer",
+            "nameNl": "scampi brochette, dd",
+            "nameEn": "",
+            "weight": "100g pp",
+            "extra": null,
+            "preparation": "insmeren met mengeling van saus lemon/green peper en soja olie - grillen",
+            "price": 5.2,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1078,
+                "allergenId": 207
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1078,
+                "courseLogoId": 203
+              },
+              {
+                "courseId": 1078,
+                "courseLogoId": 215
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5336,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 797,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 7284,
+          "menuItemId": 5336,
+          "courseId": 5566,
+          "sortOrder": 0,
+          "course": {
+            "id": 5566,
+            "dispNameNl": "Teriyaki Chicken Bowl",
+            "dispNameEn": "teriyaki chicken bowl",
+            "nameNl": "Teriyaki Chicken Bowl, w",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "Maak de rijst klaar volgens de bereidingswijze op de verpakking, roer de rijstazijn door de rijst als die nog warm is en laat de rijst afkoelen . Breng de kip op smaak met de look en de wokpasta - Maakt de tuinerwtenspread volgens de receptuur. Maak de budhabowl als volgt: verdeel de rijst over het kommetje, leg in regenboogvorm: thaise tuinerwtenspread, rijtje edamame bonen, reepjes boerenkool, geraspte knolselder (besprenkel met citroensap), waterkers en kip. Werk af met het zwart sesamzaad.Serveer met de sojasaus vinaigrette.Zet het deksel op de weckpot en plak het etiket aan de zijkant.",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5566,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5566,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5566,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5566,
+                "allergenId": 209
+              },
+              {
+                "courseId": 5566,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5566,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 5566,
+                "courseLogoId": 209
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5342,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 797,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 7290,
+          "menuItemId": 5342,
+          "courseId": 5024,
+          "sortOrder": 0,
+          "course": {
+            "id": 5024,
+            "dispNameNl": "Pittige pastinaak met humus en bulgur",
+            "dispNameEn": "Spicy parsnip with hummus and bulghur",
+            "nameNl": "00 pittige pastinaak met humus en rode quinoa/bulgur w",
+            "nameEn": "",
+            "weight": null,
+            "extra": "veggie",
+            "preparation": "de pastinaak bakken in de oven met komijn, paprikapoeder, honing en olie.- tot deze gaar zijn & gekarameliseerd. meng de bulgur met de pastinaak en pompoenpitten.- hak de koriander fijn en verdeel over de salade samen met de veldsla",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5024,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5024,
+                "allergenId": 203
+              },
+              {
+                "courseId": 5024,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5024,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5024,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5024,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 5024,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

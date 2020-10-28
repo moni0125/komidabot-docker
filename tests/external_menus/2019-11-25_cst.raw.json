@@ -1,0 +1,957 @@
+{
+  "id": 194,
+  "menuDate": "2019-11-25T00:00:00",
+  "restaurantId": 1,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 982,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 194,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 1543,
+          "menuItemId": 982,
+          "courseId": 867,
+          "sortOrder": 0,
+          "course": {
+            "id": 867,
+            "dispNameNl": "Pastinaaksoep",
+            "dispNameEn": "Parsnip soup",
+            "nameNl": "pastinaaksoep, w",
+            "nameEn": "",
+            "weight": "500 ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": null,
+            "price": 1.5,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 867,
+                "allergenId": 201
+              },
+              {
+                "courseId": 867,
+                "allergenId": 203
+              },
+              {
+                "courseId": 867,
+                "allergenId": 208
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 867,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 867,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "klein: \u20ac 0.90",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 983,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 194,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 1510,
+          "menuItemId": 983,
+          "courseId": 1068,
+          "sortOrder": 0,
+          "course": {
+            "id": 1068,
+            "dispNameNl": "witte kool in witte saus",
+            "dispNameEn": "white cabbage in white sauce",
+            "nameNl": "witte kool in witte saus",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": "witte kool steamen, witte basissaus maken (zie receptuur) - mengen - kruiden met pezono.",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1068,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1068,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 1509,
+          "menuItemId": 983,
+          "courseId": 1277,
+          "sortOrder": 0,
+          "course": {
+            "id": 1277,
+            "dispNameNl": "Erwtenk\u00f6fteballetjes",
+            "dispNameEn": "Pea kofte",
+            "nameNl": "erwtenk\u00f6fte balletjes dd",
+            "nameEn": "",
+            "weight": "6 x 22g",
+            "extra": null,
+            "preparation": "friteuse verhitten tot 160\u00b0c. - kroketjes afbakken tot een temperatuur van minstens 65\u00b0c bereikt is . - in bain-marie schikken.",
+            "price": 4.4,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [
+              {
+                "courseId": 1277,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 1511,
+          "menuItemId": 983,
+          "courseId": 1985,
+          "sortOrder": 0,
+          "course": {
+            "id": 1985,
+            "dispNameNl": "gebakken aardappelschijfjes",
+            "dispNameEn": "fried potato slices",
+            "nameNl": "gebakken aardappel schijfjes",
+            "nameEn": "",
+            "weight": "200g",
+            "extra": null,
+            "preparation": "afbakken in margarine en olijfolie",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 984,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 194,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 1513,
+          "menuItemId": 984,
+          "courseId": 1068,
+          "sortOrder": 0,
+          "course": {
+            "id": 1068,
+            "dispNameNl": "witte kool in witte saus",
+            "dispNameEn": "white cabbage in white sauce",
+            "nameNl": "witte kool in witte saus",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": "witte kool steamen, witte basissaus maken (zie receptuur) - mengen - kruiden met pezono.",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1068,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1068,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 1514,
+          "menuItemId": 984,
+          "courseId": 1985,
+          "sortOrder": 0,
+          "course": {
+            "id": 1985,
+            "dispNameNl": "gebakken aardappelschijfjes",
+            "dispNameEn": "fried potato slices",
+            "nameNl": "gebakken aardappel schijfjes",
+            "nameEn": "",
+            "weight": "200g",
+            "extra": null,
+            "preparation": "afbakken in margarine en olijfolie",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 1512,
+          "menuItemId": 984,
+          "courseId": 2062,
+          "sortOrder": 0,
+          "course": {
+            "id": 2062,
+            "dispNameNl": "Vleesbrood met weinig vlees",
+            "dispNameEn": "Less  Meat Loaf",
+            "nameNl": "vleesbrood met weinig vleesch, dd, z & w - MINDER VLEES",
+            "nameEn": "",
+            "weight": "150g pp",
+            "extra": "",
+            "preparation": "bonen spoelen en laten uitlekken - bonen fijn cutteren - het gehakte vleesch :-) mengen met de gecutterde bonen, chapelure en ei en kruiden met pezono naar smaak. - maak er een gehaktbrood van (of balletjes indien haalbaar in jouw keuken of deze periode) - garen in oven . - gehaktbrood in sneetjes snijden",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 2062,
+                "allergenId": 200
+              },
+              {
+                "courseId": 2062,
+                "allergenId": 201
+              },
+              {
+                "courseId": 2062,
+                "allergenId": 203
+              },
+              {
+                "courseId": 2062,
+                "allergenId": 204
+              },
+              {
+                "courseId": 2062,
+                "allergenId": 205
+              },
+              {
+                "courseId": 2062,
+                "allergenId": 208
+              },
+              {
+                "courseId": 2062,
+                "allergenId": 209
+              },
+              {
+                "courseId": 2062,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 2062,
+                "courseLogoId": 212
+              },
+              {
+                "courseId": 2062,
+                "courseLogoId": 216
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1412,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 194,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 2063,
+          "menuItemId": 1412,
+          "courseId": 5177,
+          "sortOrder": 0,
+          "course": {
+            "id": 5177,
+            "dispNameNl": "Penne met paddenstoelen en romige bloemkoolsaus",
+            "dispNameEn": "Penne with mushrooms and a creamy cauliflower sauce",
+            "nameNl": "00 penne met paddenstoelen en romige bloemkoolsaus (vegan)",
+            "nameEn": "",
+            "weight": null,
+            "extra": null,
+            "preparation": "maak de bloemkoolsaus klaar volgens de receptuur (zie fiche). - maak de volkoren penne klaar volgens de receptuur. fruit de ui en bak hierbij de champignons, breng op smaak met look, peper en zout.- meng de pasta met de bloemkoolsaus, de champignons en werk af met platte peterselie & gebakken uitjes.",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5177,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5177,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 5177,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1413,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 194,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 2064,
+          "menuItemId": 1413,
+          "courseId": 5053,
+          "sortOrder": 0,
+          "course": {
+            "id": 5053,
+            "dispNameNl": "bolnienaise veganlicious",
+            "dispNameEn": "bolnienaise veganlicious",
+            "nameNl": "00 bolnienaise veganlicious z&w (vegan)",
+            "nameEn": "",
+            "weight": "200 gr",
+            "extra": "vegan",
+            "preparation": "pasta - kook de linzen apart - stoof de ui aan samen met de paprika, wortel en selder - voeg de tomatenpulp, puree, kruiden, bouillon toe en laat koken - voeg de linzen toe en laat nog even meekoken.- breng op smaak en bind met de roux. - werk af met platte peterselie en cashewnoten",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5053,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5053,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5053,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5053,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5053,
+                "allergenId": 209
+              },
+              {
+                "courseId": 5053,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5053,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 5053,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 2065,
+          "menuItemId": 1413,
+          "courseId": 5487,
+          "sortOrder": 0,
+          "course": {
+            "id": 5487,
+            "dispNameNl": "Speltpenne",
+            "dispNameEn": "spelt penne",
+            "nameNl": "Speltpenne (vegan)",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "Kook de pasta gaar in licht gezouten water, olie toevoegen. de kooktijd is afhankelijk van de soort pasta.",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5487,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": true,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1414,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 194,
+      "sortorder": 5,
+      "menuItemContents": [
+        {
+          "id": 2067,
+          "menuItemId": 1414,
+          "courseId": 908,
+          "sortOrder": 0,
+          "course": {
+            "id": 908,
+            "dispNameNl": "choronsaus",
+            "dispNameEn": "choron sauce",
+            "nameNl": "choron saus",
+            "nameEn": "",
+            "weight": "50 ml",
+            "extra": null,
+            "preparation": "tomatino onder warme b\u00e9arnaisesaus mengen",
+            "price": 0.2,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 908,
+                "allergenId": 200
+              },
+              {
+                "courseId": 908,
+                "allergenId": 203
+              },
+              {
+                "courseId": 908,
+                "allergenId": 204
+              },
+              {
+                "courseId": 908,
+                "allergenId": 208
+              },
+              {
+                "courseId": 908,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 2066,
+          "menuItemId": 1414,
+          "courseId": 3264,
+          "sortOrder": 0,
+          "course": {
+            "id": 3264,
+            "dispNameNl": "Kipfilet op de grill ",
+            "dispNameEn": "Grilled chicken breast ",
+            "nameNl": "kipfilet op de grill 1 (kippenkruiden), dd",
+            "nameEn": "",
+            "weight": "140g",
+            "extra": null,
+            "preparation": null,
+            "price": 4.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [
+              {
+                "courseId": 3264,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 3264,
+                "courseLogoId": 203
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 2068,
+          "menuItemId": 1414,
+          "courseId": 5515,
+          "sortOrder": 0,
+          "course": {
+            "id": 5515,
+            "dispNameNl": "Saladbar",
+            "dispNameEn": "saladbar",
+            "nameNl": "Salade - bar",
+            "nameEn": "",
+            "weight": "",
+            "extra": "Dit is de saladbar om toe te voegen aan een grill-gerecht, is reeds ingecalculeerd in de prijs van het grill-gerecht",
+            "preparation": "",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5515,
+                "allergenId": 200
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 202
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 203
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 204
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 207
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 209
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 210
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 211
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 212
+              },
+              {
+                "courseId": 5515,
+                "allergenId": 213
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1415,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 194,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 2069,
+          "menuItemId": 1415,
+          "courseId": 5529,
+          "sortOrder": 0,
+          "course": {
+            "id": 5529,
+            "dispNameNl": "P\u00e9pites bowl",
+            "dispNameEn": "P\u00e9pites bowl",
+            "nameNl": "P\u00e9pites bowl,w, vegan",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "Maak de p\u00e9pites klaar volgens de bereidingswijze op de verpakking & laat afkoelen . - Maak de aziatische tuinerwtenspread volgens de receptuur. Maak de budhabowl als volgt: vul het kommetje met de p\u00e9pites, vervolgens de wortelstaafjes, edamame, witte & gele raapjes..Werk de budha bowl af met een toefje tuinerwtenspread in het midden, waterkers, kimchi & sesamzaad. Zet het deksel op de weckpot en plak het etiket aan de zijkant.",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5529,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5529,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5529,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5529,
+                "allergenId": 209
+              },
+              {
+                "courseId": 5529,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5529,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 5529,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1416,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 194,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 2070,
+          "menuItemId": 1416,
+          "courseId": 4167,
+          "sortOrder": 0,
+          "course": {
+            "id": 4167,
+            "dispNameNl": "Salade h\u00fcttekase",
+            "dispNameEn": "Cottage cheese salad",
+            "nameNl": "salade h\u00fcttekase, w",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "van onder naar boven: cottage cheese - dan laagje piquillo- boontjes, zoete aardappelen, peper, rode ui ringen, ei, waterkers, cashewnoot, croutons.",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4167,
+                "allergenId": 200
+              },
+              {
+                "courseId": 4167,
+                "allergenId": 201
+              },
+              {
+                "courseId": 4167,
+                "allergenId": 203
+              },
+              {
+                "courseId": 4167,
+                "allergenId": 205
+              },
+              {
+                "courseId": 4167,
+                "allergenId": 206
+              },
+              {
+                "courseId": 4167,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4167,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 4167,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 4167,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1417,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 194,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 2071,
+          "menuItemId": 1417,
+          "courseId": 3490,
+          "sortOrder": 0,
+          "course": {
+            "id": 3490,
+            "dispNameNl": "Thai bombai salade",
+            "dispNameEn": "Thai Bombai salad",
+            "nameNl": "thai bombai salade, w (vegan)",
+            "nameEn": "",
+            "weight": "350g",
+            "extra": "koel bewaren",
+            "preparation": "conceptsalade winter miehoen koken - mie mengen met de world grill saus - pastinaak grillen en mengen met de wortelen en sojascheuten en kokosschilfers - opbouw: miehoen, groentjes en platte peterselie",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3490,
+                "allergenId": 208
+              },
+              {
+                "courseId": 3490,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3490,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 3490,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

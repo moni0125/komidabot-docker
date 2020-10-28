@@ -1,0 +1,748 @@
+{
+  "id": 748,
+  "menuDate": "2020-03-12T00:00:00",
+  "restaurantId": 5,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 4793,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 748,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 6610,
+          "menuItemId": 4793,
+          "courseId": 5533,
+          "sortOrder": 0,
+          "course": {
+            "id": 5533,
+            "dispNameNl": "Winter falafel bowl",
+            "dispNameEn": "Winter falafel bowl",
+            "nameNl": "Winter falafel bowl, w (vegan)",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "Mix de opgelegde rode biet, breng op smaak met het limoensap & pezo. Meng de rode bietspread onder de gekookte parelcouscous. Maak de buddha bowl als volgt: verdeel de rode parelcouscous over de kommetjes, vervolgens de gesneden rode kool, gele & oranje wortelschijfjes, curly kale en werk af met de falafelballetjes, pompoenpitten & een toefje hummus",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5533,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5533,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5533,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5533,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 5533,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4801,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 748,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 6618,
+          "menuItemId": 4801,
+          "courseId": 5033,
+          "sortOrder": 0,
+          "course": {
+            "id": 5033,
+            "dispNameNl": "Quesadilla's veganlicious",
+            "dispNameEn": "Veganlicious quesadillas",
+            "nameNl": "00 quesadilla's veganlicious, w (vegan)",
+            "nameEn": "",
+            "weight": null,
+            "extra": null,
+            "preparation": "snack winter bak de diepgevroren quinoa-groenekoolburger op een bakplaat of in de oven.- strooi de mozzarisella over de bodem van de wraps en voeg de lente-ui toe.- voeg een laagje geroosterde ma\u00efs toe. leg de burger in de wrap en vouw toe tot een quesadilla.- voeg de quesadilla\"s toe aan een warme braadpan en bak elke kant een paar minuten op een laag tot middelhoog vuur tot ze licht geroosterd zijn of je kan ze ook in een paninitoestel plaatsen.- snijd in hapklare stukken.",
+            "price": 3.1,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5033,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5033,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5033,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 5033,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4805,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 748,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 6641,
+          "menuItemId": 4805,
+          "courseId": 159,
+          "sortOrder": 0,
+          "course": {
+            "id": 159,
+            "dispNameNl": "Abdijbroodje ",
+            "dispNameEn": "Abbey roll ",
+            "nameNl": "abdijbroodje (baguelino broodje, smeerkaas, rammenas) dd, w",
+            "nameEn": "",
+            "weight": "300 g",
+            "extra": "koel bewaren - veggie",
+            "preparation": null,
+            "price": 3.1,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 159,
+                "allergenId": 201
+              },
+              {
+                "courseId": 159,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 159,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 159,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 159,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4811,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 748,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 6627,
+          "menuItemId": 4811,
+          "courseId": 4990,
+          "sortOrder": 0,
+          "course": {
+            "id": 4990,
+            "dispNameNl": "Kruidig roggebrood",
+            "dispNameEn": "Herbed rye bread",
+            "nameNl": "00 kruidig roggebrood, w (vegan)",
+            "nameEn": "",
+            "weight": null,
+            "extra": "vegan",
+            "preparation": "conceptbroodje winter werk in 3 lagen met het roggebrood.- besmeer de 3 sneden brood met de vegane mayonaise.- leg op de eerste boterham de vegan kruidenkaas, de schijfjes raap en de waterkers.- leg de 2de boterham hierop en herhaal met het beleg en sluit met het laatste sneetje brood.- snijd de boterham diagonaal doormidden en doe er een cocktailprikker in",
+            "price": 2.7,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4990,
+                "allergenId": 201
+              },
+              {
+                "courseId": 4990,
+                "allergenId": 204
+              },
+              {
+                "courseId": 4990,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4990,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 4990,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4816,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 748,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 6632,
+          "menuItemId": 4816,
+          "courseId": 4953,
+          "sortOrder": 0,
+          "course": {
+            "id": 4953,
+            "dispNameNl": "Meergranenbroodje met basilicum-humus en wintergroenten",
+            "dispNameEn": "Multigrain roll with basil hummus and winter vegetables",
+            "nameNl": "00 broodje fit met humus basilicum en wintergroenten (vegan)",
+            "nameEn": "",
+            "weight": "135 g/275g",
+            "extra": null,
+            "preparation": "broodje winter",
+            "price": 3.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4953,
+                "allergenId": 201
+              },
+              {
+                "courseId": 4953,
+                "allergenId": 209
+              },
+              {
+                "courseId": 4953,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4953,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 4953,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4821,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 748,
+      "sortorder": 5,
+      "menuItemContents": [
+        {
+          "id": 6636,
+          "menuItemId": 4821,
+          "courseId": 1872,
+          "sortOrder": 0,
+          "course": {
+            "id": 1872,
+            "dispNameNl": "Italiaanse worteltartaar met parmezaan",
+            "dispNameEn": "Italian carrot tartare with parmesan",
+            "nameNl": "italiaanse worteltartaar met parmezaan, dd, w",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": "koel bewaren - veggie",
+            "preparation": null,
+            "price": 3.1,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1872,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1872,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1872,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1872,
+                "allergenId": 204
+              },
+              {
+                "courseId": 1872,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1872,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 1872,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 1872,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4826,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 748,
+      "sortorder": 6,
+      "menuItemContents": [
+        {
+          "id": 6642,
+          "menuItemId": 4826,
+          "courseId": 159,
+          "sortOrder": 0,
+          "course": {
+            "id": 159,
+            "dispNameNl": "Abdijbroodje ",
+            "dispNameEn": "Abbey roll ",
+            "nameNl": "abdijbroodje (baguelino broodje, smeerkaas, rammenas) dd, w",
+            "nameEn": "",
+            "weight": "300 g",
+            "extra": "koel bewaren - veggie",
+            "preparation": null,
+            "price": 3.1,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 159,
+                "allergenId": 201
+              },
+              {
+                "courseId": 159,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 159,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 159,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 159,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4831,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 748,
+      "sortorder": 7,
+      "menuItemContents": [
+        {
+          "id": 6647,
+          "menuItemId": 4831,
+          "courseId": 1924,
+          "sortOrder": 0,
+          "course": {
+            "id": 1924,
+            "dispNameNl": "Salade Wicca",
+            "dispNameEn": "Wicca salad",
+            "nameNl": "salade wicca (zalm, linzen, aardappelen), w",
+            "nameEn": "",
+            "weight": "350g",
+            "extra": "koel bewaren",
+            "preparation": "pompoenblokjes en aardappelen: niet natuur stomen, maar garen in de oven met olijfolie en rozemarijn. scharrelei gekookt rico 75st of scharrelei gekookt rico 6x12st karton",
+            "price": 4.6,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1924,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1924,
+                "allergenId": 204
+              },
+              {
+                "courseId": 1924,
+                "allergenId": 212
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1924,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 1924,
+                "courseLogoId": 215
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4832,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 748,
+      "sortorder": 8,
+      "menuItemContents": [
+        {
+          "id": 6648,
+          "menuItemId": 4832,
+          "courseId": 864,
+          "sortOrder": 0,
+          "course": {
+            "id": 864,
+            "dispNameNl": "Paprikasoep",
+            "dispNameEn": "Bell pepper soup",
+            "nameNl": "paprikasoep",
+            "nameEn": "",
+            "weight": "500 ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": null,
+            "price": 0.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 864,
+                "allergenId": 201
+              },
+              {
+                "courseId": 864,
+                "allergenId": 208
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 864,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 864,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4833,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 748,
+      "sortorder": 9,
+      "menuItemContents": [
+        {
+          "id": 6649,
+          "menuItemId": 4833,
+          "courseId": 5205,
+          "sortOrder": 0,
+          "course": {
+            "id": 5205,
+            "dispNameNl": "Quiche normande",
+            "dispNameEn": "Quiche normande",
+            "nameNl": "00 quiche normande z&w",
+            "nameEn": "",
+            "weight": null,
+            "extra": null,
+            "preparation": "d + 1 indien niet opgewarmd - warm op volgens instructies",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5205,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5205,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5205,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 5205,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 5546,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 748,
+      "sortorder": 10,
+      "menuItemContents": [
+        {
+          "id": 7567,
+          "menuItemId": 5546,
+          "courseId": 4404,
+          "sortOrder": 0,
+          "course": {
+            "id": 4404,
+            "dispNameNl": "Chia-banaanpudding",
+            "dispNameEn": "Chia and banana pudding",
+            "nameNl": "chia banaanpudding (vegan)",
+            "nameEn": "",
+            "weight": "160g",
+            "extra": "te maken in kleine cambiopot of in glazen dessertpotje of tumbler (desserten per 25 pers.)",
+            "preparation": "dessert mix de bananen met de kokosmelk (variant amandelmelk is minder vet), vanille, kaneel en ahornsiroop. - meng er daarna het chiazaad onder en verdeel: een laagje pudding, een paar schijfjes banaan, laagje pudding en afwerken met kokosschilfers",
+            "price": 2.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4404,
+                "allergenId": 205
+              },
+              {
+                "courseId": 4404,
+                "allergenId": 206
+              },
+              {
+                "courseId": 4404,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4404,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

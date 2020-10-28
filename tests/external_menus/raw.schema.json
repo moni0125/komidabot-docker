@@ -1,0 +1,301 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "optional_string": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "title": "ExternalMenu",
+  "type": "object",
+  "properties": {
+    "$schema": true,
+    "id": {
+      "type": "integer"
+    },
+    "menuDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "restaurantId": {
+      "type": "integer"
+    },
+    "chefId": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 0
+    },
+    "description": {
+      "type": "null"
+    },
+    "approvedById": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 0
+    },
+    "approvedDateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "approved": {
+      "type": "boolean",
+      "enum": [
+        false
+      ]
+    },
+    "requestToBeApproved": {
+      "type": "boolean",
+      "enum": [
+        false
+      ]
+    },
+    "remark": {
+      "type": "null"
+    },
+    "menuItems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "nameNl": {
+            "type": "null"
+          },
+          "nameEn": {
+            "type": "null"
+          },
+          "menuTypeId": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 0
+          },
+          "chefId": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 0
+          },
+          "enabled": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2
+          },
+          "remark": {
+            "type": "null"
+          },
+          "menuid": {
+            "type": "integer"
+          },
+          "sortorder": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 11
+          },
+          "menuItemContents": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "menuItemId": {
+                  "type": "integer"
+                },
+                "courseId": {
+                  "type": "integer"
+                },
+                "sortOrder": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 0
+                },
+                "course": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "dispNameNl": {
+                      "type": "string"
+                    },
+                    "dispNameEn": {
+                      "type": "string"
+                    },
+                    "nameNl": {
+                      "type": "string"
+                    },
+                    "nameEn": {
+                      "type": "string"
+                    },
+                    "weight": {
+                      "$ref": "#/definitions/optional_string"
+                    },
+                    "extra": {
+                      "$ref": "#/definitions/optional_string"
+                    },
+                    "preparation": {
+                      "$ref": "#/definitions/optional_string"
+                    },
+                    "price": {
+                      "type": "number",
+                      "minimum": 0.0
+                    },
+                    "photo": {
+                      "type": "string",
+                      "enum": [
+                        ""
+                      ]
+                    },
+                    "isCourse": {
+                      "type": "boolean"
+                    },
+                    "isIngredient": {
+                      "type": "boolean"
+                    },
+                    "course_CategoryForCourses": {
+                      "type": "null"
+                    },
+                    "course_Allergens": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "courseId": {
+                            "type": "integer"
+                          },
+                          "allergenId": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "courseId",
+                          "allergenId"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "course_CourseLogos": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "courseId": {
+                            "type": "integer"
+                          },
+                          "courseLogoId": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "courseId",
+                          "courseLogoId"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "maincourse": {
+                      "type": "boolean"
+                    },
+                    "menuInfo": {
+                      "$ref": "#/definitions/optional_string"
+                    },
+                    "fixedMultiplePrices": {
+                      "type": "boolean"
+                    },
+                    "calculatedMultiplePrices": {
+                      "type": "boolean"
+                    },
+                    "fixedprice": {
+                      "type": "boolean"
+                    },
+                    "showFirst": {
+                      "type": "boolean"
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "menuInfoEn": {
+                      "$ref": "#/definitions/optional_string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "dispNameNl",
+                    "dispNameEn",
+                    "nameNl",
+                    "nameEn",
+                    "weight",
+                    "extra",
+                    "preparation",
+                    "price",
+                    "photo",
+                    "isCourse",
+                    "isIngredient",
+                    "course_CategoryForCourses",
+                    "course_Allergens",
+                    "course_CourseLogos",
+                    "maincourse",
+                    "menuInfo",
+                    "fixedMultiplePrices",
+                    "calculatedMultiplePrices",
+                    "fixedprice",
+                    "showFirst",
+                    "deleted",
+                    "enabled",
+                    "menuInfoEn"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "id",
+                "menuItemId",
+                "courseId",
+                "sortOrder",
+                "course"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "nameNl",
+          "nameEn",
+          "menuTypeId",
+          "chefId",
+          "enabled",
+          "remark",
+          "menuid",
+          "sortorder",
+          "menuItemContents"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "id",
+    "menuDate",
+    "restaurantId",
+    "chefId",
+    "description",
+    "approvedById",
+    "approvedDateTime",
+    "approved",
+    "requestToBeApproved",
+    "remark",
+    "menuItems"
+  ],
+  "additionalProperties": false
+}
