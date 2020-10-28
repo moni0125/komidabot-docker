@@ -119,7 +119,7 @@ def _convert_price(price_students: Union[str, Decimal]) -> Decimal:
     return round(Decimal(price_data['staffprice']), 2)
 
 
-def _decimal_or_none(value: str):
+def _decimal_or_none(value: str) -> Optional[Decimal]:
     if value is None:
         return None
     return Decimal(value)
@@ -403,12 +403,12 @@ def update_menu(processed: Dict):
                         menu_item.set_attributes(attributes)
                         menu_item.set_allergens(allergens)
                         menu_item.price_students = Decimal(item['price_students'])
-                        menu_item.price_staff = Decimal(item['price_staff'])
+                        menu_item.price_staff = _decimal_or_none(item['price_staff'])
                 else:
                     menu_item = menu.add_menu_item(translatable,
                                                    models.CourseType[item['course_type']],
                                                    models.CourseSubType[item['course_sub_type']],
                                                    attributes, allergens,
-                                                   _decimal_or_none(item['price_students']),
+                                                   Decimal(item['price_students']),
                                                    _decimal_or_none(item['price_staff']))
                     menu_item.external_id = item['external_id']
