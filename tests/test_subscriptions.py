@@ -87,6 +87,7 @@ class TestGenericSubscriptions(BaseSubscriptionsTestCase):
                     items = [menu_item(course_type,
                                        sub_type,
                                        [],
+                                       [],
                                        '{} at {} for {}'.format(course_type.name, campus.short_name, day_name),
                                        'nl',
                                        Decimal('1.0'),

@@ -81,11 +81,11 @@ class TestModelsMenu(BaseTestCase):
             menu = Menu.create(self.campuses[0], utils.DAYS['MON'], add_to_db=False)
 
             menu_item1 = menu.add_menu_item(translatable1, CourseType.SUB, CourseSubType.NORMAL,
-                                            [CourseAttributes.SNACK], Decimal('1.0'), None)
+                                            [CourseAttributes.SNACK], [], Decimal('1.0'), None)
             menu_item2 = menu.add_menu_item(translatable2, CourseType.PASTA, CourseSubType.NORMAL,
-                                            [CourseAttributes.PASTA], Decimal('1.0'), Decimal('4.0'))
+                                            [CourseAttributes.PASTA], [], Decimal('1.0'), Decimal('4.0'))
             menu_item3 = menu.add_menu_item(translatable3, CourseType.SOUP, CourseSubType.VEGAN,
-                                            [CourseAttributes.SOUP], Decimal('1.0'), Decimal('2.0'))
+                                            [CourseAttributes.SOUP], [], Decimal('1.0'), Decimal('2.0'))
 
             db.session.add(menu)
             db.session.commit()

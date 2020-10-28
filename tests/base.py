@@ -16,6 +16,7 @@ from tests.utils import StubTranslator
 menu_item = NamedTuple('menu_item', [('type', models.CourseType),
                                      ('sub_type', models.CourseSubType),
                                      ('attributes', List[models.CourseAttributes]),
+                                     ('allergens', List[models.CourseAllergens]),
                                      ('text', str),
                                      ('language', str),
                                      ('price_students', Decimal),
@@ -141,7 +142,7 @@ class BaseTestCase(TestCase):
 
         for item in items:
             translatable, _ = models.Translatable.get_or_create(item.text, item.language)
-            menu.add_menu_item(translatable, item.type, item.sub_type, item.attributes,
+            menu.add_menu_item(translatable, item.type, item.sub_type, item.attributes, item.allergens,
                                item.price_students, item.price_staff)
 
         db.session.commit()

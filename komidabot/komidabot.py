@@ -17,9 +17,8 @@ from extensions import db
 from komidabot.app import get_app
 from komidabot.bot import Bot
 from komidabot.debug.state import DebuggableException, ProgramStateTrace, SimpleProgramState
-from komidabot.models import Campus, ClosingDays, Day, Menu, MenuItem, Translatable
+from komidabot.models import Campus, ClosingDays, Day, Menu
 from komidabot.models import create_standard_values, import_dump, recreate_db
-from komidabot.translation import LANGUAGE_DUTCH
 
 
 class Komidabot(Bot):
@@ -443,8 +442,6 @@ def update_menus(*campuses: str, dates: 'List[datetime.date]' = None):
             today + datetime.timedelta(days=7),
         ]
 
-    fetcher = external_menu.ExternalMenu()
-
     for campus in campus_list:
         for date in dates:
             if date.isoweekday() in [6, 7]:
@@ -455,70 +452,15 @@ def update_menus(*campuses: str, dates: 'List[datetime.date]' = None):
             if closed:
                 continue  # Campus closed, don't try to find a menu
 
-            fetcher.add_to_lookup(campus, date)
+            with debug_state.state(SimpleProgramState('Campus menu update', {'campus': campus.short_name,
+                                                                             'date': str(date)})):
+                data_raw = external_menu.fetch_raw(campus, date)
+                data_parsed = external_menu.parse_fetched(data_raw)
+                data_processed = external_menu.process_parsed(data_parsed)
 
-    with debug_state.state(SimpleProgramState('Fetch updates')):
-        result = fetcher.lookup_menus()
+                assert campus.short_name == data_processed['campus']
+                assert date.isoformat() == data_processed['date']
 
-    for (campus, date), items in result.items():
-        with debug_state.state(SimpleProgramState('Campus menu update', {'campus': campus.short_name,
-                                                                         'date': str(date)})):
-            if len(items) > 0:
-                menu = Menu.get_menu(campus, date)
-
-                if menu is None:
-                    menu = Menu.create(campus, date)
-
-                menu_items = {}
-
-                for menu_item in menu.menu_items:
-                    menu_item: MenuItem
-
-                    if menu_item.external_id is None:
-                        if not menu_item.data_frozen:
-                            # Old item, remove
-                            db.session.delete(menu_item)
-                    else:
-                        menu_items[menu_item.external_id] = menu_item
-
-                for item in items:
-                    translatable, translation = Translatable.get_or_create(item.get_combined_text(), LANGUAGE_DUTCH)
-
-                    for language in item.get_supported_languages().difference([LANGUAGE_DUTCH]):
-                        if translatable.has_translation(language):
-                            translation = translatable.get_translation(language)
-                            if translation.provider in [None, 'komida', 'manual']:
-                                # Don't replace translation if provider is Komida, as this is the official translation
-                                # Likewise, if the provider is not defined, this means it is most likely manually added
-                                # Otherwise it's done by Google or some other provider, which is sub-optimal
-                                continue
-
-                            # Update translation and provider to new values
-                            translation.translation = item.get_combined_text(language)
-                            translation.provider = 'komida'
-                        else:
-                            translatable.add_translation(language, item.get_combined_text(language), 'komida')
-
-                    if item.external_id in menu_items:
-                        menu_item = menu_items[item.external_id]
-                        if not menu_item.data_frozen:
-                            menu_item.translatable = translatable
-                            menu_item.course_type = item.course_type
-                            menu_item.course_sub_type = item.course_sub_type
-                            menu_item.set_attributes(item.course_attributes)
-                            menu_item.price_students = item.get_student_price()
-                            menu_item.price_staff = item.get_staff_price()
-
-                        del menu_items[item.external_id]
-                    else:
-                        menu_item = menu.add_menu_item(translatable, item.course_type, item.course_sub_type,
-                                                       item.course_attributes,
-                                                       item.get_student_price(), item.get_staff_price())
-                        menu_item.external_id = item.external_id
-
-                    for menu_item in menu_items.values():
-                        if not menu_item.data_frozen:
-                            # External ID not encountered in response, so we delete it here as well
-                            db.session.delete(menu_item)
+                external_menu.update_menu(data_processed)
 
     db.session.commit()

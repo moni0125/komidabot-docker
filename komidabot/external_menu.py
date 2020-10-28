@@ -1,14 +1,15 @@
 import datetime
 import json
 from decimal import Decimal
-from typing import Dict, List, Set, Tuple
+from typing import Any, Dict, Optional, Union
 
 import requests
 
 import komidabot.models as models
+from extensions import db
 from komidabot.debug.state import DebuggableException, ProgramStateTrace, SimpleProgramState
 from komidabot.rate_limit import Limiter
-from komidabot.translation import LANGUAGE_DUTCH, LANGUAGE_ENGLISH
+from komidabot.translation import LANGUAGE_DUTCH
 
 BASE_ENDPOINT = 'https://restickets.uantwerpen.be/'
 MENU_API = '{endpoint}api/GetMenuByDate/{campus}/{date}'
@@ -37,7 +38,25 @@ COURSE_LOGOS_RAW = [
     {"id": 216, "nameNl": "less meat", "nameEn": "less meat", "logo": "ikoon-less.gif", "sortorder": 1},
 ]
 
-COURSE_LOGOS = {
+COURSE_ALLERGENS_RAW = [
+    {"id": 200, "nameNl": "Ei", "nameEn": "Egg", "logo": "Ei.gif"},
+    {"id": 201, "nameNl": "Gluten-tarwe", "nameEn": "Wheat gluten", "logo": "Gluten-tarwe.gif"},
+    {"id": 202, "nameNl": "Lupine", "nameEn": "Lupine", "logo": "Lupine.gif"},
+    {"id": 203, "nameNl": "Melk-lactose", "nameEn": "Milk lactose", "logo": "Melk-lactose.gif"},
+    {"id": 204, "nameNl": "Mosterd", "nameEn": "Mustard", "logo": "Mosterd.gif"},
+    {"id": 205, "nameNl": "Noten", "nameEn": "nuts", "logo": "Noten.gif"},
+    {"id": 206, "nameNl": "Pinda", "nameEn": "Peanut", "logo": "Pinda.gif"},
+    {"id": 207, "nameNl": "Schaaldieren", "nameEn": "shellfish", "logo": "Schaaldieren.gif"},
+    {"id": 208, "nameNl": "Selderij", "nameEn": "Celery", "logo": "Selderij.gif"},
+    {"id": 209, "nameNl": "Sesam", "nameEn": "Sesame", "logo": "Sesam.gif"},
+    {"id": 210, "nameNl": "Soja", "nameEn": "soya", "logo": "Soja.gif"},
+    {"id": 211, "nameNl": "Sulfiet", "nameEn": "sulfite", "logo": "Sulfiet.gif"},
+    {"id": 212, "nameNl": "Vis", "nameEn": "Fish", "logo": "Vis.gif"},
+    {"id": 213, "nameNl": "Weekdieren", "nameEn": "mollusks", "logo": "Weekdieren.gif"},
+    {"id": 214, "nameNl": "halal", "nameEn": "halal", "logo": "halal.gif"},
+]
+
+COURSE_LOGOS: Dict[str, int] = {
     'BIO': 201,  # Biological course (???)
     'CHICKEN': 202,  # Contains chicken
     'GRILL': 203,  # Grill course
@@ -56,237 +75,340 @@ COURSE_LOGOS = {
     'LESS_MEAT': 216,  # Contains less meat
 }
 
+COURSE_LOGOS_REVERSE: Dict[int, str] = {value: key for key, value in COURSE_LOGOS.items()}
 
-class ExternalCourse:
-    def __init__(self, sort_order: int, show_first: bool, main_course: bool,
-                 price_students: float):
-        self.name: Dict[str, str] = dict()
-        self.sort_order = sort_order
-        self.show_first = show_first
-        self.main_course = main_course
+COURSE_ALLERGENS = {
+    'EGG': 200,
+    'WHEAT_GLUTEN': 201,
+    'LUPINE': 202,
+    'MILK_LACTOSE': 203,
+    'MUSTARD': 204,
+    'NUTS': 205,
+    'PEANUTS': 206,
+    'SHELLFISH': 207,
+    'CELERY': 208,
+    'SESAME': 209,
+    'SOY': 210,
+    'SULFITES': 211,
+    'FISH': 212,
+    'MOLLUSKS': 213,
+    'HALAL': 214,
+}
 
-        price_students = Decimal(price_students)
-        self.price_students: Decimal = round(price_students, 2)
+COURSE_ALLERGENS_REVERSE: Dict[int, str] = {value: key for key, value in COURSE_ALLERGENS.items()}
 
-    def add_name(self, locale, name):
-        if locale in self.name:
-            raise ValueError('Duplicate name for locale')
-        if not name:
-            raise ValueError('Empty name')
+PASTA_NAMES = ['spaghetti', 'tagliatelle', 'papardelle', 'bucatini', 'cannelloni',
+               'ravioli', 'tortellini', 'caramelle', 'penne', 'rigatoni', 'orecchiette',
+               'farfalle', 'caserecce', 'fusilli', 'pasta', ]
+# Pasta names for those who don't speak Italian
+BROKEN_ITALIAN_NAMES = ['spagheti', 'tagliatele', 'papardele', 'bucatinni',
+                        'cannellonni', 'canneloni', 'cannellonni', 'raviolli',
+                        'tortellinni', 'tortelini', 'tortelinni', 'caramele', 'pene',
+                        'rigatonni', 'orecchiete', 'orechiette', 'orechiete', 'farfale',
+                        'caserece', 'fusili', ]
 
-        self.name[locale] = name
-
-    def __repr__(self):
-        return repr(self.name)
-
-    def __lt__(self, other: 'ExternalCourse'):
-        if self.show_first:
-            if not other.show_first:
-                return True
-            elif self.main_course:
-                return not other.main_course
-        elif other.show_first:
-            return False
-        elif self.main_course:
-            return not other.main_course
-
-
-class ExternalMenuItem:
-    def __init__(self, external_id: int, sort_order: int,
-                 course_type: models.CourseType, course_sub_type: models.CourseSubType,
-                 course_attributes: List[models.CourseAttributes], courses: List[ExternalCourse]):
-        self.external_id = external_id
-        self.sort_order = sort_order
-        self.course_type = course_type
-        self.course_sub_type = course_sub_type
-        self.course_attributes = course_attributes
-        self.courses = courses[:]
-        self.courses.sort()
-
-        self.price_staff = None
-
-    def get_supported_languages(self) -> 'Set[str]':
-        result = None
-        for elem in self.courses:
-            if result is None:
-                result = set(elem.name.keys())
-            else:
-                result = result.intersection(set(elem.name.keys()))
-
-        return result
-
-    def get_combined_text(self, language=LANGUAGE_DUTCH):
-        for elem in self.courses:
-            if language not in elem.name:
-                return None  # No official translation available
-
-        result = ', '.join(elem.name[language] for elem in self.courses)
-
-        # Return string with capitalized first letter
-        return result[0].upper() + result[1:]
-
-    def get_student_price(self):
-        return sum((item.price_students for item in self.courses if item.price_students), Decimal('0.0'))
-
-    def get_staff_price(self):
-        return self.price_staff
-
-    def __repr__(self):
-        return '{external_id} {order} {type} {sub_type} {attributes} {icon} {text} ({price1} / {price2})' \
-            .format(order=self.sort_order, icon=models.course_icons_matrix[self.course_type][self.course_sub_type],
-                    text=self.get_combined_text(), price1=self.get_student_price(), price2=self.get_staff_price(),
-                    type=self.course_type.name, sub_type=self.course_sub_type.name,
-                    attributes=[v.name for v in self.course_attributes],
-                    external_id=self.external_id)
+session_obj = requests.Session()
+limiter = Limiter(5)  # Limit to 5 lookups per second
 
 
-class ExternalMenu:
-    def __init__(self):
-        self.session = requests.Session()
+def _convert_price(price_students: Union[str, Decimal]) -> Decimal:
+    url = PRICE_API.format(endpoint=BASE_ENDPOINT, price=price_students)
+    price_response = session_obj.get(url, headers=API_GET_HEADERS)
+    price_data = json.loads(price_response.text)
 
-        self.lookups: List[Tuple[models.Campus, datetime.date]] = []
+    return round(Decimal(price_data['staffprice']), 2)
 
-    def add_to_lookup(self, campus: models.Campus, date: datetime.date):
-        self.lookups.append((campus, date))
 
-    def lookup_menus(self) -> 'Dict[Tuple[models.Campus, datetime.date], List[ExternalMenuItem]]':
-        limiter = Limiter(5)  # Limit to 5 lookups per second
+def _decimal_or_none(value: str):
+    if value is None:
+        return None
+    return Decimal(value)
 
-        debug_state = ProgramStateTrace()
-        result = dict()
 
-        for campus, date in self.lookups:
-            # Replaced try ... except with context manager
-            # try:
-            with debug_state.state(SimpleProgramState('Lookup menu', {'campus': campus.short_name, 'date': str(date)})):
-                limiter()
+def fetch_raw(campus: models.Campus, date: datetime.date) -> Optional[Any]:
+    debug_state = ProgramStateTrace()
 
-                url = MENU_API.format(endpoint=BASE_ENDPOINT, campus=campus.external_id, date=date.strftime('%Y-%m-%d'))
+    with debug_state.state(SimpleProgramState('Lookup menu', {'campus': campus.short_name, 'date': str(date)})):
+        limiter()
 
-                response = self.session.get(url, headers=API_GET_HEADERS)
-                if 400 <= response.status_code < 500:
-                    raise DebuggableException('Client error on HTTP request')
-                if 500 <= response.status_code < 600:
-                    raise DebuggableException('Server error on HTTP request')
+        url = MENU_API.format(endpoint=BASE_ENDPOINT, campus=campus.external_id, date=date.strftime('%Y-%m-%d'))
 
-                try:
-                    data = json.loads(response.text)
-                except json.decoder.JSONDecodeError:
-                    # If we fail to decode JSON, this probably means we got an empty response back
-                    # This can happen if we try to look up the menu on Sundays or Saturdays
-                    continue
+        response = session_obj.get(url, headers=API_GET_HEADERS)
+        if 400 <= response.status_code < 500:
+            raise DebuggableException('Client error on HTTP request')
+        if 500 <= response.status_code < 600:
+            # raise DebuggableException('Server error on HTTP request')
+            return None  # Don't raise an exception when the server fails, we'll just ignore it
+            # TODO: Maybe send a notification to admins that we failed requesting data?
 
-                # print(data)
+        # No content is returned when there is no menu for a campus on a specific day
+        if response.status_code == 204:
+            return None
 
-                if data['restaurantId'] != campus.external_id:
-                    raise DebuggableException('Got menu for different restaurant')
+        try:
+            return json.loads(response.text)
+        except json.decoder.JSONDecodeError:
+            # If we fail to decode JSON, this means we got an invalid response back
+            # This can (or used to) happen when we try to look up the menu on a Sunday or Saturday
+            return None
 
-                items = []
 
-                for item in data['menuItems']:
-                    with debug_state.state(SimpleProgramState('Menu item', item)):
-                        menu_item_id = item['id']
-                        enabled = item['enabled']
-                        sort_order = item['sortorder']
-                        menu_contents = []
+def parse_fetched(fetched: Dict):
+    if fetched is None:
+        return None
 
-                        if not enabled:
-                            continue
+    debug_state = ProgramStateTrace()
 
-                        combined_logos = []
-                        calculate_multi_price = False
+    campus = models.Campus.get_by_id(fetched['restaurantId'])
 
-                        has_pasta = False
+    result = {
+        'date': datetime.datetime.strptime(fetched['menuDate'], '%Y-%m-%dT%H:%M:%S').date().isoformat(),
+        'campus': campus.short_name,
+        'menu': []
+    }
 
-                        for item_content in item['menuItemContents']:
-                            with debug_state.state(SimpleProgramState('Menu item ingredient', item_content)):
-                                course = item_content['course']
-                                enabled = course['enabled']
-                                deleted = course['deleted']
-                                course_sort_order = item_content['sortOrder']
+    for raw_item in fetched['menuItems']:
+        with debug_state.state(SimpleProgramState('Menu item', raw_item['id'])):
+            if raw_item['enabled'] != 1:  # XXX: Spotted in the wild, enabled values of 2!
+                continue
 
-                                if not enabled or deleted:
-                                    continue
+            parsed_item = {
+                'external_id': raw_item['id'],
+                'components': [],
+                'price': Decimal(0),
+                'multiple_prices': False,
+                'sort_order': raw_item['sortorder']
+            }
 
-                                name_nl = course['dispNameNl']
-                                name_en = course['dispNameEn']
-                                main_course = course['maincourse']
-                                price = course['price']
-                                calculate_multi_price = calculate_multi_price or course['calculatedMultiplePrices']
-                                fixed_price = course['fixedprice']
-                                calculate_multi_price = calculate_multi_price or course['fixedMultiplePrices']
-                                show_first = course['showFirst']
+            # Sort components in place
+            # XXX: This makes the items order consistent in the output as well
+            raw_item['menuItemContents'].sort(key=lambda v: (not v['course']['showFirst'],
+                                                             not v['course']['maincourse'],
+                                                             v['sortOrder']))
 
-                                combined_logos += [entry['courseLogoId'] for entry in course['course_CourseLogos']]
+            for raw_item_contents in raw_item['menuItemContents']:
+                with debug_state.state(SimpleProgramState('Menu item component', raw_item_contents['id'])):
+                    raw_course = raw_item_contents['course']
 
-                                pasta_names = ['spaghetti', 'tagliatelle', 'papardelle', 'bucatini', 'cannelloni',
-                                               'ravioli', 'tortellini', 'caramelle', 'penne', 'rigatoni', 'orecchiette',
-                                               'farfalle', 'caserecce', 'fusilli', 'pasta', ]
-                                # Pasta names for those who don't speak Italian
-                                broken_italian_names = ['spagheti', 'tagliatele', 'papardele', 'bucatinni',
-                                                        'cannellonni', 'canneloni', 'cannellonni', 'raviolli',
-                                                        'tortellinni', 'tortelini', 'tortelinni', 'caramele', 'pene',
-                                                        'rigatonni', 'orecchiete', 'orechiette', 'orechiete', 'farfale',
-                                                        'caserece', 'fusili', ]
+                    if not raw_course['enabled'] or raw_course['deleted']:
+                        continue
 
-                                for pasta in pasta_names + broken_italian_names:
-                                    if pasta in name_nl.lower():
-                                        has_pasta = True
-                                        break  # Found pasta in the name!
+                    component = {
+                        'name': {
+                            'nl': raw_course['dispNameNl'].strip(),
+                            'en': raw_course['dispNameEn'].strip(),
+                        },
+                        'attributes': [],
+                        'allergens': []
+                    }
 
-                                course_obj = ExternalCourse(course_sort_order, show_first, main_course, price)
-                                course_obj.add_name(LANGUAGE_DUTCH, name_nl.strip())
-                                if name_en:
-                                    course_obj.add_name(LANGUAGE_ENGLISH, name_en.strip())
-                                menu_contents.append(course_obj)
+                    if raw_course['dispNameEn']:
+                        component['name']['en'] = raw_course['dispNameEn'].strip()
 
-                        if not menu_contents:
-                            # If no menu contents (all are disabled), don't add a menu item
-                            continue
+                    parsed_item['price'] += round(Decimal(raw_course['price']), 2)
 
-                        has_pasta = has_pasta or (COURSE_LOGOS['PASTA'] in combined_logos)
+                    if raw_course['calculatedMultiplePrices'] or raw_course['fixedMultiplePrices']:
+                        parsed_item['multiple_prices'] = True
 
-                        course_type = models.CourseType.DAILY
-                        course_sub_type = models.CourseSubType.NORMAL
+                    for raw_allergens in raw_course['course_Allergens']:
+                        component['allergens'].append(COURSE_ALLERGENS_REVERSE[raw_allergens['allergenId']])
 
-                        if COURSE_LOGOS['VEGAN'] in combined_logos:
-                            course_sub_type = models.CourseSubType.VEGAN
-                        elif COURSE_LOGOS['VEGGIE'] in combined_logos:
-                            course_sub_type = models.CourseSubType.VEGETARIAN
+                    for raw_logos in raw_course['course_CourseLogos']:
+                        component['attributes'].append(COURSE_LOGOS_REVERSE[raw_logos['courseLogoId']])
 
-                        if COURSE_LOGOS['SOUP'] in combined_logos:
-                            course_type = models.CourseType.SOUP
-                        elif COURSE_LOGOS['PASTA'] in combined_logos or has_pasta:
-                            course_type = models.CourseType.PASTA
-                        elif COURSE_LOGOS['GRILL'] in combined_logos:
-                            course_type = models.CourseType.GRILL
-                        elif COURSE_LOGOS['SNACK'] in combined_logos:
-                            course_type = models.CourseType.SUB
-                        elif COURSE_LOGOS['SALAD'] in combined_logos:
-                            course_type = models.CourseType.SALAD
+                    # Ensure consistent output
+                    component['allergens'].sort()
+                    component['attributes'].sort()
 
-                        menu_item = ExternalMenuItem(menu_item_id, sort_order,
-                                                     course_type, course_sub_type,
-                                                     [models.CourseAttributes(v) for v in combined_logos],
-                                                     menu_contents)
+                    parsed_item['components'].append(component)
 
-                        if calculate_multi_price:
-                            url = PRICE_API.format(endpoint=BASE_ENDPOINT, price=menu_item.get_student_price())
-                            price_response = self.session.get(url, headers=API_GET_HEADERS)
-                            price_data = json.loads(price_response.text)
+            if parsed_item['price'] == 0:
+                continue  # Items with no price are most likely informational messages, not courses
 
-                            menu_item.price_staff = round(Decimal(price_data['staffprice']), 2)
+            parsed_item['price'] = str(parsed_item['price'])
 
-                        if not menu_item.get_student_price() and not menu_item.get_staff_price():
-                            continue
+            # XXX: Only add a menu item if there's actually something in it
+            if len(parsed_item['components']) > 0:
+                result['menu'].append(parsed_item)
 
-                        items.append(menu_item)
+    # Ensure consistent output
+    result['menu'].sort(key=lambda v: v['external_id'])
 
-                items.sort(key=lambda i: (i.course_type.value, i.course_sub_type.value))
+    return result
 
-                if len(items) > 0:
-                    result[(campus, date)] = items
-            # except Exception as e:
-            #     raise Exception('Failed retrieving menu data for ({}, {})'.format(campus.short_name, date)) from e
 
-        return result
+def process_parsed(parsed: Dict):
+    if parsed is None:
+        return None
+
+    debug_state = ProgramStateTrace()
+
+    result = {
+        'date': parsed['date'],
+        'campus': parsed['campus'],
+        'menu': [],
+    }
+
+    for parsed_item in parsed['menu']:
+        with debug_state.state(SimpleProgramState('Menu item', parsed_item['external_id'])):
+            processed_item = {
+                'external_id': parsed_item['external_id'],
+                'name': {
+                    'nl': [],
+                    'en': []
+                },
+                'course_type': '',
+                'course_sub_type': '',
+                'course_attributes': set(),
+                'course_allergens': set(),
+                'price_students': parsed_item['price'],
+                'price_staff': None
+            }
+
+            for component in parsed_item['components']:
+                component: Dict
+
+                with debug_state.state(SimpleProgramState('Menu item component', component)):
+                    processed_item['course_attributes'].update(component['attributes'])
+                    processed_item['course_allergens'].update(component['allergens'])
+
+                    if 'nl' in processed_item['name']:
+                        # If not in here, then a component did not support this language
+                        piece = component['name'].get('nl', '')
+                        if not piece:
+                            # Remove if not every component supports this language
+                            del processed_item['name']['nl']
+                        else:
+                            processed_item['name']['nl'].append(piece)
+
+                    if 'en' in processed_item['name']:
+                        # If not in here, then a component did not support this language
+                        piece = component['name'].get('en', '')
+                        if not piece:
+                            # Remove if not every component supports this language
+                            del processed_item['name']['en']
+                        else:
+                            processed_item['name']['en'].append(piece)
+
+            for lang in processed_item['name']:
+                name = ', '.join(processed_item['name'][lang])
+                name = name[0].upper() + name[1:]
+                processed_item['name'][lang] = name
+
+            processed_item['course_attributes'] = list(processed_item['course_attributes'])
+            processed_item['course_attributes'].sort()
+
+            processed_item['course_allergens'] = list(processed_item['course_allergens'])
+            processed_item['course_allergens'].sort()
+
+            if parsed_item['multiple_prices']:
+                processed_item['price_staff'] = str(_convert_price(parsed_item['price']))
+
+            has_pasta = 'PASTA' in processed_item['course_attributes']
+
+            if not has_pasta:
+                # No pasta in name, let's check to make sure anyway
+                name = processed_item['name']['nl']
+
+                for pasta in PASTA_NAMES + BROKEN_ITALIAN_NAMES:
+                    if pasta in name.lower():
+                        has_pasta = True
+                        break
+
+            course_type = models.CourseType.DAILY
+            course_sub_type = models.CourseSubType.NORMAL
+
+            if 'VEGAN' in processed_item['course_attributes']:
+                course_sub_type = models.CourseSubType.VEGAN
+            elif 'VEGGIE' in processed_item['course_attributes']:
+                course_sub_type = models.CourseSubType.VEGETARIAN
+
+            if 'SOUP' in processed_item['course_attributes']:
+                course_type = models.CourseType.SOUP
+            elif 'PASTA' in processed_item['course_attributes'] or has_pasta:
+                course_type = models.CourseType.PASTA
+            elif 'GRILL' in processed_item['course_attributes']:
+                course_type = models.CourseType.GRILL
+            elif 'SNACK' in processed_item['course_attributes']:
+                course_type = models.CourseType.SUB
+            elif 'SALAD' in processed_item['course_attributes']:
+                course_type = models.CourseType.SALAD
+
+            processed_item['course_type'] = course_type.name
+            processed_item['course_sub_type'] = course_sub_type.name
+
+            result['menu'].append(processed_item)
+
+    return result
+
+
+def update_menu(processed: Dict):
+    if processed is None:
+        return None
+
+    debug_state = ProgramStateTrace()
+
+    with debug_state.state(SimpleProgramState('Campus menu update', {'campus': processed['campus'],
+                                                                     'date': processed['date']})):
+        items = processed['menu']
+        if len(items) > 0:
+            campus = models.Campus.get_by_short_name(processed['campus'])
+            date = datetime.date.fromisoformat(processed['date'])
+
+            menu = models.Menu.get_menu(campus, date)
+
+            if menu is None:
+                menu = models.Menu.create(campus, date)
+
+            external_ids = [item['external_id'] for item in items]
+            menu_items = {}
+
+            for menu_item in menu.menu_items:
+                if menu_item.external_id not in external_ids:  # Also matches if menu_item.external_id is None
+                    if not menu_item.data_frozen:
+                        # Old item, remove
+                        db.session.delete(menu_item)
+                else:
+                    menu_items[menu_item.external_id] = menu_item
+
+            for item in items:
+                translatable, translation = models.Translatable.get_or_create(item['name'][LANGUAGE_DUTCH],
+                                                                              LANGUAGE_DUTCH)
+
+                for language in set(item['name'].keys()).difference([LANGUAGE_DUTCH]):
+                    if translatable.has_translation(language):
+                        translation = translatable.get_translation(language)
+
+                        # Don't replace translation if provider is Komida, as this is the official translation
+                        # Likewise, if the provider is not defined, this means it is most likely manually added
+                        # Otherwise it's done by Google or some other provider, which is sub-optimal
+                        if translation.provider not in [None, 'komida', 'manual']:
+                            continue  # XXX: Only continues for loop over languages
+
+                        # Update translation and provider to new values
+                        translation.translation = item['name'][language]
+                        translation.provider = 'komida'
+                    else:
+                        translatable.add_translation(language, item['name'][language], 'komida')
+
+                attributes = [models.CourseAttributes[attribute] for attribute in item['course_attributes']]
+                allergens = [models.CourseAllergens[allergen] for allergen in item['course_allergens']]
+
+                if item['external_id'] in menu_items:
+                    menu_item = menu_items[item['external_id']]
+                    if not menu_item.data_frozen:
+                        menu_item.translatable = translatable
+                        menu_item.course_type = models.CourseType[item['course_type']]
+                        menu_item.course_sub_type = models.CourseSubType[item['course_sub_type']]
+                        menu_item.set_attributes(attributes)
+                        menu_item.set_allergens(allergens)
+                        menu_item.price_students = Decimal(item['price_students'])
+                        menu_item.price_staff = Decimal(item['price_staff'])
+                else:
+                    menu_item = menu.add_menu_item(translatable,
+                                                   models.CourseType[item['course_type']],
+                                                   models.CourseSubType[item['course_sub_type']],
+                                                   attributes, allergens,
+                                                   _decimal_or_none(item['price_students']),
+                                                   _decimal_or_none(item['price_staff']))
+                    menu_item.external_id = item['external_id']

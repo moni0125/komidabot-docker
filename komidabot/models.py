@@ -20,18 +20,6 @@ make_transient_to_detached = make_transient_to_detached
 _KEYWORDS_SEPARATOR = ' '
 
 
-# TODO: Convert FoodType to be a CourseType and CourseSubType
-class FoodType(enum.Enum):
-    SOUP = 1  # -> (SOUP, NORMAL)
-    MEAT = 2  # -> (DAILY, NORMAL)
-    VEGAN = 3  # -> (DAILY, VEGAN)
-    GRILL = 4  # -> (GRILL, NORMAL)
-    PASTA_MEAT = 5  # -> (PASTA, NORMAL)
-    PASTA_VEGAN = 6  # -> (PASTA, VEGAN)
-    SALAD = 7  # -> (SALAD, NORMAL)
-    SUB = 8  # -> (SUB, NORMAL)
-
-
 # Main course type
 class CourseType(enum.Enum):
     SOUP = 1
@@ -40,6 +28,7 @@ class CourseType(enum.Enum):
     GRILL = 4
     SALAD = 5
     SUB = 6
+    DESSERT = 7
 
 
 # Course sub-type
@@ -73,16 +62,28 @@ class CourseAttributes(enum.Enum):
         return value in cls._value2member_map_
 
 
-food_type_icons = {
-    FoodType.SOUP: '🍵',
-    FoodType.MEAT: '🥩',
-    FoodType.VEGAN: '🥬',
-    FoodType.GRILL: '🍖',
-    FoodType.PASTA_MEAT: '🍝',
-    FoodType.PASTA_VEGAN: '🍝',
-    FoodType.SALAD: '🥗',
-    FoodType.SUB: '🥖',
-}
+# Course attributes from external menu
+class CourseAllergens(enum.Enum):
+    EGG = 200
+    WHEAT_GLUTEN = 201
+    LUPINE = 202
+    MILK_LACTOSE = 203
+    MUSTARD = 204
+    NUTS = 205
+    PEANUTS = 206
+    SHELLFISH = 207
+    CELERY = 208
+    SESAME = 209
+    SOY = 210
+    SULFITES = 211
+    FISH = 212
+    MOLLUSKS = 213
+    HALAL = 214
+
+    @classmethod
+    def has_value(cls, value):
+        return value in cls._value2member_map_
+
 
 course_icons_matrix = {
     CourseType.SOUP: {
@@ -115,49 +116,10 @@ course_icons_matrix = {
         CourseSubType.VEGETARIAN: '🥖',
         CourseSubType.VEGAN: '🥖',
     },
-}
-
-food_to_course_type_mapping = {
-    FoodType.SOUP: (CourseType.SOUP, CourseSubType.NORMAL),
-    FoodType.MEAT: (CourseType.DAILY, CourseSubType.NORMAL),
-    FoodType.VEGAN: (CourseType.DAILY, CourseSubType.VEGETARIAN),
-    FoodType.GRILL: (CourseType.GRILL, CourseSubType.NORMAL),
-    FoodType.PASTA_MEAT: (CourseType.PASTA, CourseSubType.NORMAL),
-    FoodType.PASTA_VEGAN: (CourseType.PASTA, CourseSubType.VEGETARIAN),
-    FoodType.SALAD: (CourseType.SALAD, CourseSubType.NORMAL),
-    FoodType.SUB: (CourseType.SUB, CourseSubType.NORMAL),
-}
-
-course_to_food_type_mapping = {
-    CourseType.SOUP: {
-        CourseSubType.NORMAL: FoodType.SOUP,
-        CourseSubType.VEGETARIAN: FoodType.SOUP,
-        CourseSubType.VEGAN: FoodType.SOUP,
-    },
-    CourseType.DAILY: {
-        CourseSubType.NORMAL: FoodType.MEAT,
-        CourseSubType.VEGETARIAN: FoodType.VEGAN,
-        CourseSubType.VEGAN: FoodType.VEGAN,
-    },
-    CourseType.PASTA: {
-        CourseSubType.NORMAL: FoodType.PASTA_MEAT,
-        CourseSubType.VEGETARIAN: FoodType.PASTA_VEGAN,
-        CourseSubType.VEGAN: FoodType.PASTA_VEGAN,
-    },
-    CourseType.GRILL: {
-        CourseSubType.NORMAL: FoodType.GRILL,
-        CourseSubType.VEGETARIAN: FoodType.GRILL,
-        CourseSubType.VEGAN: FoodType.GRILL,
-    },
-    CourseType.SALAD: {
-        CourseSubType.NORMAL: FoodType.SALAD,
-        CourseSubType.VEGETARIAN: FoodType.SALAD,
-        CourseSubType.VEGAN: FoodType.SALAD,
-    },
-    CourseType.SUB: {
-        CourseSubType.NORMAL: FoodType.SUB,
-        CourseSubType.VEGETARIAN: FoodType.SUB,
-        CourseSubType.VEGAN: FoodType.SUB,
+    CourseType.DESSERT: {
+        CourseSubType.NORMAL: '🍨',
+        CourseSubType.VEGETARIAN: '🍨',
+        CourseSubType.VEGAN: '🍨',
     },
 }
 
@@ -506,8 +468,8 @@ class Menu(db.Model):
     campus_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
     menu_day = db.Column(db.Date(), nullable=False)
 
-    menu_items = db.relationship('MenuItem', backref='menu', passive_deletes=True,
-                                 order_by='[MenuItem.course_type, MenuItem.course_sub_type]')
+    menu_items: 'Collection[MenuItem]' = db.relationship('MenuItem', backref='menu', passive_deletes=True,
+                                                         order_by='[MenuItem.course_type, MenuItem.course_sub_type]')
 
     def __init__(self, campus_id: int, day: datetime.date):
         if not isinstance(campus_id, int):
@@ -522,10 +484,11 @@ class Menu(db.Model):
         db.session.delete(self)
 
     def add_menu_item(self, translatable: Translatable, course_type: CourseType, course_sub_type: CourseSubType,
-                      course_attributes: List[CourseAttributes], price_students: Decimal,
-                      price_staff: Optional[Decimal]) -> 'MenuItem':
+                      course_attributes: List[CourseAttributes], course_allergens: List[CourseAllergens],
+                      price_students: Decimal, price_staff: Optional[Decimal]) -> 'MenuItem':
         menu_item = MenuItem(self, translatable.id, course_type, course_sub_type, price_students, price_staff)
         menu_item.set_attributes(course_attributes)
+        menu_item.set_allergens(course_allergens)
 
         # FIXME: Is this safe?
         self.menu_items.append(menu_item)
@@ -571,10 +534,10 @@ class MenuItem(db.Model):
     translatable_id = db.Column(db.Integer(), db.ForeignKey('translatable.id', onupdate='CASCADE', ondelete='RESTRICT'),
                                 nullable=False)
     external_id = db.Column(db.Integer(), unique=True, nullable=True, server_default=expression.null())
-    food_type = db.Column(db.Enum(FoodType), nullable=False)
     course_type = db.Column(db.Enum(CourseType), nullable=False)
     course_sub_type = db.Column(db.Enum(CourseSubType), nullable=False)
     course_attributes = db.Column(db.Text(), nullable=False, default='[]', server_default='[]')
+    course_allergens = db.Column(db.Text(), nullable=False, default='[]', server_default='[]')
     price_students = db.Column(db.Numeric(4, 2), nullable=False)
     price_staff = db.Column(db.Numeric(4, 2), nullable=True)
     data_frozen = db.Column(db.Boolean(), nullable=False, server_default=expression.false())
@@ -596,7 +559,6 @@ class MenuItem(db.Model):
 
         self.menu = menu
         self.translatable_id = translatable_id
-        self.food_type = course_to_food_type_mapping[course_type][course_sub_type]
         self.course_type = course_type
         self.course_sub_type = course_sub_type
         self.price_students = price_students
@@ -612,10 +574,19 @@ class MenuItem(db.Model):
         return locale.currency(price).replace(' ', '')
 
     def get_attributes(self) -> List[CourseAttributes]:
-        return [CourseAttributes(v) for v in json.loads(self.course_attributes)]
+        # Stored as a list of strings or a list of ints (backwards compat)
+        return [CourseAttributes(v) if isinstance(v, int) else CourseAttributes[v]
+                for v in json.loads(self.course_attributes)]
 
     def set_attributes(self, attributes: List[CourseAttributes]):
-        self.course_attributes = json.dumps([v.value for v in attributes])
+        self.course_attributes = json.dumps([v.name for v in attributes])
+
+    def get_allergens(self) -> List[CourseAllergens]:
+        # Stored as a list of strings
+        return [CourseAllergens[v] for v in json.loads(self.course_allergens)]
+
+    def set_allergens(self, allergens: List[CourseAllergens]):
+        self.course_allergens = json.dumps([v.name for v in allergens])
 
     def __hash__(self):
         return hash(self.id)
