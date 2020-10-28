@@ -458,6 +458,9 @@ def update_menus(*campuses: str, dates: 'List[datetime.date]' = None):
                 data_parsed = external_menu.parse_fetched(data_raw)
                 data_processed = external_menu.process_parsed(data_parsed)
 
+                if data_processed is None:
+                    continue  # No data
+
                 assert campus.short_name == data_processed['campus']
                 assert date.isoformat() == data_processed['date']
 
