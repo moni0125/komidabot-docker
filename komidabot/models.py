@@ -856,6 +856,8 @@ class RegisteredUser(db.Model, UserMixin):
     enabled = db.Column(db.Boolean(), nullable=False, server_default=expression.false())
     web_subscriptions = db.Column(db.String(), nullable=False, server_default='[]')
 
+    submissions = db.relationship('LearningDatapointSubmission', backref='registered_user', passive_deletes=True)
+
     def __init__(self, provider: str, user_id: str, name: str, email: str, profile_picture: str):
         if not isinstance(user_id, str):
             raise expected('user_id', user_id, str)
@@ -942,10 +944,116 @@ class RegisteredUser(db.Model, UserMixin):
             user.set_subscriptions([sub if sub['endpoint'] != old_endpoint else {'endpoint': endpoint, 'keys': keys}
                                     for sub in user.get_subscriptions()])
 
+    def __hash__(self):
+        return hash((self.id, self.provider))
+
 
 class AdminSubscription(TypedDict):
     endpoint: str  # XXX: This is a globally unique identifier for the client
     keys: Dict[str, str]
+
+
+class LearningDatapoint(db.Model):
+    __tablename__ = 'learning_datapoint'
+
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    campus_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
+    menu_day = db.Column(db.Date(), nullable=False)
+    screenshot = db.Column(db.Text(), nullable=False)
+    processed_data = db.Column(db.Text(), nullable=False)
+
+    submissions = db.relationship('LearningDatapointSubmission', backref='datapoint', passive_deletes=True)
+
+    def __init__(self, campus_id: str, menu_day: datetime.date, screenshot: Any, processed_data: Any):
+        if not isinstance(campus_id, str):
+            raise expected('campus_id', campus_id, str)
+        if not isinstance(menu_day, datetime.date):
+            raise expected_or_none('menu_day', menu_day, datetime.date)
+        if screenshot is None:
+            raise ValueError('screenshot expected not None')
+        if processed_data is None:
+            raise ValueError('processed_data expected not None')
+
+        self.campus_id = campus_id
+        self.menu_day = menu_day
+        self.screenshot = json.dumps(screenshot)
+        self.processed_data = json.dumps(processed_data)
+
+    @staticmethod
+    def create(campus_id: str, menu_day: datetime.date, screenshot: Any,
+               processed_data: Any) -> 'Optional[LearningDatapoint]':
+        datapoint = LearningDatapoint(campus_id, menu_day, screenshot, processed_data)
+
+        db.session.add(datapoint)
+
+        return datapoint
+
+    @staticmethod
+    def find_by_id(datapoint_id: int) -> 'Optional[LearningDatapoint]':
+        return LearningDatapoint.query.filter_by(id=datapoint_id).first()
+
+    @staticmethod
+    def get_all() -> 'List[LearningDatapoint]':
+        return LearningDatapoint.query.all()
+
+    @staticmethod
+    def get_random(user: RegisteredUser) -> 'Optional[LearningDatapoint]':
+        return LearningDatapoint.query.order_by(expression.func.random()).filter(
+            expression.not_(
+                LearningDatapointSubmission.query.filter(
+                    LearningDatapoint.id == LearningDatapointSubmission.datapoint_id,
+                    LearningDatapointSubmission.user_id == user.id
+                ).exists()
+            )
+        ).first()
+
+    def user_submit(self, user: RegisteredUser, submission_data: Any):
+        LearningDatapointSubmission.create(self, user, submission_data)
+
+    def __hash__(self):
+        return hash(self.id)
+
+
+class LearningDatapointSubmission(db.Model):
+    __tablename__ = 'learning_datapoint_submission'
+
+    user_id = db.Column(db.String(),
+                        db.ForeignKey('registered_user.id', onupdate='CASCADE', ondelete='CASCADE'),
+                        primary_key=True)
+    user_provider = db.Column(db.String(16),
+                              db.ForeignKey('registered_user.provider', onupdate='CASCADE', ondelete='CASCADE'),
+                              primary_key=True)
+    datapoint_id = db.Column(db.Integer(),
+                             db.ForeignKey('learning_datapoint.id', onupdate='CASCADE', ondelete='CASCADE'),
+                             primary_key=True)
+    submission_data = db.Column(db.Text(), nullable=False)
+
+    def __init__(self, user_id: str, user_provider: str, datapoint_id: int, submission_data: Any):
+        if not isinstance(user_id, str):
+            raise expected('user_id', user_id, str)
+        if not isinstance(user_provider, str):
+            raise expected('user_provider', user_provider, str)
+        if not isinstance(datapoint_id, int):
+            raise expected('datapoint_id', datapoint_id, int)
+        if submission_data is None:
+            raise ValueError('submission_data expected not None')
+
+        self.user_id = user_id
+        self.user_provider = user_provider
+        self.datapoint_id = datapoint_id
+        self.submission_data = json.dumps(submission_data)
+
+    @staticmethod
+    def create(datapoint: LearningDatapoint, user: RegisteredUser,
+               submission_data: Any) -> 'Optional[LearningDatapointSubmission]':
+        submission = LearningDatapointSubmission(user.id, user.provider, datapoint.id, submission_data)
+
+        db.session.add(submission)
+
+        return submission
+
+    def __hash__(self):
+        return hash((self.user_id, self.user_provider, self.datapoint_id))
 
 
 def recreate_db():
