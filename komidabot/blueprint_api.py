@@ -3,6 +3,7 @@ from typing import Any, Dict, TypedDict, Union
 
 from flask import Blueprint, abort, jsonify, request
 from flask_login import current_user, login_required, UserMixin
+from werkzeug.http import HTTP_STATUS_CODES
 
 import komidabot.api_utils as api_utils
 import komidabot.messages as messages
@@ -169,6 +170,24 @@ def post_trigger():
         return api_utils.response_ok()
     else:
         return api_utils.response_bad_request()
+
+
+@blueprint.route('/learning', methods=['GET'])
+@api_utils.wrap_exceptions
+@api_utils.expects_schema(output_schema='GET_api_learning.response')
+@login_required
+def get_learning():
+    result = {
+        'id': '0',
+        'screenshot': r'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+        'course_name': 'Test course',
+        'course_type': 1,
+        'course_sub_type': 1,
+        'price_students': '0.00',
+        'price_staff': '0.00',
+    }
+
+    return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200], 'data': result}), 200
 
 
 @blueprint.route('/campus', methods=['GET'])
