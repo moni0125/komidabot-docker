@@ -1018,15 +1018,20 @@ class LearningDatapointSubmission(db.Model):
     __tablename__ = 'learning_datapoint_submission'
 
     user_id = db.Column(db.String(),
-                        db.ForeignKey('registered_user.id', onupdate='CASCADE', ondelete='CASCADE'),
                         primary_key=True)
     user_provider = db.Column(db.String(16),
-                              db.ForeignKey('registered_user.provider', onupdate='CASCADE', ondelete='CASCADE'),
                               primary_key=True)
     datapoint_id = db.Column(db.Integer(),
                              db.ForeignKey('learning_datapoint.id', onupdate='CASCADE', ondelete='CASCADE'),
                              primary_key=True)
     submission_data = db.Column(db.Text(), nullable=False)
+
+    __table_args__ = (
+        db.ForeignKeyConstraint(('user_id', 'user_provider'),
+                                ['registered_user.id', 'registered_user.provider'],
+                                onupdate='CASCADE',
+                                ondelete='CASCADE'),
+    )
 
     def __init__(self, user_id: str, user_provider: str, datapoint_id: int, submission_data: Any):
         if not isinstance(user_id, str):
