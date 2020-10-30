@@ -198,6 +198,36 @@ def get_learning():
     return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200], 'data': result}), 200
 
 
+@blueprint.route('/learning', methods=['POST'])
+@api_utils.wrap_exceptions
+@api_utils.expects_schema(input_schema='POST_api_learning', output_schema='api_response_strict')
+@login_required
+def post_learning():
+    class PostData(TypedDict):
+        id: str
+        course_name_correct: bool
+        course_type: int
+        course_sub_type: int
+        price_students_correct: bool
+        price_staff_correct: bool
+
+    post_data: PostData = request.get_json()
+
+    datapoint = models.LearningDatapoint.find_by_id(int(post_data['id']))
+
+    datapoint.user_submit(current_user, {
+        'course_name_correct': post_data['course_name_correct'],
+        'course_type': post_data['course_type'],
+        'course_sub_type': post_data['course_sub_type'],
+        'price_students_correct': post_data['price_students_correct'],
+        'price_staff_correct': post_data['price_staff_correct']
+    })
+
+    db.session.commit()
+
+    return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200], 'data': result}), 200
+
+
 @blueprint.route('/campus', methods=['GET'])
 # TODO: @api_utils.wrap_exceptions
 # TODO: @api_utils.expects_schema

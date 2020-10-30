@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LearningPostMessage",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "course_name_correct": {
+      "type": "boolean"
+    },
+    "course_type": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 7
+    },
+    "course_sub_type": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3
+    },
+    "price_students_correct": {
+      "type": "boolean"
+    },
+    "price_staff_correct": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "course_name_correct",
+    "course_type",
+    "course_sub_type",
+    "price_students_correct",
+    "price_staff_correct"
+  ],
+  "additionalProperties": false
+}

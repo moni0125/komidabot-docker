@@ -963,7 +963,7 @@ class LearningDatapoint(db.Model):
 
     submissions = db.relationship('LearningDatapointSubmission', backref='datapoint', passive_deletes=True)
 
-    def __init__(self, campus_id: int, menu_day: datetime.date, screenshot: Any, processed_data: Any):
+    def __init__(self, campus_id: int, menu_day: datetime.date, screenshot: str, processed_data: Any):
         if not isinstance(campus_id, int):
             raise expected('campus_id', campus_id, int)
         if not isinstance(menu_day, datetime.date):
@@ -975,11 +975,11 @@ class LearningDatapoint(db.Model):
 
         self.campus_id = campus_id
         self.menu_day = menu_day
-        self.screenshot = json.dumps(screenshot)
+        self.screenshot = screenshot
         self.processed_data = json.dumps(processed_data)
 
     @staticmethod
-    def create(campus: 'Campus', menu_day: datetime.date, screenshot: Any,
+    def create(campus: 'Campus', menu_day: datetime.date, screenshot: str,
                processed_data: Any) -> 'Optional[LearningDatapoint]':
         datapoint = LearningDatapoint(campus.id, menu_day, screenshot, processed_data)
 

@@ -50,7 +50,7 @@ def synchronize_menus():
 
 
 @cli.command('upload_learning_data')
-def synchronize_menus():
+def upload_learning_data():
     import komidabot.external_menu as external_menu
     from extensions import db
     from komidabot.rate_limit import Limiter
