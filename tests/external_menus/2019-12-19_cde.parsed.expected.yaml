@@ -1,0 +1,117 @@
+campus: cde
+date: '2019-12-19'
+menu:
+- components:
+  - allergens:
+    - CELERY
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - SOUP
+    - VEGAN
+    name:
+      en: silt celeriac soup with salicorn
+      nl: Zilt knolseldersoepje met zeekraal
+  external_id: 1814
+  multiple_prices: false
+  price: '0.90'
+  sort_order: 0
+- components:
+  - allergens:
+    - WHEAT_GLUTEN
+    attributes:
+    - VEGAN
+    name:
+      en: pumpkin surprise
+      nl: Pumpkin surprise
+  external_id: 1815
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 1
+- components:
+  - allergens:
+    - CELERY
+    - EGG
+    - MILK_LACTOSE
+    - MUSTARD
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - CHICKEN
+    - GRILL
+    name:
+      en: festive turkey burger with small fries
+      nl: Festive turkey burger met strofrietjes
+  external_id: 1816
+  multiple_prices: true
+  price: '4.60'
+  sort_order: 2
+- components:
+  - allergens:
+    - EGG
+    - FISH
+    - MUSTARD
+    attributes:
+    - FISH
+    - SALAD
+    name:
+      en: Wicca salad
+      nl: Salade Wicca
+  external_id: 1831
+  multiple_prices: true
+  price: '4.60'
+  sort_order: 11
+- components:
+  - allergens:
+    - NUTS
+    - SESAME
+    - SHELLFISH
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - FISH
+    - SALAD
+    name:
+      en: buddha bowl with scampi
+      nl: Buddha bowl met scampi's
+  external_id: 1832
+  multiple_prices: true
+  price: '5.00'
+  sort_order: 11
+- components:
+  - allergens:
+    - WHEAT_GLUTEN
+    attributes: [ ]
+    name:
+      en: wholegrain penne
+      nl: Volkoren penne
+  - allergens:
+    - CELERY
+    - WHEAT_GLUTEN
+    attributes:
+    - VEGAN
+    name:
+      en: Mediterranean vegetable sauce
+      nl: mediterraanse groentesaus
+  external_id: 2215
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 3
+- components:
+  - allergens: [ ]
+    attributes: [ ]
+    name:
+      en: farfale
+      nl: Farfale
+  - allergens:
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes:
+    - PIG
+    name:
+      en: Milanese sauce with cubed ham
+      nl: milanese saus met hamblokjes
+  external_id: 2216
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 4

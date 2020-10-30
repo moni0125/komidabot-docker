@@ -1,0 +1,571 @@
+{
+  "id": 312,
+  "menuDate": "2019-12-12T00:00:00",
+  "restaurantId": 5,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 2047,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 0,
+      "remark": null,
+      "menuid": 312,
+      "sortorder": 10,
+      "menuItemContents": [
+        {
+          "id": 2980,
+          "menuItemId": 2047,
+          "courseId": 1091,
+          "sortOrder": 0,
+          "course": {
+            "id": 1091,
+            "dispNameNl": "Groenteloempia",
+            "dispNameEn": "Vegetable spring roll",
+            "nameNl": "groenteloempia, dd, z & w",
+            "nameEn": "",
+            "weight": "125g",
+            "extra": "veggie",
+            "preparation": "1 stuk per persoon",
+            "price": 1.6,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1091,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1091,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1091,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1091,
+                "allergenId": 208
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1091,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 1091,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2048,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 0,
+      "remark": null,
+      "menuid": 312,
+      "sortorder": 10,
+      "menuItemContents": [
+        {
+          "id": 2981,
+          "menuItemId": 2048,
+          "courseId": 5033,
+          "sortOrder": 0,
+          "course": {
+            "id": 5033,
+            "dispNameNl": "Quesadilla's veganlicious",
+            "dispNameEn": "Veganlicious quesadillas",
+            "nameNl": "00 quesadilla's veganlicious, w (vegan)",
+            "nameEn": "",
+            "weight": null,
+            "extra": null,
+            "preparation": "snack winter bak de diepgevroren quinoa-groenekoolburger op een bakplaat of in de oven.- strooi de mozzarisella over de bodem van de wraps en voeg de lente-ui toe.- voeg een laagje geroosterde ma\u00efs toe. leg de burger in de wrap en vouw toe tot een quesadilla.- voeg de quesadilla\"s toe aan een warme braadpan en bak elke kant een paar minuten op een laag tot middelhoog vuur tot ze licht geroosterd zijn of je kan ze ook in een paninitoestel plaatsen.- snijd in hapklare stukken.",
+            "price": 3.1,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5033,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5033,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5033,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 5033,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2051,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 0,
+      "remark": null,
+      "menuid": 312,
+      "sortorder": 10,
+      "menuItemContents": [
+        {
+          "id": 2984,
+          "menuItemId": 2051,
+          "courseId": 5023,
+          "sortOrder": 0,
+          "course": {
+            "id": 5023,
+            "dispNameNl": "Quinoasalade met bietjes",
+            "dispNameEn": "Quinoa salad with beets",
+            "nameNl": "00 quinoasalade met bietjes,w (vegan)",
+            "nameEn": "",
+            "weight": null,
+            "extra": "vegan",
+            "preparation": "conceptsalade winter bereid de quinoa volgens de instructies.- meng de rode biet doorheen de quinoa.- meng ook de boerenkool; peterselie en munt erdoorheen samen met de appelazijn, limoen en ahornsiroop. voeg als laatste de edamame boontjes & avocado toe.- rooster ondertussen de pistachenootjes in een koekenpan met wat olijfolie en strooi deze over de salade heen.-",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5023,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5023,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5023,
+                "allergenId": 210
+              },
+              {
+                "courseId": 5023,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5023,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 5023,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2052,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 0,
+      "remark": null,
+      "menuid": 312,
+      "sortorder": 10,
+      "menuItemContents": [
+        {
+          "id": 2985,
+          "menuItemId": 2052,
+          "courseId": 1934,
+          "sortOrder": 0,
+          "course": {
+            "id": 1934,
+            "dispNameNl": "Bagel met rosbief, veldsla, witloof en rode biet",
+            "dispNameEn": "Roast beef, lamb\u2019s lettuce, Belgian endive and beetroot bagel",
+            "nameNl": "bagel rosbief (veldsla, witloof, rode biet), w",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": "koel bewaren",
+            "preparation": null,
+            "price": 2.5,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1934,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1934,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1934,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1934,
+                "allergenId": 204
+              },
+              {
+                "courseId": 1934,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1934,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 1934,
+                "courseLogoId": 208
+              },
+              {
+                "courseId": 1934,
+                "courseLogoId": 210
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2053,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 0,
+      "remark": null,
+      "menuid": 312,
+      "sortorder": 10,
+      "menuItemContents": [
+        {
+          "id": 2986,
+          "menuItemId": 2053,
+          "courseId": 4950,
+          "sortOrder": 0,
+          "course": {
+            "id": 4950,
+            "dispNameNl": "Meergranenbroodje met humus en wintergroenten",
+            "dispNameEn": "Multigrain roll with hummus and winter vegetables",
+            "nameNl": "00 broodje fit met humus en wintergroenten (vegan)",
+            "nameEn": "",
+            "weight": "135 g/275g",
+            "extra": "vegan",
+            "preparation": "broodje winter",
+            "price": 3.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4950,
+                "allergenId": 201
+              },
+              {
+                "courseId": 4950,
+                "allergenId": 209
+              },
+              {
+                "courseId": 4950,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4950,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 4950,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2054,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 0,
+      "remark": null,
+      "menuid": 312,
+      "sortorder": 10,
+      "menuItemContents": [
+        {
+          "id": 2987,
+          "menuItemId": 2054,
+          "courseId": 3852,
+          "sortOrder": 0,
+          "course": {
+            "id": 3852,
+            "dispNameNl": "Honey wrap",
+            "dispNameEn": "Honey wrap",
+            "nameNl": "honey wrap, w",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": "koel bewaren",
+            "preparation": "avocado in plakjes snijden en besprenkelen met citroensap",
+            "price": 3.1,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3852,
+                "allergenId": 203
+              },
+              {
+                "courseId": 3852,
+                "allergenId": 204
+              },
+              {
+                "courseId": 3852,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3852,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 3852,
+                "courseLogoId": 210
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2055,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 0,
+      "remark": null,
+      "menuid": 312,
+      "sortorder": 10,
+      "menuItemContents": [
+        {
+          "id": 2988,
+          "menuItemId": 2055,
+          "courseId": 4952,
+          "sortOrder": 0,
+          "course": {
+            "id": 4952,
+            "dispNameNl": "Meergranenbroodje met camembert en wintergroenten",
+            "dispNameEn": "Multigrain roll with camembert and winter vegetables",
+            "nameNl": "00 broodje fit met camembert en wintergroenten",
+            "nameEn": "",
+            "weight": "135 g/275g",
+            "extra": "veggie",
+            "preparation": null,
+            "price": 3.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4952,
+                "allergenId": 201
+              },
+              {
+                "courseId": 4952,
+                "allergenId": 203
+              },
+              {
+                "courseId": 4952,
+                "allergenId": 209
+              },
+              {
+                "courseId": 4952,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4952,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 4952,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2324,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 0,
+      "remark": null,
+      "menuid": 312,
+      "sortorder": 10,
+      "menuItemContents": [
+        {
+          "id": 3361,
+          "menuItemId": 2324,
+          "courseId": 877,
+          "sortOrder": 0,
+          "course": {
+            "id": 877,
+            "dispNameNl": "Venkelsoep",
+            "dispNameEn": "Fennel soup",
+            "nameNl": "venkelsoep",
+            "nameEn": "",
+            "weight": "500 ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": null,
+            "price": 0.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 877,
+                "allergenId": 201
+              },
+              {
+                "courseId": 877,
+                "allergenId": 203
+              },
+              {
+                "courseId": 877,
+                "allergenId": 208
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 877,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 877,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

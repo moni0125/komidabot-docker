@@ -1,0 +1,60 @@
+{
+  "id": 1022,
+  "menuDate": "2020-09-28T00:00:00",
+  "restaurantId": 6,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 8035,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 1022,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 10288,
+          "menuItemId": 8035,
+          "courseId": 5829,
+          "sortOrder": 0,
+          "course": {
+            "id": 5829,
+            "dispNameNl": "komida@Hogere Zeevaartschool is momenteel enkel het ophaalpunt voor de online bestellingen: https://nl-20202040ra.iziii.pro/",
+            "dispNameEn": "komida@Hogere Zeevaarschool functions as our pick up point for online orders: https://nl-20202040ra.iziii.pro/",
+            "nameNl": "komida@Hogere Zeevaartschool is momenteel enkel het ophaalpunt voor de online bestellingen: https://nl-20202040ra.iziii.pro/",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": ""
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

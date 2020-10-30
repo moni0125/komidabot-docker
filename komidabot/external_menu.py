@@ -1,5 +1,7 @@
+import atexit
 import datetime
 import json
+import re
 from decimal import Decimal
 from typing import Any, Dict, Optional, Union
 
@@ -111,6 +113,13 @@ session_obj = requests.Session()
 limiter = Limiter(5)  # Limit to 5 lookups per second
 
 
+def _cleanup_session(session: requests.Session):
+    session.close()
+
+
+atexit.register(_cleanup_session, session_obj)
+
+
 def _convert_price(price_students: Union[str, Decimal]) -> Decimal:
     url = PRICE_API.format(endpoint=BASE_ENDPOINT, price=price_students)
     price_response = session_obj.get(url, headers=API_GET_HEADERS)
@@ -128,7 +137,7 @@ def _decimal_or_none(value: str) -> Optional[Decimal]:
 def fetch_raw(campus: models.Campus, date: datetime.date) -> Optional[Any]:
     debug_state = ProgramStateTrace()
 
-    with debug_state.state(SimpleProgramState('Lookup menu', {'campus': campus.short_name, 'date': str(date)})):
+    with debug_state.state(SimpleProgramState('Lookup menu', {'campus': campus.short_name, 'date': date.isoformat()})):
         limiter()
 
         url = MENU_API.format(endpoint=BASE_ENDPOINT, campus=campus.external_id, date=date.strftime('%Y-%m-%d'))
@@ -190,20 +199,24 @@ def parse_fetched(fetched: Dict):
                 with debug_state.state(SimpleProgramState('Menu item component', raw_item_contents['id'])):
                     raw_course = raw_item_contents['course']
 
-                    if not raw_course['enabled'] or raw_course['deleted']:
-                        continue
+                    if not raw_course['enabled']:
+                        pass  # XXX: Used to skip not enabled, but the official site shows these items anyway (bug?)
 
+                    if raw_course['deleted']:
+                        pass  # XXX: Used to skip deleted, but the official site shows these items anyway (bug?)
+
+                    # XXX: Note on names, sometimes these can contain double spaces, so we normalize them.
+                    #      We also strip any whitespace from the start and end of the names
                     component = {
                         'name': {
-                            'nl': raw_course['dispNameNl'].strip(),
-                            'en': raw_course['dispNameEn'].strip(),
+                            'nl': re.sub(r'\s+', ' ', raw_course['dispNameNl']).strip(),
                         },
                         'attributes': [],
                         'allergens': []
                     }
 
                     if raw_course['dispNameEn']:
-                        component['name']['en'] = raw_course['dispNameEn'].strip()
+                        component['name']['en'] = re.sub(r'\s+', ' ', raw_course['dispNameEn']).strip()
 
                     parsed_item['price'] += round(Decimal(raw_course['price']), 2)
 

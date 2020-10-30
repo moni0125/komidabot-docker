@@ -91,7 +91,7 @@ class TestExternalMenu(BaseTestCase):
 
         external_menu._convert_price = _convert_price
 
-        for saved_file in saved_files:
+        for saved_file in sorted(saved_files):
             with HttpCapture():  # Ensure no requests are made
                 with self.subTest(file=os.path.basename(saved_file)):
                     with self.app.app_context():

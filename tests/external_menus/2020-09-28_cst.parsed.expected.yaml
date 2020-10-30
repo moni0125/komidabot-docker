@@ -1,0 +1,131 @@
+$test_case:
+  course_of_interest: 7221
+  reason: |
+    This response originally broke an assumption that a course component that is neither deleted nor enabled should not
+    show. The official site however does show these courses so we should as well.
+campus: cst
+date: '2020-09-28'
+menu:
+- components:
+  - allergens:
+    - CELERY
+    - MILK_LACTOSE
+    - SOY
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes:
+    - PASTA
+    - PIG
+    - VEAL
+    name:
+      en: Pasta bolognese sauce
+      nl: Pasta bolognaise
+  external_id: 7219
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 2
+- components:
+  - allergens:
+    - CELERY
+    - MILK_LACTOSE
+    attributes:
+    - CHEESE
+    - VEGGIE
+    name:
+      en: Mexican loaded sweet potato with cheddar cheese and nachos
+      nl: Mexicaans gevulde zoete aardappel met cheddar en nachos
+  external_id: 7220
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 1
+- components:
+  - allergens:
+    - FISH
+    - MILK_LACTOSE
+    - NUTS
+    - PEANUTS
+    - SHELLFISH
+    - SOY
+    attributes:
+    - CHICKEN
+    name:
+      en: Chicken tikka masala with rice and salsa (iziii)
+      nl: Kip tikka masala met grove salsa & rijst (iziii)
+    $test_case:
+      comment: This item has both enabled and deleted set to false
+  external_id: 7221
+  multiple_prices: true
+  price: '4.80'
+  sort_order: 0
+- components:
+  - allergens:
+    - NUTS
+    - SESAME
+    - SHELLFISH
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - FISH
+    - SALAD
+    name:
+      en: Buddha bowl with scampi
+      nl: Buddha bowl met scampi's
+  external_id: 7626
+  multiple_prices: true
+  price: '5.00'
+  sort_order: 3
+- components:
+  - allergens:
+    - CELERY
+    - SESAME
+    - WHEAT_GLUTEN
+    attributes:
+    - SALAD
+    - VEGAN
+    name:
+      en: Falafel and hummus salad
+      nl: Salade met falafel en humus
+  external_id: 7633
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 4
+- components:
+  - allergens:
+    - MILK_LACTOSE
+    - NUTS
+    - SESAME
+    - SOY
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes:
+    - CHEESE
+    - SALAD
+    - VEGGIE
+    name:
+      en: "\u2018Classic\u2019 tomato mozzarella"
+      nl: Tomaat-mozzarella 'classic'
+  external_id: 7640
+  multiple_prices: true
+  price: '4.20'
+  sort_order: 5
+- components:
+  - allergens:
+    - CELERY
+    - EGG
+    - MILK_LACTOSE
+    - MUSTARD
+    - NUTS
+    - PEANUTS
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - CHICKEN
+    - PIG
+    - SALAD
+    name:
+      en: Summer salad with chicken, bacon strips and avocado
+      nl: Zomerse salade met kip, spekjes en avocado
+  external_id: 7647
+  multiple_prices: true
+  price: '4.40'
+  sort_order: 6

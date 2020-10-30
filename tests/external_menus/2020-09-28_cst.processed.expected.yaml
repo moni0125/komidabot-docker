@@ -1,0 +1,124 @@
+campus: cst
+date: '2020-09-28'
+menu:
+- course_allergens:
+  - CELERY
+  - MILK_LACTOSE
+  - SOY
+  - SULFITES
+  - WHEAT_GLUTEN
+  course_attributes:
+  - PASTA
+  - PIG
+  - VEAL
+  course_sub_type: NORMAL
+  course_type: PASTA
+  external_id: 7219
+  name:
+    en: Pasta bolognese sauce
+    nl: Pasta bolognaise
+  price_staff: '4.70'
+  price_students: '3.80'
+- course_allergens:
+  - CELERY
+  - MILK_LACTOSE
+  course_attributes:
+  - CHEESE
+  - VEGGIE
+  course_sub_type: VEGETARIAN
+  course_type: DAILY
+  external_id: 7220
+  name:
+    en: Mexican loaded sweet potato with cheddar cheese and nachos
+    nl: Mexicaans gevulde zoete aardappel met cheddar en nachos
+  price_staff: '4.70'
+  price_students: '3.80'
+- course_allergens:
+  - FISH
+  - MILK_LACTOSE
+  - NUTS
+  - PEANUTS
+  - SHELLFISH
+  - SOY
+  course_attributes:
+  - CHICKEN
+  course_sub_type: NORMAL
+  course_type: DAILY
+  external_id: 7221
+  name:
+    en: Chicken tikka masala with rice and salsa (iziii)
+    nl: Kip tikka masala met grove salsa & rijst (iziii)
+  price_staff: '6.00'
+  price_students: '4.80'
+- course_allergens:
+  - NUTS
+  - SESAME
+  - SHELLFISH
+  - SOY
+  - WHEAT_GLUTEN
+  course_attributes:
+  - FISH
+  - SALAD
+  course_sub_type: NORMAL
+  course_type: SALAD
+  external_id: 7626
+  name:
+    en: Buddha bowl with scampi
+    nl: Buddha bowl met scampi's
+  price_staff: '6.20'
+  price_students: '5.00'
+- course_allergens:
+  - CELERY
+  - SESAME
+  - WHEAT_GLUTEN
+  course_attributes:
+  - SALAD
+  - VEGAN
+  course_sub_type: VEGAN
+  course_type: SALAD
+  external_id: 7633
+  name:
+    en: Falafel and hummus salad
+    nl: Salade met falafel en humus
+  price_staff: '4.70'
+  price_students: '3.80'
+- course_allergens:
+  - MILK_LACTOSE
+  - NUTS
+  - SESAME
+  - SOY
+  - SULFITES
+  - WHEAT_GLUTEN
+  course_attributes:
+  - CHEESE
+  - SALAD
+  - VEGGIE
+  course_sub_type: VEGETARIAN
+  course_type: SALAD
+  external_id: 7640
+  name:
+    en: "\u2018Classic\u2019 tomato mozzarella"
+    nl: Tomaat-mozzarella 'classic'
+  price_staff: '5.20'
+  price_students: '4.20'
+- course_allergens:
+  - CELERY
+  - EGG
+  - MILK_LACTOSE
+  - MUSTARD
+  - NUTS
+  - PEANUTS
+  - SOY
+  - WHEAT_GLUTEN
+  course_attributes:
+  - CHICKEN
+  - PIG
+  - SALAD
+  course_sub_type: NORMAL
+  course_type: SALAD
+  external_id: 7647
+  name:
+    en: Summer salad with chicken, bacon strips and avocado
+    nl: Zomerse salade met kip, spekjes en avocado
+  price_staff: '5.50'
+  price_students: '4.40'

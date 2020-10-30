@@ -1,0 +1,60 @@
+{
+  "id": 1027,
+  "menuDate": "2020-09-28T00:00:00",
+  "restaurantId": 5,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 8040,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 1027,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 10294,
+          "menuItemId": 8040,
+          "courseId": 5820,
+          "sortOrder": 0,
+          "course": {
+            "id": 5820,
+            "dispNameNl": "komida@Mutsaard is voorlopig gesloten",
+            "dispNameEn": "",
+            "nameNl": "komida@Mutsaard is temporarily closed",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": ""
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

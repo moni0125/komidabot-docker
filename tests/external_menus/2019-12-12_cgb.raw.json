@@ -1,0 +1,410 @@
+{
+  "id": 317,
+  "menuDate": "2019-12-12T00:00:00",
+  "restaurantId": 4,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 2081,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 317,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 3012,
+          "menuItemId": 2081,
+          "courseId": 2525,
+          "sortOrder": 0,
+          "course": {
+            "id": 2525,
+            "dispNameNl": "Bio-champignonsoep",
+            "dispNameEn": "Organic mushroom soup",
+            "nameNl": "bio-champignonsoep",
+            "nameEn": "",
+            "weight": "500ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": null,
+            "price": 1.5,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 2525,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 2525,
+                "courseLogoId": 201
+              },
+              {
+                "courseId": 2525,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 2525,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "klein: \u20ac 0.90",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2083,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 317,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 3014,
+          "menuItemId": 2083,
+          "courseId": 4988,
+          "sortOrder": 0,
+          "course": {
+            "id": 4988,
+            "dispNameNl": "Groene pasta met pistachenoten",
+            "dispNameEn": "Green paste with pistachio nuts",
+            "nameNl": "00 groene pasta met pistachenoten,w (vegan)",
+            "nameEn": "",
+            "weight": null,
+            "extra": "vegan (geen andere pasta, anders niet meer vegan)",
+            "preparation": "pasta kook de erwten in de bouillon gedurende 15 min. en giet ze af. steam de spinazie. (hou nog een deel van de spinazie en de erwtjes opzij voor de afwerking).voeg de erwtjes, spinazie en room samen.- pureer alles tot een gladde saus.- breng op smaak met kerrie en pezo.- meng de groene saus met de pasta en voeg er ook nog enkele erwtjes en spinazie onder. crush de pistachenoten - werk af met platte peterselie en gecrushte pistachenoten.",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4988,
+                "allergenId": 201
+              },
+              {
+                "courseId": 4988,
+                "allergenId": 205
+              },
+              {
+                "courseId": 4988,
+                "allergenId": 206
+              },
+              {
+                "courseId": 4988,
+                "allergenId": 208
+              },
+              {
+                "courseId": 4988,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4988,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 4988,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2082,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 317,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 3013,
+          "menuItemId": 2082,
+          "courseId": 274,
+          "sortOrder": 0,
+          "course": {
+            "id": 274,
+            "dispNameNl": "Salade New York",
+            "dispNameEn": "New York salad",
+            "nameNl": "salade new york (appel, noten, brie), dd, w",
+            "nameEn": "",
+            "weight": "350 g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "scharrelei gekookt rico 75st of scharrelei gekookt rico 6x12st karton citroensap besprenkelen over de appelstukjes",
+            "price": 4.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 274,
+                "allergenId": 200
+              },
+              {
+                "courseId": 274,
+                "allergenId": 201
+              },
+              {
+                "courseId": 274,
+                "allergenId": 203
+              },
+              {
+                "courseId": 274,
+                "allergenId": 205
+              },
+              {
+                "courseId": 274,
+                "allergenId": 206
+              },
+              {
+                "courseId": 274,
+                "allergenId": 208
+              },
+              {
+                "courseId": 274,
+                "allergenId": 209
+              },
+              {
+                "courseId": 274,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 274,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 274,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 274,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2084,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 317,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 3015,
+          "menuItemId": 2084,
+          "courseId": 2424,
+          "sortOrder": 0,
+          "course": {
+            "id": 2424,
+            "dispNameNl": "Panini 'kalkoen-pesto'",
+            "dispNameEn": "Turkey pesto panini",
+            "nameNl": "panini 'kalkoen-pesto', z & w",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": null,
+            "preparation": "vanaf nu pestospread gran'olivia gebruiken - sandwich spread opwerken",
+            "price": 2.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 2424,
+                "allergenId": 200
+              },
+              {
+                "courseId": 2424,
+                "allergenId": 201
+              },
+              {
+                "courseId": 2424,
+                "allergenId": 203
+              },
+              {
+                "courseId": 2424,
+                "allergenId": 205
+              },
+              {
+                "courseId": 2424,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 2424,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 2424,
+                "courseLogoId": 210
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2085,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 317,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 3016,
+          "menuItemId": 2085,
+          "courseId": 159,
+          "sortOrder": 0,
+          "course": {
+            "id": 159,
+            "dispNameNl": "Abdijbroodje ",
+            "dispNameEn": "Abbey roll ",
+            "nameNl": "abdijbroodje (baguelino broodje, smeerkaas, rammenas) dd, w",
+            "nameEn": "",
+            "weight": "300 g",
+            "extra": "koel bewaren - veggie",
+            "preparation": null,
+            "price": 3.1,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 159,
+                "allergenId": 201
+              },
+              {
+                "courseId": 159,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 159,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 159,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 159,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2326,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 0,
+      "remark": null,
+      "menuid": 317,
+      "sortorder": 10,
+      "menuItemContents": []
+    },
+    {
+      "id": 2330,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 0,
+      "remark": null,
+      "menuid": 317,
+      "sortorder": 10,
+      "menuItemContents": []
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

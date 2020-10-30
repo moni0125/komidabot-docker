@@ -1,0 +1,524 @@
+{
+  "id": 267,
+  "menuDate": "2019-12-19T00:00:00",
+  "restaurantId": 3,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 2027,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 267,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 2959,
+          "menuItemId": 2027,
+          "courseId": 5575,
+          "sortOrder": 0,
+          "course": {
+            "id": 5575,
+            "dispNameNl": "Zilt knolseldersoepje met zeekraal",
+            "dispNameEn": "silt celeriac soup with salicorn",
+            "nameNl": "Zilt knolseldersoepje met zeekraal, vegan",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "Stoof de ui aan, samen met de prei en de knolselder in boter. Bevochtig daarna met de bouillon en laat zachtjes koken tot de groenten gaar zijn. Werk af met de kervel en de zeekraal.",
+            "price": 0.9,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5575,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5575,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5575,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5575,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 5575,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2028,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 267,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 2961,
+          "menuItemId": 2028,
+          "courseId": 5578,
+          "sortOrder": 0,
+          "course": {
+            "id": 5578,
+            "dispNameNl": "Pumpkin surprise",
+            "dispNameEn": "pumpkin surprise",
+            "nameNl": "Pumpkin surprise",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "Verwam de oven voor op 180 graden en gebruik de grillstand. Snijd de pompoen in de breedte doormidden. Haal het vruchtvlees eruit en snijd in de breedte dunne ringen. Maak de quinoa klaar volgens de bereidingswijze op de verpakking. De groenten in gelijke hoeveelheden verdelen en laten ontdooien. Tijdens de service de groenten kort aanbakken met de garam masala en de gepelde tomaat en een beetje water toevoegen . Bouillion naar smaak  toevoegen en kokosmelk laten opkoken. Proef de curry en voeg naar smaak meer kruiden toe. Leg daarna een pompoenring op een bord, vul het binnenste met een beetje quinoa, schep vervolgens de curry erop en garneer met peterselie & een plukje waterkers.",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5578,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5578,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2029,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 267,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 2962,
+          "menuItemId": 2029,
+          "courseId": 5576,
+          "sortOrder": 0,
+          "course": {
+            "id": 5576,
+            "dispNameNl": "Festive turkey burger  met strofrietjes",
+            "dispNameEn": "festive turkey burger with small fries ",
+            "nameNl": "Festive turkey burger met strofrietjes & rauwkostslaatje",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "",
+            "price": 4.6,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5576,
+                "allergenId": 200
+              },
+              {
+                "courseId": 5576,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5576,
+                "allergenId": 203
+              },
+              {
+                "courseId": 5576,
+                "allergenId": 204
+              },
+              {
+                "courseId": 5576,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5576,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5576,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 5576,
+                "courseLogoId": 203
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2419,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 267,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 3477,
+          "menuItemId": 2419,
+          "courseId": 5586,
+          "sortOrder": 0,
+          "course": {
+            "id": 5586,
+            "dispNameNl": "Pasta met soja-bolognaisesaus",
+            "dispNameEn": "Pasta with soy bolognaise sauce",
+            "nameNl": "Pasta met soja-bolognaisesaus",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5586,
+                "allergenId": 200
+              },
+              {
+                "courseId": 5586,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5586,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5586,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5586,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 5586,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2181,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 267,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 3169,
+          "menuItemId": 2181,
+          "courseId": 1402,
+          "sortOrder": 0,
+          "course": {
+            "id": 1402,
+            "dispNameNl": "Lasagne bolognaise",
+            "dispNameEn": "Lasagne bolognese",
+            "nameNl": "lasagne bolognaise kant-en klaar",
+            "nameEn": "",
+            "weight": "450g",
+            "extra": null,
+            "preparation": "de lasagne in porties snijden. - 20 minuten opwaren in een oven van 200\u00b0c. - eventueel van verpakking ontdoen en in een gastronorm bak opwarmen. - geraspte kaas erbij serveren.",
+            "price": 4.4,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1402,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1402,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1402,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1402,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 1402,
+                "courseLogoId": 212
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2182,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 267,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 3170,
+          "menuItemId": 2182,
+          "courseId": 3141,
+          "sortOrder": 0,
+          "course": {
+            "id": 3141,
+            "dispNameNl": "Croissant met brie",
+            "dispNameEn": "Croissant with brie",
+            "nameNl": "croissant brie, w",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "amandelschilfers roosteren",
+            "price": 2.3,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3141,
+                "allergenId": 200
+              },
+              {
+                "courseId": 3141,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3141,
+                "allergenId": 203
+              },
+              {
+                "courseId": 3141,
+                "allergenId": 205
+              },
+              {
+                "courseId": 3141,
+                "allergenId": 206
+              },
+              {
+                "courseId": 3141,
+                "allergenId": 209
+              },
+              {
+                "courseId": 3141,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3141,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 3141,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 3141,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 2371,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 267,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 3403,
+          "menuItemId": 2371,
+          "courseId": 1890,
+          "sortOrder": 0,
+          "course": {
+            "id": 1890,
+            "dispNameNl": "Salade zonder sla",
+            "dispNameEn": "Salad without lettuce",
+            "nameNl": "salade slaatje zonder sla (aardappel, appel, raapjes), dd, w",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "scharrelei gekookt rico 75st of scharrelei gekookt rico 6x12st karton appel besprenkelen met citroensap",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1890,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 205
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 206
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 208
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 209
+              },
+              {
+                "courseId": 1890,
+                "allergenId": 212
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1890,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 1890,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

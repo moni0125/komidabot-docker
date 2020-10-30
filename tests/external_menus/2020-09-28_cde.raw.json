@@ -1,0 +1,860 @@
+{
+  "id": 958,
+  "menuDate": "2020-09-28T00:00:00",
+  "restaurantId": 2,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 7396,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 958,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 9576,
+          "menuItemId": 7396,
+          "courseId": 989,
+          "sortOrder": 0,
+          "course": {
+            "id": 989,
+            "dispNameNl": "gekookte aardappelen ",
+            "dispNameEn": "boiled potatoes ",
+            "nameNl": "aardappel natuur",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": null,
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 9575,
+          "menuItemId": 7396,
+          "courseId": 1033,
+          "sortOrder": 0,
+          "course": {
+            "id": 1033,
+            "dispNameNl": "erwten en wortelen",
+            "dispNameEn": "peas and carrots",
+            "nameNl": "erwten en wortelen",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": null,
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1033,
+                "allergenId": 208
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 9574,
+          "menuItemId": 7396,
+          "courseId": 1393,
+          "sortOrder": 0,
+          "course": {
+            "id": 1393,
+            "dispNameNl": "Varkenslapje",
+            "dispNameEn": "Pork escalope",
+            "nameNl": "varkenslapje dd",
+            "nameEn": "",
+            "weight": "140g",
+            "extra": null,
+            "preparation": "voorbakken in braadpan - kruiden. - afbakken in oven",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [
+              {
+                "courseId": 1393,
+                "courseLogoId": 212
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 7389,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 958,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 9565,
+          "menuItemId": 7389,
+          "courseId": 980,
+          "sortOrder": 0,
+          "course": {
+            "id": 980,
+            "dispNameNl": "frieten",
+            "dispNameEn": "fries",
+            "nameNl": "frieten",
+            "nameEn": "",
+            "weight": "200g pp",
+            "extra": null,
+            "preparation": "afbakken in het frituur op 170 graden",
+            "price": 0.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 980,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [],
+            "maincourse": false,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        },
+        {
+          "id": 9564,
+          "menuItemId": 7389,
+          "courseId": 4930,
+          "sortOrder": 0,
+          "course": {
+            "id": 4930,
+            "dispNameNl": "Kibbeling met tartaarsaus",
+            "dispNameEn": "Deep-fried fish with tartar sauce",
+            "nameNl": "kibbeling met tartaarsaus",
+            "nameEn": "",
+            "weight": null,
+            "extra": "foodmarket",
+            "preparation": null,
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4930,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4930,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 4930,
+                "courseLogoId": 215
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 7383,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 958,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 9556,
+          "menuItemId": 7383,
+          "courseId": 1562,
+          "sortOrder": 0,
+          "course": {
+            "id": 1562,
+            "dispNameNl": "Pasta met schorseneren in lookboter met ei, olijven en peultjes",
+            "dispNameEn": "salsify in garlic butter, with egg, olives and snow peas",
+            "nameNl": "schorseneren in lookboter, ei, olijven en peultjes, zvv, dd",
+            "nameEn": "",
+            "weight": "200g",
+            "extra": "veggie",
+            "preparation": "beetgare pasta voorzichtig mengen met voorgesteamde peultjes en schorseneren, grof gesneden eitjes, look, olijven, peterselie en gesmolten boter - afkruiden met pezo. - in gn van 6 diep verdelen en opwarmen in combi-steamer. scharrelei gekookt rico 75st of scharrelei gekookt rico 6x12st karton gebruiken",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1562,
+                "allergenId": 200
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1562,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 1562,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 7484,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 958,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 9704,
+          "menuItemId": 7484,
+          "courseId": 3865,
+          "sortOrder": 0,
+          "course": {
+            "id": 3865,
+            "dispNameNl": "Salade met falafel en humus",
+            "dispNameEn": "Falafel and hummus salad",
+            "nameNl": "falafel salade met humus, z (vegan)",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "koel bewaren - vegan",
+            "preparation": "conceptsalade zomer 6 falafels per persoon -pitabroodjes in 4 snijden - 2 stukjes pitabrood mee in saladebox falafel in oven bakken voor hzs",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3865,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3865,
+                "allergenId": 208
+              },
+              {
+                "courseId": 3865,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3865,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 3865,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 7504,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 958,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 9725,
+          "menuItemId": 7504,
+          "courseId": 5225,
+          "sortOrder": 0,
+          "course": {
+            "id": 5225,
+            "dispNameNl": "Buddha bowl met scampi's",
+            "dispNameEn": "Buddha bowl with scampi",
+            "nameNl": "00 buddha bowl met scampi's, zomer",
+            "nameEn": "",
+            "weight": null,
+            "extra": null,
+            "preparation": "maak de rijst klaar volgens de bereidingswijze op de verpakking, roer de rijstazijn door de rijst als die nog warm is en laat de rijst afkoelen . - stoof de paksoi & breng op smaak met pezo. - maak de scampi's klaar & laat afkoelen.- maak de bowl: doe de rijst in een bowl, maak een rijtje edamame, een rijtje schijfjes wortelen en radijsjes, een rijtje babyleaf, schijfjes avocado (besprenkelt met citroensap) en rijtje paksoi. werk af met de scampi's, koriander en gesneden pijpajuin. serveer hier bij de sojavinaigrette.",
+            "price": 5.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5225,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5225,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5225,
+                "allergenId": 207
+              },
+              {
+                "courseId": 5225,
+                "allergenId": 209
+              },
+              {
+                "courseId": 5225,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5225,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 5225,
+                "courseLogoId": 215
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 7524,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 958,
+      "sortorder": 5,
+      "menuItemContents": [
+        {
+          "id": 9745,
+          "menuItemId": 7524,
+          "courseId": 5286,
+          "sortOrder": 0,
+          "course": {
+            "id": 5286,
+            "dispNameNl": "Zomerse salade met kip, spekjes en avocado",
+            "dispNameEn": "Summer salad with chicken, bacon strips and avocado",
+            "nameNl": "00 zomerse salade met kip, spekjes & avocado,z",
+            "nameEn": "",
+            "weight": null,
+            "extra": null,
+            "preparation": "bak de kip met de kippenkruiden - bak de spekjes - snij de avocado in partjes en besprenkel ze met citroensap; werk in laagjes: kip, spekjes, avocado, gesneden ijsbergsla en kerstomaten - werk af met hennepzaad, platte peterselie, partjes citroen en een potje dressing",
+            "price": 4.4,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5286,
+                "allergenId": 200
+              },
+              {
+                "courseId": 5286,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5286,
+                "allergenId": 203
+              },
+              {
+                "courseId": 5286,
+                "allergenId": 204
+              },
+              {
+                "courseId": 5286,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5286,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5286,
+                "allergenId": 208
+              },
+              {
+                "courseId": 5286,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5286,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 5286,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 5286,
+                "courseLogoId": 212
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 7544,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 958,
+      "sortorder": 6,
+      "menuItemContents": [
+        {
+          "id": 9765,
+          "menuItemId": 7544,
+          "courseId": 3872,
+          "sortOrder": 0,
+          "course": {
+            "id": 3872,
+            "dispNameNl": "Tomaat-mozzarella 'classic'",
+            "dispNameEn": "\u2018Classic\u2019 tomato mozzarella",
+            "nameNl": "tomaat-mozzarella \"classic\", z",
+            "nameEn": "",
+            "weight": "350g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "mozzarella kruiden met pezo - mozzarella onderaan - dan tomaten - dan basilicum - zonnebloempitten en romeinse sla bovenaan - dressing in dressingspotje",
+            "price": 4.2,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3872,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3872,
+                "allergenId": 203
+              },
+              {
+                "courseId": 3872,
+                "allergenId": 205
+              },
+              {
+                "courseId": 3872,
+                "allergenId": 209
+              },
+              {
+                "courseId": 3872,
+                "allergenId": 210
+              },
+              {
+                "courseId": 3872,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3872,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 3872,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 3872,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 7876,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 958,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 10115,
+          "menuItemId": 7876,
+          "courseId": 2341,
+          "sortOrder": 0,
+          "course": {
+            "id": 2341,
+            "dispNameNl": "Worstenbroodje",
+            "dispNameEn": "Sausage roll",
+            "nameNl": "worstenbroodje gevogelte",
+            "nameEn": "",
+            "weight": "160g",
+            "extra": "halal",
+            "preparation": null,
+            "price": 1.6,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [
+              {
+                "courseId": 2341,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 2341,
+                "courseLogoId": 210
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 7881,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 958,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 10120,
+          "menuItemId": 7881,
+          "courseId": 5030,
+          "sortOrder": 0,
+          "course": {
+            "id": 5030,
+            "dispNameNl": "Kaasfeuillet\u00e9",
+            "dispNameEn": "Cheese puff pastry",
+            "nameNl": "00 kaasfeuillet\u00e9",
+            "nameEn": "",
+            "weight": null,
+            "extra": null,
+            "preparation": null,
+            "price": 1.6,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5030,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5030,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5030,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 5030,
+                "courseLogoId": 210
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 7887,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 958,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 10125,
+          "menuItemId": 7887,
+          "courseId": 1152,
+          "sortOrder": 0,
+          "course": {
+            "id": 1152,
+            "dispNameNl": "Chocolademuffin",
+            "dispNameEn": "Chocolate muffin",
+            "nameNl": "muffin chocolade",
+            "nameEn": "",
+            "weight": null,
+            "extra": null,
+            "preparation": null,
+            "price": 1.2,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1152,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1152,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1152,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1152,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 7892,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 958,
+      "sortorder": 11,
+      "menuItemContents": [
+        {
+          "id": 10130,
+          "menuItemId": 7892,
+          "courseId": 1552,
+          "sortOrder": 0,
+          "course": {
+            "id": 1552,
+            "dispNameNl": "Crunchy yoghurt",
+            "dispNameEn": "Crunchy yoghurt",
+            "nameNl": "crunchy yoghurt",
+            "nameEn": "",
+            "weight": "300ml",
+            "extra": null,
+            "preparation": "potjes vullen met krieken en bijvullen met yoghurt - dekseltje vullen met crunchy en op potje zetten keuze om volle of magere yoghurt te gebruiken keuze uit krieken bereid uit blik of krieken uit bokaal (wat je in stock heb)",
+            "price": 1.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1552,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1552,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1552,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1552,
+                "allergenId": 205
+              },
+              {
+                "courseId": 1552,
+                "allergenId": 210
+              },
+              {
+                "courseId": 1552,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1552,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

@@ -1,0 +1,575 @@
+{
+  "id": 513,
+  "menuDate": "2020-02-13T00:00:00",
+  "restaurantId": 5,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 3178,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 513,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 4406,
+          "menuItemId": 3178,
+          "courseId": 5011,
+          "sortOrder": 0,
+          "course": {
+            "id": 5011,
+            "dispNameNl": "Bio-pompoensoep",
+            "dispNameEn": "Organic pumpkin soup",
+            "nameNl": "00 bio-pompoensoep",
+            "nameEn": "",
+            "weight": "500 ml/700 ml",
+            "extra": null,
+            "preparation": "groenten (ajuin,prei, pompoen en aardappelen) samen met bouillon beetgaar koken. - mixen en room toevoegen. op smaak brengen met peper en zout.",
+            "price": 0.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5011,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5011,
+                "courseLogoId": 201
+              },
+              {
+                "courseId": 5011,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 5011,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3181,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 513,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 4409,
+          "menuItemId": 3181,
+          "courseId": 5039,
+          "sortOrder": 0,
+          "course": {
+            "id": 5039,
+            "dispNameNl": "Vegetarische lasagne",
+            "dispNameEn": "Vegetarian lasagne",
+            "nameNl": "lasagne vegetarisch kant-en klaar",
+            "nameEn": "",
+            "weight": "400 g",
+            "extra": null,
+            "preparation": "de lasagne in porties snijden. - 20 minuten opwaren in een oven van 200\u00b0c. - eventueel van verpakking ontdoen en in een gastronorm bak opwarmen. - geraspte kaas erbij serveren.",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5039,
+                "allergenId": 200
+              },
+              {
+                "courseId": 5039,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5039,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5039,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 5039,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3179,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 513,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 4407,
+          "menuItemId": 3179,
+          "courseId": 5552,
+          "sortOrder": 0,
+          "course": {
+            "id": 5552,
+            "dispNameNl": "Cuban Basmati Bowl",
+            "dispNameEn": "cuban basmati bowl",
+            "nameNl": "Cuban Basmati Bowl, w (veggie)",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "Maak de rijst klaar volgens de bereidingswijze op de verpakking, roer de rijstazijn door de rijst als die nog warm is en laat de rijst afkoelen.  Maak de zoete aardappel klaar volgens de fiche en breng op smaak met kaneel. Maak de bowl: doe de rijst in een kommetje, vervolgens de bonen, zoete aardappel, ma\u00efs & rode kool.  Doe in het midden de guacamole, werk af met de cashewnoten en peterselie. Serveer hierbij de vinaigrette.Zet het deksel op de weckpot en plak het etiket aan de zijkant.",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5552,
+                "allergenId": 205
+              },
+              {
+                "courseId": 5552,
+                "allergenId": 206
+              },
+              {
+                "courseId": 5552,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5552,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 5552,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3182,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 513,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 4410,
+          "menuItemId": 3182,
+          "courseId": 5027,
+          "sortOrder": 0,
+          "course": {
+            "id": 5027,
+            "dispNameNl": "Croque brie",
+            "dispNameEn": "Brie grilled cheese sandwich",
+            "nameNl": "00 croque brie, z&w",
+            "nameEn": "",
+            "weight": null,
+            "extra": "veggie",
+            "preparation": "1 potje saus is inbegrepen in de prijs",
+            "price": 2.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5027,
+                "allergenId": 203
+              },
+              {
+                "courseId": 5027,
+                "allergenId": 205
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5027,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 5027,
+                "courseLogoId": 210
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": true,
+            "enabled": false,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3180,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 513,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 4408,
+          "menuItemId": 3180,
+          "courseId": 3874,
+          "sortOrder": 0,
+          "course": {
+            "id": 3874,
+            "dispNameNl": "Peperkoeken geitenkaasje",
+            "dispNameEn": "Spiced bread and goat cheese",
+            "nameNl": "peperkoeken geitenkaasje, w",
+            "nameEn": "",
+            "weight": "350g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "citroensap voor de bio-appel - peperkoek in reepjes snijden en bovenaan in de saladebox",
+            "price": 4.4,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3874,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3874,
+                "allergenId": 203
+              },
+              {
+                "courseId": 3874,
+                "allergenId": 205
+              },
+              {
+                "courseId": 3874,
+                "allergenId": 208
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3874,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 3874,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 3874,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3183,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 513,
+      "sortorder": 5,
+      "menuItemContents": [
+        {
+          "id": 4411,
+          "menuItemId": 3183,
+          "courseId": 25,
+          "sortOrder": 0,
+          "course": {
+            "id": 25,
+            "dispNameNl": "Wit broodje met kaas en wintergroenen",
+            "dispNameEn": "White roll with cheese and winter vegetables",
+            "nameNl": "wit broodje met kaas en wintergroentjes",
+            "nameEn": "",
+            "weight": "135g / 275g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "scharrelei gekookt rico 75st of scharrelei gekookt rico 6x12st karton",
+            "price": 3.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 25,
+                "allergenId": 200
+              },
+              {
+                "courseId": 25,
+                "allergenId": 201
+              },
+              {
+                "courseId": 25,
+                "allergenId": 203
+              },
+              {
+                "courseId": 25,
+                "allergenId": 204
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 25,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 25,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 25,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3184,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 513,
+      "sortorder": 6,
+      "menuItemContents": [
+        {
+          "id": 4412,
+          "menuItemId": 3184,
+          "courseId": 4627,
+          "sortOrder": 0,
+          "course": {
+            "id": 4627,
+            "dispNameNl": "Focaccia selder-rosbief",
+            "dispNameEn": "Celery and roast beef focaccia",
+            "nameNl": "00 focaccia selder-rosbief, z & w",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": null,
+            "preparation": null,
+            "price": 3.4,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4627,
+                "allergenId": 200
+              },
+              {
+                "courseId": 4627,
+                "allergenId": 201
+              },
+              {
+                "courseId": 4627,
+                "allergenId": 203
+              },
+              {
+                "courseId": 4627,
+                "allergenId": 204
+              },
+              {
+                "courseId": 4627,
+                "allergenId": 207
+              },
+              {
+                "courseId": 4627,
+                "allergenId": 208
+              },
+              {
+                "courseId": 4627,
+                "allergenId": 210
+              },
+              {
+                "courseId": 4627,
+                "allergenId": 211
+              },
+              {
+                "courseId": 4627,
+                "allergenId": 212
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4627,
+                "courseLogoId": 208
+              },
+              {
+                "courseId": 4627,
+                "courseLogoId": 210
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3185,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 513,
+      "sortorder": 7,
+      "menuItemContents": [
+        {
+          "id": 4413,
+          "menuItemId": 3185,
+          "courseId": 5018,
+          "sortOrder": 0,
+          "course": {
+            "id": 5018,
+            "dispNameNl": "Club pompernikkel-zoete aardappel",
+            "dispNameEn": "Pumpernickel and sweet potato club sandwich",
+            "nameNl": "00 club pompernikkel - zoete aardappel,w (vegan)",
+            "nameEn": "",
+            "weight": null,
+            "extra": null,
+            "preparation": "conceptbroodje winter werk in 3 lagen met het roggebrood.- besmeer de 3 sneden brood met de wortelspread.- leg op de eerste boterham de schijfjes zoete aardappel, veldsla en farmer sla- leg de 2de boterham hierop en herhaal met het beleg en sluit met het laatste sneetje brood.- snijd de boterham diagonaal doormidden en doe er een cocktailprikker in",
+            "price": 2.7,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5018,
+                "allergenId": 201
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5018,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 5018,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

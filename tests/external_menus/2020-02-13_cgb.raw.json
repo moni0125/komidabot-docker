@@ -1,0 +1,456 @@
+{
+  "id": 634,
+  "menuDate": "2020-02-13T00:00:00",
+  "restaurantId": 4,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 3931,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 634,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 5463,
+          "menuItemId": 3931,
+          "courseId": 2530,
+          "sortOrder": 0,
+          "course": {
+            "id": 2530,
+            "dispNameNl": "Bio-wortelsoep",
+            "dispNameEn": "Organic carrot soup",
+            "nameNl": "bio-wortelsoep",
+            "nameEn": "",
+            "weight": "500ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": null,
+            "price": 0.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [],
+            "course_CourseLogos": [
+              {
+                "courseId": 2530,
+                "courseLogoId": 201
+              },
+              {
+                "courseId": 2530,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 2530,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3933,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 634,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 5466,
+          "menuItemId": 3933,
+          "courseId": 5561,
+          "sortOrder": 0,
+          "course": {
+            "id": 5561,
+            "dispNameNl": "Buddha bowl met zalm",
+            "dispNameEn": "buddha bowl with salmon",
+            "nameNl": "Buddha bowl met zalm,w",
+            "nameEn": "",
+            "weight": "",
+            "extra": "",
+            "preparation": "Maak de rijst klaar volgens de bereidingswijze op de verpakking, roer de rijstazijn door de rijst als die nog warm is en laat de rijst afkoelen . - Maak de wasabidressing: meng de yoghurtdressing met de wasabi - Maak de budhabowl als volgt: verdeel de rijst over het kommetje, leg in regenboogvorm: rijtje edamame bonen, sojascheuten, rijtje zalm en rijtje ma\u00efs. Werk de budha bowl af met de zeewiersalade, koriander en zwart sesamzaad en tuinerwtenspread  met sjalot. Serveer hierbij de wasabimayonaise. Zet het deksel op de weckpot en plak het etiket aan de zijkant.",
+            "price": 4.8,
+            "photo": "",
+            "isCourse": true,
+            "isIngredient": true,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5561,
+                "allergenId": 200
+              },
+              {
+                "courseId": 5561,
+                "allergenId": 201
+              },
+              {
+                "courseId": 5561,
+                "allergenId": 203
+              },
+              {
+                "courseId": 5561,
+                "allergenId": 209
+              },
+              {
+                "courseId": 5561,
+                "allergenId": 210
+              },
+              {
+                "courseId": 5561,
+                "allergenId": 212
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5561,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 5561,
+                "courseLogoId": 215
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "",
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3936,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 634,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 5470,
+          "menuItemId": 3936,
+          "courseId": 3423,
+          "sortOrder": 0,
+          "course": {
+            "id": 3423,
+            "dispNameNl": "Pasta met vegetarische bolognaise",
+            "dispNameEn": "Pasta with vegetarian bolognese",
+            "nameNl": "pasta vegetarische bolognaise, hzs (veggie)",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "pasta met losstaand deksel opwarmen in de microgolfoven - gedurende ongeveer 4 minuten op 800 watt. - omroeren en genieten maar! smakelijk!",
+            "preparation": null,
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3423,
+                "allergenId": 203
+              },
+              {
+                "courseId": 3423,
+                "allergenId": 208
+              },
+              {
+                "courseId": 3423,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3423,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3924,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 634,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 5455,
+          "menuItemId": 3924,
+          "courseId": 2424,
+          "sortOrder": 0,
+          "course": {
+            "id": 2424,
+            "dispNameNl": "Panini 'kalkoen-pesto'",
+            "dispNameEn": "Turkey pesto panini",
+            "nameNl": "panini 'kalkoen-pesto', z & w",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": null,
+            "preparation": "vanaf nu pestospread gran'olivia gebruiken - sandwich spread opwerken",
+            "price": 2.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 2424,
+                "allergenId": 200
+              },
+              {
+                "courseId": 2424,
+                "allergenId": 201
+              },
+              {
+                "courseId": 2424,
+                "allergenId": 203
+              },
+              {
+                "courseId": 2424,
+                "allergenId": 205
+              },
+              {
+                "courseId": 2424,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 2424,
+                "courseLogoId": 202
+              },
+              {
+                "courseId": 2424,
+                "courseLogoId": 210
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3919,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 634,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 5449,
+          "menuItemId": 3919,
+          "courseId": 3161,
+          "sortOrder": 0,
+          "course": {
+            "id": 3161,
+            "dispNameNl": "Bagel pumpkin",
+            "dispNameEn": "Pumpkin bagel",
+            "nameNl": "00 bagel pumpkin (cottage cheese,geroosterde pompoen), w",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "pompoen met olijfolie en pezo roosteren in de oven. bestrijk 1 kant van de bagel met de cottage cheese, beleg met de geroosterde pompoen en werk af met gecrunchte walnoten.",
+            "price": 2.5,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3161,
+                "allergenId": 200
+              },
+              {
+                "courseId": 3161,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3161,
+                "allergenId": 203
+              },
+              {
+                "courseId": 3161,
+                "allergenId": 205
+              },
+              {
+                "courseId": 3161,
+                "allergenId": 208
+              },
+              {
+                "courseId": 3161,
+                "allergenId": 211
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3161,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 3161,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 3161,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 3914,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 634,
+      "sortorder": 5,
+      "menuItemContents": [
+        {
+          "id": 5444,
+          "menuItemId": 3914,
+          "courseId": 4975,
+          "sortOrder": 0,
+          "course": {
+            "id": 4975,
+            "dispNameNl": "Salade Marrakech veganlicious ",
+            "dispNameEn": "Marrakesh veganlicious salad ",
+            "nameNl": "00 salade marrakech veganlicious(couscous,mozzarisella),dd,w (vegan)",
+            "nameEn": "",
+            "weight": "300 gr",
+            "extra": "koel bewaren - vegan",
+            "preparation": "conceptsalade winter",
+            "price": 4.0,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4975,
+                "allergenId": 201
+              },
+              {
+                "courseId": 4975,
+                "allergenId": 204
+              },
+              {
+                "courseId": 4975,
+                "allergenId": 208
+              },
+              {
+                "courseId": 4975,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4975,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 4975,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 4410,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 0,
+      "remark": null,
+      "menuid": 634,
+      "sortorder": 10,
+      "menuItemContents": []
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

@@ -1,0 +1,170 @@
+campus: cde
+date: '2019-12-12'
+menu:
+- components:
+  - allergens:
+    - CELERY
+    - EGG
+    - FISH
+    - MOLLUSKS
+    - SESAME
+    - SOY
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes:
+    - CHICKEN
+    - FISH
+    name:
+      en: Chicken and seafood paella
+      nl: "Pa\xEBlla met kip en zeevruchten"
+  external_id: 1778
+  multiple_prices: true
+  price: '4.60'
+  sort_order: 2
+- components:
+  - allergens:
+    - NUTS
+    - PEANUTS
+    - SESAME
+    attributes:
+    - CHICKEN
+    - SALAD
+    name:
+      en: Sweet potato bowl
+      nl: Sweet potato bowl
+  external_id: 1794
+  multiple_prices: true
+  price: '4.00'
+  sort_order: 11
+- components:
+  - allergens:
+    - CELERY
+    - EGG
+    - MILK_LACTOSE
+    - NUTS
+    - PEANUTS
+    - SESAME
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes:
+    - CHEESE
+    - SALAD
+    - VEGGIE
+    name:
+      en: New York salad
+      nl: Salade New York
+  external_id: 1795
+  multiple_prices: true
+  price: '4.00'
+  sort_order: 11
+- components:
+  - allergens: []
+    attributes:
+    - BIO
+    - SOUP
+    - VEGAN
+    name:
+      en: Organic spinach soup
+      nl: Bio-spinaziesoep
+  external_id: 1843
+  multiple_prices: false
+  price: '0.90'
+  sort_order: 0
+- components:
+  - allergens:
+    - WHEAT_GLUTEN
+    attributes: []
+    name:
+      en: wholegrain spaghetti
+      nl: Volkoren spaghetti
+  - allergens:
+    - CELERY
+    - PEANUTS
+    - SOY
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes:
+    - PASTA
+    - VEGAN
+    name:
+      en: soy bolognese sauce
+      nl: soja-bolognaisesaus
+  external_id: 1976
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 3
+- components:
+  - allergens:
+    - EGG
+    - WHEAT_GLUTEN
+    attributes: []
+    name:
+      en: fusili
+      nl: Fusili
+  - allergens:
+    - MILK_LACTOSE
+    - NUTS
+    - SESAME
+    - SOY
+    - WHEAT_GLUTEN
+    attributes:
+    - CHICKEN
+    name:
+      en: Oriental turkey
+      nl: Oriental turkey
+  external_id: 1977
+  multiple_prices: true
+  price: '3.80'
+  sort_order: 4
+- components:
+  - allergens:
+    - MUSTARD
+    attributes:
+    - GRILL
+    - PIG
+    name:
+      en: Marinated pork rib
+      nl: Varkensrib gemarineerd
+  - allergens:
+    - WHEAT_GLUTEN
+    attributes: []
+    name:
+      en: fries
+      nl: frieten
+  - allergens:
+    - CELERY
+    - EGG
+    - FISH
+    - LUPINE
+    - MILK_LACTOSE
+    - MOLLUSKS
+    - MUSTARD
+    - NUTS
+    - PEANUTS
+    - SESAME
+    - SHELLFISH
+    - SOY
+    - SULFITES
+    - WHEAT_GLUTEN
+    attributes: []
+    name:
+      en: saladbar
+      nl: Saladbar
+  external_id: 1978
+  multiple_prices: true
+  price: '4.80'
+  sort_order: 5
+- components:
+  - allergens:
+    - MILK_LACTOSE
+    attributes:
+    - CHEESE
+    - PASTA
+    - VEGGIE
+    name:
+      en: Ravioli verdura
+      nl: Ravioli verdura
+  external_id: 2325
+  multiple_prices: true
+  price: '5.00'
+  sort_order: 1

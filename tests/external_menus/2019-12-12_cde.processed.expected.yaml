@@ -1,0 +1,146 @@
+campus: cde
+date: '2019-12-12'
+menu:
+- course_allergens:
+  - CELERY
+  - EGG
+  - FISH
+  - MOLLUSKS
+  - SESAME
+  - SOY
+  - SULFITES
+  - WHEAT_GLUTEN
+  course_attributes:
+  - CHICKEN
+  - FISH
+  course_sub_type: NORMAL
+  course_type: DAILY
+  external_id: 1778
+  name:
+    en: Chicken and seafood paella
+    nl: "Pa\xEBlla met kip en zeevruchten"
+  price_staff: '5.70'
+  price_students: '4.60'
+- course_allergens:
+  - NUTS
+  - PEANUTS
+  - SESAME
+  course_attributes:
+  - CHICKEN
+  - SALAD
+  course_sub_type: NORMAL
+  course_type: SALAD
+  external_id: 1794
+  name:
+    en: Sweet potato bowl
+    nl: Sweet potato bowl
+  price_staff: '5.00'
+  price_students: '4.00'
+- course_allergens:
+  - CELERY
+  - EGG
+  - MILK_LACTOSE
+  - NUTS
+  - PEANUTS
+  - SESAME
+  - SULFITES
+  - WHEAT_GLUTEN
+  course_attributes:
+  - CHEESE
+  - SALAD
+  - VEGGIE
+  course_sub_type: VEGETARIAN
+  course_type: SALAD
+  external_id: 1795
+  name:
+    en: New York salad
+    nl: Salade New York
+  price_staff: '5.00'
+  price_students: '4.00'
+- course_allergens: []
+  course_attributes:
+  - BIO
+  - SOUP
+  - VEGAN
+  course_sub_type: VEGAN
+  course_type: SOUP
+  external_id: 1843
+  name:
+    en: Organic spinach soup
+    nl: Bio-spinaziesoep
+  price_staff: null
+  price_students: '0.90'
+- course_allergens:
+  - CELERY
+  - PEANUTS
+  - SOY
+  - SULFITES
+  - WHEAT_GLUTEN
+  course_attributes:
+  - PASTA
+  - VEGAN
+  course_sub_type: VEGAN
+  course_type: PASTA
+  external_id: 1976
+  name:
+    en: Wholegrain spaghetti, soy bolognese sauce
+    nl: Volkoren spaghetti, soja-bolognaisesaus
+  price_staff: '4.70'
+  price_students: '3.80'
+- course_allergens:
+  - EGG
+  - MILK_LACTOSE
+  - NUTS
+  - SESAME
+  - SOY
+  - WHEAT_GLUTEN
+  course_attributes:
+  - CHICKEN
+  course_sub_type: NORMAL
+  course_type: PASTA
+  external_id: 1977
+  name:
+    en: Fusili, Oriental turkey
+    nl: Fusili, Oriental turkey
+  price_staff: '4.70'
+  price_students: '3.80'
+- course_allergens:
+  - CELERY
+  - EGG
+  - FISH
+  - LUPINE
+  - MILK_LACTOSE
+  - MOLLUSKS
+  - MUSTARD
+  - NUTS
+  - PEANUTS
+  - SESAME
+  - SHELLFISH
+  - SOY
+  - SULFITES
+  - WHEAT_GLUTEN
+  course_attributes:
+  - GRILL
+  - PIG
+  course_sub_type: NORMAL
+  course_type: GRILL
+  external_id: 1978
+  name:
+    en: Marinated pork rib, fries, saladbar
+    nl: Varkensrib gemarineerd, frieten, Saladbar
+  price_staff: '6.00'
+  price_students: '4.80'
+- course_allergens:
+  - MILK_LACTOSE
+  course_attributes:
+  - CHEESE
+  - PASTA
+  - VEGGIE
+  course_sub_type: VEGETARIAN
+  course_type: PASTA
+  external_id: 2325
+  name:
+    en: Ravioli verdura
+    nl: Ravioli verdura
+  price_staff: '6.20'
+  price_students: '5.00'

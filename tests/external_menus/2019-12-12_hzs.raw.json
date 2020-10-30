@@ -1,0 +1,595 @@
+{
+  "id": 270,
+  "menuDate": "2019-12-12T00:00:00",
+  "restaurantId": 6,
+  "chefId": 0,
+  "description": null,
+  "approvedById": 0,
+  "approvedDateTime": "0001-01-01T00:00:00",
+  "approved": false,
+  "requestToBeApproved": false,
+  "remark": null,
+  "menuItems": [
+    {
+      "id": 1739,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 270,
+      "sortorder": 0,
+      "menuItemContents": [
+        {
+          "id": 2541,
+          "menuItemId": 1739,
+          "courseId": 3624,
+          "sortOrder": 0,
+          "course": {
+            "id": 3624,
+            "dispNameNl": "Bio-knolseldersoep",
+            "dispNameEn": "Organic celeriac soup",
+            "nameNl": "bio-knolseldersoep",
+            "nameEn": "",
+            "weight": "500 ml / 700ml",
+            "extra": "opwarmen in microgolf op 750 watt - roeren en genieten maar! smakelijk!",
+            "preparation": null,
+            "price": 0.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3624,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3624,
+                "courseLogoId": 201
+              },
+              {
+                "courseId": 3624,
+                "courseLogoId": 211
+              },
+              {
+                "courseId": 3624,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": "groot: 1.20",
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": "large: 1.20"
+          }
+        }
+      ]
+    },
+    {
+      "id": 1743,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 270,
+      "sortorder": 1,
+      "menuItemContents": [
+        {
+          "id": 2545,
+          "menuItemId": 1743,
+          "courseId": 4978,
+          "sortOrder": 0,
+          "course": {
+            "id": 4978,
+            "dispNameNl": "Avocado-quinoasalade",
+            "dispNameEn": "Avocado and quinoa salad",
+            "nameNl": "avocado-quinoasalade, w (vegan)",
+            "nameEn": "",
+            "weight": "350 gr",
+            "extra": null,
+            "preparation": "conceptsalade winter kook de quinoa in de groentebouillon - steam de pompoenblokjes en laat afkoelen - snij de avocado in mooie blokjes en snipper de koriander- laat de rode bonen uitlekken - vermeng de groenten, de ajuin,de mais, de rode bonen, de noten, de koriander met ma\u00efsolie, sap van limoen en pezo - en meng dit met de quinoa. - vul de saladebox met de quinoasalade.",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 4978,
+                "allergenId": 201
+              },
+              {
+                "courseId": 4978,
+                "allergenId": 205
+              },
+              {
+                "courseId": 4978,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 4978,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 4978,
+                "courseLogoId": 213
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": true,
+            "calculatedMultiplePrices": false,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1742,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 270,
+      "sortorder": 2,
+      "menuItemContents": [
+        {
+          "id": 2544,
+          "menuItemId": 1742,
+          "courseId": 283,
+          "sortOrder": 0,
+          "course": {
+            "id": 283,
+            "dispNameNl": "Salade Rhodos",
+            "dispNameEn": "Rhodes salad",
+            "nameNl": "salade rhodos (penne, pesto, geroosterde knolselder), dd, w",
+            "nameEn": "",
+            "weight": "300 g",
+            "extra": "koel bewaren - veggie",
+            "preparation": "geroosterde knolselder: knolselder in grove stukken snijden en roosteren in olijfolie vanaf nu pestospread gran'olivia gebruiken - sandwich spread opwerken - en pesto onder conceptsalade mengen, niet in een dressingpotje feta verkruimelen over de salade",
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 283,
+                "allergenId": 200
+              },
+              {
+                "courseId": 283,
+                "allergenId": 201
+              },
+              {
+                "courseId": 283,
+                "allergenId": 205
+              },
+              {
+                "courseId": 283,
+                "allergenId": 208
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 283,
+                "courseLogoId": 209
+              },
+              {
+                "courseId": 283,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1741,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 270,
+      "sortorder": 3,
+      "menuItemContents": [
+        {
+          "id": 2543,
+          "menuItemId": 1741,
+          "courseId": 1872,
+          "sortOrder": 0,
+          "course": {
+            "id": 1872,
+            "dispNameNl": "Italiaanse worteltartaar met parmezaan",
+            "dispNameEn": "Italian carrot tartare with parmesan",
+            "nameNl": "italiaanse worteltartaar met parmezaan, dd, w",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": "koel bewaren - veggie",
+            "preparation": null,
+            "price": 3.1,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1872,
+                "allergenId": 200
+              },
+              {
+                "courseId": 1872,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1872,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1872,
+                "allergenId": 204
+              },
+              {
+                "courseId": 1872,
+                "allergenId": 210
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1872,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 1872,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 1872,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1740,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 270,
+      "sortorder": 4,
+      "menuItemContents": [
+        {
+          "id": 2542,
+          "menuItemId": 1740,
+          "courseId": 3201,
+          "sortOrder": 0,
+          "course": {
+            "id": 3201,
+            "dispNameNl": "Croissant 'bacon'",
+            "dispNameEn": "\u2018Bacon\u2019 croissant",
+            "nameNl": "croissant bacon (eiersalade en spek), w",
+            "nameEn": "",
+            "weight": "250g",
+            "extra": "koel bewaren",
+            "preparation": "1 reepje bacon per croissant",
+            "price": 2.3,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3201,
+                "allergenId": 200
+              },
+              {
+                "courseId": 3201,
+                "allergenId": 201
+              },
+              {
+                "courseId": 3201,
+                "allergenId": 203
+              },
+              {
+                "courseId": 3201,
+                "allergenId": 204
+              },
+              {
+                "courseId": 3201,
+                "allergenId": 205
+              },
+              {
+                "courseId": 3201,
+                "allergenId": 207
+              },
+              {
+                "courseId": 3201,
+                "allergenId": 208
+              },
+              {
+                "courseId": 3201,
+                "allergenId": 209
+              },
+              {
+                "courseId": 3201,
+                "allergenId": 210
+              },
+              {
+                "courseId": 3201,
+                "allergenId": 212
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3201,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 3201,
+                "courseLogoId": 212
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1745,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 270,
+      "sortorder": 5,
+      "menuItemContents": [
+        {
+          "id": 2547,
+          "menuItemId": 1745,
+          "courseId": 5074,
+          "sortOrder": 0,
+          "course": {
+            "id": 5074,
+            "dispNameNl": "Viking pumpkin",
+            "dispNameEn": "Viking pumpkin",
+            "nameNl": "00 viking pumpkin,w",
+            "nameEn": "",
+            "weight": null,
+            "extra": "veggie",
+            "preparation": "doe de pompoenblokjes in een schaal in de oven, samen met de kruiden & een beetje olijfolie, gedurende 10 minuten op 250 \u00b0c. - beleg het viking brood met de geitenkaas, beetje honing of mango chutney en de pompoenblokjes.- steek het broodje in de panini machine gedurende circa 3 minuten.",
+            "price": 3.6,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 5074,
+                "allergenId": 203
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 5074,
+                "courseLogoId": 204
+              },
+              {
+                "courseId": 5074,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 5074,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1744,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 270,
+      "sortorder": 6,
+      "menuItemContents": [
+        {
+          "id": 2546,
+          "menuItemId": 1744,
+          "courseId": 1105,
+          "sortOrder": 0,
+          "course": {
+            "id": 1105,
+            "dispNameNl": "Toscaanse panini",
+            "dispNameEn": "Tuscan panini",
+            "nameNl": "toscaanse panini (mozzarella,balletjes, paprikatapenade), z",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": null,
+            "preparation": null,
+            "price": 2.9,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 1105,
+                "allergenId": 201
+              },
+              {
+                "courseId": 1105,
+                "allergenId": 203
+              },
+              {
+                "courseId": 1105,
+                "allergenId": 205
+              },
+              {
+                "courseId": 1105,
+                "allergenId": 209
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 1105,
+                "courseLogoId": 208
+              },
+              {
+                "courseId": 1105,
+                "courseLogoId": 210
+              },
+              {
+                "courseId": 1105,
+                "courseLogoId": 212
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": false,
+            "fixedprice": true,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    },
+    {
+      "id": 1553,
+      "nameNl": null,
+      "nameEn": null,
+      "menuTypeId": 0,
+      "chefId": 0,
+      "enabled": 1,
+      "remark": null,
+      "menuid": 270,
+      "sortorder": 7,
+      "menuItemContents": [
+        {
+          "id": 2288,
+          "menuItemId": 1553,
+          "courseId": 3424,
+          "sortOrder": 0,
+          "course": {
+            "id": 3424,
+            "dispNameNl": "Pasta met tomaat-basilicumsaus",
+            "dispNameEn": "Pasta with tomato and basil sauce",
+            "nameNl": "pasta tomaat basilicum saus, hzs (veggie)",
+            "nameEn": "",
+            "weight": "300g",
+            "extra": "pasta met losstaand deksel opwarmen in de microgolfoven - gedurende ongeveer 4 minuten op 800 watt. - omroeren en genieten maar! smakelijk!",
+            "preparation": null,
+            "price": 3.8,
+            "photo": "",
+            "isCourse": false,
+            "isIngredient": false,
+            "course_CategoryForCourses": null,
+            "course_Allergens": [
+              {
+                "courseId": 3424,
+                "allergenId": 200
+              },
+              {
+                "courseId": 3424,
+                "allergenId": 203
+              },
+              {
+                "courseId": 3424,
+                "allergenId": 205
+              }
+            ],
+            "course_CourseLogos": [
+              {
+                "courseId": 3424,
+                "courseLogoId": 207
+              },
+              {
+                "courseId": 3424,
+                "courseLogoId": 214
+              }
+            ],
+            "maincourse": true,
+            "menuInfo": null,
+            "fixedMultiplePrices": false,
+            "calculatedMultiplePrices": true,
+            "fixedprice": false,
+            "showFirst": false,
+            "deleted": false,
+            "enabled": true,
+            "menuInfoEn": null
+          }
+        }
+      ]
+    }
+  ],
+  "$schema": "./raw.schema.json"
+}

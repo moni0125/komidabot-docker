@@ -4,6 +4,11 @@ $test_case:
     This response contains a menu item which on its own has "enabled" set to 1, but has only one component which is has
     "deleted" set to true and "enabled" set to false.
 
+    The official site displays these courses and as such Komidabot should as well, even if it sounds counterintuitive.
+  old_reason: |
+    This response contains a menu item which on its own has "enabled" set to 1, but has only one component which is has
+    "deleted" set to true and "enabled" set to false.
+
     The course of interest here does not appear in this file as it should be ignored.
 campus: cmu
 date: '2020-02-10'
@@ -67,6 +72,20 @@ menu:
   multiple_prices: false
   price: '3.10'
   sort_order: 7
+- components:
+  - allergens:
+    - MILK_LACTOSE
+    - NUTS
+    attributes:
+    - CHEESE
+    - SNACK
+    name:
+      en: Brie grilled cheese sandwich
+      nl: Croque brie
+  external_id: 3155
+  multiple_prices: false
+  price: '2.00'
+  sort_order: 8
 - components:
   - allergens:
     - PEANUTS
