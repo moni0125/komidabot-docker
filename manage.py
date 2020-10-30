@@ -1,3 +1,6 @@
+import datetime
+import glob
+import json
 import os
 import signal
 import unittest
@@ -44,6 +47,70 @@ def cleanup():
 @cli.command('synchronize_menus')
 def synchronize_menus():
     ipc.send_message({'action': 'synchronize_menus'})
+
+
+@cli.command('upload_learning_data')
+def synchronize_menus():
+    import komidabot.external_menu as external_menu
+    from extensions import db
+    from komidabot.rate_limit import Limiter
+
+    limiter = Limiter(10)
+    files = glob.glob(os.path.join(os.path.dirname(__file__), 'learning-data', '*.json'))
+
+    for file in sorted(files):
+        limiter()
+        print(os.path.basename(file))
+
+        try:
+            with open(file, 'r') as f:
+                data = json.load(f)
+        except json.JSONDecodeError:
+            print('Could not decode:', file)
+            continue
+
+        campus = models.Campus.get_by_short_name(data['restaurant'])
+        date = datetime.date.fromisoformat(data['date'])
+
+        try:
+            data_raw = external_menu.fetch_raw(campus, date)
+            data_parsed = external_menu.parse_fetched(data_raw)
+            data_processed = external_menu.process_parsed(data_parsed)
+        except Exception:
+            print('Failure parsing external menu for:', file)
+            continue
+
+        reference_menu: list = data['menu']
+        processed_menu: list = data_processed['menu'] if data_processed is not None else []
+
+        matched = []
+
+        for reference_item in reference_menu:
+            i = 0
+
+            for processed_item in processed_menu:
+                if processed_item['name']['nl'].lower() == reference_item['course_name'].lower():
+                    matched.append((reference_item, processed_item))
+                    break
+
+                i = i + 1
+            else:
+                print('Could not match reference item', reference_item['course_name'].lower())
+                continue
+
+            processed_menu.pop(i)
+
+        for processed_item in processed_menu:
+            print('Could not match processed item', processed_item['name']['nl'].lower())
+
+        try:
+            for reference_item, processed_item in matched:
+                models.LearningDatapoint.create(campus, date, reference_item['screenshot'], processed_item)
+        except Exception:
+            print('Failure adding to database for', file)
+            continue
+
+    db.session.commit()
 
 
 @cli.command(with_appcontext=False)

@@ -4,38 +4,45 @@
   "title": "LearningApiResponse",
   "properties": {
     "data": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
+      "oneOf": [
+        {
+          "type": "null"
         },
-        "screenshot": {
-          "type": "string"
-        },
-        "course_name": {
-          "type": "string"
-        },
-        "course_type": {
-          "type": "number"
-        },
-        "course_sub_type": {
-          "type": "number"
-        },
-        "price_students": {
-          "type": "string"
-        },
-        "price_staff": {
-          "type": "string"
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "screenshot": {
+              "type": "string"
+            },
+            "course_name": {
+              "type": "string"
+            },
+            "course_type": {
+              "type": "number"
+            },
+            "course_sub_type": {
+              "type": "number"
+            },
+            "price_students": {
+              "type": "string"
+            },
+            "price_staff": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "screenshot",
+            "course_name",
+            "course_type",
+            "course_sub_type",
+            "price_students",
+            "price_staff"
+          ]
         }
-      },
-      "required": [
-        "id",
-        "screenshot",
-        "course_name",
-        "course_type",
-        "course_sub_type",
-        "price_students",
-        "price_staff"
       ]
     }
   },

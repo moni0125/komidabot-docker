@@ -952,7 +952,6 @@ class AdminSubscription(TypedDict):
     endpoint: str  # XXX: This is a globally unique identifier for the client
     keys: Dict[str, str]
 
-
 class LearningDatapoint(db.Model):
     __tablename__ = 'learning_datapoint'
 
@@ -964,9 +963,9 @@ class LearningDatapoint(db.Model):
 
     submissions = db.relationship('LearningDatapointSubmission', backref='datapoint', passive_deletes=True)
 
-    def __init__(self, campus_id: str, menu_day: datetime.date, screenshot: Any, processed_data: Any):
-        if not isinstance(campus_id, str):
-            raise expected('campus_id', campus_id, str)
+    def __init__(self, campus_id: int, menu_day: datetime.date, screenshot: Any, processed_data: Any):
+        if not isinstance(campus_id, int):
+            raise expected('campus_id', campus_id, int)
         if not isinstance(menu_day, datetime.date):
             raise expected_or_none('menu_day', menu_day, datetime.date)
         if screenshot is None:
@@ -980,9 +979,9 @@ class LearningDatapoint(db.Model):
         self.processed_data = json.dumps(processed_data)
 
     @staticmethod
-    def create(campus_id: str, menu_day: datetime.date, screenshot: Any,
+    def create(campus: 'Campus', menu_day: datetime.date, screenshot: Any,
                processed_data: Any) -> 'Optional[LearningDatapoint]':
-        datapoint = LearningDatapoint(campus_id, menu_day, screenshot, processed_data)
+        datapoint = LearningDatapoint(campus.id, menu_day, screenshot, processed_data)
 
         db.session.add(datapoint)
 

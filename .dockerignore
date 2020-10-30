@@ -3,9 +3,10 @@
 .gitignore
 .idea
 venv
-web
 __pycache__
 
-config.env
+learning-data
+
+config-*.env
 docker-compose.yml
 Dockerfile

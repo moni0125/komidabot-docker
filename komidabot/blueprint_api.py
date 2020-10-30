@@ -1,3 +1,4 @@
+import json
 from datetime import date, timedelta
 from typing import Any, Dict, TypedDict, Union
 
@@ -177,14 +178,21 @@ def post_trigger():
 @api_utils.expects_schema(output_schema='GET_api_learning.response')
 @login_required
 def get_learning():
+    datapoint = models.LearningDatapoint.get_random(current_user)
+
+    if datapoint is None:
+        return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200], 'data': None}), 200
+
+    processed = json.loads(datapoint.processed_data)
+
     result = {
-        'id': '0',
-        'screenshot': r'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
-        'course_name': 'Test course',
-        'course_type': 1,
-        'course_sub_type': 1,
-        'price_students': '0.00',
-        'price_staff': '0.00',
+        'id': datapoint.id,
+        'screenshot': datapoint.screenshot,
+        'course_name': processed['name']['nl'],
+        'course_type': models.CourseType[processed['course_type']].value,
+        'course_sub_type': models.CourseSubType[processed['course_sub_type']].value,
+        'price_students': processed['price_students'],
+        'price_staff': processed['price_staff'],
     }
 
     return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200], 'data': result}), 200
