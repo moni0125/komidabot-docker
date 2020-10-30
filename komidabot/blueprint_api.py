@@ -186,7 +186,7 @@ def get_learning():
     processed = json.loads(datapoint.processed_data)
 
     result = {
-        'id': datapoint.id,
+        'id': str(datapoint.id),
         'screenshot': datapoint.screenshot,
         'course_name': processed['name']['nl'],
         'course_type': models.CourseType[processed['course_type']].value,
@@ -225,7 +225,7 @@ def post_learning():
 
     db.session.commit()
 
-    return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200], 'data': result}), 200
+    return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200]}), 200
 
 
 @blueprint.route('/campus', methods=['GET'])
