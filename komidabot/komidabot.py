@@ -296,36 +296,6 @@ class Komidabot(Bot):
         with self.lock:
             notify_admins(message)
 
-    def handle_ipc(self, data):
-        print('Received IPC message:', data, flush=True)
-        if not isinstance(data, dict):
-            raise ValueError('Expected dictionary')
-        if 'action' not in data:
-            raise ValueError('Missing action')
-
-        action = data['action']
-
-        if action == 'sub':
-            self.trigger_received(triggers.SubscriptionTrigger())
-        elif action == 'update_menu':
-            update_menus()
-        elif action == 'cleanup':
-            Menu.remove_menus_on_closing_days()
-
-            db.session.commit()
-        elif action == 'synchronize_menus':
-            today = datetime.date.today() - datetime.timedelta(days=-7)
-
-            start = datetime.date(2019, 11, 18)
-            start = start + datetime.timedelta(days=-start.weekday())
-
-            dates: List[datetime.datetime] = []
-            while start < today:
-                dates += [start + datetime.timedelta(days=i) for i in range(5)]
-                start = start + datetime.timedelta(days=7)
-
-            update_menus(dates=dates)
-
 
 def dispatch_daily_menus(trigger: triggers.SubscriptionTrigger):
     from komidabot.subscriptions.daily_menu import CHANNEL_ID as DAILY_MENU_ID

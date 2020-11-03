@@ -11,7 +11,6 @@ from colour_runner.runner import ColourTextTestRunner
 from flask import current_app
 from flask.cli import FlaskGroup
 
-import komidabot.ipc as ipc
 import komidabot.models as models
 import komidabot.models_users as models_users
 from app import create_app
@@ -32,22 +31,22 @@ def seed_db():
 
 @cli.command('run_subscription')
 def run_subscription():
-    ipc.send_message({'action': 'sub'})
+    raise NotImplementedError()
 
 
 @cli.command('update_menus')
 def update_menus():
-    ipc.send_message({'action': 'update_menu'})
+    raise NotImplementedError()
 
 
 @cli.command('cleanup')
 def cleanup():
-    ipc.send_message({'action': 'cleanup'})
+    raise NotImplementedError()
 
 
 @cli.command('synchronize_menus')
 def synchronize_menus():
-    ipc.send_message({'action': 'synchronize_menus'})
+    raise NotImplementedError()
 
 
 @cli.command('upload_learning_data')
@@ -114,7 +113,7 @@ def upload_learning_data():
     db.session.commit()
 
 
-@cli.command(with_appcontext=False)
+@cli.command('test', with_appcontext=False)
 @click.option('--case')
 def test(case: Optional[str]):
     """Runs the tests without code coverage"""

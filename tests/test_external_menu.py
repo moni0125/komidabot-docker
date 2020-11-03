@@ -40,6 +40,8 @@ class TestExternalMenu(BaseTestCase):
 
         db.session.commit()
 
+        self.assertEqual(self.campuses['cst'].id, 1)
+
         self.validator_raw = TestExternalMenu.create_validator('raw.schema.json')
         self.validator_parsed = TestExternalMenu.create_validator('parsed.schema.json')
         self.validator_processed = TestExternalMenu.create_validator('processed.schema.json')

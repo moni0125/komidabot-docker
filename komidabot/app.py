@@ -1,4 +1,3 @@
-import functools
 import logging
 
 from flask import current_app as _current_app
@@ -15,7 +14,6 @@ class App:
         import atexit
         from concurrent.futures import ThreadPoolExecutor as PyThreadPoolExecutor
 
-        import komidabot.ipc as ipc
         from komidabot.facebook.api_interface import ApiInterface
         from komidabot.facebook.users import UserManager as FBUserManager
         from komidabot.web.users import UserManager as WebUserManager
@@ -58,12 +56,6 @@ class App:
             with self.app_context():
                 from komidabot.models import AppSettings
                 AppSettings.create_entries()
-
-            def ipc_callback(bot, app_context, data):
-                with app_context():
-                    bot.handle_ipc(data)
-
-            ipc.start_server(functools.partial(ipc_callback, self.bot, self.app_context))
 
     def app_context(self):
         raise NotImplementedError()
