@@ -344,7 +344,7 @@ def process_parsed(parsed: Dict):
                 course_type = models.CourseType.GRILL
             elif 'SNACK' in processed_item['course_attributes']:
                 # If the item has a low price, it's more likely to be a snack, not a sub (broodje)
-                if Decimal(processed_item['price_students']) < 2.5:
+                if Decimal(processed_item['price_students']) < 2.7:
                     course_type = models.CourseType.SNACK
                 else:
                     course_type = models.CourseType.SUB
