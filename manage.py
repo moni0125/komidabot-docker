@@ -13,6 +13,7 @@ from flask.cli import FlaskGroup
 
 import komidabot.ipc as ipc
 import komidabot.models as models
+import komidabot.models_users as models_users
 from app import create_app
 
 cli = FlaskGroup(create_app=create_app)
@@ -105,7 +106,7 @@ def upload_learning_data():
 
         try:
             for reference_item, processed_item in matched:
-                models.LearningDatapoint.create(campus, date, reference_item['screenshot'], processed_item)
+                models_users.LearningDatapoint.create(campus, date, reference_item['screenshot'], processed_item)
         except Exception:
             print('Failure adding to database for', file)
             continue

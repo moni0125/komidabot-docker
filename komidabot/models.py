@@ -3,14 +3,13 @@ import enum
 import json
 import locale
 from decimal import Decimal
-from typing import Any, Collection, Dict, List, Optional, Tuple, TypedDict
+from typing import Any, Collection, Dict, List, Optional, Tuple
 
-from flask_login import UserMixin
 from sqlalchemy import inspect as sqlalchemy_inspect
 from sqlalchemy.orm.session import make_transient, make_transient_to_detached
 from sqlalchemy.sql import expression
 
-from extensions import db
+from extensions import db, ModelBase
 from komidabot.translation import TranslationService
 from komidabot.util import expected, expected_or_none
 
@@ -138,7 +137,7 @@ class Day(enum.Enum):
 week_days = [Day.MONDAY, Day.TUESDAY, Day.WEDNESDAY, Day.THURSDAY, Day.FRIDAY]
 
 
-class AppSettings(db.Model):
+class AppSettings(ModelBase):
     __tablename__ = 'app_settings'
 
     name = db.Column(db.String(), primary_key=True)
@@ -177,7 +176,7 @@ class AppSettings(db.Model):
         return json.loads(setting.value)
 
 
-class Campus(db.Model):
+class Campus(ModelBase):
     __tablename__ = 'campus'
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
@@ -258,7 +257,7 @@ class Campus(db.Model):
         return hash(self.id)
 
 
-class ClosingDays(db.Model):
+class ClosingDays(ModelBase):
     __tablename__ = 'closing_days'
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
@@ -319,7 +318,7 @@ class ClosingDays(db.Model):
                                                 )).all()
 
 
-class Translatable(db.Model):
+class Translatable(ModelBase):
     __tablename__ = 'translatable'
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
@@ -393,7 +392,7 @@ class Translatable(db.Model):
 
     @property
     def translations(self) -> 'Collection[Translation]':
-        return (self._get_dummy_translation(), *list(self._translations))
+        return self._get_dummy_translation(), *list(self._translations)
 
     def _get_dummy_translation(self) -> 'Translation':
         translation = getattr(self, '_dummy_translation', None)
@@ -424,7 +423,7 @@ class Translatable(db.Model):
         return hash(self.id)
 
 
-class Translation(db.Model):
+class Translation(ModelBase):
     __tablename__ = 'translation'
 
     translatable_id = db.Column(db.Integer(), db.ForeignKey('translatable.id', onupdate='CASCADE', ondelete='CASCADE'),
@@ -461,7 +460,7 @@ class Translation(db.Model):
         return hash((self.translatable_id, self.language))
 
 
-class Menu(db.Model):
+class Menu(ModelBase):
     __tablename__ = 'menu'
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
@@ -525,7 +524,7 @@ class Menu(db.Model):
         return hash(self.id)
 
 
-class MenuItem(db.Model):
+class MenuItem(ModelBase):
     __tablename__ = 'menu_item'
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
@@ -592,7 +591,7 @@ class MenuItem(db.Model):
         return hash(self.id)
 
 
-class UserDayCampusPreference(db.Model):
+class UserDayCampusPreference(ModelBase):
     __tablename__ = 'user_day_campus_preference'
 
     user_id = db.Column(db.Integer(), db.ForeignKey('app_user.id', onupdate='CASCADE', ondelete='CASCADE'),
@@ -642,7 +641,7 @@ class UserDayCampusPreference(db.Model):
         return hash((self.user_id, self.day))
 
 
-class AppUser(db.Model):
+class AppUser(ModelBase):
     __tablename__ = 'app_user'
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
@@ -744,7 +743,7 @@ class AppUser(db.Model):
         return hash(self.id)
 
 
-class Feature(db.Model):
+class Feature(ModelBase):
     __tablename__ = 'feature'
 
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
@@ -812,7 +811,7 @@ class Feature(db.Model):
         return hash(self.id)
 
 
-class FeatureParticipation(db.Model):
+class FeatureParticipation(ModelBase):
     __tablename__ = 'feature_participation'
 
     user_id = db.Column(db.Integer(), db.ForeignKey('app_user.id', onupdate='CASCADE', ondelete='CASCADE'),
@@ -843,221 +842,6 @@ class FeatureParticipation(db.Model):
 
     def __hash__(self):
         return hash((self.user_id, self.feature_id))
-
-
-class RegisteredUser(db.Model, UserMixin):
-    __tablename__ = 'registered_user'
-
-    id = db.Column(db.String(), primary_key=True)
-    provider = db.Column(db.String(16), primary_key=True)
-    name = db.Column(db.String(), nullable=False)
-    email = db.Column(db.String(), nullable=False, unique=True)
-    profile_picture = db.Column(db.String(), nullable=False)
-    enabled = db.Column(db.Boolean(), nullable=False, server_default=expression.false())
-    web_subscriptions = db.Column(db.String(), nullable=False, server_default='[]')
-
-    submissions = db.relationship('LearningDatapointSubmission', backref='registered_user', passive_deletes=True)
-
-    def __init__(self, provider: str, user_id: str, name: str, email: str, profile_picture: str):
-        if not isinstance(user_id, str):
-            raise expected('user_id', user_id, str)
-        if not isinstance(name, str):
-            raise expected('name', name, str)
-        if not isinstance(provider, str):
-            raise expected('provider', provider, str)
-        if not isinstance(email, str):
-            raise expected('email', email, str)
-        if not isinstance(profile_picture, str):
-            raise expected('profile_picture', profile_picture, str)
-
-        self.id = user_id
-        self.provider = provider
-        self.name = name
-        self.email = email
-        self.profile_picture = profile_picture
-
-    @staticmethod
-    def create(provider: str, user_id: str, name: str, email: str, profile_picture: str) -> 'RegisteredUser':
-        user = RegisteredUser(provider, user_id, name, email, profile_picture)
-
-        db.session.add(user)
-
-        return user
-
-    @staticmethod
-    def find_by_serialized_id(serialized: str) -> 'Optional[RegisteredUser]':
-        return RegisteredUser.find_by_id(*json.loads(serialized))
-
-    def get_id(self):
-        return json.dumps([self.provider, self.id])
-
-    @staticmethod
-    def find_by_id(provider: str, user_id: str) -> 'Optional[RegisteredUser]':
-        return RegisteredUser.query.filter_by(provider=provider, id=user_id).first()
-
-    @staticmethod
-    def find_by_email(email: str) -> 'Optional[RegisteredUser]':
-        return RegisteredUser.query.filter_by(email=email).first()
-
-    @staticmethod
-    def get_all() -> 'List[RegisteredUser]':
-        return RegisteredUser.query.all()
-
-    @staticmethod
-    def get_all_verified() -> 'List[RegisteredUser]':
-        return RegisteredUser.query.filter_by(enabled=True).all()
-
-    def delete(self):
-        db.session.delete(self)
-
-    @property
-    def is_active(self):
-        return self.enabled
-
-    def get_subscriptions(self) -> 'List[AdminSubscription]':
-        return json.loads(self.web_subscriptions)
-
-    def set_subscriptions(self, subscriptions: 'List[AdminSubscription]'):
-        self.web_subscriptions = json.dumps(subscriptions)
-
-    def add_subscription(self, endpoint: str, keys: Dict[str, str]):
-        subscriptions: 'List[AdminSubscription]' = []
-        found = False
-
-        for sub in self.get_subscriptions():
-            subscriptions.append(sub)
-
-            if sub['endpoint'] == endpoint:
-                found = True
-
-        if not found:
-            subscriptions.append({'endpoint': endpoint, 'keys': keys})
-
-        self.set_subscriptions(subscriptions)
-
-    def remove_subscription(self, endpoint: str):
-        self.set_subscriptions([sub for sub in self.get_subscriptions() if sub['endpoint'] != endpoint])
-
-    @staticmethod
-    def replace_subscription(old_endpoint: str, endpoint: str, keys: Dict[str, str]):
-        for user in RegisteredUser.get_all():
-            user.set_subscriptions([sub if sub['endpoint'] != old_endpoint else {'endpoint': endpoint, 'keys': keys}
-                                    for sub in user.get_subscriptions()])
-
-    def __hash__(self):
-        return hash((self.id, self.provider))
-
-
-class AdminSubscription(TypedDict):
-    endpoint: str  # XXX: This is a globally unique identifier for the client
-    keys: Dict[str, str]
-
-class LearningDatapoint(db.Model):
-    __tablename__ = 'learning_datapoint'
-
-    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    campus_id = db.Column(db.Integer(), db.ForeignKey('campus.id'), nullable=False)
-    menu_day = db.Column(db.Date(), nullable=False)
-    screenshot = db.Column(db.Text(), nullable=False)
-    processed_data = db.Column(db.Text(), nullable=False)
-
-    submissions = db.relationship('LearningDatapointSubmission', backref='datapoint', passive_deletes=True)
-
-    def __init__(self, campus_id: int, menu_day: datetime.date, screenshot: str, processed_data: Any):
-        if not isinstance(campus_id, int):
-            raise expected('campus_id', campus_id, int)
-        if not isinstance(menu_day, datetime.date):
-            raise expected_or_none('menu_day', menu_day, datetime.date)
-        if screenshot is None:
-            raise ValueError('screenshot expected not None')
-        if processed_data is None:
-            raise ValueError('processed_data expected not None')
-
-        self.campus_id = campus_id
-        self.menu_day = menu_day
-        self.screenshot = screenshot
-        self.processed_data = json.dumps(processed_data)
-
-    @staticmethod
-    def create(campus: 'Campus', menu_day: datetime.date, screenshot: str,
-               processed_data: Any) -> 'Optional[LearningDatapoint]':
-        datapoint = LearningDatapoint(campus.id, menu_day, screenshot, processed_data)
-
-        db.session.add(datapoint)
-
-        return datapoint
-
-    @staticmethod
-    def find_by_id(datapoint_id: int) -> 'Optional[LearningDatapoint]':
-        return LearningDatapoint.query.filter_by(id=datapoint_id).first()
-
-    @staticmethod
-    def get_all() -> 'List[LearningDatapoint]':
-        return LearningDatapoint.query.all()
-
-    @staticmethod
-    def get_random(user: RegisteredUser) -> 'Optional[LearningDatapoint]':
-        return LearningDatapoint.query.order_by(expression.func.random()).filter(
-            expression.not_(
-                LearningDatapointSubmission.query.filter(
-                    LearningDatapoint.id == LearningDatapointSubmission.datapoint_id,
-                    LearningDatapointSubmission.user_id == user.id
-                ).exists()
-            )
-        ).first()
-
-    def user_submit(self, user: RegisteredUser, submission_data: Any):
-        LearningDatapointSubmission.create(self, user, submission_data)
-
-    def __hash__(self):
-        return hash(self.id)
-
-
-class LearningDatapointSubmission(db.Model):
-    __tablename__ = 'learning_datapoint_submission'
-
-    user_id = db.Column(db.String(),
-                        primary_key=True)
-    user_provider = db.Column(db.String(16),
-                              primary_key=True)
-    datapoint_id = db.Column(db.Integer(),
-                             db.ForeignKey('learning_datapoint.id', onupdate='CASCADE', ondelete='CASCADE'),
-                             primary_key=True)
-    submission_data = db.Column(db.Text(), nullable=False)
-
-    __table_args__ = (
-        db.ForeignKeyConstraint(('user_id', 'user_provider'),
-                                ['registered_user.id', 'registered_user.provider'],
-                                onupdate='CASCADE',
-                                ondelete='CASCADE'),
-    )
-
-    def __init__(self, user_id: str, user_provider: str, datapoint_id: int, submission_data: Any):
-        if not isinstance(user_id, str):
-            raise expected('user_id', user_id, str)
-        if not isinstance(user_provider, str):
-            raise expected('user_provider', user_provider, str)
-        if not isinstance(datapoint_id, int):
-            raise expected('datapoint_id', datapoint_id, int)
-        if submission_data is None:
-            raise ValueError('submission_data expected not None')
-
-        self.user_id = user_id
-        self.user_provider = user_provider
-        self.datapoint_id = datapoint_id
-        self.submission_data = json.dumps(submission_data)
-
-    @staticmethod
-    def create(datapoint: LearningDatapoint, user: RegisteredUser,
-               submission_data: Any) -> 'Optional[LearningDatapointSubmission]':
-        submission = LearningDatapointSubmission(user.id, user.provider, datapoint.id, submission_data)
-
-        db.session.add(submission)
-
-        return submission
-
-    def __hash__(self):
-        return hash((self.user_id, self.user_provider, self.datapoint_id))
 
 
 def recreate_db():

@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import Optional, Union
 
 import komidabot.facebook.constants as fb_constants
 import komidabot.messages as messages

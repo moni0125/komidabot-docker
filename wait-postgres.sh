@@ -6,7 +6,7 @@ echo "Waiting for postgres..."
 while :
 do
     trap 'kill -TERM $PID' TERM INT
-    nc -w 2 -z $POSTGRES_HOST 5432 &
+    nc -w 2 -z "$POSTGRES_HOST" 5432 &
     PID=$!
     wait $PID
     trap - TERM INT

@@ -3,17 +3,19 @@ from typing import Optional, Union
 from urllib.parse import urlparse, quote, unquote
 
 import requests
-from flask import abort, Blueprint, redirect, request, url_for
-from flask_login import login_required, login_user, logout_user
+from flask import abort, Blueprint, jsonify, redirect, request, url_for
+from flask_login import current_user, login_required, login_user, logout_user, UserMixin
 from oauthlib.oauth2 import WebApplicationClient
+from werkzeug.http import HTTP_STATUS_CODES
 
 import komidabot.api_utils as api_utils
 import komidabot.config as app_config
 from extensions import db, login
 from komidabot.app import App, get_app
-from komidabot.models import RegisteredUser
+from komidabot.models_users import RegisteredUser
 
 blueprint = Blueprint('komidabot authentication', __name__)
+current_user: 'Union[RegisteredUser, UserMixin]'
 
 google_client: Optional[Union[WebApplicationClient, bool]] = None
 google_provider_config = None
@@ -37,7 +39,7 @@ def get_google_provider_cfg():
 
 @login.user_loader
 def user_loader(user_id):
-    return RegisteredUser.find_by_serialized_id(user_id)
+    return RegisteredUser.get_by_id(user_id)
 
 
 @login.unauthorized_handler
@@ -136,7 +138,7 @@ def get_login_google_callback():
     else:
         return abort(403)  # TODO: Show account not verified screen in the future
 
-    user = RegisteredUser.find_by_id('google', unique_id)
+    user = RegisteredUser.find_by_provider_id('google', unique_id)
     if not user:
         if app_config.is_registrations_enabled():
             user = RegisteredUser.create('google', unique_id, users_name, users_email, picture)
@@ -170,7 +172,11 @@ def get_logout():
 
 @blueprint.route('/authorized', methods=['GET'])
 @api_utils.wrap_exceptions
-@api_utils.expects_schema(output_schema='api_response_strict')
+@api_utils.expects_schema(output_schema='GET_api_authorized.response')
 @login_required
 def get_authorized():
-    return api_utils.response_ok()
+    roles = [role.name for role in current_user.get_roles()]
+
+    return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200], 'roles': roles}), 200
+
+# TODO: Add /users endpoint to manage users as admin

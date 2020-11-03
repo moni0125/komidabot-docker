@@ -5,8 +5,8 @@ from typing import Any, Callable, NoReturn
 from pywebpush import webpush, WebPushException
 
 import komidabot.messages as messages
-import komidabot.models as models
 from komidabot.app import get_app
+from komidabot.models_users import AdminSubscription, RegisteredUser
 
 VAPID_CLAIMS = {
     'sub': 'mailto:komidabot@gmail.com'
@@ -14,7 +14,7 @@ VAPID_CLAIMS = {
 
 
 def notify_admins(message: messages.Message):
-    target: Callable[[models.AdminSubscription, Any], NoReturn]
+    target: Callable[[AdminSubscription, Any], NoReturn]
 
     if isinstance(message, messages.TextMessage):
         target = _send_text_message
@@ -23,7 +23,7 @@ def notify_admins(message: messages.Message):
     else:
         raise ValueError('Unsupported message type')
 
-    for user in models.RegisteredUser.get_all():
+    for user in RegisteredUser.get_all():
         for sub in user.get_subscriptions():
             message_result = target(sub, message)
 
@@ -32,7 +32,7 @@ def notify_admins(message: messages.Message):
                 user.remove_subscription(sub['endpoint'])
 
 
-def _send_notification(subscription: models.AdminSubscription, data) -> messages.MessageSendResult:
+def _send_notification(subscription: AdminSubscription, data) -> messages.MessageSendResult:
     app = get_app()
 
     try:
@@ -72,7 +72,7 @@ def _send_notification(subscription: models.AdminSubscription, data) -> messages
         return messages.MessageSendResult.ERROR
 
 
-def _send_text_message(subscription: models.AdminSubscription,
+def _send_text_message(subscription: AdminSubscription,
                        message: messages.TextMessage) -> messages.MessageSendResult:
     data = {
         'notification': {
@@ -91,7 +91,7 @@ def _send_text_message(subscription: models.AdminSubscription,
     return _send_notification(copy.deepcopy(subscription), data)
 
 
-def _send_exception_message(subscription: models.AdminSubscription,
+def _send_exception_message(subscription: AdminSubscription,
                             message: messages.ExceptionMessage) -> messages.MessageSendResult:
     exception_string = str(message.source)
 

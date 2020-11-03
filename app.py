@@ -34,6 +34,14 @@ def create_app(script_info: ScriptInfo = None):
     migrate.init_app(app)
     login.init_app(app)
 
+    # Make sure database models are registered
+    # noinspection PyUnresolvedReferences
+    import komidabot.models
+    # noinspection PyUnresolvedReferences
+    import komidabot.models_training
+    # noinspection PyUnresolvedReferences
+    import komidabot.models_users
+
     # register blueprints
     from komidabot.blueprint import blueprint as webhook_blueprint
     from komidabot.blueprint_api import blueprint as api_blueprint

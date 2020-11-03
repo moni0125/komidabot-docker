@@ -36,6 +36,7 @@ class TestModelsMenu(BaseTestCase):
             db.session.add(menu5)
             db.session.commit()
 
+    # noinspection PyTypeChecker
     def test_invalid_constructors(self):
         # Test constructor of Campus model
 

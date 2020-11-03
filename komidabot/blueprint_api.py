@@ -14,11 +14,13 @@ import komidabot.web.constants as web_constants
 from extensions import db, login
 from komidabot.app import get_app
 from komidabot.debug.administration import notify_admins
+from komidabot.models_training import LearningDatapoint
+from komidabot.models_users import RegisteredUser
 from komidabot.users import UserId
 from komidabot.web.users import User as WebUser
 
 blueprint = Blueprint('komidabot api', __name__)
-current_user: 'Union[models.RegisteredUser, UserMixin]'
+current_user: 'Union[RegisteredUser, UserMixin]'
 
 
 def translatable_to_object(translatable: models.Translatable):
@@ -38,6 +40,9 @@ def post_subscribe():
         keys: Dict[str, str]
         channel: str
         data: Any
+
+    if not current_user.is_role('admin'):
+        return api_utils.response_unauthorized()
 
     post_data: PostData = request.get_json()
     endpoint = post_data['endpoint']
@@ -85,6 +90,9 @@ def delete_subscribe():
         endpoint: str
         channel: str
 
+    if not current_user.is_role('admin'):
+        return api_utils.response_unauthorized()
+
     post_data: PostData = request.get_json()
     endpoint = post_data['endpoint']
     channel = post_data['channel']
@@ -124,6 +132,9 @@ def put_subscribe():
         endpoint: str
         keys: Dict[str, str]
 
+    if not current_user.is_role('admin'):
+        return api_utils.response_unauthorized()
+
     post_data: PostData = request.get_json()
     old_endpoint = post_data['old_endpoint']
     endpoint = post_data['endpoint']
@@ -148,6 +159,9 @@ def put_subscribe():
 def post_trigger():
     class PostData(TypedDict):
         trigger: str
+
+    if not current_user.is_role('admin'):
+        return api_utils.response_unauthorized()
 
     post_data: PostData = request.get_json()
     trigger = post_data['trigger']
@@ -178,7 +192,10 @@ def post_trigger():
 @api_utils.expects_schema(output_schema='GET_api_learning.response')
 @login_required
 def get_learning():
-    datapoint = models.LearningDatapoint.get_random(current_user)
+    if not current_user.is_role('learner'):
+        return api_utils.response_unauthorized()
+
+    datapoint = LearningDatapoint.get_random(current_user)
 
     if datapoint is None:
         return jsonify({'status': 200, 'message': HTTP_STATUS_CODES[200], 'data': None}), 200
@@ -211,9 +228,12 @@ def post_learning():
         price_students_correct: bool
         price_staff_correct: bool
 
+    if not current_user.is_role('learner'):
+        return api_utils.response_unauthorized()
+
     post_data: PostData = request.get_json()
 
-    datapoint = models.LearningDatapoint.find_by_id(int(post_data['id']))
+    datapoint = LearningDatapoint.find_by_id(int(post_data['id']))
 
     datapoint.user_submit(current_user, {
         'course_name_correct': post_data['course_name_correct'],
