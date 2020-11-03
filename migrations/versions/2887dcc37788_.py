@@ -31,7 +31,7 @@ def upgrade():
     # Foreign keys also need updating
     op.alter_column('learning_datapoint_submission', 'user_id', new_column_name='user_subject')
     op.add_column('learning_datapoint_submission',
-                  sa.Column('user_id', sa.Integer(), nullable=False, autoincrement=False))
+                  sa.Column('user_id', sa.Integer(), autoincrement=False))
     op.execute("""
     UPDATE learning_datapoint_submission
     SET user_id = users.id
@@ -39,6 +39,7 @@ def upgrade():
     WHERE learning_datapoint_submission.user_subject = users.subject
         AND learning_datapoint_submission.user_provider = users.provider
     """)
+    op.alter_column('learning_datapoint_submission', 'user_id', nullable=False)
     op.drop_constraint('learning_datapoint_submission_pkey', 'learning_datapoint_submission', type_='primary')
     op.create_primary_key('learning_datapoint_submission_pkey', 'learning_datapoint_submission',
                           ['user_id', 'datapoint_id'])
@@ -92,9 +93,9 @@ def downgrade():
     op.drop_constraint('registered_users_pkey', 'registered_users', type_='primary')
 
     op.add_column('learning_datapoint_submission',
-                  sa.Column('user_subject', sa.String(), autoincrement=False, nullable=False))
+                  sa.Column('user_subject', sa.String(), autoincrement=False))
     op.add_column('learning_datapoint_submission',
-                  sa.Column('user_provider', sa.String(16), autoincrement=False, nullable=False))
+                  sa.Column('user_provider', sa.String(16), autoincrement=False))
     op.drop_constraint('learning_datapoint_submission_pkey', 'learning_datapoint_submission', type_='primary')
     op.create_primary_key('learning_datapoint_submission_pkey', 'learning_datapoint_submission',
                           ['user_subject', 'user_provider', 'datapoint_id'])
@@ -104,6 +105,8 @@ def downgrade():
     FROM (SELECT id, subject, provider FROM registered_users) AS users
     WHERE learning_datapoint_submission.user_id = users.id
     """)
+    op.alter_column('learning_datapoint_submission', 'user_subject', nullable=False)
+    op.alter_column('learning_datapoint_submission', 'user_provider', nullable=False)
     op.drop_column('learning_datapoint_submission', 'user_id')
     op.alter_column('learning_datapoint_submission', 'user_subject', new_column_name='user_id')
 
