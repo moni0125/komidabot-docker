@@ -3,6 +3,8 @@ import glob
 import json
 import os
 import signal
+import sys
+import traceback
 import unittest
 from typing import Optional
 
@@ -12,8 +14,8 @@ from flask import current_app
 from flask.cli import FlaskGroup
 
 import komidabot.models as models
-import komidabot.models_users as models_users
 from app import create_app
+from komidabot.models_training import LearningDatapoint
 
 cli = FlaskGroup(create_app=create_app)
 
@@ -65,6 +67,8 @@ def upload_learning_data():
         try:
             with open(file, 'r') as f:
                 data = json.load(f)
+        except KeyboardInterrupt:
+            raise
         except json.JSONDecodeError:
             print('Could not decode:', file)
             continue
@@ -76,8 +80,14 @@ def upload_learning_data():
             data_raw = external_menu.fetch_raw(campus, date)
             data_parsed = external_menu.parse_fetched(data_raw)
             data_processed = external_menu.process_parsed(data_parsed)
-        except Exception:
+        except KeyboardInterrupt:
+            raise
+        except Exception as e:
             print('Failure parsing external menu for:', file)
+
+            traceback.print_tb(e.__traceback__)
+            print(e, flush=True, file=sys.stderr)
+
             continue
 
         reference_menu: list = data['menu']
@@ -105,7 +115,9 @@ def upload_learning_data():
 
         try:
             for reference_item, processed_item in matched:
-                models_users.LearningDatapoint.create(campus, date, reference_item['screenshot'], processed_item)
+                LearningDatapoint.create(campus, date, reference_item['screenshot'], processed_item)
+        except KeyboardInterrupt:
+            raise
         except Exception:
             print('Failure adding to database for', file)
             continue
