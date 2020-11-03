@@ -28,6 +28,7 @@ class CourseType(enum.Enum):
     SALAD = 5
     SUB = 6
     DESSERT = 7
+    SNACK = 8
 
 
 # Course sub-type
@@ -119,6 +120,11 @@ course_icons_matrix = {
         CourseSubType.NORMAL: '🍨',
         CourseSubType.VEGETARIAN: '🍨',
         CourseSubType.VEGAN: '🍨',
+    },
+    CourseType.SNACK: {
+        CourseSubType.NORMAL: '🥐',
+        CourseSubType.VEGETARIAN: '🥐',
+        CourseSubType.VEGAN: '🥐',
     },
 }
 
