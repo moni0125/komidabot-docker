@@ -5,7 +5,7 @@ from urllib.parse import urlparse, quote, unquote
 import requests
 from flask import abort, Blueprint, jsonify, redirect, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user, UserMixin
-from oauthlib.oauth2 import WebApplicationClient
+from oauthlib.oauth2 import InvalidGrantError, OAuth2Error, WebApplicationClient
 from werkzeug.http import HTTP_STATUS_CODES
 
 import komidabot.api_utils as api_utils
@@ -63,7 +63,7 @@ def get_login_google():
         init_google_client(app)
 
     if google_client is False:
-        return abort(503)  # TODO: Show proper unavailable screen in the future
+        return redirect('/login/not_available')
 
     google_provider_cfg = get_google_provider_cfg()
 
@@ -99,7 +99,7 @@ def get_login_google_callback():
         init_google_client(app)
 
     if google_client is False:
-        return abort(503)  # TODO: Show proper unavailable screen in the future
+        return redirect('/login/not_available')
 
     code = request.args.get('code')
     state = json.loads(unquote(request.args.get('state')))
@@ -121,7 +121,15 @@ def get_login_google_callback():
         auth=(app.config.get('AUTH_GOOGLE_CLIENT_ID'), app.config.get('AUTH_GOOGLE_CLIENT_SECRET')),
     )
 
-    google_client.parse_request_body_response(json.dumps(token_response.json()))
+    try:
+        google_client.parse_request_body_response(json.dumps(token_response.json()))
+    except InvalidGrantError:
+        # Invalid grant, let's try the login flow again
+        if next_url != '/':
+            return redirect(next_url)
+        return redirect('/login/internal_error')
+    except OAuth2Error:
+        return redirect('/login/internal_error')
 
     userinfo_endpoint = google_provider_cfg['userinfo_endpoint']
     uri, headers, body = google_client.add_token(userinfo_endpoint)
@@ -136,7 +144,7 @@ def get_login_google_callback():
         picture = userinfo_response.json()['picture']
         users_name = userinfo_response.json()['given_name']
     else:
-        return abort(403)  # TODO: Show account not verified screen in the future
+        return redirect('/login/not_verified')
 
     user = RegisteredUser.find_by_provider_id('google', unique_id)
     if not user:
@@ -144,10 +152,10 @@ def get_login_google_callback():
             user = RegisteredUser.create('google', unique_id, users_name, users_email, picture)
             db.session.commit()
         else:
-            return abort(403)  # TODO: Show registrations not allowed screen in the future
+            return redirect('/login/login_closed')
 
     if not user.is_active:
-        return abort(403)  # TODO: Show account not active screen in the future
+        return redirect('/login/not_active')
 
     login_user(user)
 
