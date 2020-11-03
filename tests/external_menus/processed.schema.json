@@ -45,7 +45,8 @@
               "GRILL",
               "SALAD",
               "SUB",
-              "DESSERT"
+              "DESSERT",
+              "SNACK"
             ]
           },
           "course_sub_type": {
