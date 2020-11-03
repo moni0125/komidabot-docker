@@ -11,8 +11,16 @@
     },
     "course_type": {
       "type": "integer",
-      "minimum": 1,
-      "maximum": 7
+      "oneOf": [
+        {
+          "minimum": 1,
+          "maximum": 8
+        },
+        {
+          "minimum": -2,
+          "maximum": -1
+        }
+      ]
     },
     "course_sub_type": {
       "type": "integer",

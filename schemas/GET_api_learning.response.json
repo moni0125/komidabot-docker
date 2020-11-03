@@ -21,10 +21,14 @@
               "type": "string"
             },
             "course_type": {
-              "type": "number"
+              "type": "number",
+              "minimum": 1,
+              "maximum": 8
             },
             "course_sub_type": {
-              "type": "number"
+              "type": "number",
+              "minimum": 1,
+              "maximum": 3
             },
             "price_students": {
               "type": "string"
