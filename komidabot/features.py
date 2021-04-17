@@ -1,8 +1,8 @@
-from extensions import db
 from collections import namedtuple
 from typing import Dict, Optional
 
 import komidabot.models as models
+from extensions import db
 from komidabot.users import UserId
 
 _feature = namedtuple('_feature', ['string_id', 'description', 'globally_available', 'active_users'])

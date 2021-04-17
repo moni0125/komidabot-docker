@@ -4,13 +4,20 @@ from typing import Dict, List, Optional, TypedDict, Union
 from flask_login import UserMixin
 from sqlalchemy.sql import functions
 
-from extensions import db, ModelBase
+from extensions import db, ModelBase, Table
 from komidabot.util import expected
 
 
 class AdminSubscription(TypedDict):
     endpoint: str  # XXX: This is a globally unique identifier for the client
     keys: Dict[str, str]
+
+
+user_roles_table = Table(
+    'user_roles', ModelBase.metadata,
+    db.Column('user_id', db.Integer(), db.ForeignKey('registered_users.id', ondelete='CASCADE'), primary_key=True),
+    db.Column('role_id', db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'), primary_key=True)
+)
 
 
 class RegisteredUser(ModelBase, UserMixin):
@@ -29,7 +36,7 @@ class RegisteredUser(ModelBase, UserMixin):
 
     web_subscriptions = db.Column(db.String(), nullable=False, server_default='[]')
 
-    roles: 'List[Role]' = db.relationship('Role', secondary='user_roles', backref='user')
+    roles: 'List[Role]' = db.relationship('Role', secondary=user_roles_table, back_populates='users')
     submissions = db.relationship('LearningDatapointSubmission', backref='registered_user', passive_deletes=True)
 
     __table_args__ = (
@@ -95,10 +102,11 @@ class RegisteredUser(ModelBase, UserMixin):
 
     @staticmethod
     def get_all_by_role(role: 'Role') -> 'List[RegisteredUser]':
-        return RegisteredUser.query.filter(
-            UserRoles.user_id == RegisteredUser.id,
-            UserRoles.role_id == role.id
-        ).all()
+        return role.users
+        # return RegisteredUser.query.filter(
+        #     UserRoles.user_id == RegisteredUser.id,
+        #     UserRoles.role_id == role.id
+        # ).all()
 
     # Roles functions
     def get_roles(self) -> 'List[Role]':
@@ -160,7 +168,7 @@ class Role(ModelBase):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     name = db.Column(db.String(64), nullable=False, unique=True)
 
-    users = db.relationship('RegisteredUser', secondary='user_roles', backref='role')
+    users = db.relationship('RegisteredUser', secondary=user_roles_table, back_populates='roles')
 
     def __init__(self, name: str):
         if not isinstance(name, str):
@@ -181,9 +189,3 @@ class Role(ModelBase):
     def find_by_name(name: str) -> 'Optional[Role]':
         return Role.query.filter_by(name=name).first()
 
-
-class UserRoles(ModelBase):
-    __tablename__ = 'user_roles'
-
-    user_id = db.Column(db.Integer(), db.ForeignKey('registered_users.id', ondelete='CASCADE'), primary_key=True)
-    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'), primary_key=True)
