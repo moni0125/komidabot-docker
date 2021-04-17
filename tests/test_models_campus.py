@@ -15,11 +15,11 @@ class TestModelsCampus(BaseTestCase):
 
         with self.app.app_context():
             campus1 = models.Campus('Testcampus', 'ctst')
-            campus1.external_id = 0
+            campus1.external_id = 900
             campus2 = models.Campus('Campus Omega', 'com')
-            campus2.external_id = 0
+            campus2.external_id = 800
             campus3 = models.Campus('Campus Paardenmarkt', 'cpm')
-            campus3.external_id = 0
+            campus3.external_id = 700
 
             # Ensure that the constructor does not add the entities to the database
             self.assertTrue(inspect(campus1).transient)
@@ -60,11 +60,11 @@ class TestModelsCampus(BaseTestCase):
         # Test usage of Campus.create with add_to_db set to True
 
         with self.app.app_context():
-            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 0,
+            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 900,
                                            add_to_db=True)
-            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 0,
+            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 800,
                                            add_to_db=True)
-            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 0,
+            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 700,
                                            add_to_db=True)
 
             # Ensure that the create method adds the entities to the database
@@ -85,11 +85,11 @@ class TestModelsCampus(BaseTestCase):
         # Test usage of Campus.create with add_to_db set to False
 
         with self.app.app_context():
-            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 0,
+            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 900,
                                            add_to_db=False)
-            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 0,
+            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 800,
                                            add_to_db=False)
-            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 0,
+            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 700,
                                            add_to_db=False)
 
             # Ensure that the create method does not add the entities to the database
@@ -108,9 +108,9 @@ class TestModelsCampus(BaseTestCase):
         # Test keywords methods
 
         with self.app.app_context():
-            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 0)
-            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 0)
-            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 0)
+            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 900)
+            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 800)
+            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 700)
 
             db.session.commit()
 
@@ -190,9 +190,9 @@ class TestModelsCampus(BaseTestCase):
         # Test getting a Campus object by its ID
 
         with self.app.app_context():
-            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 0)
-            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 0)
-            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 0)
+            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 900)
+            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 800)
+            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 700)
 
             db.session.commit()
 
@@ -200,13 +200,27 @@ class TestModelsCampus(BaseTestCase):
             self.assertEqual(campus2, models.Campus.get_by_id(campus2.id))
             self.assertEqual(campus3, models.Campus.get_by_id(campus3.id))
 
+    def test_get_by_external_id(self):
+        # Test getting a Campus object by its ID
+
+        with self.app.app_context():
+            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 900)
+            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 800)
+            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 700)
+
+            db.session.commit()
+
+            self.assertEqual(campus1, models.Campus.get_by_external_id(campus1.external_id))
+            self.assertEqual(campus2, models.Campus.get_by_external_id(campus2.external_id))
+            self.assertEqual(campus3, models.Campus.get_by_external_id(campus3.external_id))
+
     def test_get_by_short_name(self):
         # Test getting a Campus object by its short name
 
         with self.app.app_context():
-            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 0)
-            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 0)
-            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 0)
+            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 900)
+            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 800)
+            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 700)
 
             db.session.commit()
 
@@ -219,9 +233,9 @@ class TestModelsCampus(BaseTestCase):
         # Test getting campuses by a keyword
 
         with self.app.app_context():
-            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 0)
-            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 0)
-            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 0)
+            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 900)
+            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 800)
+            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 700)
             campus3.active = False
 
             db.session.commit()
@@ -246,9 +260,9 @@ class TestModelsCampus(BaseTestCase):
         # Test getting all campuses
 
         with self.app.app_context():
-            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 0)
-            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 0)
-            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 0)
+            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 900)
+            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 800)
+            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 700)
             campus3.active = False
 
             db.session.commit()
@@ -266,9 +280,9 @@ class TestModelsCampus(BaseTestCase):
         # Test getting all campuses marked as active
 
         with self.app.app_context():
-            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 0)
-            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 0)
-            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 0)
+            campus1 = models.Campus.create('Testcampus', 'ctst', ['keyword1', 'shared_keyword'], 900)
+            campus2 = models.Campus.create('Campus Omega', 'com', ['keyword2', 'shared_keyword'], 800)
+            campus3 = models.Campus.create('Campus Paardenmarkt', 'cpm', ['keyword3', 'shared_keyword'], 700)
             campus3.active = False
 
             db.session.commit()

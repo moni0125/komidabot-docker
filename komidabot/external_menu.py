@@ -168,7 +168,7 @@ def parse_fetched(fetched: Dict):
 
     debug_state = ProgramStateTrace()
 
-    campus = models.Campus.get_by_id(fetched['restaurantId'])
+    campus = models.Campus.get_by_external_id(fetched['restaurantId'])
 
     result = {
         'date': datetime.datetime.strptime(fetched['menuDate'], '%Y-%m-%dT%H:%M:%S').date().isoformat(),

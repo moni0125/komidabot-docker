@@ -18,7 +18,7 @@ if __name__ == '__main__':
     campuses_reverse = {campus.external_id: campus for campus in campuses.values()}
 
 
-    def get_by_id(campus_id: int):
+    def get_by_external_id(campus_id: int):
         return campuses_reverse.get(campus_id, None)
 
 
@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
 
     # Replace these methods because we don't have database access
-    Campus.get_by_id = get_by_id
+    Campus.get_by_external_id = get_by_external_id
     Campus.get_by_short_name = get_by_short_name
 
     # Actual program logic

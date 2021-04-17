@@ -242,6 +242,10 @@ class Campus(ModelBase):
         return Campus.query.filter_by(id=campus_id).first()
 
     @staticmethod
+    def get_by_external_id(external_id: int) -> 'Optional[Campus]':
+        return Campus.query.filter_by(external_id=external_id).first()
+
+    @staticmethod
     def get_by_short_name(short_name: str) -> 'Optional[Campus]':
         return Campus.query.filter_by(short_name=short_name).first()
 
