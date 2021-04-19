@@ -7,7 +7,7 @@ import time
 import traceback
 from functools import wraps
 
-from flask import Blueprint, abort, request
+from flask import Blueprint, abort, escape, request
 
 import komidabot.facebook.constants as fb_constants
 import komidabot.facebook.postbacks as postbacks
@@ -33,7 +33,7 @@ def handle_facebook_verification():
     if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
         if request.args.get('hub.verify_token', '') == get_app().config['VERIFY_TOKEN']:
             print("Verified")
-            return request.args.get('hub.challenge', '')
+            return escape(request.args.get('hub.challenge', ''))
         else:
             print("Wrong token")
             return "Error, wrong validation token"
