@@ -16,7 +16,7 @@ APScheduler==3.7.0
 httpretty==1.0.5
 cryptography==3.4.7
 pywebpush==1.11.0
-py-vapid==1.7.1
+py-vapid==1.8.2
 Werkzeug==1.0.1
 boto3==1.17.*
 SQLAlchemy==1.4.9
