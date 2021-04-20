@@ -142,7 +142,11 @@ def fetch_raw(campus: models.Campus, date: datetime.date) -> Optional[Any]:
 
         url = MENU_API.format(endpoint=BASE_ENDPOINT, campus=campus.external_id, date=date.strftime('%Y-%m-%d'))
 
-        response = session_obj.get(url, headers=API_GET_HEADERS)
+        try:
+            response = session_obj.get(url, headers=API_GET_HEADERS)
+        except requests.exceptions.Timeout:
+            return None  # If the connection times out, we'll just ignore it
+
         if 400 <= response.status_code < 500:
             raise DebuggableException('Client error on HTTP request')
         if 500 <= response.status_code < 600:
