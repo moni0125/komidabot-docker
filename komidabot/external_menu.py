@@ -38,6 +38,11 @@ COURSE_LOGOS_RAW = [
     {"id": 214, "nameNl": "veggie", "nameEn": "veggie", "logo": "ikoon-veggie.gif", "sortorder": 2},
     {"id": 215, "nameNl": "vis", "nameEn": "fish", "logo": "ikoon-vis.gif", "sortorder": 3},
     {"id": 216, "nameNl": "less meat", "nameEn": "less meat", "logo": "ikoon-less.gif", "sortorder": 1},
+    {"id": 217, "nameNl": "healthify", "nameEn": "healthify", "logo": "healthify.gif", "sortorder": 1},
+    {"id": 218, "nameNl": "bruin broodje", "nameEn": "brown bread", "logo": "ikoon-bruin-broodje.gif", "sortorder": 1},
+    {"id": 219, "nameNl": "wit broodje", "nameEn": "white bread", "logo": "ikoon-wit-broodje.gif", "sortorder": 1},
+    {"id": 220, "nameNl": "conceptbroodje", "nameEn": "concept bread", "logo": "ikoon-concept-broodje.gif",
+     "sortorder": 1}
 ]
 
 COURSE_ALLERGENS_RAW = [
@@ -75,6 +80,10 @@ COURSE_LOGOS: Dict[str, int] = {
     'VEGGIE': 214,  # Vegetarian course
     'FISH': 215,  # Contains fish
     'LESS_MEAT': 216,  # Contains less meat
+    'HEALTHIFY': 217,  # Contains less meat
+    'BROWN_BREAD': 218,  # Contains less meat
+    'WHITE_BREAD': 219,  # Contains less meat
+    'CONCEPT_BREAD': 220,  # Contains less meat
 }
 
 COURSE_LOGOS_REVERSE: Dict[int, str] = {value: key for key, value in COURSE_LOGOS.items()}
