@@ -80,10 +80,10 @@ COURSE_LOGOS: Dict[str, int] = {
     'VEGGIE': 214,  # Vegetarian course
     'FISH': 215,  # Contains fish
     'LESS_MEAT': 216,  # Contains less meat
-    'HEALTHIFY': 217,  # Contains less meat
-    'BROWN_BREAD': 218,  # Contains less meat
-    'WHITE_BREAD': 219,  # Contains less meat
-    'CONCEPT_BREAD': 220,  # Contains less meat
+    'HEALTHIFY': 217,  # ???
+    'BROWN_BREAD': 218,  # Brown bread
+    'WHITE_BREAD': 219,  # White bread
+    'CONCEPT_BREAD': 220,  # ??? bread
 }
 
 COURSE_LOGOS_REVERSE: Dict[int, str] = {value: key for key, value in COURSE_LOGOS.items()}

@@ -56,6 +56,10 @@ class CourseAttributes(enum.Enum):
     VEGGIE = 214
     FISH = 215
     LESS_MEAT = 216
+    HEALTHIFY = 217
+    BROWN_BREAD = 218
+    WHITE_BREAD = 219
+    CONCEPT_BREAD = 220
 
     @classmethod
     def has_value(cls, value):
