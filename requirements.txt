@@ -19,7 +19,7 @@ pywebpush==1.13.0
 py-vapid==1.8.2
 Werkzeug==1.0.1
 boto3==1.17.*
-SQLAlchemy==1.4.11
+SQLAlchemy==1.4.39
 colour-runner==0.1.1
 oauthlib==3.1.0
 PyYAML==5.4.1
